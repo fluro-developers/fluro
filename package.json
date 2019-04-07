@@ -1,0 +1,24 @@
+{
+  "name": "fluro",
+  "version": "1.0.0",
+  "description": "The Fluro Javascript API",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fluro-developers/fluro.git"
+  },
+  "keywords": [
+    "fluro",
+    "api",
+    "javascript"
+  ],
+  "author": "fluro",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fluro-developers/fluro/issues"
+  },
+  "homepage": "https://github.com/fluro-developers/fluro#readme"
+}
