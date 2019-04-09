@@ -25,13 +25,13 @@ var FluroAuth = function(Fluro) {
 
     service.logout = function() {
         //Unauthenticated
-        delete store.token;
+        // delete store.token;
         delete store.user;
-        delete store.refreshToken;
-        delete store.expires;
+        // delete store.refreshToken;
+        // delete store.expires;
 
         if(service.onChange) {
-            service.onChange(store);
+            service.onChange(store.user);
         }
     }
 
@@ -60,12 +60,12 @@ var FluroAuth = function(Fluro) {
                 .then(function tokenRefreshComplete(res) {
                     //Save the user data
                     store.user = res.data;
-                    store.token = res.data.token;
-                    store.refreshToken = res.data.refreshToken;
-                    store.expires = res.data.expires;
+                    // store.token = res.data.token;
+                    // store.refreshToken = res.data.refreshToken;
+                    // store.expires = res.data.expires;
 
                     if(service.onChange) {
-                        service.onChange(store);
+                        service.onChange(store.user);
                     }
 
                     //Resolve with the new token
@@ -101,7 +101,7 @@ var FluroAuth = function(Fluro) {
     /////////////////////////////////////////////////////
 
     service.getCurrentToken = function() {
-        return store.token || Fluro.applicationToken;
+        return _.get(store, 'user.token') || Fluro.applicationToken;
     }
 
     /////////////////////////////////////////////////////
@@ -120,8 +120,8 @@ var FluroAuth = function(Fluro) {
         var originalRequest = config;
 
         //If we aren't logged in or don't have a token
-        var token = store.token;
-        var refreshToken = store.refreshToken;
+        var token = _.get(store,'user.token');
+        var refreshToken =_.get(store,'refresh.token');
 
         //////////////////////////////
 
@@ -158,7 +158,8 @@ var FluroAuth = function(Fluro) {
         //We have a refresh token so we need to check
         //whether our access token is stale and needs to be refreshed
         var now = new Date();
-        var expires = new Date(store.expires);
+        var expiryDate = _.get(store,'user.expires');
+        var expires = new Date(expiryDate);
 
         //If the token is still fresh
         if (now < expires) {
