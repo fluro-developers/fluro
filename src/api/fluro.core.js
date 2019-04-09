@@ -46,6 +46,11 @@ var Fluro = function(options) {
 
 	///////////////////////////////////////
 
+	Object.defineProperty(core, 'utils', {
+		value:FluroUtils,
+		writable:false,
+	});
+
 	Object.defineProperty(core, 'api', {
 		value:new FluroAPI(core),
 		writable:false,
@@ -58,11 +63,6 @@ var Fluro = function(options) {
 
 	Object.defineProperty(core, 'asset', {
 		value:new FluroAsset(core),
-		writable:false,
-	});
-
-	Object.defineProperty(core, 'utils', {
-		value:FluroUtils,
 		writable:false,
 	});
 
