@@ -24,7 +24,9 @@ var FluroAuth = function(Fluro) {
 
     service.set = function(user) {
         store.user = user;
-        service.onChange(store.user);
+        if (service.onChange) {
+            service.onChange(store.user);
+        }
     }
 
     ///////////////////////////////////////////////////
@@ -105,7 +107,9 @@ var FluroAuth = function(Fluro) {
                 bypassInterceptor: true
             }).then(function(res) {
                 store.user = res.data;
-                service.onChange(store.user);
+                if (service.onChange) {
+                    service.onChange(store.user);
+                }
             }, reject);
         }
 
@@ -149,11 +153,11 @@ var FluroAuth = function(Fluro) {
             //Bypass the interceptor on all token refresh calls
             //Because we don't need to add the access token etc onto it
             Fluro.api.post('token/refresh', {
-                refreshToken: refreshToken
-            }, {
-                bypassInterceptor: true
-            })
-            .then(function tokenRefreshComplete(res) {
+                    refreshToken: refreshToken
+                }, {
+                    bypassInterceptor: true
+                })
+                .then(function tokenRefreshComplete(res) {
                     //Save the user data
                     store.user = res.data;
                     // store.token = res.data.token;
@@ -256,8 +260,8 @@ var FluroAuth = function(Fluro) {
 
             //Refresh the token
             service.refreshAccessToken(refreshToken)
-            .then(function(newToken) {
-                console.log('Token refreshed');
+                .then(function(newToken) {
+                    console.log('Token refreshed');
                     //Update the original request with our new token
                     originalRequest.headers['Authorization'] = 'Bearer ' + newToken;
                     //And continue onward
@@ -282,19 +286,19 @@ var FluroAuth = function(Fluro) {
 
         switch (status) {
             case 401:
-            service.logout();
-            break;
+                service.logout();
+                break;
             case 502:
                 // case 503:
-                case 504:
+            case 504:
                 //Retry
                 console.log('Retry request')
                 return Fluro.api.request(err.config);
                 break;
-                default:
+            default:
                 //Some other error
                 break;
-            }
+        }
 
         /////////////////////////////////////////////////////
         /// 
