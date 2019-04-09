@@ -1,10 +1,13 @@
 {
   "name": "fluro",
   "version": "1.0.0",
-  "description": "The Fluro Javascript API",
-  "main": "index.js",
+  "description": "Promise based HTTP client for the browser and node.js",
+  "main": "webpack.config.js",
   "scripts": {
-    "test": "test"
+    "build": "webpack --mode=production && webpack --mode=production && npm run test",
+    "dev": "webpack --mode=development --progress --colors --watch",
+    "test": "mocha  --colors ./test/*.spec.js",
+    "test:watch": "mocha  --colors -w ./test/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -15,10 +18,18 @@
     "api",
     "javascript"
   ],
-  "author": "fluro",
+  "author": "Cade Embery",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/fluro-developers/fluro/issues"
   },
-  "homepage": "https://github.com/fluro-developers/fluro#readme"
+  "homepage": "https://github.com/fluro-developers/fluro#readme",
+  "devDependencies": {
+    "babel-register": "^6.26.0",
+    "chai": "^4.2.0",
+    "jsdom": "^14.0.0",
+    "mocha": "^6.1.2",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  }
 }
