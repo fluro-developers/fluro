@@ -16,15 +16,26 @@ var FluroAuth = function(Fluro) {
     var defaultStore = {};
     var store = defaultStore;
 
+
     ///////////////////////////////////////////////////
 
     var service = {}
 
     ///////////////////////////////////////////////////
 
+    function log(message) {
+        if (service.debug) {
+            console.log(message);
+        }
+    }
+
+    ///////////////////////////////////////////////////
+
     service.set = function(user) {
         store.user = user;
-        console.log('fluro.auth > user set');
+
+        log('fluro.auth > user set');
+
         if (service.onChange) {
             service.onChange(store.user);
         }
@@ -42,11 +53,12 @@ var FluroAuth = function(Fluro) {
         // delete store.refreshToken;
         // delete store.expires;
 
-        console.log('fluro.auth > user logout');
+        log('fluro.auth > user logout');
+
         if (service.onChange) {
             service.onChange(store.user);
         }
-        
+
     }
 
     ///////////////////////////////////////////////////
@@ -139,7 +151,8 @@ var FluroAuth = function(Fluro) {
         //Create an refresh request
         inflightRefreshRequest = new Promise(function(resolve, reject) {
 
-            console.log('fluro.auth > refresh token');
+            log('fluro.auth > refresh token');
+
 
             //Bypass the interceptor on all token refresh calls
             //Because we don't need to add the access token etc onto it
@@ -149,9 +162,12 @@ var FluroAuth = function(Fluro) {
                     bypassInterceptor: true
                 })
                 .then(function tokenRefreshComplete(res) {
-                    //Save the user data
-                    store.user = res.data;
-                    console.log('fluro.auth > token refreshed');
+
+                    //Update the user with any changes 
+                    //returned back from the refresh request
+                    Object.assign(store.user, res.data);
+                    log('fluro.auth > token refreshed');
+
 
                     if (service.onChange) {
                         service.onChange(store.user);
@@ -203,7 +219,8 @@ var FluroAuth = function(Fluro) {
 
             //Set the token of the request as the user's access token
             originalRequest.headers['Authorization'] = 'Bearer ' + token;
-            console.log('fluro.auth > using user token');
+            log('fluro.auth > using user token');
+
 
         } else if (Fluro.applicationToken && Fluro.applicationToken.length) {
 
@@ -212,12 +229,14 @@ var FluroAuth = function(Fluro) {
             //that has public content also
             originalRequest.headers['Authorization'] = 'Bearer ' + Fluro.applicationToken;
 
-            console.log('fluro.auth > using app token');
+            log('fluro.auth > using app token');
+
             return originalRequest;
 
         } else {
             //Return the original request without a token
-            console.log('fluro.auth > no token');
+            log('fluro.auth > no token');
+
             return originalRequest;
         }
 
@@ -225,7 +244,8 @@ var FluroAuth = function(Fluro) {
 
         //If no refresh token
         if (!refreshToken) {
-            console.log('fluro.auth > no refresh token');
+            log('fluro.auth > no refresh token');
+
             //Continue with the original request
             return originalRequest;
         }
@@ -239,22 +259,25 @@ var FluroAuth = function(Fluro) {
         var expires = new Date(expiryDate);
 
         //If the token is still fresh
-        if (now < expires) {
-            //Return the original request
-            return originalRequest;
+        if(!service.debug) {
+            if (now < expires) {
+                //Return the original request
+                return originalRequest;
+            }
         }
 
         /////////////////////////////////////////////////////
 
         //The token is stale by this point
-        console.log('fluro.auth > token expired');
+
+        log('fluro.auth > token expired');
 
         return new Promise(function(resolve, reject) {
 
             //Refresh the token
             service.refreshAccessToken(refreshToken)
                 .then(function(newToken) {
-                    console.log('Token refreshed');
+                    log('Token refreshed');
                     //Update the original request with our new token
                     originalRequest.headers['Authorization'] = 'Bearer ' + newToken;
                     //And continue onward
@@ -276,7 +299,7 @@ var FluroAuth = function(Fluro) {
         //Get the response status
         var status = err.response.status;
 
-        console.log('fluro.auth > error', status);
+        log('fluro.auth > error', status);
         switch (status) {
             case 401:
                 service.logout();
