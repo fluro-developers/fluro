@@ -1,4 +1,6 @@
 
+
+
 ///////////////////////////////////////////////////
 
 var FluroAuth = function(Fluro) {
@@ -12,7 +14,26 @@ var FluroAuth = function(Fluro) {
 
     ///////////////////////////////////////////////////
 
+    var defaultStore = {};
+    var store = defaultStore;
+
+    ///////////////////////////////////////////////////
+
     var service = {}
+
+    ///////////////////////////////////////////////////
+
+    service.logout = function() {
+        //Unauthenticated
+        delete store.token;
+        delete store.user;
+        delete store.refreshToken;
+        delete store.expires;
+
+        if(service.onChange) {
+            service.onChange(store);
+        }
+    }
 
     ///////////////////////////////////////////////////
 
@@ -37,12 +58,15 @@ var FluroAuth = function(Fluro) {
                     bypassInterceptor: true
                 })
                 .then(function tokenRefreshComplete(res) {
-
                     //Save the user data
-                    service.user = res.data;
-                    service.token = res.data.token;
-                    service.refreshToken = res.data.refreshToken;
-                    service.expires = res.data.expires;
+                    store.user = res.data;
+                    store.token = res.data.token;
+                    store.refreshToken = res.data.refreshToken;
+                    store.expires = res.data.expires;
+
+                    if(service.onChange) {
+                        service.onChange(store);
+                    }
 
                     //Resolve with the new token
                     resolve(res.data.token);
@@ -59,8 +83,25 @@ var FluroAuth = function(Fluro) {
 
     /////////////////////////////////////////////////////
 
+    // //Setup a storage area for our authentication
+    // service.setStore = function(type, target) {
+    //     storeType = type;
+
+    //     switch(storeType) {
+    //         case 'vuex':
+    //             store = target;
+    //         break;
+    //         default:
+    //             storeType = 'default';
+    //             store = _defaultStore;
+    //         break;
+    //     }
+    // }
+
+    /////////////////////////////////////////////////////
+
     service.getCurrentToken = function() {
-        return service.token || Fluro.applicationToken;
+        return store.token || Fluro.applicationToken;
     }
 
     /////////////////////////////////////////////////////
@@ -79,8 +120,8 @@ var FluroAuth = function(Fluro) {
         var originalRequest = config;
 
         //If we aren't logged in or don't have a token
-        var token = service.token;
-        var refreshToken = service.refreshToken;
+        var token = store.token;
+        var refreshToken = store.refreshToken;
 
         //////////////////////////////
 
@@ -117,7 +158,7 @@ var FluroAuth = function(Fluro) {
         //We have a refresh token so we need to check
         //whether our access token is stale and needs to be refreshed
         var now = new Date();
-        var expires = new Date(service.expires);
+        var expires = new Date(store.expires);
 
         //If the token is still fresh
         if (now < expires) {
@@ -160,11 +201,7 @@ var FluroAuth = function(Fluro) {
 
         switch (status) {
             case 401:
-                //Unauthenticated
-                delete service.token;
-                delete service.user;
-                delete service.refreshToken;
-                delete service.expires;
+                service.logout();
                 break;
             case 502:
                 // case 503:

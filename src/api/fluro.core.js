@@ -9,8 +9,6 @@ import FluroUtils from './fluro.utils';
 
 var Fluro = function(options) {
 
-
-
 	if(!options) {
 		options = {
 			// apiURL,
@@ -109,6 +107,3 @@ var Fluro = function(options) {
 ///////////////////////////////////////
 
 export default Fluro;
-
-
-
