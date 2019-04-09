@@ -19,11 +19,44 @@ var FluroAPI = function(fluro) {
 
 	service.defaults.baseURL = fluro.apiURL;
     service.defaults.headers.common.Accept = 'application/json';
+
+
+    /////////////////////////////////////////////////////
+
+    service.interceptors.response.use(function(response) {
+        return response;
+    }, function(err) {
+
+        //Get the response status
+        var status = err.response.status;
+
+        
+        switch (status) {
+            case 502:
+                // case 503:
+            case 504:
+                //Retry
+                console.log('fluro.api > connection error retrying')
+                return Fluro.api.request(err.config);
+                break;
+            default:
+                //Some other error
+                console.log('fluro.api > connection error', err);
+                break;
+        }
+
+        /////////////////////////////////////////////////////
+        /// 
+        return Promise.reject(err);
+    })
+
 	
 	///////////////////////////////////////
 
 	return service;
 }
+
+
 
 ///////////////////////////////////////
 ///////////////////////////////////////
