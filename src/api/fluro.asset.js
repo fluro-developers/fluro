@@ -209,7 +209,7 @@ var FluroAsset = function(Fluro) {
     ///////////////////////////////////////////////////
     
     //Helper function for retrieving the poster image for a video
-    controller.posterUrl = function(videoID, w, h, params) {
+    service.posterUrl = function(videoID, w, h, params) {
         if (!videoID || !String(videoID).length) {
             return;
         }
@@ -308,7 +308,7 @@ var FluroAsset = function(Fluro) {
     ///////////////////////////////////////////////////
     
     //Helper function for retrieving the poster image for a video
-    controller.imageUrl = function(imageID, w, h, params) {
+    service.imageUrl = function(imageID, w, h, params) {
         if (!imageID || !String(imageID).length) {
             return;
         }
