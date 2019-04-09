@@ -1,10 +1,10 @@
 {
   "name": "fluro",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Promise based HTTP client for the browser and node.js",
   "main": "dist/index.js",
   "scripts": {
-    "build": "webpack --mode=production && webpack --mode=production && npm run test",
+    "build": "webpack --mode=none && webpack --mode=none && npm run test",
     "dev": "webpack --mode=development --progress --colors --watch",
     "test": "mocha  --colors ./test/*.spec.js",
     "test:watch": "mocha  --colors -w ./test/*.spec.js"
