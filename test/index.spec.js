@@ -1,32 +1,32 @@
-// /* global describe, it, before */
+// // /* global describe, it, before */
 
 // import chai from 'chai';
-// import {Cat, Dog} from '../lib/webpack-library-starter.js';
+// import FluroCore from '../src/index.js';
 
 // chai.expect();
 
 // const expect = chai.expect;
 
-// let lib;
+// let fluro;
 
-// describe('Given an instance of my Cat library', () => {
+// describe('Load Fluro Core', () => {
 //   before(() => {
-//     lib = new Cat();
+//     fluro = new FluroCore();
 //   });
-//   describe('when I need the name', () => {
-//     it('should return the name', () => {
-//       expect(lib.name).to.be.equal('Cat');
+//   describe('When i try and start Fluro', () => {
+//     it('It should return a Fluro instance', () => {
+//       expect(fluro.auth);//.to.be.equal('Cat');
 //     });
 //   });
 // });
 
-// describe('Given an instance of my Dog library', () => {
-//   before(() => {
-//     lib = new Dog();
-//   });
-//   describe('when I need the name', () => {
-//     it('should return the name', () => {
-//       expect(lib.name).to.be.equal('Dog');
-//     });
-//   });
-// });
+// // describe('Given an instance of my Dog library', () => {
+// //   before(() => {
+// //     lib = new Dog();
+// //   });
+// //   describe('when I need the name', () => {
+// //     it('should return the name', () => {
+// //       expect(lib.name).to.be.equal('Dog');
+// //     });
+// //   });
+// // });
