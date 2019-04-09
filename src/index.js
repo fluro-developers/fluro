@@ -1,8 +1,6 @@
 
 
-import Cat from './cat';
-import Dog from './dog';
-var Tree = {name:'Treeeees'};
 
+import FluroCore from './api/fluro.core';
 
-export { Tree, Dog, Cat };
+export default FluroCore;
