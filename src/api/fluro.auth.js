@@ -115,7 +115,7 @@ var FluroAuth = function(Fluro) {
 
     }
 
-    
+
 
     ///////////////////////////////////////////////////
 
@@ -177,22 +177,6 @@ var FluroAuth = function(Fluro) {
         return inflightRefreshRequest;
     }
 
-    /////////////////////////////////////////////////////
-
-    // //Setup a storage area for our authentication
-    // service.setStore = function(type, target) {
-    //     storeType = type;
-
-    //     switch(storeType) {
-    //         case 'vuex':
-    //             store = target;
-    //         break;
-    //         default:
-    //             storeType = 'default';
-    //             store = _defaultStore;
-    //         break;
-    //     }
-    // }
 
     /////////////////////////////////////////////////////
 
@@ -316,6 +300,8 @@ var FluroAuth = function(Fluro) {
         /// 
         return Promise.reject(err);
     })
+
+    return service;
 
 }
 
