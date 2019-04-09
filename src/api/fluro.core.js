@@ -64,7 +64,7 @@ var Fluro = function(options) {
 	});
 
 	Object.defineProperty(core, 'utils', {
-		value:new FluroUtils(core),
+		value:FluroUtils,
 		writable:false,
 	});
 
