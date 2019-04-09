@@ -3,6 +3,7 @@
 import FluroAPI from './fluro.api';
 import FluroAuth from './fluro.auth';
 import FluroAsset from './fluro.asset';
+import FluroDate from './fluro.date';
 import FluroUtils from './fluro.utils';
 
 ///////////////////////////////////////
@@ -48,6 +49,11 @@ var Fluro = function(options) {
 
 	Object.defineProperty(core, 'utils', {
 		value:FluroUtils,
+		writable:false,
+	});
+
+	Object.defineProperty(core, 'date', {
+		value:FluroDate,
 		writable:false,
 	});
 

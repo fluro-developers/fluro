@@ -1,6 +1,6 @@
 {
   "name": "fluro",
-  "version": "1.0.29",
+  "version": "1.0.30",
   "description": "Promise based HTTP client for the browser and node.js",
   "main": "src/index.js",
   "scripts": {
@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "axios-extensions": "^3.0.5"
+    "axios-extensions": "^3.0.5",
+    "moment-timezone": "^0.5.23"
   }
 }

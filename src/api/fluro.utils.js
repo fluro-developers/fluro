@@ -32,8 +32,6 @@ FluroUtils.arrayIDs = function(array, asObjectID) {
 
 }
 
-
-
 ///////////////////////////////////////////////////////////////////////////////
 
 //Helper function to get an id of an object
