@@ -255,6 +255,12 @@ var FluroAuth = function(Fluro) {
         //We have a refresh token so we need to check
         //whether our access token is stale and needs to be refreshed
         var now = new Date();
+
+        //Give us a bit of buffer incase some of our images
+        //are still loading
+        now.setSeconds(now.getSeconds() + 5);
+
+
         var expiryDate = _.get(store, 'user.expires');
         var expires = new Date(expiryDate);
 
