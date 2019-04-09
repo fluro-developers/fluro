@@ -25,6 +25,7 @@ var FluroAuth = function(Fluro) {
     service.set = function(user) {
         store.user = user;
         if (service.onChange) {
+            console.log('CHANGED>', store.user)
             service.onChange(store.user);
         }
     }
@@ -39,6 +40,7 @@ var FluroAuth = function(Fluro) {
         // delete store.expires;
 
         if (service.onChange) {
+            console.log('CHANGED>', store.user)
             service.onChange(store.user);
         }
     }
@@ -108,6 +110,7 @@ var FluroAuth = function(Fluro) {
             }).then(function(res) {
                 store.user = res.data;
                 if (service.onChange) {
+                    console.log('CHANGED>', store.user)
                     service.onChange(store.user);
                 }
             }, reject);
@@ -131,6 +134,7 @@ var FluroAuth = function(Fluro) {
         // delete store.expires;
 
         if (service.onChange) {
+            console.log('CHANGED>', store.user)
             service.onChange(store.user);
         }
     }
@@ -165,6 +169,7 @@ var FluroAuth = function(Fluro) {
                     // store.expires = res.data.expires;
 
                     if (service.onChange) {
+                        console.log('CHANGED>', store.user)
                         service.onChange(store.user);
                     }
 
