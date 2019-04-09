@@ -194,7 +194,7 @@ var FluroAuth = function(Fluro) {
 
         //If we aren't logged in or don't have a token
         var token = _.get(store, 'user.token');
-        var refreshToken = _.get(store, 'refresh.token');
+        var refreshToken = _.get(store, 'user.refreshToken');
 
         //////////////////////////////
 
@@ -276,18 +276,10 @@ var FluroAuth = function(Fluro) {
         //Get the response status
         var status = err.response.status;
 
-        console.log('fluro.auth > error');
+        console.log('fluro.auth > error', status);
         switch (status) {
             case 401:
-
                 service.logout();
-                break;
-            case 502:
-                // case 503:
-            case 504:
-                //Retry
-                console.log('Retry request')
-                return Fluro.api.request(err.config);
                 break;
             default:
                 //Some other error

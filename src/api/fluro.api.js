@@ -32,6 +32,9 @@ var FluroAPI = function(fluro) {
 
         
         switch (status) {
+        	case 401:
+        		//Ignore and allow fluro.auth to handle it
+        	break;
             case 502:
                 // case 503:
             case 504:
