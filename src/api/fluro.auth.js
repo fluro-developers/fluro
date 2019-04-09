@@ -150,7 +150,7 @@ var FluroAuth = function(Fluro) {
 
     /////////////////////////////////////////////////////
 
-    API.interceptors.response.use(function(response) {
+    Fluro.api.interceptors.response.use(function(response) {
         return response;
     }, function(err) {
 
@@ -171,7 +171,7 @@ var FluroAuth = function(Fluro) {
             case 504:
                 //Retry
                 console.log('Retry request')
-                return API.request(err.config);
+                return Fluro.api.request(err.config);
                 break;
             default:
                 //Some other error
