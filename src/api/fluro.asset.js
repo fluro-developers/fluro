@@ -73,6 +73,9 @@ var FluroAsset = function(Fluro) {
 
     service.getUrl = function(assetID, params) {
 
+        //Get the asset id as a pure string
+        assetID = Fluro.util.getStringID(assetID);
+
         if (!assetID || !String(assetID).length) {
             return;
         }
@@ -105,6 +108,9 @@ var FluroAsset = function(Fluro) {
     ///////////////////////////////////////////////////
 
     service.avatarUrl = function(personID, style, params) {
+
+        //Get the id as a pure string
+        personID = Fluro.util.getStringID(personID);
 
         if (!personID || !String(personID).length) {
             return;
@@ -142,6 +148,9 @@ var FluroAsset = function(Fluro) {
     //Get the cover image for an event, group or realm
     service.coverImage = function(contentID, style, params) {
 
+        //Get the id as a pure string
+        contentID = Fluro.util.getStringID(contentID);
+
         if (!contentID || !String(contentID).length) {
             return;
         }
@@ -178,6 +187,9 @@ var FluroAsset = function(Fluro) {
 
     service.downloadUrl = function(assetID, params) {
 
+        //Get the id as a pure string
+        assetID = Fluro.util.getStringID(assetID);
+
         if (!assetID || !String(assetID).length) {
             return;
         }
@@ -210,6 +222,10 @@ var FluroAsset = function(Fluro) {
     
     //Helper function for retrieving the poster image for a video
     service.posterUrl = function(videoID, w, h, params) {
+        
+        //Get the id as a pure string
+        videoID = Fluro.util.getStringID(videoID);
+
         if (!videoID || !String(videoID).length) {
             return;
         }
@@ -309,9 +325,15 @@ var FluroAsset = function(Fluro) {
     
     //Helper function for retrieving the poster image for a video
     service.imageUrl = function(imageID, w, h, params) {
+        
+        //Get the id as a pure string
+        imageID = Fluro.util.getStringID(imageID);
+
         if (!imageID || !String(imageID).length) {
             return;
         }
+
+        //////////////////////////////////////
 
         if(!params) {
             params = {};
@@ -335,7 +357,7 @@ var FluroAsset = function(Fluro) {
         //////////////////////////////////////
 
         //If the screen is smaller then 768 use an optimised image
-        if ($window.screen.width <= 768) {
+        if (window.screen.width <= 768) {
             if (isRetina) {
                 limitWidth = 1536;
             } else {
@@ -344,7 +366,7 @@ var FluroAsset = function(Fluro) {
         }
 
         //If using mobile then use a smaller optimised image
-        if ($window.screen.width <= 320) {
+        if (window.screen.width <= 320) {
             if (isRetina) {
                 limitWidth = 640;
             } else {
