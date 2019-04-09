@@ -74,7 +74,7 @@ var FluroAsset = function(Fluro) {
     service.getUrl = function(assetID, params) {
 
         //Get the asset id as a pure string
-        assetID = Fluro.util.getStringID(assetID);
+        assetID = Fluro.utils.getStringID(assetID);
 
         if (!assetID || !String(assetID).length) {
             return;
@@ -110,7 +110,7 @@ var FluroAsset = function(Fluro) {
     service.avatarUrl = function(personID, style, params) {
 
         //Get the id as a pure string
-        personID = Fluro.util.getStringID(personID);
+        personID = Fluro.utils.getStringID(personID);
 
         if (!personID || !String(personID).length) {
             return;
@@ -149,7 +149,7 @@ var FluroAsset = function(Fluro) {
     service.coverImage = function(contentID, style, params) {
 
         //Get the id as a pure string
-        contentID = Fluro.util.getStringID(contentID);
+        contentID = Fluro.utils.getStringID(contentID);
 
         if (!contentID || !String(contentID).length) {
             return;
@@ -188,7 +188,7 @@ var FluroAsset = function(Fluro) {
     service.downloadUrl = function(assetID, params) {
 
         //Get the id as a pure string
-        assetID = Fluro.util.getStringID(assetID);
+        assetID = Fluro.utils.getStringID(assetID);
 
         if (!assetID || !String(assetID).length) {
             return;
@@ -224,7 +224,7 @@ var FluroAsset = function(Fluro) {
     service.posterUrl = function(videoID, w, h, params) {
         
         //Get the id as a pure string
-        videoID = Fluro.util.getStringID(videoID);
+        videoID = Fluro.utils.getStringID(videoID);
 
         if (!videoID || !String(videoID).length) {
             return;
@@ -327,7 +327,7 @@ var FluroAsset = function(Fluro) {
     service.imageUrl = function(imageID, w, h, params) {
         
         //Get the id as a pure string
-        imageID = Fluro.util.getStringID(imageID);
+        imageID = Fluro.utils.getStringID(imageID);
 
         if (!imageID || !String(imageID).length) {
             return;
