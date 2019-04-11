@@ -44,6 +44,7 @@ var FluroCore = function(options) {
 
 	var core = {
 		apiURL:options.apiURL,
+		applicationToken:options.applicationToken,
 	}
 
 	
