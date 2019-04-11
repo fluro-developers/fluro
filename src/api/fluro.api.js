@@ -1,7 +1,8 @@
 import axios from 'axios';
 import {
     cacheAdapterEnhancer,
-    throttleAdapterEnhancer
+    throttleAdapterEnhancer,
+    Cache,
 } from 'axios-extensions';
 
 ///////////////////////////////////////
@@ -9,15 +10,37 @@ import {
 
 var FluroAPI = function(fluro) {
 
-		///////////////////////////////////////
 
-	var service = axios.create({
-        adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter))
+    ///////////////////////////////////////
+
+    // //Cache Defaults
+    // var FIVE_MINUTES = 1000 * 60 * 5;
+    // var CAPACITY = 100;
+    // { maxAge: FIVE_MINUTES, max: 100 }
+    var defaultCache = new Cache()
+
+    // ///////////////////////////////////////
+
+    // //Add it to our fluro instance
+    fluro.cache = defaultCache;
+    
+    ///////////////////////////////////////
+
+    var service = axios.create({
+        adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter, {defaultCache:defaultCache}))
     });
 
-	///////////////////////////////////////
 
-	service.defaults.baseURL = fluro.apiURL;
+
+    ///////////////////////////////////////
+
+    // var service = axios.create({
+    //     adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter))
+    // });
+
+    ///////////////////////////////////////
+
+    service.defaults.baseURL = fluro.apiURL;
     service.defaults.headers.common.Accept = 'application/json';
 
 
@@ -30,17 +53,17 @@ var FluroAPI = function(fluro) {
         //Get the response status
         var status = err.response.status;
 
-        
+
         switch (status) {
-        	case 401:
-        		//Ignore and allow fluro.auth to handle it
-        	break;
+            case 401:
+                //Ignore and allow fluro.auth to handle it
+                break;
             case 502:
                 // case 503:
             case 504:
                 //Retry
                 console.log('fluro.api > connection error retrying')
-                return Fluro.api.request(err.config);
+                Fluro.api.request(err.config);
                 break;
             default:
                 //Some other error
@@ -49,14 +72,14 @@ var FluroAPI = function(fluro) {
         }
 
         /////////////////////////////////////////////////////
-        /// 
+
         return Promise.reject(err);
     })
 
-	
-	///////////////////////////////////////
 
-	return service;
+    ///////////////////////////////////////
+
+    return service;
 }
 
 

@@ -3,12 +3,13 @@
 import FluroAPI from './fluro.api';
 import FluroAuth from './fluro.auth';
 import FluroAsset from './fluro.asset';
-import FluroDate from './fluro.date';
 import FluroUtils from './fluro.utils';
+import FluroDate from './fluro.date';
+import FluroStats from './fluro.stats';
 
 ///////////////////////////////////////
 
-var Fluro = function(options) {
+var FluroCore = function(options) {
 
 	if(!options) {
 		options = {
@@ -45,6 +46,7 @@ var Fluro = function(options) {
 		apiURL:options.apiURL,
 	}
 
+	
 	///////////////////////////////////////
 
 	Object.defineProperty(core, 'utils', {
@@ -72,44 +74,24 @@ var Fluro = function(options) {
 		writable:false,
 	});
 
+
+	Object.defineProperty(core, 'stats', {
+		value:new FluroStats(core),
+		writable:false,
+	});
+
 	
 
 	///////////////////////////////////////
 
+	console.log('Fluro init');
+	
 	return core;
 
-
-	
-/**
-	///////////////////////////////////////
-
-	//Create a new instance of the fluro API
-	var _api = new FluroAPI(options.apiURL, options.api);
-	var _auth = new FluroAuth(_api, options.applicationToken);
-	var _asset = new FluroAsset(_api, _auth);
-
-	///////////////////////////////////////
-
-	var service = {
-		get api() {
-			return _api;
-		},
-		get auth() {
-			return _auth;
-		},
-		get asset() {
-			return _asset;
-		}
-	}
-
-	///////////////////////////////////////
-
-	return service;
-	/**/
 }
 
 ///////////////////////////////////////
 ///////////////////////////////////////
 ///////////////////////////////////////
 
-export default Fluro;
+export default FluroCore;

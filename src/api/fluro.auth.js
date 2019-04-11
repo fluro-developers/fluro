@@ -2,9 +2,10 @@ import axios from 'axios';
 
 ///////////////////////////////////////////////////
 
-var FluroAuth = function(Fluro) {
+var FluroAuth = function(fluro) {
 
-    if (!Fluro.api) {
+    console.log('FLURO', fluro)
+    if (!fluro.api) {
         throw new Error(`Can't Instantiate FluroAuth before FluroAPI exists`);
     }
 
@@ -39,8 +40,6 @@ var FluroAuth = function(Fluro) {
         if (service.onChange) {
             service.onChange(store.user);
         }
-
-
     }
 
     ///////////////////////////////////////////////////
@@ -50,6 +49,7 @@ var FluroAuth = function(Fluro) {
         // delete store.token;
 
         delete store.user;
+        fluro.cache.reset();
         // delete store.refreshToken;
         // delete store.expires;
 
@@ -58,6 +58,50 @@ var FluroAuth = function(Fluro) {
         if (service.onChange) {
             service.onChange(store.user);
         }
+
+    }
+
+    ///////////////////////////////////////////////////
+
+    // console.log('Registered!!!')
+    service.changeAccount = function(accountID, options) {
+
+        //Ensure we just have the ID
+        accountID = fluro.utils.getStringID(accountID);
+
+        //////////////////////////
+
+        if (!options) {
+            options = {};
+        }
+
+        //////////////////////////
+
+        //Change the users current tokens straight away
+        var autoAuthenticate = true;
+
+        if (options.disableAutoAuthenticate) {
+            autoAuthenticate = false;
+        }
+
+        //////////////////////////
+
+        var promise = fluro.api.post(`/token/account/${accountID}`)
+
+        promise.then(function(res) {
+            store.user = res.data;
+            
+            fluro.cache.reset();
+
+            if (service.onChange) {
+                service.onChange(store.user);
+            }
+        }, function(err) {
+            console.log('ERROR', err);
+        });
+
+
+        return promise;
 
     }
 
@@ -95,7 +139,7 @@ var FluroAuth = function(Fluro) {
 
             /////////////////////////////////////////////
 
-            var url = Fluro.apiURL + '/token/login';
+            var url = fluro.apiURL + '/token/login';
 
             /////////////////////////////////////////////
 
@@ -111,7 +155,7 @@ var FluroAuth = function(Fluro) {
 
             //If we are logging in to a managed account use a different endpoint
             if (options.managedAccount) {
-                url = Fluro.apiURL + '/managed/' + options.managedAccount + '/login';
+                url = fluro.apiURL + '/managed/' + options.managedAccount + '/login';
             }
 
             //If we have a specified url
@@ -121,7 +165,7 @@ var FluroAuth = function(Fluro) {
 
             /////////////////////////////////////////////
 
-            Fluro.api.post(url, credentials, {
+            fluro.api.post(url, credentials, {
                 bypassInterceptor: true
             }).then(function(res) {
                 store.user = res.data;
@@ -156,7 +200,7 @@ var FluroAuth = function(Fluro) {
 
             //Bypass the interceptor on all token refresh calls
             //Because we don't need to add the access token etc onto it
-            Fluro.api.post('token/refresh', {
+            fluro.api.post('token/refresh', {
                     refreshToken: refreshToken
                 }, {
                     bypassInterceptor: true
@@ -190,12 +234,12 @@ var FluroAuth = function(Fluro) {
     /////////////////////////////////////////////////////
 
     service.getCurrentToken = function() {
-        return _.get(store, 'user.token') || Fluro.applicationToken;
+        return _.get(store, 'user.token') || fluro.applicationToken;
     }
 
     /////////////////////////////////////////////////////
 
-    Fluro.api.interceptors.request.use(function(config) {
+    fluro.api.interceptors.request.use(function(config) {
 
         //If we want to bypass the interceptor
         //then just return the request
@@ -222,12 +266,12 @@ var FluroAuth = function(Fluro) {
             log('fluro.auth > using user token');
 
 
-        } else if (Fluro.applicationToken && Fluro.applicationToken.length) {
+        } else if (fluro.applicationToken && fluro.applicationToken.length) {
 
             //If there is a static application token
             //For example we have logged out from a website
             //that has public content also
-            originalRequest.headers['Authorization'] = 'Bearer ' + Fluro.applicationToken;
+            originalRequest.headers['Authorization'] = 'Bearer ' + fluro.applicationToken;
 
             log('fluro.auth > using app token');
 
@@ -298,7 +342,7 @@ var FluroAuth = function(Fluro) {
 
     /////////////////////////////////////////////////////
 
-    Fluro.api.interceptors.response.use(function(response) {
+    fluro.api.interceptors.response.use(function(response) {
         return response;
     }, function(err) {
 

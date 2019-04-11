@@ -1,5 +1,3 @@
-
-
 import _ from 'lodash';
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -9,27 +7,59 @@ var FluroUtils = {};
 ///////////////////////////////////////////////////////////////////////////////
 
 FluroUtils.mapParameters = function(parameters) {
-	return _.map(parameters, function(v, k) {
-        return encodeURIComponent(k) + '=' + encodeURIComponent(v);
-    }).join('&');
-}
-///////////////////////////////////////////////////////////////////////////////
+        return _.map(parameters, function(v, k) {
+            return encodeURIComponent(k) + '=' + encodeURIComponent(v);
+        }).join('&');
+    }
+    ///////////////////////////////////////////////////////////////////////////////
 
 FluroUtils.arrayIDs = function(array, asObjectID) {
 
-    if(!array) {
+    if (!array) {
         return array;
     }
 
     return _.chain(array)
-    .compact()
-    .map(function(input) {
-        return FluroUtils.getStringID(input, asObjectID);
-    })
-    .compact()
-    .uniq()
-    .value();
+        .compact()
+        .map(function(input) {
+            return FluroUtils.getStringID(input, asObjectID);
+        })
+        .compact()
+        .uniq()
+        .value();
 
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+FluroUtils.errorMessage = function(err) {
+
+
+    var candidates = [
+        'response.data.message',
+        'response.data',
+        'message',
+    ]
+
+    ////////////////////////////////////
+
+    var message = _.chain(candidates)
+        .map(function(path) {
+            return _.get(err, path);
+        })
+        .compact()
+        .first()
+        .value();
+
+    ////////////////////////////////////
+    
+    if (!message || !message.length) {
+        return String(err);
+    }
+
+    ////////////////////////////////////
+
+    return message;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -37,7 +67,7 @@ FluroUtils.arrayIDs = function(array, asObjectID) {
 //Helper function to get an id of an object
 FluroUtils.getStringID = function(input, asObjectID) {
 
-    if(!input) {
+    if (!input) {
         return input;
     }
 
@@ -45,13 +75,13 @@ FluroUtils.getStringID = function(input, asObjectID) {
 
     var output;
 
-    if(input._id) {
+    if (input._id) {
         output = String(input._id);
     } else {
         output = String(input);
     }
-    
-    if(!asObjectID) {
+
+    if (!asObjectID) {
         return output;
     }
 
@@ -61,7 +91,7 @@ FluroUtils.getStringID = function(input, asObjectID) {
 
     // var isValid = ObjectId.isValid(String(output));
     // if(!isValid) {
-        // return;
+    // return;
     // }
 
     // return new ObjectId(output);

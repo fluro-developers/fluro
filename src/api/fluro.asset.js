@@ -417,8 +417,7 @@ var FluroAsset = function(Fluro) {
 
         return url;
     }
-
-
+    
     ///////////////////////////////////////
 
     service.filesize = function(bytes) {
