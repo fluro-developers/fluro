@@ -22,6 +22,18 @@ var FluroAuth = function(fluro) {
 
     var service = {}
 
+
+    function dispatch() {
+
+        //Get the current user
+        var user = store.user;
+
+        //Dispatch the change to the listeners
+        if (service.onChange) {
+            service.onChange(user);
+        }
+    }
+
     ///////////////////////////////////////////////////
 
     function log(message) {
@@ -36,10 +48,7 @@ var FluroAuth = function(fluro) {
         store.user = user;
 
         log('fluro.auth > user set');
-
-        if (service.onChange) {
-            service.onChange(store.user);
-        }
+        return dispatch()
     }
 
     ///////////////////////////////////////////////////
@@ -54,10 +63,7 @@ var FluroAuth = function(fluro) {
         // delete store.expires;
 
         log('fluro.auth > user logout');
-
-        if (service.onChange) {
-            service.onChange(store.user);
-        }
+        return dispatch()
 
     }
 
@@ -66,6 +72,7 @@ var FluroAuth = function(fluro) {
     // console.log('Registered!!!')
     service.changeAccount = function(accountID, options) {
 
+        console.log('Change account', accountID)
         //Ensure we just have the ID
         accountID = fluro.utils.getStringID(accountID);
 
@@ -89,12 +96,10 @@ var FluroAuth = function(fluro) {
         var promise = fluro.api.post(`/token/account/${accountID}`)
 
         promise.then(function(res) {
-            store.user = res.data;
-            
-            fluro.cache.reset();
 
-            if (service.onChange) {
-                service.onChange(store.user);
+            if(autoAuthenticate) {
+                fluro.cache.reset();
+                service.set(res.data);
             }
         }, function(err) {
             console.log('ERROR', err);
@@ -235,6 +240,12 @@ var FluroAuth = function(fluro) {
 
     service.getCurrentToken = function() {
         return _.get(store, 'user.token') || fluro.applicationToken;
+    }
+
+    /////////////////////////////////////////////////////
+
+    service.getCurrentUser = function() {
+        return _.get(store, 'user');
     }
 
     /////////////////////////////////////////////////////

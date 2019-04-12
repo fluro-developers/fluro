@@ -7,11 +7,12 @@ var FluroUtils = {};
 ///////////////////////////////////////////////////////////////////////////////
 
 FluroUtils.mapParameters = function(parameters) {
-        return _.map(parameters, function(v, k) {
-            return encodeURIComponent(k) + '=' + encodeURIComponent(v);
-        }).join('&');
-    }
-    ///////////////////////////////////////////////////////////////////////////////
+    return _.map(parameters, function(v, k) {
+        return encodeURIComponent(k) + '=' + encodeURIComponent(v);
+    }).join('&');
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 FluroUtils.arrayIDs = function(array, asObjectID) {
 

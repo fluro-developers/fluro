@@ -10,19 +10,18 @@ import {
 
 var FluroAPI = function(fluro) {
 
-
     ///////////////////////////////////////
 
     // //Cache Defaults
     // var FIVE_MINUTES = 1000 * 60 * 5;
     // var CAPACITY = 100;
     // { maxAge: FIVE_MINUTES, max: 100 }
-    var defaultCache = new Cache()
+    var defaultCache = fluro.cache.get('api');
 
     // ///////////////////////////////////////
 
     // //Add it to our fluro instance
-    fluro.cache = defaultCache;
+    // fluro.cache = defaultCache;
     
     ///////////////////////////////////////
 

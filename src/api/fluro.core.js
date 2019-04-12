@@ -4,8 +4,10 @@ import FluroAPI from './fluro.api';
 import FluroAuth from './fluro.auth';
 import FluroAsset from './fluro.asset';
 import FluroUtils from './fluro.utils';
+import FluroCache from './fluro.cache';
 import FluroDate from './fluro.date';
 import FluroStats from './fluro.stats';
+import FluroTypes from './fluro.types';
 
 ///////////////////////////////////////
 
@@ -50,6 +52,12 @@ var FluroCore = function(options) {
 	
 	///////////////////////////////////////
 
+	Object.defineProperty(core, 'cache', {
+		value:FluroCache,
+		writable:false,
+	});
+	///////////////////////////////////////
+
 	Object.defineProperty(core, 'utils', {
 		value:FluroUtils,
 		writable:false,
@@ -81,11 +89,17 @@ var FluroCore = function(options) {
 		writable:false,
 	});
 
+
+	Object.defineProperty(core, 'types', {
+		value:new FluroTypes(core),
+		writable:false,
+	});
+
 	
 
 	///////////////////////////////////////
 
-	console.log('Fluro init');
+	console.log('Fluro init()');
 	
 	return core;
 
