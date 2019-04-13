@@ -8,9 +8,12 @@ import {
 ///////////////////////////////////////
 
 /**
- * Creates a new FluroAPI Instance
- * This should be created automatically when FluroCore is initialized
- * @class
+ * Creates a new FluroAPI instance.
+ * This module is a wrapper around the 'axios' npm module. It aims to make it easier for you to connect with and consume endpoints from the
+ * Fluro REST API
+ * 
+ * @constructor
+ * @param {FluroCore} fluro A reference to the parent instance of the FluroCore module. The FluroAPI module is usually created by a FluroCore instance that passes itself in as the first argument.
  */
 var FluroAPI = function(fluro) {
 
@@ -20,26 +23,21 @@ var FluroAPI = function(fluro) {
     // var FIVE_MINUTES = 1000 * 60 * 5;
     // var CAPACITY = 100;
     // { maxAge: FIVE_MINUTES, max: 100 }
+
+
+    /**
+     * The default cache to use when requests are made from this instance
+     * @type {LRUCache}
+     * @access private
+     */
     var defaultCache = fluro.cache.get('api');
 
-    // ///////////////////////////////////////
-
-    // //Add it to our fluro instance
-    // fluro.cache = defaultCache;
-    
     ///////////////////////////////////////
 
     var service = axios.create({
         adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter, {defaultCache:defaultCache}))
     });
 
-
-
-    ///////////////////////////////////////
-
-    // var service = axios.create({
-    //     adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter))
-    // });
 
     ///////////////////////////////////////
 
