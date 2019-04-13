@@ -4,7 +4,6 @@ import axios from 'axios';
 
 var FluroAuth = function(fluro) {
 
-    console.log('FLURO', fluro)
     if (!fluro.api) {
         throw new Error(`Can't Instantiate FluroAuth before FluroAPI exists`);
     }
@@ -313,14 +312,16 @@ var FluroAuth = function(fluro) {
 
         //Give us a bit of buffer incase some of our images
         //are still loading
-        now.setSeconds(now.getSeconds() + 5);
+        now.setSeconds(now.getSeconds() + 10);
 
 
         var expiryDate = _.get(store, 'user.expires');
         var expires = new Date(expiryDate);
 
-        //If the token is still fresh
+        //If we are not debugging
         if(!service.debug) {
+
+            //If the token is still fresh
             if (now < expires) {
                 //Return the original request
                 return originalRequest;

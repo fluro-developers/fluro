@@ -95,11 +95,8 @@ var FluroCore = function(options) {
 		writable:false,
 	});
 
-	
-
 	///////////////////////////////////////
 
-	console.log('Fluro init()');
 	
 	return core;
 

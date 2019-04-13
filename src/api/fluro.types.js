@@ -4,7 +4,6 @@ import _ from 'lodash';
 
 var FluroTypes = function(FluroCore) {
 
-    console.log('CREATED FLURO TYPES')
 
     var service = {};
 

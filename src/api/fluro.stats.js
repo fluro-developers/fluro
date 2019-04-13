@@ -198,7 +198,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
         }
 
         var promise = Fluro.api.get(url);
-        console.log('New Stat Request')
+        // console.log('New Stat Request')
         inflightRequest = promise;
 
         promise.then(refreshComplete, refreshFailed);
@@ -208,7 +208,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
     //////////////////////////////
 
     function refreshComplete(res) {
-        console.log('Stats updated')
+        // console.log('Stats updated')
         Object.assign(store, res.data);
         finish();
     }
@@ -220,10 +220,10 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
     function finish() {
 
-        setTimeout(function() {
+        // setTimeout(function() {
             inflightRequest = null;
            
-        }, 500);
+        // }, 500);
     }
 
     //////////////////////////////

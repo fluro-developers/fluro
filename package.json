@@ -1,13 +1,14 @@
 {
   "name": "fluro",
-  "version": "1.0.34",
+  "version": "1.0.36",
   "description": "Promise based HTTP client for the browser and node.js",
   "main": "src/index.js",
   "scripts": {
     "build": "webpack --mode=production && webpack --mode=production && npm run test",
     "dev": "webpack --mode=development --progress --colors --watch",
     "test": "mocha  --colors ./test/*.spec.js",
-    "test:watch": "mocha  --colors -w ./test/*.spec.js"
+    "test:watch": "mocha  --colors -w ./test/*.spec.js",
+    "document": "jsdoc -r  . -d docs -c jsdoc.conf README.md"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,8 @@
   "devDependencies": {
     "babel-register": "^6.26.0",
     "chai": "^4.2.0",
+    "docdash": "^1.1.0",
+    "jsdoc": "^3.5.5",
     "jsdom": "^14.0.0",
     "mocha": "^6.1.2",
     "webpack": "^4.29.6",

@@ -12,6 +12,24 @@ FluroUtils.mapParameters = function(parameters) {
     }).join('&');
 }
 
+
+///////////////////////////////////////////////////////////////////////////////
+
+FluroUtils.comma = function(array, path) {
+    return _.chain(array)
+    .compact()
+    .map(function(item) {
+        if(path) {
+            return _.get(item, path);
+        }
+
+        return item;
+    })
+    .value()
+    .join(', ');
+    
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 FluroUtils.arrayIDs = function(array, asObjectID) {

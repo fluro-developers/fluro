@@ -10,7 +10,7 @@ var caches = {};
 var FluroCache = {
     reset() {
         _.each(caches, function(cache, key) {
-            console.log(`Reset ${key} cache`);
+            // console.log(`Reset ${key} cache`);
             cache.reset();
         })
     },
@@ -24,7 +24,7 @@ var FluroCache = {
         }
         caches[key] = new Cache()
 
-        console.log('Created new cache', key);
+        // console.log('Created new cache', key);
         
         return caches[key];
 
