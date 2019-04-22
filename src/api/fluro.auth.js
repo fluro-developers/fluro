@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {EventDispatcher} from './fluro.utils';
 
 ///////////////////////////////////////////////////
 
@@ -17,10 +18,22 @@ var FluroAuth = function(fluro) {
     var store = defaultStore;
 
 
+
+
+    ///////////////////////////////////////////////////
     ///////////////////////////////////////////////////
 
     var service = {}
 
+
+    //Create a new dispatcher
+    var dispatcher = new EventDispatcher();
+    dispatcher.bootstrap(service);
+
+    // console.log('New Dispatcher!', dispatcher)
+
+    ///////////////////////////////////////////////////
+    ///////////////////////////////////////////////////
 
     function dispatch() {
 
@@ -31,6 +44,10 @@ var FluroAuth = function(fluro) {
         if (service.onChange) {
             service.onChange(user);
         }
+
+        //Dispatch the change event
+        console.log('Dispatch change!', user);
+        dispatcher.dispatch('change', user);
     }
 
     ///////////////////////////////////////////////////
@@ -189,9 +206,10 @@ var FluroAuth = function(fluro) {
 
                 if(autoAuthenticate) {
                     store.user = res.data;
-                    if (service.onChange) {
-                        service.onChange(store.user);
-                    }
+                    dispatch();
+                    // if (service.onChange) {
+                    //     service.onChange(store.user);
+                    // }
                 }
 
                 resolve(res);
@@ -301,9 +319,7 @@ var FluroAuth = function(fluro) {
 
                 if (autoAuthenticate) {
                     store.user = res.data;
-                    if (service.onChange) {
-                        service.onChange(store.user);
-                    }
+                    dispatch();
                 }
 
                 resolve(res);
@@ -461,9 +477,10 @@ var FluroAuth = function(fluro) {
                     log('fluro.auth > token refreshed');
 
 
-                    if (service.onChange) {
-                        service.onChange(store.user);
-                    }
+                    // if (service.onChange) {
+                    //     service.onChange(store.user);
+                    // }
+                    dispatch();
 
                     //Resolve with the new token
                     resolve(res.data.token);

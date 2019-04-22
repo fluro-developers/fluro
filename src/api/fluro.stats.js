@@ -1,4 +1,6 @@
 import _ from 'lodash';
+import {EventDispatcher} from './fluro.utils';
+
 
 ///////////////////////////////////////////////////
 
@@ -6,6 +8,12 @@ import _ from 'lodash';
 var FluroUserStatStorage = function(Fluro, statName, unique) {
 
     var service = {}
+
+
+    //Create a new dispatcher
+    var dispatcher = new EventDispatcher();
+    dispatcher.bootstrap(service);
+
 
     //////////////////////////////
 
@@ -25,10 +33,14 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
     //////////////////////////////
 
+    //////////////////////////////
+
     service.dispatch = function() {
         if (service.onChange) {
             service.onChange(store);
         }
+
+        dispatcher.dispatch('change', store);
     }
 
     ///////////////////////////////////////////////////

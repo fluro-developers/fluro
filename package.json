@@ -1,7 +1,7 @@
 {
   "name": "fluro",
-  "version": "1.0.38",
-  "description": "Promise based HTTP client for the browser and node.js",
+  "version": "1.0.40",
+  "description": "Promise based HTTP Fluro client for the browser and node.js",
   "main": "src/index.js",
   "scripts": {
     "build": "webpack --mode=production && webpack --mode=production && npm run test",

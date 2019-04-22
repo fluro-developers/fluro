@@ -125,3 +125,91 @@ FluroUtils.errorMessage = function(err) {
 
 
 export default FluroUtils;
+
+
+/////////////////////////////////////////////
+
+//Export the event dispatcher
+export function EventDispatcher() {
+
+    var listeners = {};
+
+    /////////////////////////////////////////////
+
+    var dispatcher = {}
+
+    /////////////////////////////////////////////
+
+    //Remove all listeners
+    dispatcher.removeAllListeners = function() {
+        listeners = {};
+    }
+
+    /////////////////////////////////////////////
+
+    dispatcher.dispatch = function(event, details) {
+
+        if(listeners[event]) {
+
+            // console.log('Listeners', event, listeners[event]);
+            //For each listener
+            listeners[event].forEach(function(callback) {
+                //Fire the callback
+                // console.log('Fire listener', event, details);
+                return callback(details);
+            });
+        }
+    } 
+
+    /////////////////////////////////////////////
+    
+    dispatcher.addEventListener = function(event, callback) {
+
+        if(!listeners[event]) {
+            listeners[event] = [];
+        }
+
+        if(listeners[event].indexOf(callback) == -1) {
+            //Add to the listeners
+            listeners[event].push(callback)
+        } else {
+            //Already listening
+        }
+    }
+
+    /////////////////////////////////////////////
+    
+    dispatcher.removeEventListener = function(event, callback) {
+
+        if(!listeners[event]) {
+            listeners[event] = [];
+        }
+
+        //Get the index of the listener
+        var index = listeners[event].indexOf(callback);
+
+        if(index != -1) {
+            //Remove from the listeners
+            listeners[event].splice(index,1);
+        }
+    }
+
+
+    /////////////////////////////////////////////
+
+    //Wrap the event listener functionality
+    dispatcher.bootstrap = function(service) {
+        if(!service) {
+            // console.log('No service to bootstrap to')
+            return;
+        }
+
+       service.addEventListener = dispatcher.addEventListener;
+       service.removeEventListener = dispatcher.removeEventListener;
+       service.removeAllListeners = dispatcher.removeAllListeners;
+    }
+    
+    /////////////////////////////////////////////
+
+    return dispatcher;
+}
