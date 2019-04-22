@@ -85,7 +85,14 @@ var FluroAsset = function(Fluro) {
      * @param  {string} assetID The _id of the item you want to retrieve
      * @param  {object} params      
      * @return {string}         A valid Fluro URL
+     * @example
+     * // returns 'https://api.fluro.io/get/5be504eabf33991239599d63'
+     * FluroAsset.getUrl('5be504eabf33991239599d63')
+     * // returns 'https://api.fluro.io/get/5be504eabf33991239599d63/file/MyFile.pdf'
+     * FluroAsset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})
      */
+
+
     service.getUrl = function(assetID, params) {
 
         //Get the asset id as a pure string
