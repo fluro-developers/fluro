@@ -96,7 +96,7 @@ var FluroAuth = function(fluro) {
 
         promise.then(function(res) {
 
-            if(autoAuthenticate) {
+            if (autoAuthenticate) {
                 fluro.cache.reset();
                 service.set(res.data);
             }
@@ -115,6 +115,16 @@ var FluroAuth = function(fluro) {
 
         if (!options) {
             options = {};
+        }
+
+
+        //////////////////////////
+
+        //Change the users current tokens straight away
+        var autoAuthenticate = true;
+
+        if (options.disableAutoAuthenticate) {
+            autoAuthenticate = false;
         }
 
         //////////////////////////////////////
@@ -143,6 +153,12 @@ var FluroAuth = function(fluro) {
 
             /////////////////////////////////////////////
 
+            var postOptions = {
+                bypassInterceptor: true
+            }
+
+            /////////////////////////////////////////////
+
             var url = fluro.apiURL + '/token/login';
 
             /////////////////////////////////////////////
@@ -151,7 +167,7 @@ var FluroAuth = function(fluro) {
             if (options.application) {
 
                 //The url is relative to the domain
-                url = '/fluro/application/login';
+                url = `${fluro.domain || ''}/fluro/application/login`;
             }
 
 
@@ -169,13 +185,16 @@ var FluroAuth = function(fluro) {
 
             /////////////////////////////////////////////
 
-            fluro.api.post(url, credentials, {
-                bypassInterceptor: true
-            }).then(function(res) {
-                store.user = res.data;
-                if (service.onChange) {
-                    service.onChange(store.user);
+            fluro.api.post(url, credentials, postOptions).then(function(res) {
+
+                if(autoAuthenticate) {
+                    store.user = res.data;
+                    if (service.onChange) {
+                        service.onChange(store.user);
+                    }
                 }
+
+                resolve(res);
             }, reject);
         }
 
@@ -187,7 +206,229 @@ var FluroAuth = function(fluro) {
 
     ///////////////////////////////////////////////////
 
-    service.refreshAccessToken = function(refreshToken) {
+    service.signup = function(credentials, options) {
+
+        if (!options) {
+            options = {};
+        }
+
+
+        //////////////////////////
+
+        //Change the users current tokens straight away
+        var autoAuthenticate = true;
+
+        if (options.disableAutoAuthenticate) {
+            autoAuthenticate = false;
+        }
+
+        //////////////////////////////////////
+
+        var promise = new Promise(signupCheck)
+
+        function signupCheck(resolve, reject) {
+
+            if (!credentials) {
+                return reject({
+                    message: 'No details provided',
+                })
+            }
+
+            if (!credentials.firstName || !credentials.firstName.length) {
+                return reject({
+                    message: 'First Name was not provided',
+                })
+            }
+
+            if (!credentials.lastName || !credentials.lastName.length) {
+                return reject({
+                    message: 'Last Name was not provided',
+                })
+            }
+
+            if (!credentials.username || !credentials.username.length) {
+                return reject({
+                    message: 'Email/Username was not provided',
+                })
+            }
+
+
+            if (!credentials.password || !credentials.password.length) {
+                return reject({
+                    message: 'Password was not provided',
+                })
+            }
+
+            if (!credentials.confirmPassword || !credentials.confirmPassword.length) {
+                return reject({
+                    message: 'Confirm Password was not provided',
+                })
+            }
+
+            if (credentials.confirmPassword != credentials.password) {
+                return reject({
+                    message: 'Your passwords do not match',
+                })
+            }
+
+            /////////////////////////////////////////////
+
+            var postOptions = {
+                bypassInterceptor: true
+            }
+
+            /////////////////////////////////////////////
+
+            var url = fluro.apiURL + '/token/signup';
+
+            /////////////////////////////////////////////
+
+            //If we are authenticating as an application
+            if (options.application) {
+
+                //The url is relative to the domain
+                url = `${fluro.domain || ''}/fluro/application/signup`;
+            }
+
+            //If we have a specified url
+            if (options.url) {
+                url = options.url;
+            }
+
+            /////////////////////////////////////////////
+
+            fluro.api.post(url, credentials, postOptions).then(function(res) {
+
+                if (autoAuthenticate) {
+                    store.user = res.data;
+                    if (service.onChange) {
+                        service.onChange(store.user);
+                    }
+                }
+
+                resolve(res);
+            }, reject);
+        }
+
+        //////////////////////////////////////
+
+        return promise;
+
+    }
+
+
+    ///////////////////////////////////////////////////
+
+
+    service.sendResetPasswordRequest = function(credentials, options) {
+
+        if (!options) {
+            options = {};
+        }
+
+        //////////////////////////////////////
+
+        var promise = new Promise(signupCheck)
+
+        function signupCheck(resolve, reject) {
+
+            if (!credentials) {
+                return reject({
+                    message: 'No details provided',
+                })
+            }
+
+            if (!credentials.username || !credentials.username.length) {
+                return reject({
+                    message: 'Email/Username was not provided',
+                })
+            }
+
+            //Set username as the email address
+            credentials.email = credentials.username;
+
+            /////////////////////////////////////////////
+
+            var postOptions = {
+                bypassInterceptor: true
+            }
+
+            /////////////////////////////////////////////
+
+            //If a full fledged Fluro User
+            //then send directly to the API
+            var url = fluro.apiURL + '/resend';
+
+            /////////////////////////////////////////////
+
+            //If we are authenticating as an application
+            if (options.application) {
+
+                //The url is relative to the domain
+                url = `${fluro.domain || ''}/fluro/application/forgot`;
+            }
+
+            //If we have a specified url
+            if (options.url) {
+                url = options.url;
+            }
+
+            /////////////////////////////////////////////
+
+            fluro.api.post(url, credentials, postOptions).then(resolve, reject);
+        }
+
+        //////////////////////////////////////
+
+        return promise;
+
+    }
+
+
+    ////////////////////////////
+
+    // //Register with user credentials
+    // service.signup = function(credentials, options) {
+    //     if (!options) {
+    //         options = {}
+    //     }
+    //     //Get the storage location
+    //     var storage = controller.storageLocation();
+
+    //     //Disable this
+    //     options.disableAutoAuthenticate = true;
+
+    //     //Login but don't authenticate automatically
+    //     var request = FluroTokenService.signup(credentials, options);
+
+    //     ////////////////////////
+
+    //     function signupComplete(res) {
+
+    //         //Save the storedUsers details
+    //         storage[key] = res.data;
+
+    //         ////////////////////////////////////////
+    //         // //console.log('Token Signup Success', controller.defaultStorage, storage[key]);
+    //     }
+
+    //     ////////////////////////
+
+    //     function signupFailed(res) {
+    //         // //console.log('Token Signup Failed', res);
+    //     }
+
+    //     ////////////////////////
+
+    //     request.then(signupComplete, signupFailed);
+
+    //     ////////////////////////
+
+    //     return request;
+    // }
+    ///////////////////////////////////////////////////
+
+    service.refreshAccessToken = function(refreshToken, isManagedUser) {
 
         //If there is already a request in progress
         if (inflightRefreshRequest) {
@@ -202,10 +443,13 @@ var FluroAuth = function(fluro) {
             log('fluro.auth > refresh token');
 
 
+
+
             //Bypass the interceptor on all token refresh calls
             //Because we don't need to add the access token etc onto it
             fluro.api.post('token/refresh', {
-                    refreshToken: refreshToken
+                    refreshToken: refreshToken,
+                    managed: isManagedUser,
                 }, {
                     bypassInterceptor: true
                 })
@@ -319,7 +563,7 @@ var FluroAuth = function(fluro) {
         var expires = new Date(expiryDate);
 
         //If we are not debugging
-        if(!service.debug) {
+        if (!service.debug) {
 
             //If the token is still fresh
             if (now < expires) {
@@ -330,6 +574,7 @@ var FluroAuth = function(fluro) {
 
         /////////////////////////////////////////////////////
 
+        var isManagedUser = _.get(store, 'user.accountType') == 'managed';
         //The token is stale by this point
 
         log('fluro.auth > token expired');
@@ -337,9 +582,9 @@ var FluroAuth = function(fluro) {
         return new Promise(function(resolve, reject) {
 
             //Refresh the token
-            service.refreshAccessToken(refreshToken)
+            service.refreshAccessToken(refreshToken, isManagedUser)
                 .then(function(newToken) {
-                    log('Token refreshed');
+                    log('Token refreshed', isManagedUser);
                     //Update the original request with our new token
                     originalRequest.headers['Authorization'] = 'Bearer ' + newToken;
                     //And continue onward

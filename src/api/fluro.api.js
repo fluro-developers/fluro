@@ -39,6 +39,8 @@ var FluroAPI = function(fluro) {
     });
 
 
+    
+
     ///////////////////////////////////////
 
     service.defaults.baseURL = fluro.apiURL;

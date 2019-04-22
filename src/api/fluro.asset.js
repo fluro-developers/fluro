@@ -71,6 +71,8 @@ var FluroAsset = function(Fluro) {
                 params['access_token'] = CurrentFluroToken;
             }
         }
+
+        return url;
     }
 
     ///////////////////////////////////////////////////
@@ -101,7 +103,7 @@ var FluroAsset = function(Fluro) {
 
         ////////////////////////////////////////
 
-        parameterDefaults(url, params);
+        url = parameterDefaults(url, params);
 
         ////////////////////////////////////////
 
@@ -121,7 +123,8 @@ var FluroAsset = function(Fluro) {
     ///////////////////////////////////////////////////
 
     /**
-     * A helper function to generate a url for retrieving a user, persona or contact's avatar        
+     * A helper function to generate a url for retrieving a user, persona or contact's avatar  
+     * @alias FluroAsset.avatarUrl      
      * @param  {string} personID The id of the person you want to retrieve the avatar for
      * @param  {string} style    Can be 'contact', 'persona' or 'user'
      * @param  {object} params   
@@ -151,7 +154,7 @@ var FluroAsset = function(Fluro) {
 
         ////////////////////////////////////////
 
-        parameterDefaults(url, params);
+        url = parameterDefaults(url, params);
 
         ////////////////////////////////////////
 
@@ -167,6 +170,19 @@ var FluroAsset = function(Fluro) {
     }
 
     ///////////////////////////////////////////////////
+
+
+    /**
+     * A helper function to retrieve the main image for an event, group, realm or other content
+     * @alias FluroAsset.coverImage
+     * @param  {string} contentID The id of the item you want to retrieve the image for
+     * @param  {string} style    Can be 'event', 'group', 'tag' or 'realm'
+     * @param  {object} params   
+     * @param  {number} params.w The width of the image to request from Fluro   
+     * @param  {number} params.h The height of the image to request from Fluro   
+     * @return {string}          A full URL that links to the image the user is requesting
+     */
+    
 
     //Get the cover image for an event, group or realm
     service.coverImage = function(contentID, style, params) {
@@ -190,7 +206,7 @@ var FluroAsset = function(Fluro) {
 
         ////////////////////////////////////////
 
-        parameterDefaults(url, params);
+        url = parameterDefaults(url, params);
 
         ////////////////////////////////////////
 
@@ -207,6 +223,17 @@ var FluroAsset = function(Fluro) {
 
 
     ///////////////////////////////////////////////////
+
+    /**
+     * A helper function that returns a download url for a specific asset
+     * @param  {string} assetID The id of the asset, or the asset object you want to download
+     * @alias FluroAsset.downloadUrl
+     * @param  {object} params   
+     * @param  {string} params.filename The filename you want to download the file as
+     * @param  {string} params.extension The extension of the file you want to download, eg. 'pdf'  
+     * @return {string}          A full URL that will download the file
+     */
+    
 
     service.downloadUrl = function(assetID, params) {
 
@@ -225,7 +252,7 @@ var FluroAsset = function(Fluro) {
 
         ////////////////////////////////////////
 
-        parameterDefaults(url, params);
+        url = parameterDefaults(url, params);
 
         ////////////////////////////////////////
 
@@ -243,6 +270,17 @@ var FluroAsset = function(Fluro) {
 
     ///////////////////////////////////////////////////
     
+    /**
+     * A helper function that returns a poster image for a specified video
+     * @alias FluroAsset.posterUrl
+     * @param  {string} videoID The id of the video, or a video object that has an _id property
+     * @param  {number} width The width of the poster image. If none specified will default to 16:9 based on the requesting user's screen size
+     * @param  {number} height The height of the poster image. If none specified will default to 16:9 based on the requesting user's screen size
+     * @param  {object} params   
+     * @return {string}          A full URL of the poster image
+     */
+    
+
     //Helper function for retrieving the poster image for a video
     service.posterUrl = function(videoID, w, h, params) {
         
@@ -327,7 +365,7 @@ var FluroAsset = function(Fluro) {
 
         ////////////////////////////////////////
 
-        parameterDefaults(url, params);
+        url = parameterDefaults(url, params);
 
         ////////////////////////////////////////
 
@@ -346,6 +384,21 @@ var FluroAsset = function(Fluro) {
 
     ///////////////////////////////////////////////////
     
+    /**
+     * A helper function that creates a url image for a specified image
+     * @alias FluroAsset.imageUrl
+     * @param  {string} imageID The id of the image or an object representing the image that has an _id property
+     * @param  {number} width The width of the image to retrieve from Fluro. If none is specified then will default to a size based on the requesting user's screen dimensions.
+     * @param  {number} height The height of the image to retrieve from Fluro. If none is specified then will default to a size based on the requesting user's screen dimensions.
+     * @param  {object} params   
+     * @param  {object} params.quality The quality of the image to retrieve from Fluro
+     * @param  {object} params.filename The filename to use for the image url
+     * @param  {object} params.extension An extension to use for the url if no filename is specified
+     * @param  {object} params.extension An extension to use for the url if no filename is specified
+     * @return {string}          A full URL of the image
+     */
+    
+
     //Helper function for retrieving the poster image for a video
     service.imageUrl = function(imageID, w, h, params) {
         
@@ -425,7 +478,7 @@ var FluroAsset = function(Fluro) {
 
         ////////////////////////////////////////
 
-        parameterDefaults(url, params);
+        url = parameterDefaults(url, params);
 
         ////////////////////////////////////////
 
@@ -443,6 +496,12 @@ var FluroAsset = function(Fluro) {
     
     ///////////////////////////////////////
 
+    /**
+     * Helper function to translate bytes into a human readable format
+     * @alias FluroAsset.filesize
+     * @param  {Integer} bytes The number of bytes
+     * @return {String}       The human readable filesize
+     */
     service.filesize = function(bytes) {
        var sizes = ['Bytes', 'kb', 'mb', 'gb', 'tb'];
        if (bytes == 0) return '0 Byte';

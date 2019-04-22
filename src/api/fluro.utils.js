@@ -16,6 +16,7 @@ FluroUtils.mapParameters = function(parameters) {
 ///////////////////////////////////////////////////////////////////////////////
 
 FluroUtils.comma = function(array, path) {
+
     return _.chain(array)
     .compact()
     .map(function(item) {
@@ -28,6 +29,46 @@ FluroUtils.comma = function(array, path) {
     .value()
     .join(', ');
     
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+//Helper function to get an id of an object
+
+FluroUtils.getStringID = function(input, asObjectID) {
+
+    if (!input) {
+        return input;
+    }
+
+    /////////////////////////////////
+
+    var output;
+
+    if (input._id) {
+        output = String(input._id);
+    } else {
+        output = String(input);
+    }
+
+    if (!asObjectID) {
+        return output;
+    }
+
+    return output;
+    // var mongoose = require('mongoose');
+    // var ObjectId = mongoose.Types.ObjectId;
+
+    // var isValid = ObjectId.isValid(String(output));
+    // if(!isValid) {
+    // return;
+    // }
+
+    // return new ObjectId(output);
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -80,44 +121,6 @@ FluroUtils.errorMessage = function(err) {
 
     return message;
 }
-
-///////////////////////////////////////////////////////////////////////////////
-
-//Helper function to get an id of an object
-FluroUtils.getStringID = function(input, asObjectID) {
-
-    if (!input) {
-        return input;
-    }
-
-    /////////////////////////////////
-
-    var output;
-
-    if (input._id) {
-        output = String(input._id);
-    } else {
-        output = String(input);
-    }
-
-    if (!asObjectID) {
-        return output;
-    }
-
-    return output;
-    // var mongoose = require('mongoose');
-    // var ObjectId = mongoose.Types.ObjectId;
-
-    // var isValid = ObjectId.isValid(String(output));
-    // if(!isValid) {
-    // return;
-    // }
-
-    // return new ObjectId(output);
-
-}
-
-
 
 
 

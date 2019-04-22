@@ -6,6 +6,7 @@ import FluroCache from './fluro.cache';
 import FluroDate from './fluro.date';
 import FluroStats from './fluro.stats';
 import FluroTypes from './fluro.types';
+import FluroContent from './fluro.content';
 
 ///////////////////////////////////////
 
@@ -55,6 +56,7 @@ var FluroCore = function(options) {
     var core = {
         apiURL: options.apiURL,
         applicationToken: options.applicationToken,
+        domain:options.domain || '',
     }
 
 
@@ -77,7 +79,7 @@ var FluroCore = function(options) {
      * with Fluro data
      * @type {FluroUtils}
      */
-    var utils = FluroCache;
+    var utils = FluroUtils;
     Object.defineProperty(core, 'utils', {
         value: utils,
         writable: false,
@@ -103,6 +105,16 @@ var FluroCore = function(options) {
     var api = new FluroAPI(core);
     Object.defineProperty(core, 'api', {
         value: api,
+        writable: false,
+    });
+
+    /**
+     * A helper service for CRUD operations that wraps around the fluro.api service
+     * @type {FluroContent}
+     */
+    var content = new FluroContent(core);
+    Object.defineProperty(core, 'content', {
+        value: content,
         writable: false,
     });
 
@@ -163,4 +175,4 @@ var FluroCore = function(options) {
 ///////////////////////////////////////
 ///////////////////////////////////////
 
-export default Fluro;
+export default FluroCore;

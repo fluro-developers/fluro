@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>fluro.types.js - Documentation</title>
+    <title>fluro.cache.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,7 +31,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">fluro.types.js</h1>
+    <h1 class="page-title">fluro.cache.js</h1>
     
 
     
@@ -43,56 +43,54 @@
         <article>
             <pre class="prettyprint source linenums"><code>import _ from 'lodash';
 
+import {Cache} from 'axios-extensions';
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
-var FluroTypes = function(FluroCore) {
+var caches = {};
 
+var FluroCache = {
 
-    var service = {};
-
-    //////////////////////////////////
+    ///////////////////////////////////////////////////
 
     /**
-     * Retrieves a list of specified types and their respective definitions
-     * @param  {array} types The names of the basic types you want to retrieve
-     * @return {promise}       An promise that will resolve to the matching basic types
+     * A helper function to reset all cache objects, useful if changing account or logging in or out as another user     
      */
-    service.retrieve = function(types, options) {
+    reset() {
+        _.each(caches, function(cache, key) {
+            // console.log(`Reset ${key} cache`);
+            cache.reset();
+        })
+    },
 
-        if(!options) {
-            options = {
-                // flat:true
-            }
+    ////////////////////////
+
+    ///////////////////////////////////////////////////
+
+    /**
+     * A helper function to retrieve a specific cache      
+     * @param  {string} key The key for the cache you want to retrieve
+     * @return {LRUCache} The cache store for the specified key
+     */
+    get(key) {
+
+        if (caches[key]) {
+            return caches[key];
         }
+        caches[key] = new Cache()
 
-        options.types = types;
-
-        ///////////////////////////
-
-        var promise = FluroCore.api.post('/defined', options);
-
-        // promise.then(function(res) {
-        //     // store.ids[id] = res.data.total;
-        //     // inProgress[id] = false;
-        // }, function() {
-        //     // inProgress[id] = false;
-        // })
-
-        return promise;
+        // console.log('Created new cache', key);
+        
+        return caches[key];
 
     }
-
-    //////////////////////////////////
-
-    return service;
-
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
-export default FluroTypes;</code></pre>
+export default FluroCache;</code></pre>
         </article>
     </section>
 
