@@ -66,7 +66,6 @@ var FluroCore = function(options) {
     /**
      * Provides a cache service, used for creating, clearing 
      * and storing API requests and other information in memory
-     * @alias Fluro.cache
      * @type {FluroCache}
      */
     var cache = FluroCache;
@@ -79,7 +78,6 @@ var FluroCore = function(options) {
     /**
      * Provides helper functions for working
      * with Fluro data
-     * @alias Fluro.utils
      * @type {FluroUtils}
      */
     var utils = FluroUtils;
@@ -91,7 +89,6 @@ var FluroCore = function(options) {
     /**
      * Provides date functions, filters and utilities
      * for working with dates and timezones
-     * @alias Fluro.date
      * @type {FluroDate}
      */
     var date = FluroDate;
@@ -104,7 +101,6 @@ var FluroCore = function(options) {
      * The default service for interacting with
      * the Fluro REST API, it's a wrapper around the axios library
      * that works in conjunction with the other Fluro modules
-     * @alias Fluro.api
      * @type {FluroAPI}
      */
     var api = new FluroAPI(core);
@@ -115,7 +111,6 @@ var FluroCore = function(options) {
 
     /**
      * A helper service for CRUD operations that wraps around the fluro.api service
-     * @alias Fluro.content
      * @type {FluroContent}
      */
     var content = new FluroContent(core);
@@ -126,7 +121,6 @@ var FluroCore = function(options) {
 
     /**
      * A helper service for understanding a user's access permissions
-     * @alias Fluro.access
      * @type {FluroAccess}
      */
     var access = new FluroAccess(core);
@@ -139,7 +133,6 @@ var FluroCore = function(options) {
      * The default service for managing authentication
      * handles automatic refreshing of access tokens, and provides login, logout
      * and other user/application specific functionality
-     * @alias Fluro.auth
      * @type {FluroAuth}
      */
     var auth = new FluroAuth(core);
@@ -151,7 +144,6 @@ var FluroCore = function(options) {
     /**
      * The default service for managing, rendering and handling files and media from Fluro.
      * It contains helper functions for managing connecting to image, audio, asset and video api endpoints.
-     * @alias Fluro.asset
      * @type {FluroAsset}
      */
     var asset = new FluroAsset(core);
@@ -164,7 +156,6 @@ var FluroCore = function(options) {
     /**
      * The default service for handling a user's 'stats' eg. (likes, views, favorites, downvotes etc...)
      * This service creates and syncs user's stats when they 'stat' items from Fluro.
-     * @alias Fluro.stats
      * @type {FluroStats}
      */
     var stats = new FluroStats(core)
@@ -176,7 +167,6 @@ var FluroCore = function(options) {
     /**
      * A helper service for retrieving, translating and rendering content types and definitions
      * defined within Fluro. 
-     * @alias Fluro.types
      * @type {FluroTypes}
      */
     var types = new FluroTypes(core);
