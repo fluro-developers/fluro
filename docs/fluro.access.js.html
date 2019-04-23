@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>fluro.types.js - Documentation</title>
+    <title>fluro.access.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,7 +31,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">fluro.types.js</h1>
+    <h1 class="page-title">fluro.access.js</h1>
     
 
     
@@ -46,50 +46,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Creates a new FluroTypes service
- * This module provides a number of helpful functions for retrieving, translating and understanding types, schemas and definitions
- * that are defined within Fluro
+ * Creates a new FluroAccess service
+ * This module provides helpful functions and tools for managing and understanding a user's permissions and access control
  * 
  * @constructor
  * @param {FluroCore} fluro A reference to the parent instance of the FluroCore module. This module is usually created by a FluroCore instance that passes itself in as the first argument.
  */
-var FluroTypes = function(FluroCore) {
+var FluroAccess = function(FluroCore) {
 
 
     var service = {};
 
-    //////////////////////////////////
-
-    /**
-     * Retrieves a list of specified types and their respective definitions
-     * @alias FluroTypes.retrieve
-     * @param  {array} types The names of the basic types you want to retrieve
-     * @return {promise}       An promise that will resolve to the matching basic types or reject with the responding error
-     */
-    service.retrieve = function(types, options) {
-
-        if(!options) {
-            options = {
-                // flat:true
-            }
-        }
-
-        options.types = types;
-
-        ///////////////////////////
-
-        var promise = FluroCore.api.post('/defined', options);
-
-        // promise.then(function(res) {
-        //     // store.ids[id] = res.data.total;
-        //     // inProgress[id] = false;
-        // }, function() {
-        //     // inProgress[id] = false;
-        // })
-
-        return promise;
-
-    }
+    
 
     //////////////////////////////////
 
@@ -101,7 +69,7 @@ var FluroTypes = function(FluroCore) {
 
 
 
-export default FluroTypes;</code></pre>
+export default FluroAccess;</code></pre>
         </article>
     </section>
 

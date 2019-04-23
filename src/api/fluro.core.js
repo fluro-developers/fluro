@@ -7,6 +7,7 @@ import FluroDate from './fluro.date';
 import FluroStats from './fluro.stats';
 import FluroTypes from './fluro.types';
 import FluroContent from './fluro.content';
+import FluroAccess from './fluro.access';
 
 ///////////////////////////////////////
 
@@ -115,6 +116,16 @@ var FluroCore = function(options) {
     var content = new FluroContent(core);
     Object.defineProperty(core, 'content', {
         value: content,
+        writable: false,
+    });
+
+    /**
+     * A helper service for understanding a user's access permissions
+     * @type {FluroAccess}
+     */
+    var access = new FluroAccess(core);
+    Object.defineProperty(core, 'access', {
+        value: access,
         writable: false,
     });
 

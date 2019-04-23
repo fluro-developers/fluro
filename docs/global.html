@@ -26,7 +26,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="fluro.module_asset-FluroAsset.html">FluroAsset</a></li><li><a href="FluroAPI.html">FluroAPI</a></li><li><a href="FluroCore.html">FluroCore</a></li></ul><h3>Modules</h3><ul><li><a href="fluro.module_asset.html">asset</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getUrl">getUrl</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FluroAPI.html">FluroAPI</a></li><li><a href="FluroAsset.html">FluroAsset</a><ul class='methods'><li data-type='method'><a href="FluroAsset.html#.avatarUrl">avatarUrl</a></li><li data-type='method'><a href="FluroAsset.html#.downloadUrl">downloadUrl</a></li><li data-type='method'><a href="FluroAsset.html#.filesize">filesize</a></li><li data-type='method'><a href="FluroAsset.html#.getUrl">getUrl</a></li><li data-type='method'><a href="FluroAsset.html#.imageUrl">imageUrl</a></li><li data-type='method'><a href="FluroAsset.html#.posterUrl">posterUrl</a></li></ul></li><li><a href="FluroAuth.html">FluroAuth</a><ul class='methods'><li data-type='method'><a href="FluroAuth.html#.changeAccount">changeAccount</a></li><li data-type='method'><a href="FluroAuth.html#.getCurrentToken">getCurrentToken</a></li><li data-type='method'><a href="FluroAuth.html#.getCurrentUser">getCurrentUser</a></li><li data-type='method'><a href="FluroAuth.html#.login">login</a></li><li data-type='method'><a href="FluroAuth.html#.logout">logout</a></li><li data-type='method'><a href="FluroAuth.html#.refreshAccessToken">refreshAccessToken</a></li><li data-type='method'><a href="FluroAuth.html#.sendResetPasswordRequest">sendResetPasswordRequest</a></li><li data-type='method'><a href="FluroAuth.html#.set">set</a></li><li data-type='method'><a href="FluroAuth.html#.signup">signup</a></li></ul></li><li><a href="FluroContent.html">FluroContent</a><ul class='methods'><li data-type='method'><a href="FluroContent.html#.query">query</a></li><li data-type='method'><a href="FluroContent.html#.search">search</a></li></ul></li><li><a href="FluroCore.html">FluroCore</a></li><li><a href="FluroDate.html">FluroDate</a><ul class='methods'><li data-type='method'><a href="FluroDate.html#.localDate">localDate</a></li><li data-type='method'><a href="FluroDate.html#.readableEventDate">readableEventDate</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#FluroCache">FluroCache</a></li></ul>
 </nav>
 
 <div id="main">
@@ -114,18 +114,12 @@
     
 
     
-
-    
-        <h3 class="subsection-title">Methods</h3>
+        <h3 class="subsection-title">Members</h3>
 
         
             
+<h4 class="name" id="FluroCache"><span class="type-signature"></span>FluroCache<span class="type-signature"></span></h4>
 
-    
-
-    <h4 class="name" id="getUrl"><span class="type-signature"></span>getUrl<span class="signature">(assetID, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
-
-    
 
 
 
@@ -135,7 +129,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line93">line 93</a>
+        <a href="fluro.cache.js.html">fluro.cache.js</a>, <a href="fluro.cache.js.html#line14">line 14</a>
     </li></ul></dd>
     
 
@@ -175,8 +169,8 @@
 
 
 <div class="description">
-    This function generates a url for the binary data of an
-asset, image, audio, or video file that has been uploaded to Fluro
+    FluroCache Service provides tools for caching api requests and other information
+so that less calls to the server need to be made
 </div>
 
 
@@ -186,121 +180,9 @@ asset, image, audio, or video file that has been uploaded to Fluro
 
 
 
-
-
-
-    <h5>Parameters:</h5>
+        
     
 
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>assetID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The _id of the item you want to retrieve</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    A valid Fluro URL
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
     
 
     
@@ -320,7 +202,7 @@ asset, image, audio, or video file that has been uploaded to Fluro
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Apr 13 2019 22:13:37 GMT+1000 (Australian Eastern Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Apr 23 2019 17:08:37 GMT+1000 (Australian Eastern Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

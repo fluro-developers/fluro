@@ -88,6 +88,7 @@ var FluroAsset = function(Fluro) {
      * @example
      * // returns 'https://api.fluro.io/get/5be504eabf33991239599d63'
      * FluroAsset.getUrl('5be504eabf33991239599d63')
+     * 
      * // returns 'https://api.fluro.io/get/5be504eabf33991239599d63/file/MyFile.pdf'
      * FluroAsset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})
      */
@@ -138,6 +139,10 @@ var FluroAsset = function(Fluro) {
      * @param  {number} params.w The width of the image you are requesting from Fluro   
      * @param  {number} params.h The height of the image you are requesting from Fluro   
      * @return {string}          A full URL that links to the image the user is requesting
+     * @example
+     * // returns 'https://api.fluro.io/get/avatar/contact/5be504eabf33991239599d63?w=100&h=100'
+     * FluroAsset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})
+     * 
      */
     
     service.avatarUrl = function(personID, style, params) {
@@ -181,17 +186,22 @@ var FluroAsset = function(Fluro) {
 
     /**
      * A helper function to retrieve the main image for an event, group, realm or other content
-     * @alias FluroAsset.coverImage
+     * @alias FluroAsset.coverUrl
      * @param  {string} contentID The id of the item you want to retrieve the image for
      * @param  {string} style    Can be 'event', 'group', 'tag' or 'realm'
      * @param  {object} params   
      * @param  {number} params.w The width of the image to request from Fluro   
      * @param  {number} params.h The height of the image to request from Fluro   
      * @return {string}          A full URL that links to the image the user is requesting
+     * @example
+     * // returns 'https://api.fluro.io/get/event/5be504eabf33991239599d63?w=100&h=100'
+     * FluroAsset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})
+     * 
      */
     
 
     //Get the cover image for an event, group or realm
+    service.coverUrl =
     service.coverImage = function(contentID, style, params) {
 
         //Get the id as a pure string
@@ -239,6 +249,13 @@ var FluroAsset = function(Fluro) {
      * @param  {string} params.filename The filename you want to download the file as
      * @param  {string} params.extension The extension of the file you want to download, eg. 'pdf'  
      * @return {string}          A full URL that will download the file
+     * @example
+     * // returns 'https://api.fluro.io/download/5be504eabf33991239599d63'
+     * FluroAsset.downloadUrl('5be504eabf33991239599d63')
+     * 
+     * // returns 'https://api.fluro.io/download/5be504eabf33991239599d63/file/MyFile.docx'
+     * FluroAsset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})
+     * 
      */
     
 
@@ -285,6 +302,18 @@ var FluroAsset = function(Fluro) {
      * @param  {number} height The height of the poster image. If none specified will default to 16:9 based on the requesting user's screen size
      * @param  {object} params   
      * @return {string}          A full URL of the poster image
+     * @example
+     * // returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63?w=1920&h=1080'
+     * FluroAsset.posterUrl('5be504eabf33991239599d63', 1920, 1080)
+     *
+     * // returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63/file/file.jpg?w=1920&h=1080'
+     * FluroAsset.posterUrl('5be504eabf33991239599d63', 1920, 1080, {extension:'jpg'})
+     * 
+     * //Not providing a height property will default to 16:9 ratio inferred from the width 
+     * //returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63/file/MyPoster.jpg?w=1920&h=1080'
+     * FluroAsset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoster.jpg'})
+     * 
+     * 
      */
     
 
@@ -395,14 +424,19 @@ var FluroAsset = function(Fluro) {
      * A helper function that creates a url image for a specified image
      * @alias FluroAsset.imageUrl
      * @param  {string} imageID The id of the image or an object representing the image that has an _id property
-     * @param  {number} width The width of the image to retrieve from Fluro. If none is specified then will default to a size based on the requesting user's screen dimensions.
-     * @param  {number} height The height of the image to retrieve from Fluro. If none is specified then will default to a size based on the requesting user's screen dimensions.
+     * @param  {Integer} width The width of the image to retrieve from Fluro. If none is specified then will default to a size based on the requesting user's screen dimensions.
+     * @param  {Integer} height The height of the image to retrieve from Fluro. If none is specified then will default to a size based on the requesting user's screen dimensions.
      * @param  {object} params   
-     * @param  {object} params.quality The quality of the image to retrieve from Fluro
-     * @param  {object} params.filename The filename to use for the image url
-     * @param  {object} params.extension An extension to use for the url if no filename is specified
-     * @param  {object} params.extension An extension to use for the url if no filename is specified
+     * @param  {Integer} params.quality The quality of the image to retrieve from Fluro as a percent eg. 85
+     * @param  {String} params.filename The filename to use for the image url
+     * @param  {String} params.extension An extension to use for the url if no filename is specified
      * @return {string}          A full URL of the image
+     * @example
+     * // returns 'https://api.fluro.io/get/5be504eabf33991239599d63?w=800'
+     * FluroAsset.imageUrl('5be504eabf33991239599d63', 800)
+     * 
+     * // returns 'https://api.fluro.io/get/5be504eabf33991239599d63/file/image.jpg?w=800'
+     * FluroAsset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pdf'})
      */
     
 
@@ -503,11 +537,16 @@ var FluroAsset = function(Fluro) {
     
     ///////////////////////////////////////
 
+
+
     /**
      * Helper function to translate bytes into a human readable format
      * @alias FluroAsset.filesize
      * @param  {Integer} bytes The number of bytes
      * @return {String}       The human readable filesize
+     * @example
+     * // returns '1mb'
+     * FluroAsset.filesize(1000000)
      */
     service.filesize = function(bytes) {
        var sizes = ['Bytes', 'kb', 'mb', 'gb', 'tb'];

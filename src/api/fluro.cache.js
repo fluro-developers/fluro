@@ -7,12 +7,20 @@ import {Cache} from 'axios-extensions';
 
 var caches = {};
 
+
+/**
+ * @classdesc A static service that provides tools for caching api requests and other information
+ * @class
+ * @hideconstructor
+ */
 var FluroCache = {
 
     ///////////////////////////////////////////////////
 
+    
     /**
      * A helper function to reset all cache objects, useful if changing account or logging in or out as another user     
+     * @alias FluroCache.reset    
      */
     reset() {
         _.each(caches, function(cache, key) {
@@ -26,7 +34,8 @@ var FluroCache = {
     ///////////////////////////////////////////////////
 
     /**
-     * A helper function to retrieve a specific cache      
+     * A helper function to retrieve a specific cache  
+     * @alias FluroCache.get    
      * @param  {string} key The key for the cache you want to retrieve
      * @return {LRUCache} The cache store for the specified key
      */

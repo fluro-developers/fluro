@@ -26,7 +26,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FluroAPI.html">FluroAPI</a></li><li><a href="FluroAsset.html">FluroAsset</a><ul class='methods'><li data-type='method'><a href="FluroAsset.html#.avatarUrl">avatarUrl</a></li><li data-type='method'><a href="FluroAsset.html#.coverImage">coverImage</a></li><li data-type='method'><a href="FluroAsset.html#.downloadUrl">downloadUrl</a></li><li data-type='method'><a href="FluroAsset.html#.filesize">filesize</a></li><li data-type='method'><a href="FluroAsset.html#.getUrl">getUrl</a></li><li data-type='method'><a href="FluroAsset.html#.imageUrl">imageUrl</a></li><li data-type='method'><a href="FluroAsset.html#.posterUrl">posterUrl</a></li></ul></li><li><a href="FluroCore.html">FluroCore</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FluroAccess.html">FluroAccess</a></li><li><a href="FluroAPI.html">FluroAPI</a></li><li><a href="FluroAsset.html">FluroAsset</a><ul class='methods'><li data-type='method'><a href="FluroAsset.html#.avatarUrl">avatarUrl</a></li><li data-type='method'><a href="FluroAsset.html#.downloadUrl">downloadUrl</a></li><li data-type='method'><a href="FluroAsset.html#.filesize">filesize</a></li><li data-type='method'><a href="FluroAsset.html#.getUrl">getUrl</a></li><li data-type='method'><a href="FluroAsset.html#.imageUrl">imageUrl</a></li><li data-type='method'><a href="FluroAsset.html#.posterUrl">posterUrl</a></li></ul></li><li><a href="FluroAuth.html">FluroAuth</a><ul class='methods'><li data-type='method'><a href="FluroAuth.html#.changeAccount">changeAccount</a></li><li data-type='method'><a href="FluroAuth.html#.getCurrentToken">getCurrentToken</a></li><li data-type='method'><a href="FluroAuth.html#.getCurrentUser">getCurrentUser</a></li><li data-type='method'><a href="FluroAuth.html#.login">login</a></li><li data-type='method'><a href="FluroAuth.html#.logout">logout</a></li><li data-type='method'><a href="FluroAuth.html#.refreshAccessToken">refreshAccessToken</a></li><li data-type='method'><a href="FluroAuth.html#.sendResetPasswordRequest">sendResetPasswordRequest</a></li><li data-type='method'><a href="FluroAuth.html#.set">set</a></li><li data-type='method'><a href="FluroAuth.html#.signup">signup</a></li></ul></li><li><a href="FluroCache.html">FluroCache</a><ul class='methods'><li data-type='method'><a href="FluroCache.html#.get">get</a></li><li data-type='method'><a href="FluroCache.html#.reset">reset</a></li></ul></li><li><a href="FluroContent.html">FluroContent</a><ul class='methods'><li data-type='method'><a href="FluroContent.html#.query">query</a></li><li data-type='method'><a href="FluroContent.html#.search">search</a></li></ul></li><li><a href="FluroCore.html">FluroCore</a></li><li><a href="FluroDate.html">FluroDate</a><ul class='methods'><li data-type='method'><a href="FluroDate.html#.localDate">localDate</a></li><li data-type='method'><a href="FluroDate.html#.readableEventDate">readableEventDate</a></li></ul></li><li><a href="FluroTypes.html">FluroTypes</a><ul class='methods'><li data-type='method'><a href="FluroTypes.html#.retrieve">retrieve</a></li></ul></li><li><a href="FluroUtils.html">FluroUtils</a><ul class='methods'><li data-type='method'><a href="FluroUtils.html#.arrayIDs">arrayIDs</a></li><li data-type='method'><a href="FluroUtils.html#.comma">comma</a></li><li data-type='method'><a href="FluroUtils.html#.errorMessage">errorMessage</a></li><li data-type='method'><a href="FluroUtils.html#.getStringID">getStringID</a></li><li data-type='method'><a href="FluroUtils.html#.mapParameters">mapParameters</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -207,6 +207,79 @@ This module provides a number of helper functions for managing asset, image, vid
     
 
     
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".coverUrl"><span class="type-signature">(static) </span>coverUrl<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line204">line 204</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    A helper function to retrieve the main image for an event, group, realm or other content
+</div>
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/event/5be504eabf33991239599d63?w=100&amp;h=100'
+FluroAsset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})</code></pre>
+
+
+
+        
+    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -228,7 +301,7 @@ This module provides a number of helper functions for managing asset, image, vid
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line143">line 143</a>
+        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line148">line 148</a>
     </li></ul></dd>
     
 
@@ -277,6 +350,12 @@ This module provides a number of helper functions for managing asset, image, vid
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/avatar/contact/5be504eabf33991239599d63?w=100&amp;h=100'
+FluroAsset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</code></pre>
 
 
 
@@ -492,282 +571,6 @@ This module provides a number of helper functions for managing asset, image, vid
 
     
 
-    <h4 class="name" id=".coverImage"><span class="type-signature">(static) </span>coverImage<span class="signature">(contentID, style, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line195">line 195</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    A helper function to retrieve the main image for an event, group, realm or other content
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>contentID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The id of the item you want to retrieve the image for</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>style</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Can be 'event', 'group', 'tag' or 'realm'</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>w</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The width of the image to request from Fluro</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>h</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The height of the image to request from Fluro</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    A full URL that links to the image the user is requesting
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
     <h4 class="name" id=".downloadUrl"><span class="type-signature">(static) </span>downloadUrl<span class="signature">(assetID, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
@@ -780,7 +583,7 @@ This module provides a number of helper functions for managing asset, image, vid
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line245">line 245</a>
+        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line262">line 262</a>
     </li></ul></dd>
     
 
@@ -829,6 +632,15 @@ This module provides a number of helper functions for managing asset, image, vid
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/download/5be504eabf33991239599d63'
+FluroAsset.downloadUrl('5be504eabf33991239599d63')
+
+// returns 'https://api.fluro.io/download/5be504eabf33991239599d63/file/MyFile.docx'
+FluroAsset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</code></pre>
 
 
 
@@ -1033,7 +845,7 @@ This module provides a number of helper functions for managing asset, image, vid
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line512">line 512</a>
+        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line551">line 551</a>
     </li></ul></dd>
     
 
@@ -1082,6 +894,12 @@ This module provides a number of helper functions for managing asset, image, vid
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// returns '1mb'
+FluroAsset.filesize(1000000)</code></pre>
 
 
 
@@ -1191,7 +1009,7 @@ This module provides a number of helper functions for managing asset, image, vid
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line96">line 96</a>
+        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line97">line 97</a>
     </li></ul></dd>
     
 
@@ -1247,6 +1065,7 @@ asset, image, audio, or video file that has been uploaded to Fluro
     
     <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/5be504eabf33991239599d63'
 FluroAsset.getUrl('5be504eabf33991239599d63')
+
 // returns 'https://api.fluro.io/get/5be504eabf33991239599d63/file/MyFile.pdf'
 FluroAsset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></pre>
 
@@ -1381,7 +1200,7 @@ FluroAsset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></p
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line410">line 410</a>
+        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line444">line 444</a>
     </li></ul></dd>
     
 
@@ -1430,6 +1249,15 @@ FluroAsset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></p
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/5be504eabf33991239599d63?w=800'
+FluroAsset.imageUrl('5be504eabf33991239599d63', 800)
+
+// returns 'https://api.fluro.io/get/5be504eabf33991239599d63/file/image.jpg?w=800'
+FluroAsset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pdf'})</code></pre>
 
 
 
@@ -1488,7 +1316,7 @@ FluroAsset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></p
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Integer</span>
 
 
             
@@ -1511,7 +1339,7 @@ FluroAsset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></p
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Integer</span>
 
 
             
@@ -1576,7 +1404,7 @@ FluroAsset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></p
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">Integer</span>
 
 
             
@@ -1586,7 +1414,7 @@ FluroAsset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></p
 
             
 
-            <td class="description last">The quality of the image to retrieve from Fluro</td>
+            <td class="description last">The quality of the image to retrieve from Fluro as a percent eg. 85</td>
         </tr>
 
     
@@ -1599,7 +1427,7 @@ FluroAsset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></p
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">String</span>
 
 
             
@@ -1622,30 +1450,7 @@ FluroAsset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></p
             <td class="type">
             
                 
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">An extension to use for the url if no filename is specified</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>extension</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
+<span class="param-type">String</span>
 
 
             
@@ -1726,7 +1531,7 @@ FluroAsset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></p
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line292">line 292</a>
+        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line321">line 321</a>
     </li></ul></dd>
     
 
@@ -1775,6 +1580,19 @@ FluroAsset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></p
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63?w=1920&amp;h=1080'
+FluroAsset.posterUrl('5be504eabf33991239599d63', 1920, 1080)
+
+// returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63/file/file.jpg?w=1920&amp;h=1080'
+FluroAsset.posterUrl('5be504eabf33991239599d63', 1920, 1080, {extension:'jpg'})
+
+//Not providing a height property will default to 16:9 ratio inferred from the width 
+//returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63/file/MyPoster.jpg?w=1920&amp;h=1080'
+FluroAsset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoster.jpg'})</code></pre>
 
 
 
@@ -1956,7 +1774,7 @@ FluroAsset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></p
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Apr 23 2019 09:36:07 GMT+1000 (Australian Eastern Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Apr 23 2019 17:29:49 GMT+1000 (Australian Eastern Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

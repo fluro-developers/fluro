@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>FluroAPI - Documentation</title>
+    <title>FluroDate - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,7 +31,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">FluroAPI</h1>
+    <h1 class="page-title">FluroDate</h1>
     
 
     
@@ -44,21 +44,40 @@
 <header>
     
         <h2>
-        FluroAPI
+        FluroDate
         </h2>
+        
+            <div class="class-description">A static service that provides useful functions for working with dates and timestamps.</div>
         
     
 </header>
 
 <article>
     
-        <div class="container-overview">
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
         
             
 
     
 
-    <h4 class="name" id="FluroAPI"><span class="type-signature"></span>new FluroAPI<span class="signature">(fluro)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".localDate"><span class="type-signature">(static) </span>localDate<span class="signature">(date, specifiedTimezone)</span><span class="type-signature"> &rarr; {Date}</span></h4>
 
     
 
@@ -70,7 +89,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.api.js.html">fluro.api.js</a>, <a href="fluro.api.js.html#line18">line 18</a>
+        <a href="fluro.date.js.html">fluro.date.js</a>, <a href="fluro.date.js.html#line32">line 32</a>
     </li></ul></dd>
     
 
@@ -110,9 +129,11 @@
 
 
 <div class="description">
-    Creates a new FluroAPI instance.
-This module is a wrapper around the 'axios' npm module. It aims to make it easier for you to connect with and consume endpoints from the
-Fluro REST API
+    A function that will return a date in context of a specified timezone
+If no timezone is specified then the default timezone of the current clock will be used.
+This will return dates that are incorrect on purpose. So that it can appear to the user as if they were in another timezone.
+As Javascript dates are always in the context of the timezone they are being viewed in, this function will give you a date that is technically
+not the Universal point in time of the date, but rather a time that reads in your timezone as if you were in the specified timezone.
 </div>
 
 
@@ -150,13 +171,13 @@ Fluro REST API
 
         <tr>
             
-                <td class="name"><code>fluro</code></td>
+                <td class="name"><code>date</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="FluroCore.html">FluroCore</a></span>
+<span class="param-type">Date</span>
 
 
             
@@ -166,7 +187,30 @@ Fluro REST API
 
             
 
-            <td class="description last">A reference to the parent instance of the FluroCore module. The FluroAPI module is usually created by a FluroCore instance that passes itself in as the first argument.</td>
+            <td class="description last">Either a javascript date object, or a string timestamp representing a javascript date object</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>specifiedTimezone</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The timezone to retrieve the date in eg. Australia/Melbourne</td>
         </tr>
 
     
@@ -188,11 +232,50 @@ Fluro REST API
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    A javascript date object transformed to match the specified timezone
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Date</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
         
-        </div>
+            
+
+    
+
+    <h4 class="name" id=".readableEventDate"><span class="type-signature">(static) </span>readableEventDate<span class="signature">(event, style)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.date.js.html">fluro.date.js</a>, <a href="fluro.date.js.html#line101">line 101</a>
+    </li></ul></dd>
     
 
     
@@ -200,15 +283,177 @@ Fluro REST API
     
 
     
-    
-    
-
-     
 
     
 
     
 
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    A helper function that can display a human-readable date for an event
+taking into consideration the context of the current time, the event's start and end time.
+This is often used as a string filter
+and what is relevant
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns 5:30pm 1 May
+FluroDate.readableEventDate({"startDate": "2019-05-01T07:30:00.000Z", "endDate":"2019-05-01T07:30:00.000Z"})
+//Returns 5:30pm - 7:30pm 1 May
+FluroDate.readableEventDate({"startDate": "2019-05-01T07:30:00.000Z", "endDate":"2019-05-01T09:30:00.000Z"})
+//Returns 1 - 5 May 2015
+FluroDate.readableEventDate({"startDate": "2015-05-01T07:30:00.000Z", "endDate":"2015-05-05T09:30:00.000Z"})
+//1 May - 21 Jun 2019
+FluroDate.readableEventDate({"startDate": "2019-05-01T07:30:00.000Z", "endDate":"2019-06-21T09:30:00.000Z"})</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>event</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An object that has both a startDate and endDate property, Usually an event object from the Fluro API</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>style</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Whether to return a 'short', 'medium' or 'long' date</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The human readable date for the event
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
     
 
     
