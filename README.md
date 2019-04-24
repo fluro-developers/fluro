@@ -8,6 +8,9 @@
 [REST API Documentation](https://developer.fluro.io) |
 [Support](https://support.fluro.io)
 
+# Javascript Frameworks
+[Vue Plugin](https://www.npmjs.com/package/fluro-vue)
+
 
 ## Installation
 
