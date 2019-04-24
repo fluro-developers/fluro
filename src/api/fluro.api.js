@@ -9,11 +9,21 @@ import {
 
 /**
  * Creates a new FluroAPI instance.
- * This module is a wrapper around the 'axios' npm module. It aims to make it easier for you to connect with and consume endpoints from the
- * Fluro REST API
+ * This module is a wrapper around the <a href="https://www.npmjs.com/package/axios">axios</a> package. It aims to make it easier for you to connect with and consume endpoints from the
+ * Fluro REST API for more information about the available endpoints see <a href="https://developer.fluro.io">Fluro REST API Documentation</a>
  * 
  * @constructor
  * @param {FluroCore} fluro A reference to the parent instance of the FluroCore module. The FluroAPI module is usually created by a FluroCore instance that passes itself in as the first argument.
+ *
+ * @example
+ * //Make a request to get the current user session
+ * fluro.api.get('/session')
+ * .then(function (response) {
+ *   console.log(response);
+ * })
+ * .catch(function (error) {
+ *   console.log(error);
+ * });
  */
 var FluroAPI = function(fluro) {
 
@@ -35,11 +45,11 @@ var FluroAPI = function(fluro) {
     ///////////////////////////////////////
 
     var service = axios.create({
-        adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter, {defaultCache:defaultCache}))
+        adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter, { defaultCache: defaultCache }))
     });
 
 
-    
+
 
     ///////////////////////////////////////
 
@@ -54,7 +64,8 @@ var FluroAPI = function(fluro) {
     }, function(err) {
 
         //Get the response status
-        var status = err.response.status;
+        var status = _.get(err, 'response.status') || err.status;
+
 
 
         switch (status) {
@@ -80,10 +91,90 @@ var FluroAPI = function(fluro) {
     })
 
 
+    /**
+     * @name FluroAPI.get
+     * @description Makes a get http request to the Fluro REST API
+     * @function
+     * @param {String} path The Fluro API endpoint to request
+     * @param {Object} config Optional parameters for the request
+     * @example
+     * //Make a request to get the current user session
+     * fluro.api.get('/content/article', {
+     *   params:{
+     *     select:'title created',
+     *     limit:10,
+     *     simple:true,
+     *   }
+     * })
+     * .then(function (response) {
+     *   console.log(response);
+     * })
+     * .catch(function (error) {
+     *   console.log(error);
+     * });
+     */
+    
+
+    /**
+     * @name FluroAPI.post
+     * @description Makes a post http request to the Fluro REST API
+     * @function
+     * @param {String} path The Fluro API endpoint to request
+     * @param {Object} config Optional parameters for the request
+     * @example
+     * 
+     * fluro.api.post('/content/article', {title:'my new article', ...}, {
+     *   //headers and other things
+     * })
+     * .then(function (response) {
+     *   console.log(response);
+     * })
+     * .catch(function (error) {
+     *   console.log(error);
+     * });
+     */
+    
+    /**
+     * @name FluroAPI.put
+     * @description Makes a put http request to the Fluro REST API
+     * @function
+     * @param {String} path The Fluro API endpoint to request
+     * @param {Object} config Optional parameters for the request
+     * @example
+     * 
+     * fluro.api.put('/content/article/5ca3d64dd2bb085eb9d450db', {title:'my new article', ...}, {
+     *   //headers and other things
+     * })
+     * .then(function (response) {
+     *   console.log(response);
+     * })
+     * .catch(function (error) {
+     *   console.log(error);
+     * });
+     */
+    
+    /**
+     * @name FluroAPI.delete
+     * @description Makes a delete http request to the Fluro REST API
+     * @function
+     * @param {String} path The Fluro API endpoint to request
+     * @param {Object} config Optional parameters for the request
+     * @example
+     * 
+     * fluro.api.delete('/content/article/5ca3d64dd2bb085eb9d450db')
+     * .then(function (response) {
+     *   console.log(response);
+     * })
+     * .catch(function (error) {
+     *   console.log(error);
+     * });
+     */
+
     ///////////////////////////////////////
 
     return service;
 }
+
 
 
 

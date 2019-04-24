@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>index.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FluroAccess.html">FluroAccess</a><ul class='methods'><li data-type='method'><a href="FluroAccess.html#.retrieveCurrentSession">retrieveCurrentSession</a></li><li data-type='method'><a href="FluroAccess.html#.setDefaultApplication">setDefaultApplication</a></li></ul></li><li><a href="FluroAPI.html">FluroAPI</a></li><li><a href="FluroAsset.html">FluroAsset</a><ul class='methods'><li data-type='method'><a href="FluroAsset.html#.avatarUrl">avatarUrl</a></li><li data-type='method'><a href="FluroAsset.html#.downloadUrl">downloadUrl</a></li><li data-type='method'><a href="FluroAsset.html#.filesize">filesize</a></li><li data-type='method'><a href="FluroAsset.html#.getUrl">getUrl</a></li><li data-type='method'><a href="FluroAsset.html#.imageUrl">imageUrl</a></li><li data-type='method'><a href="FluroAsset.html#.posterUrl">posterUrl</a></li></ul></li><li><a href="FluroAuth.html">FluroAuth</a><ul class='methods'><li data-type='method'><a href="FluroAuth.html#.addEventListener">addEventListener</a></li><li data-type='method'><a href="FluroAuth.html#.changeAccount">changeAccount</a></li><li data-type='method'><a href="FluroAuth.html#.getCurrentToken">getCurrentToken</a></li><li data-type='method'><a href="FluroAuth.html#.getCurrentUser">getCurrentUser</a></li><li data-type='method'><a href="FluroAuth.html#.login">login</a></li><li data-type='method'><a href="FluroAuth.html#.logout">logout</a></li><li data-type='method'><a href="FluroAuth.html#.refreshAccessToken">refreshAccessToken</a></li><li data-type='method'><a href="FluroAuth.html#.removeAllListeners">removeAllListeners</a></li><li data-type='method'><a href="FluroAuth.html#.removeEventListener">removeEventListener</a></li><li data-type='method'><a href="FluroAuth.html#.sendResetPasswordRequest">sendResetPasswordRequest</a></li><li data-type='method'><a href="FluroAuth.html#.set">set</a></li><li data-type='method'><a href="FluroAuth.html#.signup">signup</a></li></ul></li><li><a href="FluroCache.html">FluroCache</a><ul class='methods'><li data-type='method'><a href="FluroCache.html#.get">get</a></li><li data-type='method'><a href="FluroCache.html#.reset">reset</a></li></ul></li><li><a href="FluroContent.html">FluroContent</a><ul class='methods'><li data-type='method'><a href="FluroContent.html#.external">external</a></li><li data-type='method'><a href="FluroContent.html#.get">get</a></li><li data-type='method'><a href="FluroContent.html#.query">query</a></li><li data-type='method'><a href="FluroContent.html#.retrieve">retrieve</a></li><li data-type='method'><a href="FluroContent.html#.search">search</a></li><li data-type='method'><a href="FluroContent.html#.slug">slug</a></li></ul></li><li><a href="FluroCore.html">FluroCore</a></li><li><a href="FluroDate.html">FluroDate</a><ul class='methods'><li data-type='method'><a href="FluroDate.html#.localDate">localDate</a></li><li data-type='method'><a href="FluroDate.html#.readableEventDate">readableEventDate</a></li></ul></li><li><a href="FluroTypes.html">FluroTypes</a><ul class='methods'><li data-type='method'><a href="FluroTypes.html#.retrieve">retrieve</a></li></ul></li><li><a href="FluroUtils.html">FluroUtils</a><ul class='methods'><li data-type='method'><a href="FluroUtils.html#.arrayIDs">arrayIDs</a></li><li data-type='method'><a href="FluroUtils.html#.comma">comma</a></li><li data-type='method'><a href="FluroUtils.html#.errorMessage">errorMessage</a></li><li data-type='method'><a href="FluroUtils.html#.getStringID">getStringID</a></li><li data-type='method'><a href="FluroUtils.html#.mapParameters">mapParameters</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-fluro.html">fluro</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">index.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+
+
+import FluroCore from './api/fluro.core';
+
+
+ /**
+  * @module fluro
+  * @exports Fluro
+  * @example
+  * import Fluro from 'fluro';
+  *
+  * Fluro.api.get('/session').then(function(res) {
+  *   console.log('User session is ', res.data);
+  * })
+  * .catch(function(err) {
+  * 	console.log('There was an error', err);
+  * });
+  */
+export default FluroCore;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Apr 24 2019 19:46:45 GMT+1000 (Australian Eastern Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

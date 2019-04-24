@@ -29,8 +29,6 @@ var FluroCache = {
         })
     },
 
-    ////////////////////////
-
     ///////////////////////////////////////////////////
 
     /**
@@ -39,15 +37,14 @@ var FluroCache = {
      * @param  {string} key The key for the cache you want to retrieve
      * @return {LRUCache} The cache store for the specified key
      */
-    get(key) {
+    get(key, options) {
 
         if (caches[key]) {
             return caches[key];
         }
-        caches[key] = new Cache()
+        caches[key] = new Cache(options)
 
         // console.log('Created new cache', key);
-        
         return caches[key];
 
     }

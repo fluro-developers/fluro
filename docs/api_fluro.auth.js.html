@@ -1,5 +1,48 @@
-import axios from 'axios';
-import { EventDispatcher } from './fluro.utils';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>api/fluro.auth.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FluroAccess.html">FluroAccess</a><ul class='methods'><li data-type='method'><a href="FluroAccess.html#.retrieveCurrentSession">retrieveCurrentSession</a></li><li data-type='method'><a href="FluroAccess.html#.setDefaultApplication">setDefaultApplication</a></li></ul></li><li><a href="FluroAPI.html">FluroAPI</a></li><li><a href="FluroAsset.html">FluroAsset</a><ul class='methods'><li data-type='method'><a href="FluroAsset.html#.avatarUrl">avatarUrl</a></li><li data-type='method'><a href="FluroAsset.html#.downloadUrl">downloadUrl</a></li><li data-type='method'><a href="FluroAsset.html#.filesize">filesize</a></li><li data-type='method'><a href="FluroAsset.html#.getUrl">getUrl</a></li><li data-type='method'><a href="FluroAsset.html#.imageUrl">imageUrl</a></li><li data-type='method'><a href="FluroAsset.html#.posterUrl">posterUrl</a></li></ul></li><li><a href="FluroAuth.html">FluroAuth</a><ul class='methods'><li data-type='method'><a href="FluroAuth.html#.addEventListener">addEventListener</a></li><li data-type='method'><a href="FluroAuth.html#.changeAccount">changeAccount</a></li><li data-type='method'><a href="FluroAuth.html#.getCurrentToken">getCurrentToken</a></li><li data-type='method'><a href="FluroAuth.html#.getCurrentUser">getCurrentUser</a></li><li data-type='method'><a href="FluroAuth.html#.login">login</a></li><li data-type='method'><a href="FluroAuth.html#.logout">logout</a></li><li data-type='method'><a href="FluroAuth.html#.refreshAccessToken">refreshAccessToken</a></li><li data-type='method'><a href="FluroAuth.html#.removeAllListeners">removeAllListeners</a></li><li data-type='method'><a href="FluroAuth.html#.removeEventListener">removeEventListener</a></li><li data-type='method'><a href="FluroAuth.html#.sendResetPasswordRequest">sendResetPasswordRequest</a></li><li data-type='method'><a href="FluroAuth.html#.set">set</a></li><li data-type='method'><a href="FluroAuth.html#.signup">signup</a></li></ul></li><li><a href="FluroCache.html">FluroCache</a><ul class='methods'><li data-type='method'><a href="FluroCache.html#.get">get</a></li><li data-type='method'><a href="FluroCache.html#.reset">reset</a></li></ul></li><li><a href="FluroContent.html">FluroContent</a><ul class='methods'><li data-type='method'><a href="FluroContent.html#.external">external</a></li><li data-type='method'><a href="FluroContent.html#.get">get</a></li><li data-type='method'><a href="FluroContent.html#.query">query</a></li><li data-type='method'><a href="FluroContent.html#.retrieve">retrieve</a></li><li data-type='method'><a href="FluroContent.html#.search">search</a></li><li data-type='method'><a href="FluroContent.html#.slug">slug</a></li></ul></li><li><a href="FluroCore.html">FluroCore</a></li><li><a href="FluroDate.html">FluroDate</a><ul class='methods'><li data-type='method'><a href="FluroDate.html#.localDate">localDate</a></li><li data-type='method'><a href="FluroDate.html#.readableEventDate">readableEventDate</a></li></ul></li><li><a href="FluroTypes.html">FluroTypes</a><ul class='methods'><li data-type='method'><a href="FluroTypes.html#.retrieve">retrieve</a></li></ul></li><li><a href="FluroUtils.html">FluroUtils</a><ul class='methods'><li data-type='method'><a href="FluroUtils.html#.arrayIDs">arrayIDs</a></li><li data-type='method'><a href="FluroUtils.html#.comma">comma</a></li><li data-type='method'><a href="FluroUtils.html#.errorMessage">errorMessage</a></li><li data-type='method'><a href="FluroUtils.html#.getStringID">getStringID</a></li><li data-type='method'><a href="FluroUtils.html#.mapParameters">mapParameters</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-fluro.html">fluro</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">api/fluro.auth.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import axios from 'axios';
+import {EventDispatcher} from './fluro.utils';
 
 ///////////////////////////////////////////////////
 
@@ -86,7 +129,7 @@ var FluroAuth = function(fluro) {
         return dispatch()
     }
 
-
+    
 
     ///////////////////////////////////////////////////
 
@@ -265,7 +308,7 @@ var FluroAuth = function(fluro) {
 
             fluro.api.post(url, credentials, postOptions).then(function(res) {
 
-                if (autoAuthenticate) {
+                if(autoAuthenticate) {
                     store.user = res.data;
                     dispatch();
                     // if (service.onChange) {
@@ -492,16 +535,16 @@ var FluroAuth = function(fluro) {
 
     ///////////////////////////////////////////////////
 
+  
 
-
-    /**
-     * Helper function to refresh an access token for an authenticated user session. This is usually handled automatically
-     * from the FluroAuth service itself
-     * @alias FluroAuth.refreshAccessToken
-     * @param  {String}  refreshToken  The refresh token to reactivate
-     * @param  {Boolean} isManagedSession Whether or not the refresh token is for a managed persona session or a global Fluro user session
-     * @return {Promise}                A promise that either resolves with the refreshed token details or rejects with the responding error from the server
-     */
+     /**
+      * Helper function to refresh an access token for an authenticated user session. This is usually handled automatically
+      * from the FluroAuth service itself
+      * @alias FluroAuth.refreshAccessToken
+      * @param  {String}  refreshToken  The refresh token to reactivate
+      * @param  {Boolean} isManagedSession Whether or not the refresh token is for a managed persona session or a global Fluro user session
+      * @return {Promise}                A promise that either resolves with the refreshed token details or rejects with the responding error from the server
+      */
     service.refreshAccessToken = function(refreshToken, isManagedSession) {
 
         //If there is already a request in progress
@@ -606,7 +649,7 @@ var FluroAuth = function(fluro) {
             log('fluro.auth > using user token');
 
 
-        } else if (fluro.applicationToken && fluro.applicationToken.length) {
+        } else if (fluro.applicationToken &amp;&amp; fluro.applicationToken.length) {
 
             //If there is a static application token
             //For example we have logged out from a website
@@ -652,7 +695,7 @@ var FluroAuth = function(fluro) {
         if (!service.debug) {
 
             //If the token is still fresh
-            if (now < expires) {
+            if (now &lt; expires) {
                 //Return the original request
                 return originalRequest;
             }
@@ -708,39 +751,63 @@ var FluroAuth = function(fluro) {
     })
 
 
-    /**
-     * @name FluroAuth.addEventListener
-     * @description Adds a callback that will be triggered whenever the specified event occurs
-     * @function
-     * @param {String} event The event to listen for
-     * @param {Function} callback The function to fire when this event is triggered
-     * @example
-     * //Listen for when the user session changes
-     * FluroAuth.addEventListener('change', function(userSession) {})
-     */
-
-    /**
-     * @name FluroAuth.removeEventListener
-     * @description Removes all a callback from the listener list
-     * @function
-     * @param {String} event The event to stop listening for
-     * @param {Function} callback The function to remove from the listener list
-     * @example
-     * //Stop listening for the change event
-     * FluroAuth.removeEventListener('change', myFunction)
-     */
-
-    /**
-     * @name FluroAuth.removeAllListeners
-     * @description Removes all listening callbacks for all events
-     * @function
-     * @example
-     * FluroAuth.removeAllListeners()
-     */
+   /**
+    * @name FluroAuth.addEventListener
+    * @description Adds a callback that will be triggered whenever the specified event occurs
+    * @function
+    * @param {String} event The event to listen for
+    * @param {Function} callback The function to fire when this event is triggered
+    * @example
+    * //Listen for when the user session changes
+    * FluroAuth.addEventListener('change', function(userSession) {})
+    */
+   
+   /**
+    * @name FluroAuth.removeEventListener
+    * @description Removes all a callback from the listener list
+    * @function
+    * @param {String} event The event to stop listening for
+    * @param {Function} callback The function to remove from the listener list
+    * @example
+    * //Stop listening for the change event
+    * FluroAuth.removeEventListener('change', myFunction)
+    */
+   
+   /**
+    * @name FluroAuth.removeAllListeners
+    * @description Removes all listening callbacks for all events
+    * @function
+    * @example
+    * FluroAuth.removeAllListeners()
+    */
 
     return service;
 
 }
 
 
-export default FluroAuth;
+export default FluroAuth;</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Apr 24 2019 19:46:45 GMT+1000 (Australian Eastern Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

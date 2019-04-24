@@ -1,6 +1,6 @@
 {
   "name": "fluro",
-  "version": "1.0.41",
+  "version": "1.0.42",
   "description": "Promise based HTTP Fluro client for the browser and node.js",
   "main": "src/index.js",
   "scripts": {

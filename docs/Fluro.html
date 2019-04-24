@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Fluro - Documentation</title>
+    <title>fluro - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -26,12 +26,12 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Fluro.html">Fluro</a></li><li><a href="FluroAPI.html">FluroAPI</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="fluro.html">fluro</a></li><li><a href="FluroAccess.html">FluroAccess</a><ul class='methods'><li data-type='method'><a href="FluroAccess.html#.retrieveCurrentSession">retrieveCurrentSession</a></li><li data-type='method'><a href="FluroAccess.html#.setDefaultApplication">setDefaultApplication</a></li></ul></li><li><a href="FluroAPI.html">FluroAPI</a></li><li><a href="FluroAsset.html">FluroAsset</a><ul class='methods'><li data-type='method'><a href="FluroAsset.html#.avatarUrl">avatarUrl</a></li><li data-type='method'><a href="FluroAsset.html#.downloadUrl">downloadUrl</a></li><li data-type='method'><a href="FluroAsset.html#.filesize">filesize</a></li><li data-type='method'><a href="FluroAsset.html#.getUrl">getUrl</a></li><li data-type='method'><a href="FluroAsset.html#.imageUrl">imageUrl</a></li><li data-type='method'><a href="FluroAsset.html#.posterUrl">posterUrl</a></li></ul></li><li><a href="FluroAuth.html">FluroAuth</a><ul class='methods'><li data-type='method'><a href="FluroAuth.html#.addEventListener">addEventListener</a></li><li data-type='method'><a href="FluroAuth.html#.changeAccount">changeAccount</a></li><li data-type='method'><a href="FluroAuth.html#.getCurrentToken">getCurrentToken</a></li><li data-type='method'><a href="FluroAuth.html#.getCurrentUser">getCurrentUser</a></li><li data-type='method'><a href="FluroAuth.html#.login">login</a></li><li data-type='method'><a href="FluroAuth.html#.logout">logout</a></li><li data-type='method'><a href="FluroAuth.html#.refreshAccessToken">refreshAccessToken</a></li><li data-type='method'><a href="FluroAuth.html#.removeAllListeners">removeAllListeners</a></li><li data-type='method'><a href="FluroAuth.html#.removeEventListener">removeEventListener</a></li><li data-type='method'><a href="FluroAuth.html#.sendResetPasswordRequest">sendResetPasswordRequest</a></li><li data-type='method'><a href="FluroAuth.html#.set">set</a></li><li data-type='method'><a href="FluroAuth.html#.signup">signup</a></li></ul></li><li><a href="FluroCache.html">FluroCache</a><ul class='methods'><li data-type='method'><a href="FluroCache.html#.get">get</a></li><li data-type='method'><a href="FluroCache.html#.reset">reset</a></li></ul></li><li><a href="FluroContent.html">FluroContent</a><ul class='methods'><li data-type='method'><a href="FluroContent.html#.external">external</a></li><li data-type='method'><a href="FluroContent.html#.get">get</a></li><li data-type='method'><a href="FluroContent.html#.query">query</a></li><li data-type='method'><a href="FluroContent.html#.retrieve">retrieve</a></li><li data-type='method'><a href="FluroContent.html#.search">search</a></li><li data-type='method'><a href="FluroContent.html#.slug">slug</a></li></ul></li><li><a href="FluroDate.html">FluroDate</a><ul class='methods'><li data-type='method'><a href="FluroDate.html#.localDate">localDate</a></li><li data-type='method'><a href="FluroDate.html#.readableEventDate">readableEventDate</a></li></ul></li><li><a href="FluroTypes.html">FluroTypes</a><ul class='methods'><li data-type='method'><a href="FluroTypes.html#.retrieve">retrieve</a></li></ul></li><li><a href="FluroUtils.html">FluroUtils</a><ul class='methods'><li data-type='method'><a href="FluroUtils.html#.arrayIDs">arrayIDs</a></li><li data-type='method'><a href="FluroUtils.html#.comma">comma</a></li><li data-type='method'><a href="FluroUtils.html#.errorMessage">errorMessage</a></li><li data-type='method'><a href="FluroUtils.html#.getStringID">getStringID</a></li><li data-type='method'><a href="FluroUtils.html#.mapParameters">mapParameters</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
     
-    <h1 class="page-title">Fluro</h1>
+    <h1 class="page-title">fluro</h1>
     
 
     
@@ -44,7 +44,7 @@
 <header>
     
         <h2>
-        Fluro
+        fluro
         </h2>
         
     
@@ -58,7 +58,7 @@
 
     
 
-    <h4 class="name" id="Fluro"><span class="type-signature"></span>new Fluro<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="fluro"><span class="type-signature"></span>new fluro<span class="signature">(options)</span><span class="type-signature"></span></h4>
 
     
 
@@ -70,7 +70,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line21">line 21</a>
+        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line18">line 18</a>
     </li></ul></dd>
     
 
@@ -110,7 +110,7 @@
 
 
 <div class="description">
-    Creates a new Fluro instance including all of the default sub modules
+    Creates a new FluroCore instance including all of the default sub modules
 </div>
 
 
@@ -229,7 +229,7 @@
 
             
 
-            <td class="description last">if running as a static application, for example a website you can set the application's access token here</td>
+            <td class="description last">When running as a static application, (for example a website) you may set the application's access token before you initialize the Fluro instance here.</td>
         </tr>
 
     
@@ -278,604 +278,6 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="~api"><span class="type-signature">(inner) </span>api<span class="type-signature"> :<a href="FluroAPI.html">FluroAPI</a></span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line103">line 103</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    The default service for interacting with
-the Fluro REST API, it's a wrapper around the axios library
-that works in conjunction with the other Fluro modules
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type"><a href="FluroAPI.html">FluroAPI</a></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~asset"><span class="type-signature">(inner) </span>asset<span class="type-signature"> :FluroAsset</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line126">line 126</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    The default service for managing, rendering and handling files and media from Fluro.
-It contains helper functions for managing connecting to image, audio, asset and video api endpoints.
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">FluroAsset</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~auth"><span class="type-signature">(inner) </span>auth<span class="type-signature"> :FluroAuth</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line115">line 115</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    The default service for managing authentication
-handles automatic refreshing of access tokens, and provides login, logout
-and other user/application specific functionality
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">FluroAuth</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~cache"><span class="type-signature">(inner) </span>cache<span class="type-signature"> :FluroCache</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line68">line 68</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Provides a cache service, used for creating, clearing 
-and storing API requests and other information in memory
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">FluroCache</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~date"><span class="type-signature">(inner) </span>date<span class="type-signature"> :FluroDate</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line91">line 91</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Provides date functions, filters and utilities
-for working with dates and timezones
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">FluroDate</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~stats"><span class="type-signature">(inner) </span>stats<span class="type-signature"> :FluroStats</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line138">line 138</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    The default service for handling a user's 'stats' eg. (likes, views, favorites, downvotes etc...)
-This service creates and syncs user's stats when they 'stat' items from Fluro.
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">FluroStats</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~types"><span class="type-signature">(inner) </span>types<span class="type-signature"> :FluroTypes</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line149">line 149</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    A helper service for retrieving, translating and rendering content types and definitions
-defined within Fluro.
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">FluroTypes</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~utils"><span class="type-signature">(inner) </span>utils<span class="type-signature"> :FluroUtils</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line80">line 80</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Provides helper functions for working
-with Fluro data
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">FluroUtils</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-    
 
     
 
@@ -896,7 +298,7 @@ with Fluro data
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Apr 13 2019 21:45:10 GMT+1000 (Australian Eastern Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Apr 24 2019 19:47:57 GMT+1000 (Australian Eastern Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

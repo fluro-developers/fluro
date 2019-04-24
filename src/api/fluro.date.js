@@ -2,6 +2,7 @@
 
 import _ from 'lodash';
 import moment from 'moment-timezone';
+import FluroUtils from './fluro.utils';
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -31,6 +32,7 @@ const FluroDate = {
  */
 FluroDate.localDate = function(d, specifiedTimezone) {
     
+    // console.log('LOCAL DATE', d, specifiedTimezone);
     //Date
     var date;// = new Date(d);
 
@@ -66,10 +68,43 @@ FluroDate.localDate = function(d, specifiedTimezone) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// https://momentjs.com/docs/#/displaying/format/
+
+
+/**
+ * Parses a date and returns a human readable date string
+ * @param  {Date|String} date The date or string to parse
+ * @param  {String} format     A string representing the format to output for formatting syntax see https://momentjs.com/docs/#/displaying/format/
+ * @param  {String} timezone   The timezone to use if needing to translate the date to another timezone eg. Australia/Melbourne
+ * @return {String}            A human readable string
+ * @example
+ * var date = new Date()
+ * return FluroDate.formatDate(date, 'h:mma DDD MMM YYYY')
+ * 
+ * var dateString = '2019-04-18T23:00:00.000Z' 
+ * return FluroDate.formatDate(dateString, 'D M YYYY', 'Australia/Melbourne')
+ */
 FluroDate.formatDate = function(dateString, format, timezone) {    
     var date = FluroDate.localDate(dateString, timezone);
+
     return moment(date).format(format);
+}
+
+/**
+ * Parses an ObjectID and returns the date of creation
+ * @param  {String} id The id of the object to parse
+ * @param  {String} format     A string representing the format to output for formatting syntax see https://momentjs.com/docs/#/displaying/format/
+ * @param  {String} timezone   The timezone to use if needing to translate the date to another timezone eg. Australia/Melbourne
+ * @return {String}            A human readable string
+ * @example
+ * 
+ * var id = '5ca3d64dd2bb085eb9d450db' 
+ * return dateFromID.formatDate(id, 'D M YYYY')
+ */
+FluroDate.dateFromID = function(id, format, timezone) {
+    id = FluroUtils.getStringID(id);
+    var date = new Date(parseInt(id.substring(0, 8), 16) * 1000);
+
+    return FluroDate.formatDate(date, format, timezone);
 }
 
 ///////////////////////////////////////
