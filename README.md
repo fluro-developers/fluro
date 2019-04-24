@@ -11,21 +11,25 @@
 
 ## Installation
 
-```
+```bash
 npm install fluro --save
 ```
 
 
 ## Getting Started
 
-```
+```js
 //Import the Fluro module
 import Fluro from 'fluro';
+
+/////////////////////////////////////////////
 
 //Set some defaults 
 const API_URL = 'https://api.fluro.io';
 const APPLICATION_TOKEN = '$55fkshadh12425324...';
 const APPLICATION_DOMAIN_NAME = 'https://myapplication.com'; 
+
+/////////////////////////////////////////////
 
 //Create a new Fluro instance
 const fluro = new Fluro({
@@ -33,6 +37,8 @@ const fluro = new Fluro({
     applicationToken: APPLICATION_TOKEN,
     domain:APPLICATION_DOMAIN_NAME,
 });
+
+/////////////////////////////////////////////
 
 //Optionally set a default timezone (otherwise will default to browser clock timezone)
 fluro.date.defaultTimezone = 'Australia/Melbourne';
@@ -48,7 +54,7 @@ for more information checkout the [FluroAuth module](https://fluro-developers.gi
 
 If a static application token has been set then when a user signs out of the app all requests are made as the application instead of the user
 
-```
+```js
 
 //Listen for when the user logs in/out
 fluro.auth.addEventListener('change', userUpdated);
@@ -123,9 +129,7 @@ fluro.auth.logout()
 ## Handling Errors
 The FluroUtils service has a handy function for translating an error into a human readable message, this can be 
 be helpful when needing to show error messages to the user
-```
-
-/////////////////////////////////////////////
+```js
 
 //Get the user session
 fluro.api.get('/content/event/5ca3d64dd2bb085eb9d450db')
