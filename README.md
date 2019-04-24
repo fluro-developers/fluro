@@ -54,6 +54,10 @@ for more information checkout the [FluroAuth module](https://fluro-developers.gi
 
 If a static application token has been set then when a user signs out of the app all requests are made as the application instead of the user
 
+
+#### Listening to user session changes
+It's helpful to listen for the 'change' event so that your application can respond to a user logging in/out
+
 ```js
 
 //Listen for when the user logs in/out
@@ -75,14 +79,18 @@ function userUpdated(user) {
     fluro.stats.refresh();
 }
 
-/////////////////////////////////////////////
-
-
 //Set the user session object if we already have it in localStorage
 fluro.auth.set(window.localStorage.userSession);
 
 
-/////////////////////////////////////////////
+```
+
+#### Logging In as a Fluro User
+To login and authenticate using your Fluro username and password
+you can use the FluroAuth.login function, upon successfuly login all subsequent requests to the API will
+be authenticated with your access token, and your token will be refreshed automatically until you sign out
+
+```js
 
 //Login to the server as a general Fluro user
 fluro.auth.login({
@@ -95,9 +103,16 @@ fluro.auth.login({
 	//Couldn't sign in
 	console.log(err.message);
 });
+```
 
+#### Logging in to an application as a managed persona
+If your application is a public website or a whitelabelled product that you want users to be able to 
+sign up or log in to, you can allow them to authenticate as a 'managed persona', this allows your users
+to authenticate without ever hearing or knowing about Fluro, giving you complete control over their usernames, passwords
+permissions and other information. Managed persona's can sign in to your applications resulting in an access/refresh token pair
+that grants them both the permissions of the persona AND the permissions of the application.
 
-/////////////////////////////////////////////
+```js
 
 //Login to the server as a persona (whitelabelled user)
 //By providing the application:true property
@@ -114,15 +129,14 @@ fluro.auth.login({
 	console.log(err.message);
 });
 
-/////////////////////////////////////////////
+```
 
+#### Logging Out
+
+```js
 //Logout and clear all caches
 //And revert back to the application if a token has been provided
 fluro.auth.logout()
-
-
-
-
 ```
 
 
