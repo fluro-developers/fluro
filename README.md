@@ -8,7 +8,8 @@
 [REST API Documentation](https://developer.fluro.io) |
 [Support](https://support.fluro.io)
 
-# Javascript Frameworks
+### Javascript Frameworks
+Frameworks are available for Vue, Angular and React
 [Vue Plugin](https://www.npmjs.com/package/fluro-vue)
 
 

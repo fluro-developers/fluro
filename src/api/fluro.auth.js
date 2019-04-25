@@ -55,7 +55,6 @@ var FluroAuth = function(fluro) {
         }
 
         //Dispatch the change event
-        console.log('Dispatch change!', user);
         dispatcher.dispatch('change', user);
     }
 
@@ -139,7 +138,6 @@ var FluroAuth = function(fluro) {
 
     service.changeAccount = function(accountID, options) {
 
-        console.log('Change account', accountID)
         //Ensure we just have the ID
         accountID = fluro.utils.getStringID(accountID);
 
@@ -169,7 +167,6 @@ var FluroAuth = function(fluro) {
                 service.set(res.data);
             }
         }, function(err) {
-            console.log('ERROR', err);
         });
 
 
@@ -406,6 +403,133 @@ var FluroAuth = function(fluro) {
         //////////////////////////////////////
 
         return promise;
+
+    }
+    
+
+    ///////////////////////////////////////////////////
+
+    /**
+     * Retrieves a user's details by providing a password reset token 
+     * @alias FluroAuth.retrieveUserFromResetToken      
+     * @param  {String} token The password reset token that was sent to the user's email address
+     * @param  {Object} options other options for the request
+     * @param  {Boolean} options.application     If true will retrieve in the context of a managed persona in the same account as the current application.
+     * If not specified or false, will assume it's a Fluro global user that is resetting their password.
+     * @return {Promise}            Returns a promise that resolves with the reset session details
+     */
+    service.retrieveUserFromResetToken = function(token, options) {
+        
+        if (!options) {
+            options = {};
+        }
+
+        //////////////////////////////////////
+
+        return new Promise(function(resolve, reject) {
+
+            var postOptions = {
+                bypassInterceptor: true
+            }
+
+            /////////////////////////////////////////////
+
+            //If a full fledged Fluro User
+            //then send directly to the API auth endpoint
+            var url = `${fluro.apiURL}/auth/token/${token}`;
+
+            /////////////////////////////////////////////
+
+            //If we are authenticating as an application
+            if (options.application) {
+                //The url is relative to the domain
+                url = `${fluro.domain || ''}/fluro/application/reset/${token}`;
+            }
+
+            //If we have a specified url
+            if (options.url) {
+                url = options.url;
+            }
+
+            /////////////////////////////////////////////
+
+            fluro.api.get(url, postOptions).then(function(res) {
+                return resolve(res.data);
+            }, reject);
+        });
+
+    }
+
+
+    ///////////////////////////////////////////////////
+
+    /**
+     * Updates a user's details including password by providing a password reset token
+     * @alias FluroAuth.updateUserWithToken      
+     * @param  {String} token The password reset token that was sent to the user's email address
+     * @param  {Object} body The details to change for the user
+     * @param  {Object} options other options for the request
+     * @return {Promise}            Returns a promise that resolves with the reset session details
+     */
+    service.updateUserWithToken = function(token, body, options) {
+        
+        if (!options) {
+            options = {};
+        }
+
+        //////////////////////////
+
+        //Change the users current tokens straight away
+        var autoAuthenticate = true;
+
+        if (options.disableAutoAuthenticate) {
+            autoAuthenticate = false;
+        }
+
+        //////////////////////////////////////
+
+        return new Promise(function(resolve, reject) {
+
+            var postOptions = {
+                bypassInterceptor: true
+            }
+
+            /////////////////////////////////////////////
+
+            //If a full fledged Fluro User
+            //then send directly to the API auth endpoint
+            var url = `${fluro.apiURL}/auth/token/${token}`;
+
+            /////////////////////////////////////////////
+
+            //If we are authenticating as an application
+            if (options.application) {
+                //The url is relative to the domain
+                url = `${fluro.domain || ''}/fluro/application/reset/${token}`;
+            }
+
+            //If we have a specified url
+            if (options.url) {
+                url = options.url;
+            }
+
+
+
+            /////////////////////////////////////////////
+
+            fluro.api.post(url, body, postOptions).then(function(res) {
+
+                //If we should automatically authenticate
+                //once the request is successful
+                //Then clear caches and update the session
+                if (autoAuthenticate) {
+                    fluro.cache.reset();
+                    service.set(res.data);
+                }
+
+                return resolve(res.data);
+            }, reject);
+        });
 
     }
 
@@ -695,6 +819,7 @@ var FluroAuth = function(fluro) {
         log('fluro.auth > error', status);
         switch (status) {
             case 401:
+                //Logout and destroy the session
                 service.logout();
                 break;
             default:
