@@ -209,7 +209,21 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
             url += '?unique=true';
         }
 
-        var promise = Fluro.api.get(url);
+        ////////////////////////////////
+
+        var promise;
+
+        //If we are not logged in
+        if(Fluro.auth.getCurrentUser()) {
+            console.log('No user clear stats')
+            promise = new Promise(function(resolve) {
+                return resolve(empty);
+            })
+        } else {
+            //connect to the api and load the stats
+            promise = Fluro.api.get(url);
+        }
+
         // console.log('New Stat Request')
         inflightRequest = promise;
 

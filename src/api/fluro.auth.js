@@ -18,6 +18,8 @@ var FluroAuth = function(fluro) {
         throw new Error(`Can't Instantiate FluroAuth before FluroAPI exists`);
     }
 
+    console.log('FluroAuth.init')
+
     //Keep track of any refresh requests
     var inflightRefreshRequest;
 
