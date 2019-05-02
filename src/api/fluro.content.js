@@ -376,7 +376,7 @@ var FluroContent = function(fluro) {
             /////////////////////////////////////////////
 
             //Retrieve the query results
-            fluro.api.get(`/content/external/${id}`, requestOptions).then(function(res) {
+            fluro.api.get(`/content/slug/${id}`, requestOptions).then(function(res) {
                 resolve(res.data);
             }, reject);
 
