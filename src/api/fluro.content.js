@@ -1,4 +1,7 @@
 import _ from 'lodash';
+import axios from 'axios';
+const CancelToken = axios.CancelToken;
+
 
 ///////////////////////////////////////////////////
 
@@ -24,57 +27,177 @@ var FluroContent = function(fluro) {
     var service = {}
 
     ///////////////////////////////////////////////////
-    
-
-     /**
-      * Runs a search from the Fluro server and returns the results
-      * @alias FluroContent.search
-      * @param  {String} terms   The keywords to search for
-      * @param  {Object} options Extra Configuration and options for how to search the database and how to render the results
-      * @param  {Object} options.limit How many results should be returned. Defaults to 10
-      * @param  {Array} options.types Specify types or definition names for which items should be searched for
-      * @param  {Boolean} options.showQuery If true will return the query used to search instead of the search results themselves
-      * @return {Array}         An array of content items that match the search, if options.types is specified will be a nested array of results for each type
-      *
-      * @example
-      * FluroContent.search('Wonder', {limit:5, types:['song', 'album', 'tag']}).then(function(results) {
-      *  //Will return a nested array with up to 5 results for each type
-      *  //[{_type:'Song', results:[{title:"Wonder"...}]}, {_type:'Album', results:[{title:"Wonder"...}]}]
-      * })
-      *
-      * FluroContent.search('Wonder', {limit:5}).then(function(results) {
-      *  //Will return an array of up to 5 items the user has access to view that match the search terms
-      *  //[{title:"Wonder", _type:'article', definition:'song'...}, {title:"Wonder", _type:'article', definition:'album'...}]
-      * })
-      */
-    service.search = function(terms, options) {
 
 
-        if (!options) {
-            options = {};
+    /**
+     * Runs a search from the Fluro server and returns the results
+     * @alias FluroContent.search
+     * @param  {String} terms   The keywords to search for
+     * @param  {Object} options Extra Configuration and options for how to search the database and how to render the results
+     * @param  {Object} options.limit How many results should be returned. Defaults to 10
+     * @param  {Array} options.types Specify types or definition names for which items should be searched for
+     * @param  {Boolean} options.showQuery If true will return the query used to search instead of the search results themselves
+     * @return {Array}         An array of content items that match the search, if options.types is specified will be a nested array of results for each type
+     *
+     * @example
+     * fluro.content.search('Wonder', {limit:5, types:['song', 'album', 'tag']}).then(function(results) {
+     *  //Will return a nested array with up to 5 results for each type
+     *  //[{_type:'Song', results:[{title:"Wonder"...}]}, {_type:'Album', results:[{title:"Wonder"...}]}]
+     * })
+     *
+     * fluro.content.search('Wonder', {limit:5}).then(function(results) {
+     *  //Will return an array of up to 5 items the user has access to view that match the search terms
+     *  //[{title:"Wonder", _type:'article', definition:'song'...}, {title:"Wonder", _type:'article', definition:'album'...}]
+     * })
+     */
+
+
+    /////////////////////////////////////////////////
+   
+    var currentSearch;
+
+    /////////////////////////////////////////////////
+
+    service.search = function(terms, params, config) {
+
+        if (!params) {
+            params = {};
         }
 
-        if (!options.limit) {
-            options.limit = 10;
+        if (!params.limit) {
+            params.limit = 10;
         }
+
+        /////////////////////////////////////////////////
+
+        if (currentSearch) {
+            // cancel the request (the message parameter is optional)
+            currentSearch.cancel('Operation canceled by the user.');
+        }
+
+
+        /////////////////////////////////////////////////
+
+        currentSearch = CancelToken.source();
+
+        /////////////////////////////////////////////////
 
         return new Promise(function(resolve, reject) {
 
             if (!terms || !terms.length) {
                 return resolve([]);
             }
-        
-            var requestOptions = {
-                params: options,
+
+            if(!config) {
+                config = {};
             }
+
+            config.params = params;
+            config.cancelToken = currentSearch.token;
+            // var requestOptions = {
+            //     params: options,
+            //     cancelToken: currentSearch.token,
+            // }
 
             /////////////////////////////////////////////
 
             //Retrieve the query results
-            fluro.api.get(`/content/search/${terms}`, requestOptions).then(function(res) {
+            fluro.api.get(`/content/search/${terms}`, config).then(function(res) {
                 resolve(res.data);
 
-            }, reject);
+            }).catch(function(thrown) {
+                if (axios.isCancel(thrown)) {
+                    // console.log('Request canceled', thrown.message);
+                } else {
+                    // handle error
+                }
+            });
+
+        });
+
+    }
+
+
+
+    ///////////////////////////////////////////////////
+
+
+    /**
+     * Runs a search from the Fluro server for a specific mentionable user
+     * @alias FluroContent.mention
+     * @param  {String} mentionID   the Name or Mention ID of the persona to search for
+     * @param  {Object} options Extra Configuration and options for how to search the database and how to render the results
+     * @param  {Object} config Optional HTTP Request Configuration
+     * @param  {Integer} options.limit Extra Configuration and options for how to search the database and how to render the results
+     * @return {Array}         An array of personas who can be mentioned
+     *
+     * @example
+     * fluro.content.mention('john.smith', {limit:5}, config).then(function(results) {
+     *  //Will return a nested array with up to 5 personas
+     * })
+     */
+
+
+    /////////////////////////////////////////////////
+   
+    var currentMentionSearch;
+
+    /////////////////////////////////////////////////
+
+    service.mention = function(terms, params, config) {
+
+        if (!params) {
+            params = {};
+        }
+
+        if (!params.limit) {
+            params.limit = 5;
+        }
+
+        /////////////////////////////////////////////////
+
+        if (currentMentionSearch) {
+            // cancel the request (the message parameter is optional)
+            currentMentionSearch.cancel('Operation canceled by the user.');
+        }
+
+
+        /////////////////////////////////////////////////
+
+        currentMentionSearch = CancelToken.source();
+
+        /////////////////////////////////////////////////
+
+        return new Promise(function(resolve, reject) {
+
+            if (!terms || !terms.length) {
+                return resolve([]);
+            }
+
+            if(!config) {
+                config = {};
+            }
+
+            config.params = params;
+            config.cancelToken = currentMentionSearch.token;
+            // var requestOptions = {
+            //     params: options,
+            //     cancelToken: currentMentionSearch.token,
+            // }
+
+            /////////////////////////////////////////////
+
+            //Retrieve the query results
+            fluro.api.get(`/mention/${terms}`, config).then(function(res) {
+                resolve(res.data);
+
+            }).catch(function(thrown) {
+                if (axios.isCancel(thrown)) {
+                    // console.log('Request canceled', thrown.message);
+                } else {
+                    // handle error
+                }
+            });
 
         });
 
@@ -148,7 +271,7 @@ var FluroContent = function(fluro) {
      * @example
      *
      * //Retrieve just the title for item '5be504eabf33991239599d63'
-     * FluroContent.get('5be504eabf33991239599d63', {select:'title'})
+     * fluro.content.get('5be504eabf33991239599d63', {select:'title'})
      */
     service.get = function(id, params) {
 
@@ -189,7 +312,7 @@ var FluroContent = function(fluro) {
      * @example
      *
      * //Retrieve just the title for item with external id that matches '5be504-eabf33991-239599-d63'
-     * FluroContent.external('5be504-eabf33991-239599-d63', {select:'title'})
+     * fluro.content.external('5be504-eabf33991-239599-d63', {select:'title'})
      */
     service.external = function(id, params) {
 
@@ -230,7 +353,7 @@ var FluroContent = function(fluro) {
      * @example
      *
      * //Retrieve just the title for item with the slug 'my-article'
-     * FluroContent.slug('my-article', {select:'title'})
+     * fluro.content.slug('my-article', {select:'title'})
      */
     service.slug = function(id, params) {
 
@@ -271,13 +394,14 @@ var FluroContent = function(fluro) {
      * @example
      *
      * //Find all events that have a status of active or archived where the endDate is greater than or equal to now and return the titles
-     * FluroContent.retrieve({_type:'event', status:{$in:['active', 'archived'], endDate:{$gte:"date('now')"}}}, {select:'title'})
+     * fluro.content.retrieve({_type:'event', status:{$in:['active', 'archived'], endDate:{$gte:"date('now')"}}}, {select:'title'})
      */
     service.retrieve = function(criteria, options) {
 
         if (!options) {
             options = {}
         }
+
 
         return new Promise(function(resolve, reject) {
 
@@ -308,6 +432,5 @@ var FluroContent = function(fluro) {
     return service;
 
 }
-
 
 export default FluroContent;

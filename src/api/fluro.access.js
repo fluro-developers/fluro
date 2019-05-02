@@ -2,6 +2,9 @@ import _ from 'lodash';
 import { EventDispatcher } from './fluro.utils';
 
 
+/**
+ * TODO need to add function to check canCreateAnyKindOf('tag') including any sub definitions
+ */
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -899,7 +902,26 @@ var FluroAccess = function(FluroCore) {
 
     /////////////////////////////////////////////////////
 
-    service.retrieveSelectableRealms = function(action, type, parentType, noCache) {
+    service.retrieveSelectableRealms = function(action, type, parentType, options) {
+
+        return new Promise(function(resolve, reject) {
+
+            //Retrieve all the realms the user is allowed to know about
+            FluroCore.api.get('/realm/selectable').then(function(res) {
+                return resolve(res.data)
+            }, reject);
+            return;
+
+        });
+    }
+
+
+    /**
+    service.retrieveSelectableRealms = function(action, type, parentType, options) {
+
+        if (!options) {
+            options = {};
+        }
 
         return new Promise(function(resolve, reject) {
 
@@ -910,8 +932,8 @@ var FluroAccess = function(FluroCore) {
             var user = service.retrieveCurrentSession();
 
             if (!user) {
-                 resolve([]);
-                 return;
+                resolve([]);
+                return;
             }
 
             //If we are a super user
@@ -919,7 +941,7 @@ var FluroAccess = function(FluroCore) {
 
                 //This returns the full list of all realms in a proper tree structure
                 FluroCore.api.get('/realm/tree').then(function(res) {
-                	return resolve(res.data)
+                    return resolve(res.data)
                 }, reject);
                 return;
             }
@@ -932,7 +954,6 @@ var FluroAccess = function(FluroCore) {
 
             //Permission String to search for
             var searchString = `${action} ${type}`;
-
 
             /////////////////////////////////////////////////////
 
@@ -964,7 +985,7 @@ var FluroAccess = function(FluroCore) {
                     var includesType = _.includes(realmSet.permissions, searchString);
                     var includedFromParent;
 
-                    /**/
+
                     //If the parent type was provided also then check any sub definitions
                     //of the basic type
                     if (parentType && parentType.length) {
@@ -995,7 +1016,12 @@ var FluroAccess = function(FluroCore) {
                         'color',
                         'bgColor',
                         '_id',
+                        'fullDefinition',
+                        'depth',
                     ])
+
+                    // console.log(realm.depth, realm.title);
+                    // return realm;
                 })
                 .uniq(function(realm) {
                     return realm._id
@@ -1008,6 +1034,12 @@ var FluroAccess = function(FluroCore) {
                     }
                 })
                 .reduce(function(set, realm) {
+
+                    if (true) {
+                        set[realm._id] = realm;
+
+                        return set;
+                    }
 
                     var lastRealmParent = _.last(realm.trail);
 
@@ -1047,37 +1079,39 @@ var FluroAccess = function(FluroCore) {
 
     }
 
+    /**/
 
 
-   /**
-    * @name FluroAccess.addEventListener
-    * @description Adds a callback that will be triggered whenever the specified event occurs
-    * @function
-    * @param {String} event The event to listen for
-    * @param {Function} callback The function to fire when this event is triggered
-    * @example
-    * //Listen for when the user session changes
-    * FluroAccess.addEventListener('change', function(userSession) {})
-    */
-   
-   /**
-    * @name FluroAccess.removeEventListener
-    * @description Removes all a callback from the listener list
-    * @function
-    * @param {String} event The event to stop listening for
-    * @param {Function} callback The function to remove from the listener list
-    * @example
-    * //Stop listening for the change event
-    * FluroAccess.removeEventListener('change', myFunction)
-    */
-   
-   /**
-    * @name FluroAccess.removeAllListeners
-    * @description Removes all listening callbacks for all events
-    * @function
-    * @example
-    * FluroAccess.removeAllListeners()
-    */
+
+    /**
+     * @name FluroAccess.addEventListener
+     * @description Adds a callback that will be triggered whenever the specified event occurs
+     * @function
+     * @param {String} event The event to listen for
+     * @param {Function} callback The function to fire when this event is triggered
+     * @example
+     * //Listen for when the user session changes
+     * FluroAccess.addEventListener('change', function(userSession) {})
+     */
+
+    /**
+     * @name FluroAccess.removeEventListener
+     * @description Removes all a callback from the listener list
+     * @function
+     * @param {String} event The event to stop listening for
+     * @param {Function} callback The function to remove from the listener list
+     * @example
+     * //Stop listening for the change event
+     * FluroAccess.removeEventListener('change', myFunction)
+     */
+
+    /**
+     * @name FluroAccess.removeAllListeners
+     * @description Removes all listening callbacks for all events
+     * @function
+     * @example
+     * FluroAccess.removeAllListeners()
+     */
 
     //////////////////////////////////
 

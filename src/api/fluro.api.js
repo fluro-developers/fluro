@@ -5,6 +5,9 @@ import {
     Cache,
 } from 'axios-extensions';
 
+
+const CancelToken = axios.CancelToken;
+
 ///////////////////////////////////////
 
 /**
@@ -48,20 +51,21 @@ var FluroAPI = function(fluro) {
         adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter, { defaultCache: defaultCache }))
     });
 
-
-
-
     ///////////////////////////////////////
 
     service.defaults.baseURL = fluro.apiURL;
     service.defaults.headers.common.Accept = 'application/json';
-
 
     /////////////////////////////////////////////////////
 
     service.interceptors.response.use(function(response) {
         return response;
     }, function(err) {
+
+        if (axios.isCancel(err)) {
+            console.log('Request cancelled');
+            return Promise.reject(err);
+        }
 
         //Get the response status
         var status = _.get(err, 'response.status') || err.status;
@@ -113,7 +117,7 @@ var FluroAPI = function(fluro) {
      *   console.log(error);
      * });
      */
-    
+
 
     /**
      * @name FluroAPI.post
@@ -133,7 +137,7 @@ var FluroAPI = function(fluro) {
      *   console.log(error);
      * });
      */
-    
+
     /**
      * @name FluroAPI.put
      * @description Makes a put http request to the Fluro REST API
@@ -152,7 +156,7 @@ var FluroAPI = function(fluro) {
      *   console.log(error);
      * });
      */
-    
+
     /**
      * @name FluroAPI.delete
      * @description Makes a delete http request to the Fluro REST API
@@ -182,4 +186,5 @@ var FluroAPI = function(fluro) {
 ///////////////////////////////////////
 ///////////////////////////////////////
 
+export { CancelToken as CancelToken };
 export default FluroAPI;

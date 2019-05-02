@@ -15,6 +15,7 @@ Frameworks are available for Vue, Angular and React
 
 ## Installation
 
+Before installing update the `.npmrc` file with your font-awesome license number
 ```bash
 npm install fluro --save
 ```
