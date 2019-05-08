@@ -678,6 +678,38 @@ var FluroAuth = function(fluro) {
     }
 
 
+
+    ///////////////////////////////////////////////////
+
+
+
+    /**
+     * Helper function to resync the user's session from the server. This is often used when first loading a webpage or app
+     * just to see if the user's permissions have changed since the user first logged in
+     * from the FluroAuth service itself
+     * @alias FluroAuth.sync
+     * @return {Promise}    A promise that either resolves with the user session 
+     */
+    service.sync = function() {
+        return fluro.api.get('/session')
+        .then(function(res) {
+
+            if(res.data) {
+          
+                //Update the user with any changes 
+                //returned back from the refresh request
+                if(store.user) {
+                    Object.assign(store.user, res.data);
+                }
+            } else {
+                store.user = null;
+            }
+            log('fluro.auth > server session refreshed');
+
+            dispatch();
+        });
+    }
+
     /////////////////////////////////////////////////////
 
     /**

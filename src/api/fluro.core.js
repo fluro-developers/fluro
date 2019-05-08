@@ -8,6 +8,7 @@ import FluroStats from './fluro.stats';
 import FluroTypes from './fluro.types';
 import FluroContent from './fluro.content';
 import FluroAccess from './fluro.access';
+import {EventDispatcher} from './fluro.utils';
 
 ///////////////////////////////////////
 
@@ -51,6 +52,10 @@ var FluroCore = function(options) {
 
     ///////////////////////////////////////
 
+    
+
+    ///////////////////////////////////////
+
     if (!options.apiURL || !options.apiURL.length) {
         options.apiURL = 'production';
     }
@@ -77,7 +82,9 @@ var FluroCore = function(options) {
         apiURL: options.apiURL,
         applicationToken: options.applicationToken,
         domain:options.domain || '',
+        global:{},
     }
+
 
 
     ///////////////////////////////////////
@@ -105,6 +112,20 @@ var FluroCore = function(options) {
         writable: false,
     });
 
+    ///////////////////////////////////////
+
+    //Create a new global dispatcher so we can trigger events
+    var dispatcher = new EventDispatcher();
+    dispatcher.bootstrap(core);
+
+    //Set the function
+    core.error = function(err) {
+        //Dispatch an error event
+        console.log('CORE', core);
+        return core.dispatch('error', utils.errorMessage(err));
+    }
+
+    ///////////////////////////////////////
     /**
      * Provides date functions, filters and utilities
      * for working with dates and timezones
@@ -195,6 +216,7 @@ var FluroCore = function(options) {
         value: types,
         writable: false,
     });
+
 
     ///////////////////////////////////////
 

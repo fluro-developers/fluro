@@ -17,6 +17,171 @@ var FluroTypes = function(FluroCore) {
 
     //////////////////////////////////
 
+    service.icon = function(type, library) {
+
+        if(!library) {
+            library = 'far';
+        }
+
+        var icon = 'file';
+        switch(type) {
+            case 'policy':
+                icon = 'id-card';
+            break;
+            case 'account':
+                icon = 'browser';
+            break;
+            case 'application':
+                icon = 'layer-group';
+            break;
+            case 'article':
+                icon = 'file-alt';
+            break;
+            case 'asset':
+                icon = 'file-archive';
+            break;
+            case 'audio':
+                icon = 'file-audio';
+            break;
+            case 'checkin':
+                icon = 'sign-in';
+            break;
+            case 'code':
+                icon = 'code';
+            break;
+            case 'collection':
+                icon = 'box-full';
+            break;
+            case 'component':
+                icon = 'tachometer-alt';
+            break;
+            case 'contact':
+                icon = 'child';
+            break;
+            case 'definition':
+                icon = 'books-medical';
+            break;
+            case 'contactdetail':
+                icon = 'file-invoice';
+            break;
+            case 'eventtrack':
+                icon = 'random';
+            break;
+            case 'event':
+                icon = 'calendar-star';
+            break;
+            case 'family':
+                icon = 'home';
+            break;
+            case 'team':
+                icon = 'users';
+            break;
+            case 'attendance':
+                icon = 'calendar-check';
+            break;
+            case 'image':
+                icon = 'image';
+            break;
+
+
+
+            case 'integration':
+                icon = 'plug';
+            break;
+            case 'interaction':
+                icon = 'compress';
+            break;
+            case 'location':
+                icon = 'map-marked-alt';
+            break;
+            case 'mailout':
+                icon = 'paper-plane';
+            break;
+            case 'plan':
+                icon = 'clipboard-list';
+            break;
+            case 'post':
+                icon = 'sticky-note';
+            break;
+            case 'process':
+                icon = 'exchange';
+            break;
+            case 'product':
+                icon = 'shopping-cart';
+            break;
+            case 'purchase':
+                icon = 'file-invoice-dollar';
+            break;
+            case 'query':
+                icon = 'terminal';
+            break;
+            case 'reaction':
+                icon = 'bolt';
+            break;
+            case 'realm':
+                icon = 'bullseye';
+            break;
+            case 'role':
+                icon = 'user-lock';
+            break;
+            case 'site':
+                icon = 'sitemap';
+            break;
+            case 'tag':
+                icon = 'tag';
+            break;
+            case 'ticket':
+                icon = 'ticket-alt';
+            break;
+            case 'transaction':
+                icon = 'usd-square';
+            break;
+            case 'persona':
+                icon = 'user';
+            break;
+            case 'video':
+                icon = 'video';
+            break;
+
+
+        }
+
+        return [library, icon];
+    }
+
+
+    //////////////////////////////////
+
+    /**
+     * Retrieves a specified definition or primitive type object
+     * @alias FluroTypes.get
+     * @param  {string} definedName The definition or type name you want to retrieve
+     * @param  {object} options extra options for the request
+     * @return {promise}       An promise that will resolve to the type definition from Fluro
+     */
+    service.get = function(definedName, options) {
+
+        if(!options) {
+            options = {
+                // flat:true
+            }
+        }
+
+        ///////////////////////////
+
+        return new Promise(function(resolve, reject) {
+
+            FluroCore.api.get(`/defined/type/${definedName}`, options)
+            .then(function(res) {
+                resolve(res.data);
+            }, reject);
+
+        });
+
+    }
+
+    //////////////////////////////////
+
     /**
      * Retrieves a list of specified types and their respective definitions
      * @alias FluroTypes.retrieve
@@ -35,16 +200,14 @@ var FluroTypes = function(FluroCore) {
 
         ///////////////////////////
 
-        var promise = FluroCore.api.post('/defined', options);
+        return new Promise(function(resolve, reject) {
 
-        // promise.then(function(res) {
-        //     // store.ids[id] = res.data.total;
-        //     // inProgress[id] = false;
-        // }, function() {
-        //     // inProgress[id] = false;
-        // })
+            FluroCore.api.post('/defined', options)
+            .then(function(res) {
+                resolve(res.data);
+            }, reject);
 
-        return promise;
+        });
 
     }
 

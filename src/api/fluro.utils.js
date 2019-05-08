@@ -184,6 +184,8 @@ FluroUtils.errorMessage = function(err) {
 
 
 
+
+
 export default FluroUtils;
 
 
@@ -264,6 +266,7 @@ export function EventDispatcher() {
             return;
         }
 
+       service.dispatch = dispatcher.dispatch;
        service.addEventListener = dispatcher.addEventListener;
        service.removeEventListener = dispatcher.removeEventListener;
        service.removeAllListeners = dispatcher.removeAllListeners;

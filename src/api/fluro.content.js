@@ -53,7 +53,7 @@ var FluroContent = function(fluro) {
 
 
     /////////////////////////////////////////////////
-   
+
     var currentSearch;
 
     /////////////////////////////////////////////////
@@ -88,7 +88,7 @@ var FluroContent = function(fluro) {
                 return resolve([]);
             }
 
-            if(!config) {
+            if (!config) {
                 config = {};
             }
 
@@ -118,6 +118,77 @@ var FluroContent = function(fluro) {
     }
 
 
+    ///////////////////////////////////////////////////
+
+
+    /**
+     * Retrieves a specific definition or data type
+     * @alias FluroContent.type
+     * @param  {String} definitionName   The defined type or definition name to retrieve
+     * @param  {Object} options Extra Configuration and options for how to search the database and how to render the results
+     * @return {Promise}         A promise that will resolve with the definition
+     *
+     * @example
+     * fluro.content.type('song', options, config).then(function(definition) {
+     *  //Will return the definition
+     * })
+     */
+
+    var typePromise;
+    var typeCacheable = true;
+
+    /////////////////////////////////////////////////
+
+    service.type = function(definitionName, params) {
+
+        if (!params) {
+            params = {};
+        }
+
+        if (!definitionName) {
+            throw Error('No definition name was provided');
+        }
+
+        /////////////////////////////////////////////////
+
+        //If we are already requesting this definition
+        if (!typePromise || !typeCacheable) {
+
+            //Create a new promise
+            typePromise = new Promise(function(resolve, reject) {
+
+                // if (!config) {
+                //     config = {};
+                // }
+
+                // config.params = params;
+                // var requestOptions = {
+                //     params: options,
+                //     cancelToken: currentMentionSearch.token,
+                // }
+
+                /////////////////////////////////////////////
+
+                //Retrieve the definition form the server and send it back to
+                //the user
+                fluro.api.get(`/defined/${definitionName}`)
+                    .then(function(res) {
+                        resolve(res.data);
+                        typeCacheable = true;
+                    }).catch(function(err) {
+                        reject(err);
+                        typeCacheable = false;
+                    });
+
+            });
+        }
+
+        /////////////////////////////////////////////////
+
+        return typePromise;
+
+    }
+
 
     ///////////////////////////////////////////////////
 
@@ -139,7 +210,7 @@ var FluroContent = function(fluro) {
 
 
     /////////////////////////////////////////////////
-   
+
     var currentMentionSearch;
 
     /////////////////////////////////////////////////
@@ -174,7 +245,7 @@ var FluroContent = function(fluro) {
                 return resolve([]);
             }
 
-            if(!config) {
+            if (!config) {
                 config = {};
             }
 
@@ -301,6 +372,9 @@ var FluroContent = function(fluro) {
         })
     }
 
+
+
+
     ///////////////////////////////////////////////////
 
     /**
@@ -426,6 +500,250 @@ var FluroContent = function(fluro) {
 
         })
     }
+
+
+    ///////////////////////////////////////////////////
+
+    /**
+     * This function returns a list of related items
+     * That either reference the specified item or are referenced by the provided item
+     * @alias FluroContent.related
+     * @param  {String} id The item to find related content for
+     * @param  {Object} params Extra query string parameters for the request
+     * @return {Promise}         A promise that will be resolved with an array of related items
+     * @example
+     *
+     * //Retrieve some related items for '5be504eabf33991239599d63'
+     * fluro.content.related('5be504eabf33991239599d63', {select:'title'})
+     */
+    service.related = function(id, params) {
+
+
+        id = fluro.utils.getStringID(id);
+
+        if (!id) {
+            throw Error(`No id specified ${id}`);
+        }
+
+        if (!params) {
+            params = {}
+        }
+
+        return new Promise(function(resolve, reject) {
+
+            var requestOptions = {
+                params: {}
+            }
+
+            //If there are query string parameters
+            if (params) {
+                requestOptions.params = params;
+            }
+
+            var criteria = {
+                _references: id,
+            }
+
+            // service.retrieve(criteria, requestOptions).then(resolve, reject);
+
+
+            // /////////////////////////////////////////////
+
+            //Retrieve the query results
+            fluro.api.get(`/content/related/${id}`, requestOptions).then(function(res) {
+                resolve(res.data);
+            }, reject);
+
+        })
+    }
+
+
+
+    ///////////////////////////////////////////////////
+
+    /**
+     * This function returns an interaction definition via the public 'form' API endpoint
+     * This will only result successfully if the definition requested has the definition of 'form' and has the status of 'active'
+     * @alias FluroContent.form
+     * @param  {String} id The id of the form to retrieve
+     * @param  {Object} options Extra options for the request
+     * @param  {Object} options.testing Whether to load the form in testing mode or not
+     * @return {Promise}         A promise that will be resolved with the form or an error
+     * @example
+     *
+     * //Retrieve a form ('58dca23c21428d2d045a1cf7') in testing mode
+     * fluro.content.form('58dca23c21428d2d045a1cf7', {testing:true})
+     */
+    service.form = function(id, options) {
+        id = fluro.utils.getStringID(id);
+
+        if (!id) {
+            throw Error(`No id specified ${id}`);
+        }
+
+        if (!options) {
+            options = {}
+        }
+
+        return new Promise(function(resolve, reject) {
+
+            var requestOptions = {
+                // params: {}
+            }
+
+            //If there are query string parameters
+            // if (params) {
+            //     requestOptions.params = params;
+            // }
+
+            // service.retrieve(criteria, requestOptions).then(resolve, reject);
+
+
+            // /////////////////////////////////////////////
+
+            //Retrieve the query results
+            fluro.api.get(`/form/${id}`, requestOptions).then(function(res) {
+                console.log('RESOLVE!', res.data);
+                resolve(res.data);
+            }, reject);
+
+        })
+    }
+
+
+    ///////////////////////////////////////////////////
+
+    /**
+     * This function makes it easy to submit form interactions via the Fluro API
+     * @alias FluroContent.submitInteraction
+     * @param  {String} definitionName the definition of the form you want to submit eg. 'supportRequest' or 'contactUs'... 
+     * @param  {Object} data The interaction data to submit
+     * @param  {Object} options Extra options for the request
+     * @param  {Object} options.reply The id of the post to reply to (If threaded conversation)
+     * @return {Promise}         A promise that will be resolved with an array of related items
+     * @example
+     *
+     * //Retrieve some related items for '5be504eabf33991239599d63'
+     * fluro.content.submitInteraction('5be504eabf33991239599d63', 'comment', {data:{customField:'My message'}}, {reply:'5be504eabf33991239599d63'})
+     */
+    service.submitInteraction = function(type, submission, options) {
+
+        if (!options) {
+            options = {}
+        }
+
+        return new Promise(function(resolve, reject) {
+
+            var requestOptions = {
+                // params: {}
+            }
+
+
+        
+            /////////////////////////////////////////////
+
+            //Retrieve the query results
+            fluro.api.post(`/interact/${type}`, submission, requestOptions)
+                .then(function(res) {
+                    resolve(res.data);
+                },reject);
+
+        })
+    }
+
+    ///////////////////////////////////////////////////
+
+    /**
+     * This function makes it easy to create and attach a post to a specified piece of fluro content 
+     * @alias FluroContent.submitPost
+     * @param  {String} target The ID of the item to attach this post to
+     * @param  {String} definitionName the definition type of the post you want to create eg. 'note' or 'comment'... 
+     * @param  {Object} data The post content to create
+     * @param  {Object} options Extra options for the request
+     * @param  {Object} options.reply The id of the post to reply to (If threaded conversation)
+     * @return {Promise}         A promise that will be resolved with an array of related items
+     * @example
+     *
+     * //Retrieve some related items for '5be504eabf33991239599d63'
+     * fluro.content.submitPost('5be504eabf33991239599d63', 'comment', {data:{customField:'My message'}}, {reply:'5be504eabf33991239599d63'})
+     */
+    service.submitPost = function(id, type, body, options) {
+
+
+        id = fluro.utils.getStringID(id);
+
+        if (!id) {
+            throw Error(`No target specified ${id}`);
+        }
+
+        if (!options) {
+            options = {}
+        }
+
+        return new Promise(function(resolve, reject) {
+
+            var requestOptions = {
+                // params: {}
+            }
+
+            // /////////////////////////////////////////////
+
+            //Retrieve the query results
+            fluro.api.post(`/post/${id}/${type}`, body, requestOptions)
+                .then(function(res) {
+                    resolve(res.data);
+                },reject);
+
+        })
+    }
+
+    ///////////////////////////////////////////////////
+
+    /**
+     * This function makes it easy to retrieve the current thread of posts attached to a specific
+     * item
+     * @alias FluroContent.thread
+     * @param  {String} target The ID of the item to attach this post to
+     * @param  {String} definitionName the definition type of the post you want to create eg. 'note' or 'comment'... 
+     * @param  {Object} data The post content to create
+     * @param  {Object} options Extra options for the request
+     * @param  {Object} options.reply The id of the post to reply to (If threaded conversation)
+     * @return {Promise}         A promise that will be resolved with an array of related items
+     * @example
+     *
+     * //Retrieve the current post thread of all 'comments' attached to a specific content
+     * fluro.content.thread('5be504eabf33991239599d63', 'comment', {data:{customField:'My message'}}, {reply:'5be504eabf33991239599d63'})
+     */
+    service.thread = function(id, type, options) {
+
+
+        id = fluro.utils.getStringID(id);
+
+        if (!id) {
+            throw Error(`No target specified ${id}`);
+        }
+
+        if (!options) {
+            options = {}
+        }
+
+        return new Promise(function(resolve, reject) {
+
+            var requestOptions = {
+                // params: {}
+            }
+
+            // /////////////////////////////////////////////
+
+            //Retrieve the query results
+            fluro.api.get(`/post/${id}/${type}`, requestOptions)
+                .then(function(res) {
+                    resolve(res.data);
+                },reject);
+
+        })
+    }
+
 
     ///////////////////////////////////////////////////
 

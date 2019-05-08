@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {EventDispatcher} from './fluro.utils';
+import { EventDispatcher } from './fluro.utils';
 
 
 ///////////////////////////////////////////////////
@@ -13,7 +13,6 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
     //Create a new dispatcher
     var dispatcher = new EventDispatcher();
     dispatcher.bootstrap(service);
-
 
     //////////////////////////////
 
@@ -29,9 +28,8 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
         name: statName,
         ids: {}
     }
-    var inProgress = {};
 
-    //////////////////////////////
+    var inProgress = {};
 
     //////////////////////////////
 
@@ -75,6 +73,14 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
     ///////////////////////////////////////////////////
 
+    //Set the value and dispatch an event that we are processing
+    service.setProcessing = function(id, isProcessing) {
+        inProgress[id] = isProcessing;
+        dispatcher.dispatch('statting', { id: id, statting: isProcessing });
+    }
+
+    ///////////////////////////////////////////////////
+
     service.add = function(id) {
 
         if (unique) {
@@ -86,13 +92,23 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
         ///////////////////////////
 
         var promise = Fluro.api.delete(url);
-        inProgress[id] = true;
+        service.setProcessing(id, true);
+
+        ///////////////////////////
 
         promise.then(function(res) {
             store.ids[id] = res.data.total;
-            inProgress[id] = false;
+
+            //Tell the world that we are processing
+            //a specific stat on an item
+            service.setProcessing(id, false);
+
+            //Tell the world that our stats have changed
+            dispatcher.dispatch('change', store);
+
+
         }, function() {
-            inProgress[id] = false;
+            service.setProcessing(id, false);
         })
 
         return promise;
@@ -111,15 +127,19 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
         ///////////////////////////
 
         var promise = Fluro.api.delete(url);
-        inProgress[id] = true;
+        service.setProcessing(id, true);
+
+        ///////////////////////////
 
         promise.then(function(res) {
             delete store.ids[id];
-            inProgress[id] = false;
-            console.log('unset() complete')
+
+            service.setProcessing(id, false);
+
+            //Broadcast the change in stats
+            dispatcher.dispatch('change', store);
         }, function() {
-            inProgress[id] = false;
-            console.log('unset() error')
+            service.setProcessing(id, false);
         })
 
         return promise;
@@ -138,28 +158,29 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
         ///////////////////////////
 
         var promise = Fluro.api.post(url);
-        inProgress[id] = true;
+        service.setProcessing(id, true);
 
         promise.then(function(res) {
             store.ids[id] = true;
-            inProgress[id] = false;
-            console.log('set() complete')
+
+            service.setProcessing(id, false);
+            dispatcher.dispatch('change', store);
 
         }, function(err) {
 
-            inProgress[id] = false;
+            service.setProcessing(id, false);
 
             var errorName = _.get(err, 'response.data.name');
 
             //If it's just an existing stat complaint
-            if(errorName == 'ExistingUniqueStatError') {
+            if (errorName == 'ExistingUniqueStatError') {
                 store.ids[id] = true;
-                console.log('set() complete')
                 //Mark it as statted anyway
             } else {
-                console.log('set() error', )
+                // //console.log('set() error', )
             }
 
+            dispatcher.dispatch('change', store);
         })
 
         return promise;
@@ -198,7 +219,6 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
     service.refresh = function() {
 
-
         if (inflightRequest) {
             return inflightRequest;
         }
@@ -216,16 +236,15 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
         //If we are not logged in
 
         var loggedInUser = Fluro.auth.getCurrentUser();
-        
-        if(loggedInUser) {
-             promise = Fluro.api.get(url);
-         } else {
+
+        if (loggedInUser) {
+            promise = Fluro.api.get(url);
+        } else {
             promise = new Promise(function(resolve) {
                 return resolve([]);
             })
         }
-        
-        // console.log('New Stat Request')
+
         inflightRequest = promise;
 
         promise.then(refreshComplete, refreshFailed);
@@ -235,29 +254,147 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
     //////////////////////////////
 
     function refreshComplete(res) {
-        // console.log('Stats updated')
         Object.assign(store, res.data);
         finish();
     }
 
     function refreshFailed(err) {
-        console.log(statName, 'stats could not be retrieved', err)
         finish();
     }
 
     function finish() {
 
-        // setTimeout(function() {
-            inflightRequest = null;
-           
-        // }, 500);
+
+
+        //Kill the inflight request
+        inflightRequest = null;
+
+        //Dispatch event
+        dispatcher.dispatch('change', store);
     }
 
     //////////////////////////////
-    
-    var initPromise = service.refresh();
-    initPromise.then(refreshComplete, refreshFailed);
-    inflightRequest = initPromise
+
+    inflightRequest = service.refresh().then(refreshComplete, refreshFailed);
+
+    //////////////////////////////
+
+    return service;
+}
+
+
+
+///////////////////////////////////////////////////
+
+//This is the bucket for each kind of global stat
+var FluroStatStorage = function(Fluro, statName, targetID, unique) {
+
+    var service = {
+        total: 0,
+    }
+
+    //Create a new dispatcher
+    var dispatcher = new EventDispatcher();
+    dispatcher.bootstrap(service);
+
+    //////////////////////////////
+
+    var key = statName;
+    if (unique) {
+        key = '_' + key;
+    }
+
+    //////////////////////////////
+
+    var store = {
+        key: key,
+        name: statName,
+    }
+
+    //////////////////////////////
+
+    //Create the getters
+    Object.defineProperty(service, 'key', {
+        value: key,
+        writable: false
+    });
+
+    //Create the getters
+    Object.defineProperty(service, 'name', {
+        value: statName,
+        writable: false
+    });
+
+    //////////////////////////////
+
+    var inflightRequest;
+
+    service.refresh = function() {
+
+        if (inflightRequest) {
+            return inflightRequest;
+        }
+
+
+        var url = `/stat/${targetID}/${statName}`;
+
+        if (unique) {
+            url += '?unique=true';
+        }
+
+        ////////////////////////////////
+
+
+        var loggedInUser = Fluro.auth.getCurrentUser();
+
+        if (loggedInUser) {
+            inflightRequest = Fluro.api.get(url, { cache: false });
+        } else {
+            inflightRequest = new Promise(function(resolve) {
+                return resolve([]);
+            })
+        }
+
+        service.processing = true;
+        inflightRequest.then(refreshComplete, refreshFailed);
+
+
+        return inflightRequest;
+    }
+
+    //////////////////////////////
+
+    function refreshComplete(res) {
+
+
+
+        var total = _.get(res, 'data.total');
+
+        store.total = service.total = total;
+
+        //console.log(total)
+        finish();
+    }
+
+    function refreshFailed(err) {
+        finish();
+    }
+
+    function finish() {
+        service.processing = false;
+
+        //Dispatch event
+        //console.log('UPDATED WITH NEW STATS', store.total);
+
+        dispatcher.dispatch('change', store);
+
+        //Kill the inflight request
+        inflightRequest = null;
+    }
+
+    //////////////////////////////
+
+    inflightRequest = service.refresh().then(refreshComplete, refreshFailed);
 
     //////////////////////////////
 
@@ -277,8 +414,38 @@ var FluroStats = function(Fluro) {
     ///////////////////////////////////////////////////
 
     var service = {
-        stores: {},
+        userStores: {},
+        globalStores: {},
     }
+
+
+    ///////////////////////////////////////////////////
+
+    //Helper function to quickly set a stat
+    service.set = function(statName, target) {
+
+        var targetID = Fluro.utils.getStringID(target);
+
+        //Get/Create the stat storage bucket
+        var store = service.getUserStore(statName, true);
+        store.set(targetID)
+    }
+
+    ///////////////////////////////////////////////////
+
+    //Helper function to quickly unset a stat
+    service.unset = function(statName, target) {
+
+        var targetID = Fluro.utils.getStringID(target);
+
+        //Get/Create the stat storage bucket
+        var store = service.getUserStore(statName, true);
+        store.unset(targetID)
+    }
+
+
+    
+
 
     ///////////////////////////////////////////////////
 
@@ -287,7 +454,12 @@ var FluroStats = function(Fluro) {
         var promises = [];
 
         //Refreshes all the stats
-        _.each(service.stores, function(store) {
+        _.each(service.userStores, function(store) {
+            promises.push(store.refresh());
+        })
+
+        //Refreshes all the stats
+        _.each(service.globalStores, function(store) {
             promises.push(store.refresh());
         })
 
@@ -296,24 +468,100 @@ var FluroStats = function(Fluro) {
 
     ///////////////////////////////////////////////////
 
-    //Create a new / Get an existing store
-    service.getStore = function(statName, unique) {
+    service.getGlobalStoresForKey = function(key) {
 
-        
+        return _.filter(service.globalStores, function(store) {
+            return store.key == key;
+        })
+    }
+
+    ///////////////////////////////////////////////////
+
+    //Create a new / Get an existing store
+    service.getUserStore = function(statName, unique) {
+        if (!statName) {
+            //console.log('No stat name provided');
+            return;
+        }
+
 
         var key = statName;
         if (unique) {
             key = '_' + key;
         }
 
-        if (service.stores[key]) {
-            return service.stores[key];
+        if (service.userStores[key]) {
+            return service.userStores[key];
+        }
+
+        var userStore = new FluroUserStatStorage(Fluro, statName, unique);
+
+        //If the user changes a stat, check if we need to
+        userStore.addEventListener('change', function(data) {
+
+
+
+
+            //If there is an existing store for this state
+            //we should refresh it cos there's new data
+            var staleStores = service.getGlobalStoresForKey(data.key);
+
+            setTimeout(function() {
+
+                //Give the backend a break before we refresh
+                _.each(staleStores, function(store) {
+                    store.refresh();
+                });
+
+            }, 1000);
+
+        });
+
+
+        service.userStores[key] = userStore;
+
+
+
+        return service.userStores[key];
+    }
+
+
+    ///////////////////////////////////////////////////
+
+    //Create a new / Get a global Store
+    service.getStore = function(statName, targetID, unique) {
+        if (!statName) {
+            //console.log('No stat name provided');
+            return;
         }
 
 
-        service.stores[key] = new FluroUserStatStorage(Fluro, statName, unique);
 
-        return service.stores[key];
+
+        var key = statName;
+        if (unique) {
+            key = '_' + key;
+        }
+
+        //////////////////////////////////
+
+        //Create a unique key for this specific
+        //target and stat
+        var combinedKey = `${key}.${targetID}`;
+
+        //////////////////////////////////
+
+        if (service.globalStores[combinedKey]) {
+            return service.globalStores[combinedKey];
+        }
+
+        //////////////////////////////////
+
+        service.globalStores[combinedKey] = new FluroStatStorage(Fluro, statName, targetID, unique);
+
+        //////////////////////////////////
+
+        return service.globalStores[combinedKey];
     }
 
     ///////////////////////////////////////////////////

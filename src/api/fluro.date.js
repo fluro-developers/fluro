@@ -89,6 +89,22 @@ FluroDate.formatDate = function(dateString, format, timezone) {
     return moment(date).format(format);
 }
 
+
+
+/**
+ * Parses a date and returns a 'timeago' string
+ * @param  {Date|String} date The date or string to parse
+ * @return {String}            A human readable string
+ * @example
+ * var date = new Date()
+ *
+ * //Returns 10 mins ago
+ * return fluro.date.timeago(date)
+ */
+FluroDate.timeago = function(date, suffix) {    
+    return moment(date).fromNow(suffix);
+}
+
 /**
  * Parses an ObjectID and returns the date of creation
  * @param  {String} id The id of the object to parse
