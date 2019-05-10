@@ -902,12 +902,33 @@ var FluroAccess = function(FluroCore) {
 
     /////////////////////////////////////////////////////
 
-    service.retrieveSelectableRealms = function(action, type, parentType, options) {
+    service.retrieveSelectableRealms = function(action, definition, type, options) {
+
+        if(!options) {
+            options = {}
+        }
+
+        ///////////////////////////////////
+
+        var params = {
+            definition:definition,
+            parentType:type,
+        }
+
+        ///////////////////////////////////
+
+        if(options.flat) {
+            params.flat = true;
+        }
+
+        ///////////////////////////////////
 
         return new Promise(function(resolve, reject) {
 
             //Retrieve all the realms the user is allowed to know about
-            FluroCore.api.get('/realm/selectable').then(function(res) {
+            FluroCore.api.get('/realm/selectable', {
+                params,
+            }).then(function(res) {
                 return resolve(res.data)
             }, reject);
             return;

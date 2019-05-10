@@ -27,6 +27,68 @@ FluroUtils.mapParameters = function(parameters) {
 }
 
 
+
+//////////////////////////////////////////////////////
+
+/**
+ * A helpful function that can return a subset of an array compared to specified criteria, This is usually used
+ * to evaluate expressions on Fluro forms
+ * @alias FluroUtils.matchInArray
+ * @param  {Array} array The array you want to filter
+ * @param  {String} path The path to the property you want to compare on each item in the array
+ * @param  {String} value The value to compare with
+ * @param  {String} operator Can be Possible options are ('>', '<', '>=', '<=', 'in', '==') Defaults to '==' (Is equal to)
+ * @return {Array}           An array that contains all items that matched
+ * @example 
+ * //Returns {name:'Jerry', age:26} as that is only item in the array that matches the criteria
+ * FluroUtils.matchInArray([{name:'Jerry', age:26}, {name:'Susan', age:19}], 'age', 26, '>=');
+ * 
+ */
+FluroUtils.matchInArray = function(array, key, value, operator) {
+
+    //Filter the array options by a certain value and operator
+    var matches = _.filter(array, function(entry) {
+        //Get the value from the object
+        var retrievedValue = _.get(entry, key);
+        var isMatch;
+
+        ///////////////////////
+
+        //Check how to operate
+        switch (operator) {
+            case '>':
+                isMatch = (retrievedValue > value);
+                break;
+            case '<':
+                isMatch = (retrievedValue < value);
+                break;
+            case '>=':
+                isMatch = (retrievedValue >= value);
+                break;
+            case '<=':
+                isMatch = (retrievedValue <= value);
+                break;
+            case 'in':
+                isMatch = _.includes(retrievedValue, value);
+                break;
+            default:
+                //operator is strict equals
+                if (value === undefined) {
+                    isMatch = retrievedValue;
+                } else {
+                    isMatch = (retrievedValue == value);
+                }
+                break;
+        }
+
+        ///////////////////////
+
+        return isMatch;
+    })
+
+    return matches;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -46,17 +108,17 @@ FluroUtils.mapParameters = function(parameters) {
 FluroUtils.comma = function(array, path) {
 
     return _.chain(array)
-    .compact()
-    .map(function(item) {
-        if(path) {
-            return _.get(item, path);
-        }
+        .compact()
+        .map(function(item) {
+            if (path) {
+                return _.get(item, path);
+            }
 
-        return item;
-    })
-    .value()
-    .join(', ');
-    
+            return item;
+        })
+        .value()
+        .join(', ');
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -155,6 +217,9 @@ FluroUtils.arrayIDs = function(array, asObjectID) {
 FluroUtils.errorMessage = function(err) {
 
 
+
+    ////////////////////////////////////
+
     var candidates = [
         'response.data.message',
         'response.data',
@@ -172,7 +237,13 @@ FluroUtils.errorMessage = function(err) {
         .value();
 
     ////////////////////////////////////
-    
+
+    if (Array.isArray(message)) {
+        message = message[0];
+    }
+
+    ////////////////////////////////////
+
     if (!message || !message.length) {
         return String(err);
     }
@@ -211,7 +282,7 @@ export function EventDispatcher() {
 
     dispatcher.dispatch = function(event, details) {
 
-        if(listeners[event]) {
+        if (listeners[event]) {
 
             // console.log('Listeners', event, listeners[event]);
             //For each listener
@@ -221,17 +292,17 @@ export function EventDispatcher() {
                 return callback(details);
             });
         }
-    } 
+    }
 
     /////////////////////////////////////////////
-    
+
     dispatcher.addEventListener = function(event, callback) {
 
-        if(!listeners[event]) {
+        if (!listeners[event]) {
             listeners[event] = [];
         }
 
-        if(listeners[event].indexOf(callback) == -1) {
+        if (listeners[event].indexOf(callback) == -1) {
             //Add to the listeners
             listeners[event].push(callback)
         } else {
@@ -240,19 +311,19 @@ export function EventDispatcher() {
     }
 
     /////////////////////////////////////////////
-    
+
     dispatcher.removeEventListener = function(event, callback) {
 
-        if(!listeners[event]) {
+        if (!listeners[event]) {
             listeners[event] = [];
         }
 
         //Get the index of the listener
         var index = listeners[event].indexOf(callback);
 
-        if(index != -1) {
+        if (index != -1) {
             //Remove from the listeners
-            listeners[event].splice(index,1);
+            listeners[event].splice(index, 1);
         }
     }
 
@@ -261,17 +332,17 @@ export function EventDispatcher() {
 
     //Wrap the event listener functionality
     dispatcher.bootstrap = function(service) {
-        if(!service) {
+        if (!service) {
             // console.log('No service to bootstrap to')
             return;
         }
 
-       service.dispatch = dispatcher.dispatch;
-       service.addEventListener = dispatcher.addEventListener;
-       service.removeEventListener = dispatcher.removeEventListener;
-       service.removeAllListeners = dispatcher.removeAllListeners;
+        service.dispatch = dispatcher.dispatch;
+        service.addEventListener = dispatcher.addEventListener;
+        service.removeEventListener = dispatcher.removeEventListener;
+        service.removeAllListeners = dispatcher.removeAllListeners;
     }
-    
+
     /////////////////////////////////////////////
 
     return dispatcher;

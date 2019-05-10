@@ -19,134 +19,134 @@ var FluroTypes = function(FluroCore) {
 
     service.icon = function(type, library) {
 
-        if(!library) {
+        if (!library) {
             library = 'far';
         }
 
-        var icon = 'file';
-        switch(type) {
+        var icon;
+        switch (type) {
             case 'policy':
                 icon = 'id-card';
-            break;
+                break;
             case 'account':
                 icon = 'browser';
-            break;
+                break;
             case 'application':
                 icon = 'layer-group';
-            break;
+                break;
             case 'article':
                 icon = 'file-alt';
-            break;
+                break;
             case 'asset':
                 icon = 'file-archive';
-            break;
+                break;
             case 'audio':
                 icon = 'file-audio';
-            break;
+                break;
             case 'checkin':
                 icon = 'sign-in';
-            break;
+                break;
             case 'code':
                 icon = 'code';
-            break;
+                break;
             case 'collection':
                 icon = 'box-full';
-            break;
+                break;
             case 'component':
                 icon = 'tachometer-alt';
-            break;
+                break;
             case 'contact':
                 icon = 'child';
-            break;
+                break;
             case 'definition':
                 icon = 'books-medical';
-            break;
+                break;
             case 'contactdetail':
                 icon = 'file-invoice';
-            break;
+                break;
             case 'eventtrack':
                 icon = 'random';
-            break;
+                break;
             case 'event':
                 icon = 'calendar-star';
-            break;
+                break;
             case 'family':
                 icon = 'home';
-            break;
+                break;
             case 'team':
                 icon = 'users';
-            break;
+                break;
             case 'attendance':
                 icon = 'calendar-check';
-            break;
+                break;
             case 'image':
                 icon = 'image';
-            break;
+                break;
 
 
 
             case 'integration':
                 icon = 'plug';
-            break;
+                break;
             case 'interaction':
                 icon = 'compress';
-            break;
+                break;
             case 'location':
                 icon = 'map-marked-alt';
-            break;
+                break;
             case 'mailout':
                 icon = 'paper-plane';
-            break;
+                break;
             case 'plan':
                 icon = 'clipboard-list';
-            break;
+                break;
             case 'post':
                 icon = 'sticky-note';
-            break;
+                break;
             case 'process':
                 icon = 'exchange';
-            break;
+                break;
             case 'product':
                 icon = 'shopping-cart';
-            break;
+                break;
             case 'purchase':
                 icon = 'file-invoice-dollar';
-            break;
+                break;
             case 'query':
                 icon = 'terminal';
-            break;
+                break;
             case 'reaction':
                 icon = 'bolt';
-            break;
+                break;
             case 'realm':
                 icon = 'bullseye';
-            break;
+                break;
             case 'role':
                 icon = 'user-lock';
-            break;
+                break;
             case 'site':
                 icon = 'sitemap';
-            break;
+                break;
             case 'tag':
                 icon = 'tag';
-            break;
+                break;
             case 'ticket':
                 icon = 'ticket-alt';
-            break;
+                break;
             case 'transaction':
                 icon = 'usd-square';
-            break;
+                break;
             case 'persona':
                 icon = 'user';
-            break;
+                break;
             case 'video':
                 icon = 'video';
-            break;
-
-
+                break;
         }
 
-        return [library, icon];
+        if(icon) {
+            return [library, icon];
+        }
     }
 
 
@@ -161,7 +161,7 @@ var FluroTypes = function(FluroCore) {
      */
     service.get = function(definedName, options) {
 
-        if(!options) {
+        if (!options) {
             options = {
                 // flat:true
             }
@@ -172,9 +172,9 @@ var FluroTypes = function(FluroCore) {
         return new Promise(function(resolve, reject) {
 
             FluroCore.api.get(`/defined/type/${definedName}`, options)
-            .then(function(res) {
-                resolve(res.data);
-            }, reject);
+                .then(function(res) {
+                    resolve(res.data);
+                }, reject);
 
         });
 
@@ -190,7 +190,7 @@ var FluroTypes = function(FluroCore) {
      */
     service.retrieve = function(types, options) {
 
-        if(!options) {
+        if (!options) {
             options = {
                 // flat:true
             }
@@ -203,9 +203,9 @@ var FluroTypes = function(FluroCore) {
         return new Promise(function(resolve, reject) {
 
             FluroCore.api.post('/defined', options)
-            .then(function(res) {
-                resolve(res.data);
-            }, reject);
+                .then(function(res) {
+                    resolve(res.data);
+                }, reject);
 
         });
 

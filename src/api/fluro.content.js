@@ -200,6 +200,7 @@ var FluroContent = function(fluro) {
      * @param  {Object} options Extra Configuration and options for how to search the database and how to render the results
      * @param  {Object} config Optional HTTP Request Configuration
      * @param  {Integer} options.limit Extra Configuration and options for how to search the database and how to render the results
+     * @param  {Integer} options.managed Search for managed personas instead of Global Fluro user personas
      * @return {Array}         An array of personas who can be mentioned
      *
      * @example

@@ -121,7 +121,6 @@ var FluroCore = function(options) {
     //Set the function
     core.error = function(err) {
         //Dispatch an error event
-        console.log('CORE', core);
         return core.dispatch('error', utils.errorMessage(err));
     }
 

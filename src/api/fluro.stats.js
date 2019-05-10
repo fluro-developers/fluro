@@ -347,7 +347,8 @@ var FluroStatStorage = function(Fluro, statName, targetID, unique) {
 
         var loggedInUser = Fluro.auth.getCurrentUser();
 
-        if (loggedInUser) {
+        //If we are logged in as a user or an application
+        if (loggedInUser || Fluro.applicationToken) {
             inflightRequest = Fluro.api.get(url, { cache: false });
         } else {
             inflightRequest = new Promise(function(resolve) {
@@ -462,6 +463,7 @@ var FluroStats = function(Fluro) {
         _.each(service.globalStores, function(store) {
             promises.push(store.refresh());
         })
+
 
         return Promise.all(promises)
     }
