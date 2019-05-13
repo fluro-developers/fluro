@@ -333,6 +333,10 @@ var FluroAsset = function(Fluro) {
 
         //////////////////////////////////////
 
+        var reducer = 0.5;
+
+        //////////////////////////////////////
+
         var screenWidth = window.screen.width || 1920;
         var screenHeight = window.screen.width || 1080;
 
@@ -343,9 +347,9 @@ var FluroAsset = function(Fluro) {
 
         //By default, limit the width
         if (isRetina) {
-            limitWidth = 1920;
+            limitWidth = 1920 * reducer;
         } else {
-            limitWidth = 1200;
+            limitWidth = 1200 * reducer;
         }
 
         //////////////////////////////////////
@@ -353,18 +357,18 @@ var FluroAsset = function(Fluro) {
         //If the screen is smaller then 768 use an optimised image
         if (screenWidth <= 768) {
             if (isRetina) {
-                limitWidth = 1536;
+                limitWidth = 1536 * reducer;
             } else {
-                limitWidth = 768;
+                limitWidth = 768 * reducer;
             }
         }
 
         //If using mobile then use a smaller optimised image
         if (screenWidth <= 320) {
             if (isRetina) {
-                limitWidth = 640;
+                limitWidth = 640 * reducer;
             } else {
-                limitWidth = 320;
+                limitWidth = 320 * reducer;
             }
         }
 
@@ -391,6 +395,12 @@ var FluroAsset = function(Fluro) {
             if (h) {
                 params['h'] = h;
             }
+        }
+        
+        //////////////////////////////////////////////////
+
+        if(!params.hasOwnProperty('quality')) {
+            params.quality = 80;
         }
         
         //////////////////////////////////////////////////
