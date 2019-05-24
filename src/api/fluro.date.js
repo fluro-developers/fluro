@@ -15,7 +15,7 @@ import FluroUtils from './fluro.utils';
 
 var DEFAULT_TIMEZONE;
 
-if (Intl) {
+if (!(typeof window === 'undefined')) {
     DEFAULT_TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 
