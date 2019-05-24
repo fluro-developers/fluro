@@ -27,6 +27,29 @@ FluroUtils.mapParameters = function(parameters) {
 }
 
 
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A helpful function that can create a globally unique id
+ * @alias FluroUtils.guid
+ * @return {String}            The new guid
+ * @example 
+ * //Returns 20354d7a-e4fe-47af-8ff6-187bca92f3f9
+ * FluroUtils.guid()
+ */
+FluroUtils.guid = function() {
+    var u = (new Date()).getTime().toString(16) +
+        Math.random().toString(16).substring(2) + "0".repeat(16);
+    var guid = u.substr(0, 8) + '-' + u.substr(8, 4) + '-4000-8' +
+        u.substr(12, 3) + '-' + u.substr(15, 12);
+
+    return guid;
+}
+
+
+
+
+
 
 //////////////////////////////////////////////////////
 

@@ -43,7 +43,11 @@ var FluroAPI = function(fluro) {
      * @type {LRUCache}
      * @access private
      */
-    var defaultCache = fluro.cache.get('api');
+    var defaultCache;
+
+    if (process.browser) {
+        defaultCache = fluro.cache.get('api');
+    }
 
     ///////////////////////////////////////
 

@@ -1,5 +1,3 @@
-
-
 /**
  * Creates a new FluroAsset instance.
  * This module provides a number of helper functions for managing asset, image, video and audio items in Fluro
@@ -9,17 +7,22 @@
  */
 var FluroAsset = function(Fluro) {
 
-
-    if(!window){
-        window = {
-            screen:{
-                width:1920,
-                height:1080,
-            },
-        }
+    var isRetina;
+    var defaultWindowSettings = {
+        screen: {
+            width: 1920,
+            height: 1080,
+        },
     }
 
-    var isRetina = window.devicePixelRatio > 1;
+    ///////////////////////////////////////////////////
+
+    // if (process.browser) {
+    if (this.window) {
+        defaultWindowSettings = this.window;
+        isRetina = this.window.devicePixelRatio > 1;
+    }
+    // }
 
     ///////////////////////////////////////////////////
 
@@ -35,8 +38,8 @@ var FluroAsset = function(Fluro) {
         //If an extension was provided add it to the url
         if (params.extension && params.extension.length) {
 
-            if(params.title && params.title.length) {
-                
+            if (params.title && params.title.length) {
+
                 url += `/file/${params.title}.${params.extension}`;
                 delete params.title;
 
@@ -48,7 +51,7 @@ var FluroAsset = function(Fluro) {
                     url += `/file/file.${params.extension}`;
                 }
             }
-            
+
             //Dont need to include it anymore
             delete params.extension;
         } else {
@@ -103,7 +106,7 @@ var FluroAsset = function(Fluro) {
             return;
         }
 
-        if(!params) {
+        if (!params) {
             params = {};
         }
 
@@ -131,6 +134,55 @@ var FluroAsset = function(Fluro) {
     ///////////////////////////////////////////////////
 
     /**
+     * 
+     * This function generates a player url for a video file that has been uploaded to Fluro
+     * This is useful to force browsers to renderer a html5 video player instead of downloading the video file on desktop
+     * @alias FluroAsset.playerUrl
+     * @param  {string} videoID The _id of the video you want to play
+     * @param  {object} params      
+     * @return {string}         A valid Fluro URL
+     * @example
+     * // returns 'https://api.fluro.io/get/player?url=https://api.fluro.io/get/5be504eabf33991239599d63'
+     * FluroAsset.playerUrl('5be504eabf33991239599d63')
+     */
+
+
+    service.playerUrl = function(videoID, params) {
+
+        //Get the asset id as a pure string
+        videoID = Fluro.utils.getStringID(videoID);
+
+        if (!videoID || !String(videoID).length) {
+            return;
+        }
+
+        if (!params) {
+            params = {};
+        }
+
+        var url = `${Fluro.apiURL}/get/player?url=${Fluro.apiURL}/get/${videoID}`;
+
+        ////////////////////////////////////////
+
+        url = parameterDefaults(url, params);
+
+        ////////////////////////////////////////
+
+        //Map the parameters to a query string
+        var queryParameters = Fluro.utils.mapParameters(params);
+
+        if (queryParameters.length) {
+            url += '?' + queryParameters;
+        }
+
+        return url;
+
+    }
+
+
+    ///////////////////////////////////////////////////
+
+    /**
      * A helper function to generate a url for retrieving a user, persona or contact's avatar  
      * @alias FluroAsset.avatarUrl      
      * @param  {string} personID The id of the person you want to retrieve the avatar for
@@ -144,7 +196,7 @@ var FluroAsset = function(Fluro) {
      * FluroAsset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})
      * 
      */
-    
+
     service.avatarUrl = function(personID, style, params) {
 
         //Get the id as a pure string
@@ -154,7 +206,7 @@ var FluroAsset = function(Fluro) {
             return;
         }
 
-        if(!params) {
+        if (!params) {
             params = {};
         }
 
@@ -198,45 +250,45 @@ var FluroAsset = function(Fluro) {
      * FluroAsset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})
      * 
      */
-    
+
 
     //Get the cover image for an event, group or realm
     service.coverUrl =
-    service.coverImage = function(contentID, style, params) {
+        service.coverImage = function(contentID, style, params) {
 
-        //Get the id as a pure string
-        contentID = Fluro.utils.getStringID(contentID);
+            //Get the id as a pure string
+            contentID = Fluro.utils.getStringID(contentID);
 
-        if (!contentID || !String(contentID).length) {
-            return;
+            if (!contentID || !String(contentID).length) {
+                return;
+            }
+
+            if (!params) {
+                params = {};
+            }
+
+            if (!style) {
+                style = 'event';
+            }
+
+            var url = `${Fluro.apiURL}/get/${style}/${contentID}`;
+
+            ////////////////////////////////////////
+
+            url = parameterDefaults(url, params);
+
+            ////////////////////////////////////////
+
+            //Map the parameters to a query string
+            var queryParameters = Fluro.utils.mapParameters(params);
+
+            if (queryParameters.length) {
+                url += '?' + queryParameters;
+            }
+
+            return url;
+
         }
-
-        if(!params) {
-            params = {};
-        }
-
-        if (!style) {
-            style = 'event';
-        }
-
-        var url = `${Fluro.apiURL}/get/${style}/${contentID}`;
-
-        ////////////////////////////////////////
-
-        url = parameterDefaults(url, params);
-
-        ////////////////////////////////////////
-
-        //Map the parameters to a query string
-        var queryParameters = Fluro.utils.mapParameters(params);
-
-        if (queryParameters.length) {
-            url += '?' + queryParameters;
-        }
-
-        return url;
-
-    }
 
 
     ///////////////////////////////////////////////////
@@ -257,7 +309,7 @@ var FluroAsset = function(Fluro) {
      * FluroAsset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})
      * 
      */
-    
+
 
     service.downloadUrl = function(assetID, params) {
 
@@ -268,7 +320,7 @@ var FluroAsset = function(Fluro) {
             return;
         }
 
-        if(!params) {
+        if (!params) {
             params = {};
         }
 
@@ -293,7 +345,7 @@ var FluroAsset = function(Fluro) {
 
 
     ///////////////////////////////////////////////////
-    
+
     /**
      * A helper function that returns a poster image for a specified video
      * @alias FluroAsset.posterUrl
@@ -315,11 +367,11 @@ var FluroAsset = function(Fluro) {
      * 
      * 
      */
-    
+
 
     //Helper function for retrieving the poster image for a video
     service.posterUrl = function(videoID, w, h, params) {
-        
+
         //Get the id as a pure string
         videoID = Fluro.utils.getStringID(videoID);
 
@@ -327,7 +379,7 @@ var FluroAsset = function(Fluro) {
             return;
         }
 
-        if(!params) {
+        if (!params) {
             params = {};
         }
 
@@ -337,8 +389,8 @@ var FluroAsset = function(Fluro) {
 
         //////////////////////////////////////
 
-        var screenWidth = window.screen.width || 1920;
-        var screenHeight = window.screen.width || 1080;
+        var screenWidth = defaultWindowSettings.screen.width || 1920;
+        var screenHeight = defaultWindowSettings.screen.width || 1080;
 
         //////////////////////////////////////
 
@@ -378,16 +430,16 @@ var FluroAsset = function(Fluro) {
         if (!w && !h) {
             //Use our default width based on screen size
             params['w'] = limitWidth;
-            params['h'] = Math.round(limitWidth * (9 /16));
+            params['h'] = Math.round(limitWidth * (9 / 16));
         } else {
 
             //If a width was specified
             if (w) {
                 params['w'] = w;
 
-                if(!h) {
+                if (!h) {
                     //If no height specified calculate based on aspect ratio
-                    params['h'] = Math.round(w * (9 /16));
+                    params['h'] = Math.round(w * (9 / 16));
                 }
             }
 
@@ -396,13 +448,13 @@ var FluroAsset = function(Fluro) {
                 params['h'] = h;
             }
         }
-        
+
         //////////////////////////////////////////////////
 
-        if(!params.hasOwnProperty('quality')) {
+        if (!params.hasOwnProperty('quality')) {
             params.quality = 80;
         }
-        
+
         //////////////////////////////////////////////////
 
 
@@ -429,7 +481,7 @@ var FluroAsset = function(Fluro) {
 
 
     ///////////////////////////////////////////////////
-    
+
     /**
      * A helper function that creates a url image for a specified image
      * @alias FluroAsset.imageUrl
@@ -448,11 +500,11 @@ var FluroAsset = function(Fluro) {
      * // returns 'https://api.fluro.io/get/5be504eabf33991239599d63/file/image.jpg?w=800'
      * FluroAsset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pdf'})
      */
-    
+
 
     //Helper function for retrieving the poster image for a video
     service.imageUrl = function(imageID, w, h, params) {
-        
+
         //Get the id as a pure string
         imageID = Fluro.utils.getStringID(imageID);
 
@@ -462,7 +514,7 @@ var FluroAsset = function(Fluro) {
 
         //////////////////////////////////////
 
-        if(!params) {
+        if (!params) {
             params = {};
         }
 
@@ -484,7 +536,7 @@ var FluroAsset = function(Fluro) {
         //////////////////////////////////////
 
         //If the screen is smaller then 768 use an optimised image
-        if (window.screen.width <= 768) {
+        if (defaultWindowSettings.screen.width <= 768) {
             if (isRetina) {
                 limitWidth = 1536;
             } else {
@@ -493,7 +545,7 @@ var FluroAsset = function(Fluro) {
         }
 
         //If using mobile then use a smaller optimised image
-        if (window.screen.width <= 320) {
+        if (defaultWindowSettings.screen.width <= 320) {
             if (isRetina) {
                 limitWidth = 640;
             } else {
@@ -544,7 +596,7 @@ var FluroAsset = function(Fluro) {
 
         return url;
     }
-    
+
     ///////////////////////////////////////
 
 
@@ -559,10 +611,10 @@ var FluroAsset = function(Fluro) {
      * FluroAsset.filesize(1000000)
      */
     service.filesize = function(bytes) {
-       var sizes = ['Bytes', 'kb', 'mb', 'gb', 'tb'];
-       if (bytes == 0) return '0 Byte';
-       var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-       return Math.round(bytes / Math.pow(1024, i), 2) + '' + sizes[i];
+        var sizes = ['Bytes', 'kb', 'mb', 'gb', 'tb'];
+        if (bytes == 0) return '0 Byte';
+        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+        return Math.round(bytes / Math.pow(1024, i), 2) + '' + sizes[i];
     }
 
     ///////////////////////////////////////////////////

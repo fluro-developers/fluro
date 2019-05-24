@@ -1,3 +1,6 @@
+// if (process.browser) {
+
+
 import FluroAPI from './fluro.api';
 import FluroAuth from './fluro.auth';
 import FluroAsset from './fluro.asset';
@@ -8,7 +11,23 @@ import FluroStats from './fluro.stats';
 import FluroTypes from './fluro.types';
 import FluroContent from './fluro.content';
 import FluroAccess from './fluro.access';
-import {EventDispatcher} from './fluro.utils';
+import { EventDispatcher } from './fluro.utils';
+// } else {
+
+// const esmImport = require('esm')(module);
+
+// const FluroAPI = esmImport('./fluro.api');
+// const FluroAuth = esmImport('./fluro.auth');
+// const FluroAsset = esmImport('./fluro.asset');
+// const FluroUtils = esmImport('./fluro.utils');
+// const FluroCache = esmImport('./fluro.cache');
+// const FluroDate = esmImport('./fluro.date');
+// const FluroStats = esmImport('./fluro.stats');
+// const FluroTypes = esmImport('./fluro.types');
+// const FluroContent = esmImport('./fluro.content');
+// const FluroAccess = esmImport('./fluro.access');
+// const EventDispatcher = FluroUtils.EventDispatcher;
+// }
 
 ///////////////////////////////////////
 
@@ -52,7 +71,7 @@ var FluroCore = function(options) {
 
     ///////////////////////////////////////
 
-    
+
 
     ///////////////////////////////////////
 
@@ -81,8 +100,8 @@ var FluroCore = function(options) {
     var core = {
         apiURL: options.apiURL,
         applicationToken: options.applicationToken,
-        domain:options.domain || '',
-        global:{},
+        domain: options.domain || '',
+        global: {},
     }
 
 
@@ -180,7 +199,7 @@ var FluroCore = function(options) {
         writable: false,
     });
 
-    
+
 
     /**
      * The default service for managing, rendering and handling files and media from Fluro.
@@ -223,6 +242,11 @@ var FluroCore = function(options) {
     return core;
 
 }
+
+///////////////////////////////////////
+
+//Add Utils as a static property
+FluroCore.utils = FluroUtils;
 
 ///////////////////////////////////////
 ///////////////////////////////////////

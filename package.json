@@ -1,8 +1,7 @@
 {
   "name": "fluro",
-  "version": "1.0.58",
+  "version": "1.0.59",
   "description": "Promise based HTTP Fluro client for the browser and node.js",
-  "main": "src/index.js",
   "scripts": {
     "build": "webpack --mode=production && webpack --mode=production && npm run test",
     "dev": "webpack --mode=development --progress --colors --watch",
@@ -10,6 +9,7 @@
     "test:watch": "mocha  --colors -w ./test/*.spec.js",
     "document": "jsdoc -r  . -d docs -c jsdoc.conf README.md"
   },
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fluro-developers/fluro.git"
@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/fluro-developers/fluro#readme",
   "devDependencies": {
+    "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
     "chai": "^4.2.0",
     "docdash": "^1.1.0",

@@ -1,5 +1,3 @@
-
-
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import FluroUtils from './fluro.utils';
@@ -13,8 +11,18 @@ import FluroUtils from './fluro.utils';
  * @hideconstructor
  */
 
+///////////////////////////////////////////////////////////////////////////////
+
+var DEFAULT_TIMEZONE;
+
+if (Intl) {
+    DEFAULT_TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
 const FluroDate = {
-    defaultTimezone:Intl.DateTimeFormat().resolvedOptions().timeZone,
+    defaultTimezone: DEFAULT_TIMEZONE,
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -31,12 +39,12 @@ const FluroDate = {
  * @return {Date}                   A javascript date object transformed to match the specified timezone
  */
 FluroDate.localDate = function(d, specifiedTimezone) {
-    
+
     // console.log('LOCAL DATE', d, specifiedTimezone);
     //Date
-    var date;// = new Date(d);
+    var date; // = new Date(d);
 
-    if(!d) {
+    if (!d) {
         date = new Date();
     } else {
         date = new Date(d);
@@ -49,11 +57,11 @@ FluroDate.localDate = function(d, specifiedTimezone) {
 
     ///////////////////////////////////////////
 
-    if(!specifiedTimezone) {
+    if (!specifiedTimezone) {
         specifiedTimezone = FluroDate.defaultTimezone;
     }
 
-    if(specifiedTimezone) {
+    if (specifiedTimezone) {
         timezoneOffset = moment.tz(date, specifiedTimezone).utcOffset();
         browserOffset = moment(date).utcOffset();
 
@@ -83,7 +91,7 @@ FluroDate.localDate = function(d, specifiedTimezone) {
  * var dateString = '2019-04-18T23:00:00.000Z' 
  * return FluroDate.formatDate(dateString, 'D M YYYY', 'Australia/Melbourne')
  */
-FluroDate.formatDate = function(dateString, format, timezone) {    
+FluroDate.formatDate = function(dateString, format, timezone) {
     var date = FluroDate.localDate(dateString, timezone);
 
     return moment(date).format(format);
@@ -101,7 +109,7 @@ FluroDate.formatDate = function(dateString, format, timezone) {
  * //Returns 10 mins ago
  * return fluro.date.timeago(date)
  */
-FluroDate.timeago = function(date, suffix) {    
+FluroDate.timeago = function(date, suffix) {
     return moment(date).fromNow(suffix);
 }
 

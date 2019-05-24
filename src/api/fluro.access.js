@@ -234,7 +234,8 @@ var FluroAccess = function(FluroCore) {
     //this function is recursive and will include all sub realms
     function retrieveKeys(set, additional) {
         if (set.children && set.children.length) {
-            _.each(set.children, function(child) {
+
+            set.children.forEach(function(child) {
                 retrieveKeys(child, additional);
             })
         }

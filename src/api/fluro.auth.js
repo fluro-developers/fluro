@@ -26,9 +26,6 @@ var FluroAuth = function(fluro) {
     var defaultStore = {};
     var store = defaultStore;
 
-
-
-
     ///////////////////////////////////////////////////
     ///////////////////////////////////////////////////
 
@@ -166,8 +163,7 @@ var FluroAuth = function(fluro) {
                 fluro.cache.reset();
                 service.set(res.data);
             }
-        }, function(err) {
-        });
+        }, function(err) {});
 
 
         return promise;
@@ -405,7 +401,7 @@ var FluroAuth = function(fluro) {
         return promise;
 
     }
-    
+
 
     ///////////////////////////////////////////////////
 
@@ -419,7 +415,7 @@ var FluroAuth = function(fluro) {
      * @return {Promise}            Returns a promise that resolves with the reset session details
      */
     service.retrieveUserFromResetToken = function(token, options) {
-        
+
         if (!options) {
             options = {};
         }
@@ -472,7 +468,7 @@ var FluroAuth = function(fluro) {
      * @return {Promise}            Returns a promise that resolves with the reset session details
      */
     service.updateUserWithToken = function(token, body, options) {
-        
+
         if (!options) {
             options = {};
         }
@@ -630,6 +626,7 @@ var FluroAuth = function(fluro) {
 
         //If there is already a request in progress
         if (inflightRefreshRequest) {
+            console.log('Use inflight request', inflightRefreshRequest);
             return inflightRefreshRequest;
         }
 
@@ -638,7 +635,7 @@ var FluroAuth = function(fluro) {
         //Create an refresh request
         inflightRefreshRequest = new Promise(function(resolve, reject) {
 
-            log('fluro.auth > refresh token');
+            log(`fluro.auth > refresh token ${refreshToken}`);
 
 
 
@@ -655,14 +652,27 @@ var FluroAuth = function(fluro) {
 
                     //Update the user with any changes 
                     //returned back from the refresh request
-                    Object.assign(store.user, res.data);
-                    log('fluro.auth > token refreshed');
+                    if (!res) {
+                        log('fluro.auth > no res');
+                        return reject();
+
+                    } else {
+
+                        if (store.user) {
+                            Object.assign(store.user, res.data);
+                        } else {
+                            store.user = res.data;
+                        }
+
+                        log('fluro.auth > token refreshed');
 
 
-                    // if (service.onChange) {
-                    //     service.onChange(store.user);
-                    // }
-                    dispatch();
+                        // if (service.onChange) {
+                        //     service.onChange(store.user);
+                        // }
+                        dispatch();
+                        // }
+                    }
 
                     //Resolve with the new token
                     resolve(res.data.token);
@@ -692,22 +702,22 @@ var FluroAuth = function(fluro) {
      */
     service.sync = function() {
         return fluro.api.get('/session')
-        .then(function(res) {
+            .then(function(res) {
 
-            if(res.data) {
-          
-                //Update the user with any changes 
-                //returned back from the refresh request
-                if(store.user) {
-                    Object.assign(store.user, res.data);
+                if (res.data) {
+
+                    //Update the user with any changes 
+                    //returned back from the refresh request
+                    if (store.user) {
+                        Object.assign(store.user, res.data);
+                    }
+                } else {
+                    store.user = null;
                 }
-            } else {
-                store.user = null;
-            }
-            log('fluro.auth > server session refreshed');
+                log('fluro.auth > server session refreshed');
 
-            dispatch();
-        });
+                dispatch();
+            });
     }
 
     /////////////////////////////////////////////////////
@@ -826,12 +836,15 @@ var FluroAuth = function(fluro) {
             //Refresh the token
             service.refreshAccessToken(refreshToken, isManagedUser)
                 .then(function(newToken) {
-                    log('Token refreshed', isManagedUser);
+                    log('fluro.auth > token refreshed', isManagedUser);
                     //Update the original request with our new token
                     originalRequest.headers['Authorization'] = 'Bearer ' + newToken;
                     //And continue onward
                     return resolve(originalRequest);
-                }, reject);
+                }, function(err) {
+                    log('fluro.auth > token refresh rejected', err);
+                    return reject(err);
+                });
         });
 
 
