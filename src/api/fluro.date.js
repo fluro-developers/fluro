@@ -134,7 +134,14 @@ FluroDate.dateFromID = function(id, format, timezone) {
 ///////////////////////////////////////
 
 
-
+/**
+ * Checks whether an event spans over multiple days
+ * @param  {Object} event A Fluro event object with a startDate and an endDate
+ * @return {Boolean}            True or False if the event spans multiple days
+ * @example
+ * 
+ * return fluro.date.isMultiDayEvent({startDate:...})
+ */
 FluroDate.isMultiDayEvent = function(event) {
 
 
