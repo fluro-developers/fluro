@@ -5,11 +5,6 @@ import FluroUtils from './fluro.utils';
 ///////////////////////////////////////////////////////////////////////////////
 
 
-/**
- * @classdesc A static service that provides useful functions for working with dates and timestamps.
- * @class
- * @hideconstructor
- */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -20,6 +15,12 @@ if (!(typeof window === 'undefined')) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * @classdesc A static service that provides useful functions for working with dates and timestamps.
+ * @class
+ * @hideconstructor
+ */
 
 const FluroDate = {
     defaultTimezone: DEFAULT_TIMEZONE,
