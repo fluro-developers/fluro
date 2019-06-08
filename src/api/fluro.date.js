@@ -57,9 +57,9 @@ FluroDate.localDate = function(d, specifiedTimezone) {
 
     ///////////////////////////////////////////
 
-    if (!specifiedTimezone) {
-        specifiedTimezone = FluroDate.defaultTimezone;
-    }
+    // if (!specifiedTimezone) {
+    //     specifiedTimezone = FluroDate.defaultTimezone;
+    // }
 
     if (specifiedTimezone) {
         timezoneOffset = moment.tz(date, specifiedTimezone).utcOffset();
@@ -133,6 +133,47 @@ FluroDate.dateFromID = function(id, format, timezone) {
 
 ///////////////////////////////////////
 
+
+
+FluroDate.isMultiDayEvent = function(event) {
+
+
+    var startDate;
+    var endDate;
+
+    ////////////////////////////////////////
+
+    if (!event) return;
+
+    ////////////////////////////////////////
+
+    if (event.startDate) {
+        startDate = FluroDate.localDate(event.startDate, event.timezone);
+    } else {
+        return;
+    }
+
+    if (!event.endDate) {
+        return;
+    }
+    
+    ///////////////////////////////////////////////
+
+    endDate = FluroDate.localDate(event.endDate, event.timezone);
+
+    ///////////////////////////////////////////////
+
+    startDate = moment(startDate);
+    endDate = moment(endDate);
+
+    ////////////////////////////////////////
+
+    return (String(startDate.format('D MMM YYYY')) != String(endDate.format('D MMM YYYY')));
+}
+
+///////////////////////////////////////
+
+
 /**
  * A helper function that can display a human-readable date for an event
  * taking into consideration the context of the current time, the event's start and end time.
@@ -176,7 +217,7 @@ FluroDate.readableEventDate = function(event, style) {
         return;
     }
 
-    if (!event.endDate) {
+    if (event.endDate) {
         endDate = FluroDate.localDate(event.endDate, event.timezone);
     } else {
         endDate = startDate;
@@ -246,6 +287,77 @@ FluroDate.readableEventDate = function(event, style) {
 
             break;
     }
+
+}
+
+
+
+
+///////////////////////////////////////
+
+/**
+ * A helper function that can display a human-readable time for an event
+ * taking into consideration the context of the current time, the event's start and end time.
+ * This is often used as a string filter
+ * @alias FluroDate.readableEventTime
+ * @param  {Object} event An object that has both a startDate and endDate property, Usually an event object from the Fluro API
+ * @return {String}       The human readable time for the event
+ * @example
+ * //Returns 5:30pm
+ * FluroDate.readableEventTime({"startDate": "2019-05-01T07:30:00.000Z", "endDate":null})
+
+ * //Returns 5:30pm - 7:30pm
+ * FluroDate.readableEventTime({"startDate": "2019-05-01T07:30:00.000Z", "endDate":"2019-05-01T09:30:00.000Z"})
+ */
+FluroDate.readableEventTime = function(event) {
+
+    ////////////////////////////////////////
+
+    var startDate;
+    var endDate;
+
+    ////////////////////////////////////////
+
+    if (!event) return;
+
+    ////////////////////////////////////////
+
+    if (event.startDate) {
+        startDate = FluroDate.localDate(event.startDate, event.timezone);
+    } else {
+        return;
+    }
+
+    if (event.endDate) {
+        endDate = FluroDate.localDate(event.endDate, event.timezone);
+    } else {
+        endDate = startDate;
+    }
+
+    ///////////////////////////////////////////////
+
+    startDate = moment(startDate);
+    endDate = moment(endDate);
+
+    ///////////////////////////////////////////////
+
+    var noEndDate = startDate.format('h:mma D MMM YYYY') == endDate.format('h:mma D MMM YYYY');
+    var sameYear = (startDate.format('YYYY') == endDate.format('YYYY'));
+    var sameMonth = (startDate.format('MMM YYYY') == endDate.format('MMM YYYY'));
+    var sameDay = (startDate.format('D MMM YYYY') == endDate.format('D MMM YYYY'));
+
+
+    if (noEndDate) {
+        return startDate.format('h:mma')
+    }
+
+    if (sameDay) {
+        //8am - 9am Thursday 21 May 2016
+        return startDate.format('h:mma') + ' - ' + endDate.format('h:mma');
+    }
+
+
+    return FluroDate.readableEventDate(event);
 
 }
 

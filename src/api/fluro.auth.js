@@ -613,6 +613,7 @@ var FluroAuth = function(fluro) {
     ///////////////////////////////////////////////////
 
 
+    var refreshContext = {};
 
     /**
      * Helper function to refresh an access token for an authenticated user session. This is usually handled automatically
@@ -625,20 +626,17 @@ var FluroAuth = function(fluro) {
     service.refreshAccessToken = function(refreshToken, isManagedSession) {
 
         //If there is already a request in progress
-        if (inflightRefreshRequest) {
-            console.log('Use inflight request', inflightRefreshRequest);
-            return inflightRefreshRequest;
+        if (refreshContext.inflightRefreshRequest) {
+            //console.log('Use inflight request', refreshContext.inflightRefreshRequest);
+            return refreshContext.inflightRefreshRequest;
         }
 
         /////////////////////////////////////////////////////
 
         //Create an refresh request
-        inflightRefreshRequest = new Promise(function(resolve, reject) {
+        refreshContext.inflightRefreshRequest = new Promise(function(resolve, reject) {
 
             log(`fluro.auth > refresh token ${refreshToken}`);
-
-
-
 
             //Bypass the interceptor on all token refresh calls
             //Because we don't need to add the access token etc onto it
@@ -654,6 +652,7 @@ var FluroAuth = function(fluro) {
                     //returned back from the refresh request
                     if (!res) {
                         log('fluro.auth > no res');
+                        refreshContext.inflightRefreshRequest = null;
                         return reject();
 
                     } else {
@@ -678,13 +677,18 @@ var FluroAuth = function(fluro) {
                     resolve(res.data.token);
 
                     //Remove the inflight request
-                    inflightRefreshRequest = null;
+                    refreshContext.inflightRefreshRequest = null;
 
-                }, reject);
+                }, function(err) {
+
+                    //console.log('Refresh request Failed')
+                    refreshContext.inflightRefreshRequest = null;
+                    reject(err);
+                });
         });
 
         //Return the refresh request
-        return inflightRefreshRequest;
+        return refreshContext.inflightRefreshRequest;
     }
 
 
@@ -864,8 +868,22 @@ var FluroAuth = function(fluro) {
         log('fluro.auth > error', status);
         switch (status) {
             case 401:
-                //Logout and destroy the session
-                service.logout();
+
+                //If it's an invalid refresh token
+                //In case it was a mismatch between tabs or sessions
+                //we should try it a second time just in case
+                var data = _.get(err, 'response.data');
+                if(data == 'invalid_refresh_token') {
+
+                    //Try it again
+                    // console.log('Refresh failed but its ok')
+
+                } else {
+                    //Logout and destroy the session
+                    service.logout();
+                }
+            
+                
                 break;
             default:
                 //Some other error
@@ -873,7 +891,7 @@ var FluroAuth = function(fluro) {
         }
 
         /////////////////////////////////////////////////////
-        /// 
+        
         return Promise.reject(err);
     })
 
