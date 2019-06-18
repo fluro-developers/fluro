@@ -29,6 +29,18 @@ const FluroDate = {
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * A function that returns all of the available timezones. Often used to populate a select box
+ * @alias FluroDate.timezones
+ * @return {Array}                   An array of all availble timezones.
+ */
+
+FluroDate.timezones = function() {
+    return moment.tz.names();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+/**
  * A function that will return a date in context of a specified timezone
  * If no timezone is specified then the default timezone of the current clock will be used.
  * This will return dates that are incorrect on purpose. So that it can appear to the user as if they were in another timezone.

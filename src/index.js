@@ -1,3 +1,7 @@
+
+
+console.log('fluro v1.1')
+
 //Import the pieces we need
 import FluroCore from './api/fluro.core';
 import FluroUtils from './api/fluro.utils';

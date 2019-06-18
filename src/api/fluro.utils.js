@@ -48,6 +48,109 @@ FluroUtils.guid = function() {
 
 
 
+//////////////////////////////////////////////////
+
+/**
+ * A helper function to extract a default value from a fluro field definition
+ * @alias FluroUtils.getDefaultValueForField
+ * @return {String|Number|Object}            The default value
+ */
+FluroUtils.getDefaultValueForField = function(field) {
+
+    var blankValue;
+    var multiple = field.maximum != 1;
+
+    //Check if it's a nested subgroup or embedded form
+    var nested = ((field.type == 'group' && field.asObject) || field.directive == 'embedded');
+
+    ///////////////////////////////////////
+
+    if (multiple) {
+        blankValue = [];
+    }
+
+    ///////////////////////////////////////
+
+    switch (field.type) {
+        case 'reference':
+            if (field.defaultReferences && field.defaultReferences.length) {
+                if (multiple) {
+                    blankValue = blankValue.concat(field.defaultReferences);
+
+                } else {
+                    blankValue = _.first(field.defaultReferences);
+                }
+            }
+            break;
+        default:
+            if (field.defaultValues && field.defaultValues.length) {
+                if (multiple) {
+                    blankValue = blankValue.concat(field.defaultValues);
+
+                } else {
+                    blankValue = _.first(field.defaultValues);
+                }
+            }
+            break;
+    }
+
+    ///////////////////////////////////////
+
+
+    if (multiple) {
+
+        var askCount = Math.max(field.askCount, field.minimum);
+        var additionalRequired = Math.max((askCount - blankValue.length), 0);
+
+        //If we need some entries by default
+        if (additionalRequired) {
+
+            switch (field.directive) {
+                case 'wysiwyg':
+                case 'textarea':
+                case 'code':
+                    _.times(additionalRequired, function() {
+                        blankValue.push('');
+                    })
+                    break;
+                default:
+                    //We need to add objects
+                    if (nested) {
+                        _.times(additionalRequired, function() {
+                            blankValue.push({});
+                        })
+                    }
+                    break;
+            }
+
+        }
+    } else {
+
+        if (!blankValue) {
+            switch (field.directive) {
+                case 'wysiwyg':
+                case 'textarea':
+                case 'code':
+                    // case 'select':
+                    blankValue = '';
+                    break;
+                default:
+                    //We need to add objects
+                    if (nested) {
+                        blankValue = {};
+                    }
+                    //  else {
+                    //     blankValue =  null;
+                    // }
+                    break;
+            }
+        }
+    }
+
+    ///////////////////////////////////////
+
+    return blankValue;
+}
 
 
 
@@ -198,6 +301,10 @@ FluroUtils.getStringID = function(input, asObjectID) {
     // return new ObjectId(output);
 
 }
+
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 

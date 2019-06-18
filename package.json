@@ -1,6 +1,6 @@
 {
   "name": "fluro",
-  "version": "1.0.63",
+  "version": "1.0.64",
   "description": "Promise based HTTP Fluro client for the browser and node.js",
   "scripts": {
     "build": "webpack --mode=production && webpack --mode=production && npm run test",
@@ -34,7 +34,7 @@
     "jsdom": "^14.0.0",
     "mocha": "^6.1.2",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0"
+    "webpack-cli": "^3.3.4"
   },
   "dependencies": {
     "axios": "^0.18.0",
