@@ -347,6 +347,9 @@ FluroUtils.arrayIDs = function(array, asObjectID) {
 FluroUtils.errorMessage = function(err) {
 
 
+    if(_.isArray(err)) {
+        err = _.first(err);
+    }
 
     ////////////////////////////////////
 

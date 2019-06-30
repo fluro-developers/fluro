@@ -204,12 +204,52 @@ var FluroTypes = function(FluroCore) {
 
             FluroCore.api.post('/defined', options)
                 .then(function(res) {
+
+                    console.log('GOT ALL THE TYPES', res.data);
                     resolve(res.data);
                 }, reject);
 
         });
 
-    }
+    }   
+
+    // //////////////////////////////////
+
+    //   //Get all sub definitions for an array of primitive types
+    // service.subDefinitions = function(primitiveTypes, options) {
+
+    //     if (!options) {
+    //         options = {
+    //             // flat:true
+    //         }
+    //     }
+
+
+    //     var definitionCache = fluro.cache.get('subDefinitions');
+
+    //     ////////////////////////////////////////////////////////
+
+    //     var promises = _.map(primitiveTypes, function(type) {
+    //         if(definitionCache[type]) {
+    //             return Promise.resolve(definitionCache[type]);
+    //         }
+
+    //         ///////////////////////////////////////////////////
+
+    //         return new Promise(function(resolve, reject) {
+
+    //              FluroCore.api.get(`/defined/types/${type}`)
+    //             .then(function(res) {
+
+    //                 definitionCache[type] = res.data;
+    //                 resolve(definitionCache[type]);
+    //             }, reject);
+
+    //         });
+    //     })
+
+    //     return Promise.all(promises);
+    // }    
 
     //////////////////////////////////
 

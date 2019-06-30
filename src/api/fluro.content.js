@@ -117,7 +117,6 @@ var FluroContent = function(fluro) {
 
     }
 
-
     ///////////////////////////////////////////////////
 
 
@@ -169,7 +168,7 @@ var FluroContent = function(fluro) {
 
                 /////////////////////////////////////////////
 
-                //Retrieve the definition form the server and send it back to
+                //Retrieve the definition from the server and send it back to
                 //the user
                 fluro.api.get(`/defined/${definitionName}`)
                     .then(function(res) {
