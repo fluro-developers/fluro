@@ -1,4 +1,6 @@
 import axios from 'axios';
+import _ from 'lodash';
+
 import {
     cacheAdapterEnhancer,
     throttleAdapterEnhancer,
@@ -74,8 +76,7 @@ var FluroAPI = function(fluro) {
         //Get the response status
         var status = _.get(err, 'response.status') || err.status;
 
-
-
+        //Check the status
         switch (status) {
             case 401:
                 //Ignore and allow fluro.auth to handle it
@@ -84,12 +85,13 @@ var FluroAPI = function(fluro) {
                 // case 503:
             case 504:
                 //Retry
-                console.log('fluro.api > connection error retrying')
-                Fluro.api.request(err.config);
+                //Try it again
+                console.log(`fluro.api > ${status} connection error retrying`)
+                return fluro.api.request(err.config);
                 break;
             default:
                 //Some other error
-                console.log('fluro.api > connection error', err);
+                console.log('fluro.api > connection error', status, err.config.url);
                 break;
         }
 

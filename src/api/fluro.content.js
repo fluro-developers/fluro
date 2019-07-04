@@ -377,6 +377,8 @@ var FluroContent = function(fluro) {
 
     ///////////////////////////////////////////////////
 
+    ///////////////////////////////////////////////////
+
     /**
      * This function returns a single populated item by providing its _external id
      * @alias FluroContent.external

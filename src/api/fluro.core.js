@@ -81,7 +81,7 @@ var FluroCore = function(options) {
 
     ///////////////////////////////////////
 
-    switch (options.apiURL) {
+    switch (String(options.apiURL).toLowerCase()) {
         case 'production':
             options.apiURL = 'https://api.fluro.io';
             break;
