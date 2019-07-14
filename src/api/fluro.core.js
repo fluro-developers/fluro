@@ -143,6 +143,11 @@ var FluroCore = function(options) {
         return core.dispatch('error', utils.errorMessage(err));
     }
 
+    //And enable notifications with a short message
+    core.notify = function(message, options) {
+        return core.dispatch('notification', {message, options});
+    }
+
     ///////////////////////////////////////
     /**
      * Provides date functions, filters and utilities

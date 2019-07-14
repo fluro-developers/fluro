@@ -470,7 +470,7 @@ var FluroContent = function(fluro) {
      * @example
      *
      * //Find all events that have a status of active or archived where the endDate is greater than or equal to now and return the titles
-     * fluro.content.retrieve({_type:'event', status:{$in:['active', 'archived'], endDate:{$gte:"date('now')"}}}, {select:'title'})
+     * fluro.content.retrieve({_type:'event', status:{$in:['active', 'archived']}, endDate:{$gte:"date('now')"}}}, {select:'title'})
      */
     service.retrieve = function(criteria, options) {
 

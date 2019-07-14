@@ -231,12 +231,16 @@ FluroUtils.matchInArray = function(array, key, value, operator) {
  * //Returns 'cat, dog, bird'
  * FluroUtils.comma([{title:'cat'}, {title:'dog'}, {title:'bird'}], 'title');
  */
-FluroUtils.comma = function(array, path) {
+FluroUtils.comma = function(array, path, limit) {
 
+    if(limit) {
+        array = array.slice(0, limit);
+    }
+    
     return _.chain(array)
         .compact()
         .map(function(item) {
-            if (path) {
+            if (path && path.length) {
                 return _.get(item, path);
             }
 

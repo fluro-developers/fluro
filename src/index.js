@@ -1,6 +1,6 @@
 
 
-console.log('fluro v1.1')
+console.log('fluro v1.0.67')
 
 //Import the pieces we need
 import FluroCore from './api/fluro.core';
@@ -14,3 +14,9 @@ FluroCore.utils = FluroUtils;
 ////////////////////////////////////////////
 
 export default FluroCore;
+
+////////////////////////////////////////////
+
+//Export the event dispatcher
+import {EventDispatcher} from './api/fluro.utils';
+export { EventDispatcher as EventDispatcher };

@@ -180,6 +180,7 @@ var FluroTypes = function(FluroCore) {
 
     }
 
+
     //////////////////////////////////
 
     /**
