@@ -180,6 +180,8 @@ var FluroAPI = function(fluro) {
      * });
      */
 
+    service.CancelToken = CancelToken;
+
     ///////////////////////////////////////
 
     return service;

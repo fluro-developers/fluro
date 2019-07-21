@@ -198,7 +198,6 @@ var FluroAsset = function(Fluro) {
      */
 
     service.avatarUrl = function(personID, style, params) {
-
         //Get the id as a pure string
         personID = Fluro.utils.getStringID(personID);
 

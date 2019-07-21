@@ -749,6 +749,59 @@ var FluroContent = function(fluro) {
 
     ///////////////////////////////////////////////////
 
+    /**
+     * This function makes it easy to retrieve all distinct values for a specified field key
+     * for a specified subset of items from the server, for instance if you wanted to retrieve all possible 'firstName' values from
+     * a selection of content ids
+     * @alias FluroContent.values
+     * @param  {Array} ids The ids you want to retrieve values for
+     * @param  {String} key the key of the field you want to retrieve the values for
+     * @return {Promise}         A promise that will be resolved with an array of possible values
+     * @example
+     *
+     * //Retrieve the current post thread of all 'comments' attached to a specific content
+     * fluro.content.values(['5be504eabf33991239599d63'], 'firstName').then(function(values) {
+     *       //Would return ['Frank', 'Lucy', 'Marissa']
+     * })
+     */
+    service.values = function(ids, key, options) {
+
+
+        ids = fluro.utils.arrayIDs(ids);
+
+        if (!ids | !ids.length ) {
+            throw Error(`No ids specified ${ids}`);
+        }
+
+        if (!key | !key.length ) {
+            throw Error(`No key specified `);
+        }
+
+        if (!options) {
+            options = {}
+        }
+
+        return new Promise(function(resolve, reject) {
+
+            var requestOptions = {
+                ids,
+                key,
+            }
+
+            /////////////////////////////////////////////
+
+            //Retrieve the query results
+            return fluro.api.post(`/content/distinct`, requestOptions)
+                .then(function(res) {
+                    resolve(res.data);
+                },reject);
+
+        })
+    }
+
+
+    ///////////////////////////////////////////////////
+
     return service;
 
 }
