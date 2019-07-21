@@ -1,6 +1,6 @@
 
 
-console.log('fluro v1.0.69')
+console.log('fluro v1.0.70')
 
 
 

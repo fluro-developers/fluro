@@ -783,7 +783,7 @@ var FluroContent = function(fluro) {
 
         return new Promise(function(resolve, reject) {
 
-            var requestOptions = {
+            var payload = {
                 ids,
                 key,
             }
@@ -791,7 +791,7 @@ var FluroContent = function(fluro) {
             /////////////////////////////////////////////
 
             //Retrieve the query results
-            return fluro.api.post(`/content/distinct`, requestOptions)
+            return fluro.api.post(`/content/distinct`, payload, options)
                 .then(function(res) {
                     resolve(res.data);
                 },reject);
