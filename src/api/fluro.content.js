@@ -830,7 +830,7 @@ var FluroContent = function(fluro) {
         return new Promise(function(resolve, reject) {
 
             var payload = {
-                key,
+                ids,
             }
 
             /////////////////////////////////////////////
