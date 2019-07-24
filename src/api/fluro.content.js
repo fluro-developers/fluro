@@ -759,7 +759,7 @@ var FluroContent = function(fluro) {
      * @return {Promise}         A promise that will be resolved with an array of possible values
      * @example
      *
-     * //Retrieve the current post thread of all 'comments' attached to a specific content
+     * 
      * fluro.content.values(['5be504eabf33991239599d63'], 'firstName').then(function(values) {
      *       //Would return ['Frank', 'Lucy', 'Marissa']
      * })
@@ -791,7 +791,52 @@ var FluroContent = function(fluro) {
             /////////////////////////////////////////////
 
             //Retrieve the query results
-            return fluro.api.post(`/content/distinct`, payload, options)
+            return fluro.api.post(`/content/distinct/values`, payload, options)
+                .then(function(res) {
+                    resolve(res.data);
+                },reject);
+
+        })
+    }
+
+    ///////////////////////////////////////////////////
+
+    /**
+     * This function makes it easy to retrieve all distinct keys for a specified selection of ids
+     * @alias FluroContent.keys
+     * @param  {Array} ids The ids you want to retrieve keys for
+     * @param  {Object} options extra options and query parameters for the http request
+     * @return {Promise}         A promise that will be resolved with an array of possible keys
+     * @example
+     *
+     * 
+     * fluro.content.keys(['5be504eabf33991239599d63']).then(function(values) {
+     *       //Would return ['firstName', 'lastName', 'title', 'tags', 'realms']
+     * })
+     */
+    service.keys = function(ids, options) {
+
+
+        ids = fluro.utils.arrayIDs(ids);
+
+        if (!ids | !ids.length ) {
+            throw Error(`No ids specified ${ids}`);
+        }
+
+        if (!options) {
+            options = {}
+        }
+
+        return new Promise(function(resolve, reject) {
+
+            var payload = {
+                key,
+            }
+
+            /////////////////////////////////////////////
+
+            //Retrieve the query results
+            return fluro.api.post(`/content/distinct/keys`, payload, options)
                 .then(function(res) {
                     resolve(res.data);
                 },reject);
