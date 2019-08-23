@@ -50,7 +50,8 @@ var FluroTypes = function(FluroCore) {
                 icon = 'code';
                 break;
             case 'collection':
-                icon = 'box-full';
+                // icon = 'box-full';
+                icon = 'folder';
                 break;
             case 'component':
                 icon = 'tachometer-alt';
