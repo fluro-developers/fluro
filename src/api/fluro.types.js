@@ -145,7 +145,7 @@ var FluroTypes = function(FluroCore) {
                 break;
         }
 
-        if(icon) {
+        if (icon) {
             return [library, icon];
         }
     }
@@ -177,6 +177,34 @@ var FluroTypes = function(FluroCore) {
                     resolve(res.data);
                 }, reject);
 
+        });
+
+    }
+
+    //////////////////////////////////
+
+    /**
+     * Retrieves all definitions available in the current account. Useful for making one request and caching
+     * @alias FluroTypes.all
+     * @param  {object} options extra options for the request
+     * @return {promise}       An promise that will resolve to the array of definitions
+     */
+    service.all = function(options) {
+
+        if (!options) {
+            options = {
+                // flat:true
+            }
+        }
+
+        ///////////////////////////
+
+        return new Promise(function(resolve, reject) {
+
+            return FluroCore.api.get(`/defined}`, options)
+                .then(function(res) {
+                    resolve(res.data);
+                }, reject);
         });
 
     }
@@ -213,7 +241,7 @@ var FluroTypes = function(FluroCore) {
 
         });
 
-    }   
+    }
 
     // //////////////////////////////////
 
