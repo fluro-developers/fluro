@@ -636,9 +636,8 @@ var FluroContent = function(fluro) {
 
         return new Promise(function(resolve, reject) {
 
-            var requestOptions = {
-                // params: {}
-            }
+            var requestOptions = options;
+
 
 
         

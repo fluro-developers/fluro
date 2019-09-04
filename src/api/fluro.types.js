@@ -201,7 +201,7 @@ var FluroTypes = function(FluroCore) {
 
         return new Promise(function(resolve, reject) {
 
-            return FluroCore.api.get(`/defined}`, options)
+            return FluroCore.api.get(`/defined`, options)
                 .then(function(res) {
                     resolve(res.data);
                 }, reject);
