@@ -270,12 +270,37 @@ FluroDate.readableEventDate = function(event, style) {
 
             if (sameMonth) {
                 //20 - 21 May 2016
-                return startDate.format('D') + '-' + endDate.format('D MMM')
+                return startDate.format('D') + ' - ' + endDate.format('D MMM')
             }
 
             if (sameYear) {
                 //20 Aug - 21 Sep 2016
-                return startDate.format('D') + '-' + endDate.format('D MMM')
+                return startDate.format('D') + ' - ' + endDate.format('D MMM')
+            }
+
+            //20 Aug 2015 - 21 Sep 2016
+            return startDate.format('D MMM Y') + ' - ' + endDate.format('D MMM Y')
+
+            break;
+        case 'day':
+            // console.log('SHORT', startDate, endDate);
+            if (noEndDate) {
+                return startDate.format('dddd D MMMM')
+            }
+
+            if (sameDay) {
+                //8am - 9am Thursday 21 May 2016
+                 return startDate.format('dddd D MMMM')
+            }
+
+            if (sameMonth) {
+                //20 - 21 May 2016
+                return startDate.format('D') + ' - ' + endDate.format('D MMMM Y')
+            }
+
+            if (sameYear) {
+                //20 Aug - 21 Sep 2016
+                return startDate.format('D MMM') + ' - ' + endDate.format('D MMM Y')
             }
 
             //20 Aug 2015 - 21 Sep 2016
@@ -294,7 +319,7 @@ FluroDate.readableEventDate = function(event, style) {
 
             if (sameMonth) {
                 //20 - 21 May 2016
-                return startDate.format('D') + '-' + endDate.format('D MMM Y')
+                return startDate.format('D') + ' - ' + endDate.format('D MMM Y')
             }
 
             if (sameYear) {

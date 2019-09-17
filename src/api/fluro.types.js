@@ -13,7 +13,9 @@ import _ from 'lodash';
 var FluroTypes = function(FluroCore) {
 
 
-    var service = {};
+    var service = {
+        terms:{},
+    };
 
     //////////////////////////////////
 
@@ -45,6 +47,9 @@ var FluroTypes = function(FluroCore) {
                 break;
             case 'checkin':
                 icon = 'sign-in';
+                break;
+            case 'capability':
+                icon = 'star';
                 break;
             case 'code':
                 icon = 'code';
@@ -210,6 +215,63 @@ var FluroTypes = function(FluroCore) {
     }
 
 
+
+    //////////////////////////////////
+
+    /**
+     * Retrieves a glossary of terms for readable definition titles and plurals
+     * @alias FluroTypes.reloadTerminology
+     * @return {promise}       An promise that will resolve to the matching basic types or reject with the responding error
+     */
+    service.reloadTerminology = function(options) {
+
+        service.terms = {};
+
+        if (!options) {
+            options = {
+                cache:false,
+                // flat:true
+            }
+        }
+
+        ///////////////////////////
+
+        return new Promise(function(resolve, reject) {
+            FluroCore.api.get('/defined/terms', options)
+                .then(function(res) {
+
+                    // console.log('GOT ALL THE TYPES', res.data);
+                    service.terms = res.data;
+                    resolve(service.terms);
+                }, reject);
+
+        });
+
+    }
+
+    //////////////////////////////////
+
+    /**
+     * Input a definition name or basic type and receive the human readable version of that type
+     * @alias FluroTypes.readable
+     * @param  {String} definitionName The definition or _type
+     * @param  {Boolean} plural Whether to return it's plural version
+     * @return {String}  Eg. 'Audio', 'Detail Sheet', or 'Events'...
+     */
+    service.readable = function(definitionName, plural) {
+
+        var readable = definitionName;
+        var match = service.terms ? service.terms[readable] : null;
+        
+        if(match) {
+            readable = plural ? match.plural : match.title; 
+        } else {
+            readable = plural ? _.startCase(readable) + 's' :_.startCase(readable);
+        }
+
+        return readable;
+    }
+
     //////////////////////////////////
 
     /**
@@ -235,7 +297,7 @@ var FluroTypes = function(FluroCore) {
             FluroCore.api.post('/defined', options)
                 .then(function(res) {
 
-                    console.log('GOT ALL THE TYPES', res.data);
+                    // console.log('GOT ALL THE TYPES', res.data);
                     resolve(res.data);
                 }, reject);
 

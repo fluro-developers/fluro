@@ -61,6 +61,7 @@ var FluroAPI = function(fluro) {
 
     service.defaults.baseURL = fluro.apiURL;
     service.defaults.headers.common.Accept = 'application/json';
+    service.defaults.withCredentials = fluro.withCredentials;
 
     /////////////////////////////////////////////////////
 

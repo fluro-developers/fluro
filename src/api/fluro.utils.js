@@ -30,6 +30,33 @@ FluroUtils.mapParameters = function(parameters) {
 }
 
 
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A helpful function for creating a fast hash object that can be used for more efficient loops
+ * @alias FluroUtils.hash
+ * @param  {Array} array The array to reduce
+ * @param  {String} key The key or path to the property to group by
+ * @return {Object}            A hash object literal
+ * @example 
+ * //Returns {something:[{title:'test', definition:'something'}]}
+ * FluroUtils.mapReduce([{title:'test', definition:'something'}], 'definition');
+ * 
+ */
+FluroUtils.hash = function(array, key) {
+
+    return _.reduce(array, function(set, item) {
+
+        var key = _.get(item, key);
+        set[key] = item;
+        return set;
+    }, {});
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**

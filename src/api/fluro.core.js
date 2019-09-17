@@ -100,6 +100,7 @@ var FluroCore = function(options) {
         apiURL: options.apiURL,
         applicationToken: options.applicationToken,
         domain: options.domain || '',
+        withCredentials:options.withCredentials,
         global: {},
     }
 
