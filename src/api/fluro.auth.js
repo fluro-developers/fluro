@@ -106,6 +106,16 @@ var FluroAuth = function(fluro) {
         // delete store.expires;
 
         log('fluro.auth > user logout');
+
+
+        if(fluro.withCredentials) {
+            
+            //Logout of the current application
+            window.location.href = '/logout';
+        
+        
+        }
+
         return dispatch()
 
     }
