@@ -14,7 +14,7 @@ var FluroTypes = function(FluroCore) {
 
 
     var service = {
-        terms:{},
+        terms: {},
     };
 
     //////////////////////////////////
@@ -186,6 +186,59 @@ var FluroTypes = function(FluroCore) {
 
     }
 
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * A helpful function for mapping an array of items into a grouped array broken up by definition
+     * @alias FluroTypes.mapDefinitionItems
+     * @param  {Array} array An array of content items
+     * @param  {String} baseType The default base type to map, eg. 'tag', 'contact', 'event'
+     * @return {Array}            A mapped array broken up by definition
+     * @example 
+     * //Returns {something:[{title:'Demographic', plural:'Demographics',  key:'demographic', entries:[{...},{...}]}]}
+     * FluroTypes.mapDefinitionItems([{title:'test', definition:'demographic'}], 'tag');
+     * 
+     */
+    service.mapDefinitionItems = function(array, backup) {
+
+        var self = this;
+
+        ////////////////////////////
+
+        if (!array || !array.length) {
+            return;
+        }
+
+        ////////////////////////////
+
+        return _.chain(array)
+            .orderBy(function(item) {
+                return String(item.title).toLowerCase()
+            })
+            .reduce(function(set, entry) {
+
+                var key = entry.definition || backup;
+                var existing = set[key];
+                if (!existing) {
+                    existing = set[key] = {
+                        title: service.readable(key, false, backup),
+                        plural: service.readable(key, true, backup),
+                        key,
+                        entries: [],
+                    }
+                }
+                existing.entries.push(entry);
+                return set;
+            }, {})
+            .values()
+            .orderBy(function(type) {
+                return type.key == backup
+            })
+            .value();
+    }
+
     //////////////////////////////////
 
     /**
@@ -229,7 +282,7 @@ var FluroTypes = function(FluroCore) {
 
         if (!options) {
             options = {
-                cache:false,
+                cache: false,
                 // flat:true
             }
         }
@@ -262,14 +315,34 @@ var FluroTypes = function(FluroCore) {
 
         var readable = definitionName;
         var match = service.terms ? service.terms[readable] : null;
-        
-        if(match) {
-            readable = plural ? match.plural : match.title; 
+
+        if (match) {
+            readable = plural ? match.plural : match.title;
         } else {
-            readable = plural ? _.startCase(readable) + 's' :_.startCase(readable);
+            readable = plural ? _.startCase(readable) + 's' : _.startCase(readable);
         }
 
         return readable;
+    }
+
+
+    //////////////////////////////////
+
+    /**
+     * Input a definition name or basic type and receive the most basic _type of that definition
+     * @alias FluroTypes.parentType
+     * @param  {String} definitionName The definition or _type
+     * @return {String}  Eg. 'photo', 'service', or 'song'...
+     */
+    service.parentType = function(definitionName) {
+
+        var match = service.terms ? service.terms[definitionName] : null;
+
+        if (match) {
+            definitionName = match[definitionName].parentType || definitionName;
+        }
+         
+        return definitionName;
     }
 
     //////////////////////////////////

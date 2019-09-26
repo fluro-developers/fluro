@@ -135,20 +135,29 @@ FluroUtils.getDefaultValueForField = function(field) {
         //If we need some entries by default
         if (additionalRequired) {
 
-            switch (field.directive) {
-                case 'wysiwyg':
-                case 'textarea':
-                case 'code':
-                    _.times(additionalRequired, function() {
-                        blankValue.push('');
-                    })
-                    break;
+            switch (field.type) {
+                // case 'string':
+                //     _.times(additionalRequired, function() {
+                //         blankValue.push('');
+                //     })
+                //     break;
                 default:
-                    //We need to add objects
-                    if (nested) {
-                        _.times(additionalRequired, function() {
-                            blankValue.push({});
-                        })
+                    switch (field.directive) {
+                        case 'wysiwyg':
+                        case 'textarea':
+                        case 'code':
+                            _.times(additionalRequired, function() {
+                                blankValue.push('');
+                            })
+                            break;
+                        default:
+                            //We need to add objects
+                            if (nested) {
+                                _.times(additionalRequired, function() {
+                                    blankValue.push({});
+                                })
+                            }
+                            break;
                     }
                     break;
             }
@@ -157,21 +166,29 @@ FluroUtils.getDefaultValueForField = function(field) {
     } else {
 
         if (!blankValue) {
-            switch (field.directive) {
-                case 'wysiwyg':
-                case 'textarea':
-                case 'code':
-                    // case 'select':
-                    blankValue = '';
-                    break;
+
+            switch (field.type) {
+                // case 'string':
+                //     blankValue = '';
+                // break;
                 default:
-                    //We need to add objects
-                    if (nested) {
-                        blankValue = {};
+                    switch (field.directive) {
+                        case 'wysiwyg':
+                        case 'textarea':
+                        case 'code':
+                            // case 'select':
+                            blankValue = '';
+                            break;
+                        default:
+                            //We need to add objects
+                            if (nested) {
+                                blankValue = {};
+                            }
+                            //  else {
+                            //     blankValue =  null;
+                            // }
+                            break;
                     }
-                    //  else {
-                    //     blankValue =  null;
-                    // }
                     break;
             }
         }
@@ -263,10 +280,10 @@ FluroUtils.matchInArray = function(array, key, value, operator) {
  */
 FluroUtils.comma = function(array, path, limit) {
 
-    if(limit) {
+    if (limit) {
         array = array.slice(0, limit);
     }
-    
+
     return _.chain(array)
         .compact()
         .map(function(item) {
@@ -381,7 +398,7 @@ FluroUtils.arrayIDs = function(array, asObjectID) {
 FluroUtils.errorMessage = function(err) {
 
 
-    if(_.isArray(err)) {
+    if (_.isArray(err)) {
         err = _.first(err);
     }
 

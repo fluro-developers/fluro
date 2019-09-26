@@ -44,19 +44,25 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
     ///////////////////////////////////////////////////
 
     service.isStatted = function(id) {
+
+        id = Fluro.utils.getStringID(id);
         return _.get(store, `ids['${id}']`);
     }
 
     ///////////////////////////////////////////////////
 
     service.isStatting = function(id) {
+        id = Fluro.utils.getStringID(id);
         return inProgress[id];
     }
 
 
     ///////////////////////////////////////////////////
 
+    ///////////////////////////////////////////////////
+
     service.toggle = function(id) {
+        id = Fluro.utils.getStringID(id);
 
         if (!unique) {
             throw Error(`Can't use the toggle() method on a non-unique stat`)
@@ -75,6 +81,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
     //Set the value and dispatch an event that we are processing
     service.setProcessing = function(id, isProcessing) {
+        id = Fluro.utils.getStringID(id);
         inProgress[id] = isProcessing;
         dispatcher.dispatch('statting', { id: id, statting: isProcessing });
     }
@@ -83,10 +90,12 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
     service.add = function(id) {
 
+
         if (unique) {
             throw Error(`Can't use the add() method on a non-unique stat`)
         }
 
+        id = Fluro.utils.getStringID(id);
         var url = `/stat/${id}/${statName}`;
 
         ///////////////////////////
@@ -122,6 +131,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
             throw Error(`Can't use the unset() method on a non-unique stat`)
         }
 
+        id = Fluro.utils.getStringID(id);
         var url = `/stat/${id}/${statName}?unique=true`;
 
         ///////////////////////////
@@ -153,6 +163,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
             throw Error(`Can't use the set() method on a non-unique stat`)
         }
 
+        id = Fluro.utils.getStringID(id);
         var url = `/stat/${id}/${statName}?unique=true`;
 
         ///////////////////////////

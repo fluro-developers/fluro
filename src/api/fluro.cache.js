@@ -24,7 +24,7 @@ var FluroCache = {
      */
     reset() {
         _.each(caches, function(cache, key) {
-            // console.log(`Reset ${key} cache`);
+            // console.log(`Reset ${key} cache`, cache);
             cache.reset();
         })
     },

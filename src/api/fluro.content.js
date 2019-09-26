@@ -346,9 +346,18 @@ var FluroContent = function(fluro) {
      */
     service.get = function(id, params) {
 
+        console.log('GET STRING ID', id);
+
+        //Ensure it's a simple single ID
+        id = fluro.utils.getStringID(id);
+
+        /////////////////////////////////////
+
         if (!params) {
             params = {}
         }
+
+        /////////////////////////////////////
 
         return new Promise(function(resolve, reject) {
 
