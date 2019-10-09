@@ -19,9 +19,9 @@ module.exports = {
     //       )
     //   ],
     optimization: {
-        splitChunks: {
-            chunks: 'all'
-        }
+        // splitChunks: {
+            // chunks: 'all'
+        // }
     },
 
     externals: {

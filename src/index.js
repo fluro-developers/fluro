@@ -2,7 +2,7 @@
 
 
 
-console.log('fluro 2.0.13')
+console.log('fluro 2.0.15')
 
 
 ////////////////////////////////////////////
@@ -20,6 +20,13 @@ export { FluroUtils as FluroUtils };
 //Export the event dispatcher class
 import {EventDispatcher} from './api/fluro.utils';
 export { EventDispatcher as EventDispatcher };
+
+
+////////////////////////////////////////////
+
+//Export the event dispatcher class
+import FilterService from './services/FilterService';
+export { FilterService as FilterService };
 
 ////////////////////////////////////////////
 ////////////////////////////////////////////
@@ -48,6 +55,12 @@ import FluroCore from './api/fluro.core';
 //Add Utils as a static property
 FluroCore.utils = FluroUtils;
 FluroCore.date = FluroDate;
+
+//Export like this for now 
+FluroCore.FilterService = FilterService;
+FluroCore.FluroDate = FluroDate;
+FluroCore.FluroUtils = FluroUtils;
+FluroCore.EventDispatcher = EventDispatcher;
 
 
 ////////////////////////////////////////////

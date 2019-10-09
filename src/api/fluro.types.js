@@ -14,7 +14,7 @@ var FluroTypes = function(FluroCore) {
 
 
     var service = {
-        terms: {},
+        glossary: {},
     };
 
     //////////////////////////////////
@@ -148,6 +148,9 @@ var FluroTypes = function(FluroCore) {
             case 'video':
                 icon = 'video';
                 break;
+            case 'form':
+                icon ='file-signature';
+            break;
         }
 
         if (icon) {
@@ -268,39 +271,82 @@ var FluroTypes = function(FluroCore) {
     }
 
 
+    //////////////////////////////////
+    /**
+     * Retrieves all definitions available in the current account. Useful for making one request and caching
+     * @alias FluroTypes.terms
+     * @param  {object} options extra options for the request
+     * @return {promise}       An promise that will resolve to the array of definitions and their names
+     */
+
+    var inflightTermsRequest;
 
     //////////////////////////////////
 
-    /**
-     * Retrieves a glossary of terms for readable definition titles and plurals
-     * @alias FluroTypes.reloadTerminology
-     * @return {promise}       An promise that will resolve to the matching basic types or reject with the responding error
-     */
-    service.reloadTerminology = function(options) {
+    service.terms = function(options) {
 
-        service.terms = {};
-
-        if (!options) {
-            options = {
-                cache: false,
-                // flat:true
-            }
+        if(!options) {
+            options = {}
         }
 
         ///////////////////////////
 
-        return new Promise(function(resolve, reject) {
-            FluroCore.api.get('/defined/terms', options)
-                .then(function(res) {
+        if (inflightTermsRequest && !options.forceRefresh) {
+            return inflightTermsRequest;
+        }
 
-                    // console.log('GOT ALL THE TYPES', res.data);
-                    service.terms = res.data;
-                    resolve(service.terms);
-                }, reject);
+        ///////////////////////////
 
+        inflightTermsRequest = new Promise(function(resolve, reject) {
+
+            if (!options) {
+                options = {
+                    cache:false,
+                    // flat:true
+                }
+            }
+
+            ///////////////////////////
+
+            options.cache = false;
+
+
+            ///////////////////////////
+
+            service.glossary = {};
+
+            return FluroCore.api.get(`/defined/terms`, options).then(function(res) {
+                service.glossary = res.data;
+                return resolve(res.data);
+            }, reject);
         });
 
+        ///////////////////////////
+
+        return inflightTermsRequest;
     }
+
+
+    //////////////////////////////////
+
+
+    /**
+     * Retrieves a glossary of glossary for readable definition titles and plurals
+     * @alias FluroTypes.reloadTerminology
+     * @return {promise}       An promise that will resolve to the matching basic types or reject with the responding error
+     */
+   
+    service.reloadTerminology = function(options) {
+
+        if (!options) {
+            options = {
+                forceRefresh:true,
+            }
+        }
+
+        return service.terms(options);
+    }
+   
 
     //////////////////////////////////
 
@@ -314,7 +360,7 @@ var FluroTypes = function(FluroCore) {
     service.readable = function(definitionName, plural) {
 
         var readable = definitionName;
-        var match = service.terms ? service.terms[readable] : null;
+        var match = service.glossary ? service.glossary[readable] : null;
 
         if (match) {
             readable = plural ? match.plural : match.title;
@@ -336,14 +382,196 @@ var FluroTypes = function(FluroCore) {
      */
     service.parentType = function(definitionName) {
 
-        var match = service.terms ? service.terms[definitionName] : null;
+        var match = service.glossary ? service.glossary[definitionName] : null;
 
         if (match) {
-            definitionName = match[definitionName].parentType || definitionName;
+            definitionName = match.parentType || definitionName;
         }
-         
+
         return definitionName;
     }
+
+    //////////////////////////////////
+
+    /**
+     * Input a definition name or basic type and receive the most basic _type of that definition
+     * @alias FluroTypes.subTypes
+     * @param  {String} definitionName The basic _type
+     * @return {Array}  eg. 'service', 'concert', 'conference'
+     */
+    service.subTypes = function(typeName) {
+
+
+        var definitions = _.reduce(service.glossary, function(set, term, key) {
+
+            term.definitionName = key;
+            if (term.parentType == typeName) {
+                set.push(term);
+            }
+
+            return set;
+        }, []);
+
+
+        return Promise.resolve(definitions);
+
+        // var match = service.glossary ? service.glossary[definitionName] : null;
+
+        // if (match) {
+        //     definitionName = match.parentType || definitionName;
+        // }
+
+        // return definitionName;
+    }
+
+
+    //////////////////////////////////
+
+    /**
+     * Input a definition name or basic type and receive the most basic _type of that definition
+     * @alias FluroTypes.postableTypes
+     * @param  {String} definitionName The definition or _type
+     * @param  {Object} options Extra options
+     * @return {Array} an array of definitions that can be posted
+     *
+    /**
+    service.postableTypes = function(typeName, options) {
+
+        if(!options) {
+            options = {
+                list: true,
+                strict: true,
+            }
+        }
+
+
+        return new Promise(function(resolve, reject) {
+
+            FluroCore.api.post('/defined', options)
+                .then(function(res) {
+
+                    // console.log('GOT ALL THE TYPES', res.data);
+                    resolve(res.data);
+                }, reject);
+
+        });
+
+
+
+        // FluroContent.endpoint('post/types/' + type, true, true)
+        //     .query(options)
+        //     .$promise.then(function(res) {
+        //         var filtered = _.filter(res, function(definition) {
+        //             var definitionName = definition.definitionName;
+        //             var canView = FluroAccess.can('view', definitionName, 'post');
+        //             var canCreate = FluroAccess.can('create', definitionName, 'post');
+        //             var canSubmit = FluroAccess.can('submit', definitionName, 'post');
+
+        //             // console.log('CAN?', $rootScope.user, type, canCreate, canSubmit);
+
+        //             return (canCreate || canSubmit);
+        //         });
+
+        //         return deferred.resolve(filtered);
+
+        //     }, deferred.reject);
+
+        // var match = service.glossary ? service.glossary[definitionName] : null;
+
+        // if (match) {
+        //     definitionName = match.parentType || definitionName;
+        // }
+         
+        // return definitionName;
+    }
+    /**/
+
+    //////////////////////////////////
+
+    /**
+     * Input a definition name or basic type and receive the most basic _type of that definition
+     * @alias FluroTypes.postableTypes
+     * @param  {String} definitionName The definition or _type
+     * @param  {Object} options Extra options
+     * @return {Array} an array of definitions that can be posted
+     *
+     */
+    service.processTypes = function(typeName, options) {
+
+        if (!options) {
+            options = {
+                list: true,
+                strict: true,
+            }
+        }
+
+        // FluroContent.endpoint('process/types/' + type, true, true)
+        //         .query({
+        //             list:true,
+        //             strict:true,
+        //         })
+        //         .$promise.then(function(res) {
+        //             var filtered = _.filter(res, function(definition) {
+        //                 var definitionName = definition.definitionName;
+        //                 var canView = FluroAccess.can('view', definitionName, 'process');
+        //                 var canCreate = FluroAccess.can('create', definitionName, 'process');
+        //                 return (canView || canCreate);
+        //             });
+
+        //             return deferred.resolve(filtered);
+
+        //         }, deferred.reject);
+
+        return new Promise(function(resolve, reject) {
+
+            FluroCore.api.get(`/process/types/${typeName}`, {
+                    params: options
+                })
+                .then(function(res) {
+
+
+                    // var filtered = _.filter(res, function(definition) {
+                    //     var definitionName = definition.definitionName;
+                    //     var canView = FluroAccess.can('view', definitionName, 'process');
+                    //     var canCreate = FluroAccess.can('create', definitionName, 'process');
+                    //     return (canView || canCreate);
+                    // });
+
+                    // console.log('GOT ALL THE TYPES', res.data);
+                    resolve(res.data);
+                }, reject);
+
+        });
+
+
+
+        // FluroContent.endpoint('post/types/' + type, true, true)
+        //     .query(options)
+        //     .$promise.then(function(res) {
+        //         var filtered = _.filter(res, function(definition) {
+        //             var definitionName = definition.definitionName;
+        //             var canView = FluroAccess.can('view', definitionName, 'post');
+        //             var canCreate = FluroAccess.can('create', definitionName, 'post');
+        //             var canSubmit = FluroAccess.can('submit', definitionName, 'post');
+
+        //             // console.log('CAN?', $rootScope.user, type, canCreate, canSubmit);
+
+        //             return (canCreate || canSubmit);
+        //         });
+
+        //         return deferred.resolve(filtered);
+
+        //     }, deferred.reject);
+
+        // var match = service.glossary ? service.glossary[definitionName] : null;
+
+        // if (match) {
+        //     definitionName = match.parentType || definitionName;
+        // }
+
+        // return definitionName;
+    }
+    /**/
 
     //////////////////////////////////
 

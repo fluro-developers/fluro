@@ -798,8 +798,15 @@ var FluroContent = function(fluro) {
 
             /////////////////////////////////////////////
 
+            var url =`/content/distinct/values`;
+
+            if(options.type) {
+                url =`/content/${options.type}/distinct/values`;
+            }
+
+            /////////////////////////////////////////////
             //Retrieve the query results
-            return fluro.api.post(`/content/distinct/values`, payload, options)
+            return fluro.api.post(url, payload, options)
                 .then(function(res) {
                     resolve(res.data);
                 },reject);
@@ -843,8 +850,16 @@ var FluroContent = function(fluro) {
 
             /////////////////////////////////////////////
 
+            var url =`/content/distinct/keys`;
+
+            if(options.type) {
+                url =`/content/${options.type}/distinct/keys`;
+            }
+
+            /////////////////////////////////////////////
+
             //Retrieve the query results
-            return fluro.api.post(`/content/distinct/keys`, payload, options)
+            return fluro.api.post(url, payload, options)
                 .then(function(res) {
                     resolve(res.data);
                 },reject);

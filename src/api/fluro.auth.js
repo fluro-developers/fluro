@@ -111,7 +111,7 @@ var FluroAuth = function(fluro) {
         if(fluro.withCredentials) {
             
             //Logout of the current application
-            window.location.href = '/logout';
+            window.location.href = '/fluro/logout';
         
         
         }
