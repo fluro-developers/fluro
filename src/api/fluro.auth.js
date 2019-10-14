@@ -4,8 +4,6 @@ import { EventDispatcher } from './fluro.utils';
 
 ///////////////////////////////////////////////////
 
-console.log('FLURO AUTH')
-
 
 /**
  * Creates a new FluroAsset instance.
@@ -32,7 +30,7 @@ var FluroAuth = function(fluro) {
     ///////////////////////////////////////////////////
 
     var service = {
-        debug:true,
+        debug:false,
     }
 
 
@@ -665,7 +663,7 @@ var FluroAuth = function(fluro) {
                     refreshToken: refreshToken,
                     managed: isManagedSession,
                 }, {
-                    bypassInterceptor: false,//true
+                    bypassInterceptor: true,
                 })
                 .then(function tokenRefreshComplete(res) {
 
@@ -905,7 +903,7 @@ var FluroAuth = function(fluro) {
         switch (status) {
             case 401:
 
-            console.log('AUTH ERROR 401', err);
+                // console.log('AUTH ERROR 401', err);
 
                 //If it's an invalid refresh token
                 //In case it was a mismatch between tabs or sessions
@@ -914,12 +912,14 @@ var FluroAuth = function(fluro) {
                 if(data == 'invalid_refresh_token') {
 
                     //Try it again
-                    console.log('Refresh failed but its ok')
+                    // console.log('Refresh failed but its ok')
 
                 } else {
                     //Logout and destroy the session
-                    service.logout();
+                    
                 }
+
+                service.logout();
             
                 
                 break;
