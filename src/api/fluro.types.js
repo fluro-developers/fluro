@@ -359,6 +359,12 @@ var FluroTypes = function(FluroCore) {
      */
     service.readable = function(definitionName, plural) {
 
+        if(definitionName == 'node') {
+            return plural ? 'Items' : 'Item';
+        }
+
+        //////////////////////////////////////////
+
         var readable = definitionName;
         var match = service.glossary ? service.glossary[readable] : null;
 

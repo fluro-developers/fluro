@@ -46,9 +46,9 @@ FilterService.activeFilterRows = function(config) {
 
 
 FilterService.activeFilterKeys = function(config) {
-    var keys =  _.chain(FilterService.activeFilters(config))
+    var keys = _.chain(FilterService.activeFilters(config))
         .map(function(entry) {
-            if(!entry || !entry.key) {
+            if (!entry || !entry.key) {
                 return;
             }
 
@@ -58,7 +58,7 @@ FilterService.activeFilterKeys = function(config) {
         .uniq()
         .value();
 
-       return keys;
+    return keys;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -100,7 +100,7 @@ FilterService.activeFilterValues = function(config) {
         .value();
 
 
-         // console.log('FILTER VALUES', values);
+    // console.log('FILTER VALUES', values);
 
     return values;
 
@@ -560,13 +560,13 @@ FilterService.comparators.push({
     operator: 'dateanniversarybetween',
     match(input, mustMatchValue1, mustMatchValue2) {
 
-        if(!input) {
+        if (!input) {
             return;
         }
 
 
         var checkDate = new Date(input);
-        if(isNaN(checkDate)) {
+        if (isNaN(checkDate)) {
             return;
         }
 
@@ -581,27 +581,27 @@ FilterService.comparators.push({
 
         ////////////////////////////////////////
 
-        var startDate =new Date(Math.min(date1, date2));
-        var endDate = new Date(Math.max(date1,date2));
+        var startDate = new Date(Math.min(date1, date2));
+        var endDate = new Date(Math.max(date1, date2));
 
         ////////////////////////////////////////
 
         function zeroPadded(str) {
             str = String(str);
 
-            if(str.length == 1) {
-                return '0'+ str;
+            if (str.length == 1) {
+                return '0' + str;
             }
 
             return str;
         }
-        
+
         ////////////////////////////////////////
 
         var checkTimestamp = parseInt(`${zeroPadded(checkDate.getMonth())}${zeroPadded(checkDate.getDate())}`);
         var startTimestamp = parseInt(`${zeroPadded(startDate.getMonth())}${zeroPadded(startDate.getDate())}`);
         var endTimestamp = parseInt(`${zeroPadded(endDate.getMonth())}${zeroPadded(endDate.getDate())}`);
-        
+
         return checkTimestamp >= startTimestamp && checkTimestamp <= endTimestamp;
     },
     dateDisplayFormat: 'YYYY',
@@ -660,7 +660,7 @@ FilterService.comparators.push({
         }
 
     },
-    dateDisplayFormat:'[Wk]W YYYY',
+    dateDisplayFormat: '[Wk]W YYYY',
     restrict: [
         'date',
     ],
@@ -672,26 +672,26 @@ FilterService.comparators.push({
     operator: 'datesamemonth',
     match(input, mustMatchValue) {
 
-    //     match(input, mustMatchValue) {
+        //     match(input, mustMatchValue) {
 
-    //     var mustMatchString = String(mustMatchValue);
+        //     var mustMatchString = String(mustMatchValue);
 
-    //     // console.log('Check date input', input);
-
-       
-    //     if (_.isArray(input)) {
-    //         return _.some(input, function(i) {
-    //            var weekdayInteger = moment(i).weekday()
-    //            return _.includes(mustMatchString, weekdayInteger);
-    //         });
-    //     } else {
-    //          var weekdayInteger = moment(input).weekday()
-    //          return _.includes(mustMatchString, weekdayInteger);
-    //     }
+        //     // console.log('Check date input', input);
 
 
+        //     if (_.isArray(input)) {
+        //         return _.some(input, function(i) {
+        //            var weekdayInteger = moment(i).weekday()
+        //            return _.includes(mustMatchString, weekdayInteger);
+        //         });
+        //     } else {
+        //          var weekdayInteger = moment(input).weekday()
+        //          return _.includes(mustMatchString, weekdayInteger);
+        //     }
 
-    // },
+
+
+        // },
 
 
 
@@ -704,7 +704,7 @@ FilterService.comparators.push({
         }
 
     },
-    dateDisplayFormat:'MMM YYYY',
+    dateDisplayFormat: 'MMM YYYY',
     restrict: [
         'date',
     ],
@@ -724,7 +724,7 @@ FilterService.comparators.push({
         }
 
     },
-    dateDisplayFormat:'YYYY',
+    dateDisplayFormat: 'YYYY',
     restrict: [
         'date',
     ],
@@ -740,18 +740,18 @@ FilterService.comparators.push({
 
         // console.log('Check date input', input);
 
-       
+
         if (_.isArray(input)) {
             return _.some(input, function(i) {
-               var weekdayInteger = moment(i).weekday()
-               return _.includes(mustMatchString, weekdayInteger);
+                var weekdayInteger = moment(i).weekday()
+                return _.includes(mustMatchString, weekdayInteger);
             });
         } else {
-             var weekdayInteger = moment(input).weekday()
-             return _.includes(mustMatchString, weekdayInteger);
+            var weekdayInteger = moment(input).weekday()
+            return _.includes(mustMatchString, weekdayInteger);
         }
     },
-    dateDisplayFormat:'dddd',
+    dateDisplayFormat: 'dddd',
     restrict: [
         'date',
     ],
@@ -1261,7 +1261,7 @@ FilterService.getComparatorsForType = function(type) {
 
 FilterService.isValidFilter = function(block) {
 
-    
+
 
     if (block.operator) {
         return _.some(block.filters, FilterService.isValidFilter);
@@ -1274,7 +1274,7 @@ FilterService.isValidFilter = function(block) {
     }
 
 
-     // console.log('CHECK', block)
+    // console.log('CHECK', block)
 
     ////////////////////////////////////////////////////////
 
@@ -1285,7 +1285,7 @@ FilterService.isValidFilter = function(block) {
 
     ////////////////////////////////////////////////////////
 
-    
+
 
     switch (comparator.inputType) {
         case 'none':
@@ -1369,8 +1369,158 @@ FilterService.filterGroupMatch = function(filterGroup, item) {
 }
 
 //////////////////////////////////////////////////////////////////
+
 FilterService.getRootKey = function(key) {
     return String(key).split('|')[0];
+
+}
+
+//////////////////////////////////////////////////////////////////
+
+
+// FilterService.filter(cards, {
+//     filter:filterConfig,
+//     startDate:'',
+//     endDate:'',
+//     search:'Sophia',
+// })
+
+
+//Easy function to filter according to all specified criteria when in the front end
+FilterService.filter = function(items, options) {
+
+    if (!options) {
+        options = {};
+    }
+
+    //////////////////////////////////////
+
+    var searchKeywords = options.search ? String(options.search).toLowerCase().trim() : null;
+    var searchPieces = (searchKeywords || '').split(' ');
+    var startDate = options.startDate ? new Date(options.startDate) : null;
+    var endDate = options.endDate ? new Date(options.endDate) : null;
+    var filterConfig = options.filter;
+
+    //////////////////////////////////////
+
+    var activeFilters = FilterService.activeFilters(filterConfig);
+    var hasActiveFilters = (activeFilters && activeFilters.length);
+    var hasSearchKeywords = (searchKeywords && searchKeywords.length);
+    var hasDateBoundaries = (startDate && endDate);
+
+    //////////////////////////////
+
+    //No filters are active
+    if (!hasActiveFilters && !hasSearchKeywords && !hasDateBoundaries) {
+        return items;
+    }
+
+    //////////////////////////////
+
+    return _.filter(items, function(item) {
+
+        //There is filter criteria
+        if (hasActiveFilters) {
+            //Check if it matches the filters and if it doesn't
+            var matchesFilters = FilterService.filterGroupMatch(filterConfig, item);
+            if (!matchesFilters) {
+                return;
+            }
+        }
+
+        /////////////////////////////////
+
+         var searchIsCorrect;
+
+        //Check if it matches the search keywords
+        if (hasSearchKeywords) {
+
+            //Get the title
+            var itemTitle = String(item.title).trim().toLowerCase();
+            var idString = String(item._id).trim().toLowerCase();
+
+            //If the keyword string is an exact match for the id of the item
+            var exactIDMatch = (searchKeywords == idString);
+            if (exactIDMatch) {
+                //Search is a match
+                searchIsCorrect = true;
+            } else {
+
+                //If the title matches the keywords exactly
+                var exactMatch = _.includes(itemTitle, searchKeywords);
+
+                if (exactMatch) {
+                    //We are all done here
+                    searchIsCorrect = true;
+                } else {
+
+                    //Check if the the keywords matches
+                    var keywordString = (item.keywords || []).join(' ');
+
+                    //If there are keywords
+                    if (keywordString.length) {
+
+                        //Check if there is an exact match for keywords
+                        var exactMatch = _.includes(keywordString, searchKeywords);
+
+                        if (exactMatch) {
+                            //We're done
+                            searchIsCorrect = true;
+                        } else {
+                            //If it's a Multiword Match
+                            var multiMatch = _.every(searchPieces, function(partial) {
+                                return _.includes(itemTitle, partial) || _.includes(keywordString, partial);
+                            })
+
+                            if (multiMatch) {
+                                searchIsCorrect = true;
+                            }
+
+                            // return FilterService.matchAnyString(searchKeywords, item);
+                        }
+                    }
+                }
+            }
+
+            //////////////////////////////////////
+
+            //If we have a search but the item doesn't match it
+            //then finish and return false here
+            if (!searchIsCorrect) {
+                // console.log('Not match for', searchKeywords, row.title);
+                return;
+            }
+        }
+
+        //////////////////////////////
+
+        if (hasDateBoundaries) {
+            startDate.setHours(0, 0, 0, 0);
+            endDate.setHours(0, 0, 0, 0);
+
+            //////////////////////
+
+            var itemStartDate = new Date(row.startDate);
+            itemStartDate.setHours(0, 0, 0, 0);
+
+            var itemEndDate = new Date(row.endDate);
+            itemEndDate.setHours(0, 0, 0, 0);
+
+            if (itemEndDate < startDate) {
+                return;
+            }
+
+            if (itemStartDate > endDate) {
+                return;
+            }
+        }
+
+        //////////////////////////////
+
+        //We made it here so it must be a correct match
+        return true;
+
+    });
 
 }
 
