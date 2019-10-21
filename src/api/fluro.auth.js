@@ -71,7 +71,7 @@ var FluroAuth = function(fluro) {
      * 
      * Sets the current user data, often from localStorage or after new session data
      * has been generated from the server after signing in
-     * @alias FluroAuth.set
+     * @alias fluro.auth.set
      * @param  {Object} user The user session object
      * @example
      * FluroAsset.set({firstName:'Jeff', lastName:'Andrews', ...})
@@ -92,9 +92,9 @@ var FluroAuth = function(fluro) {
      * 
      * Deletes the user session object, clears all Fluro caches and tokens
      * from memory
-     * @alias FluroAuth.logout
+     * @alias fluro.auth.logout
      * @example
-     * FluroAuth.logout()
+     * fluro.auth.logout()
      */
 
     service.logout = function() {
@@ -134,7 +134,7 @@ var FluroAuth = function(fluro) {
      * 
      * Retrieves a new session object for a Fluro global user for a specified account
      * This will only work if the user has a persona in that account
-     * @alias FluroAuth.changeAccount
+     * @alias fluro.auth.changeAccount
      * @param  {String} accountID The _id of the account you wish to log in to
      * @param  {Object} options      
      * @param  {Object} options.disableAutoAuthenticate By default this function will set the current user session 
@@ -142,13 +142,13 @@ var FluroAuth = function(fluro) {
      * If you want to generate the session without affecting your current session you can set disableAutoAuthenticate to true    
      * @return {Promise} Resolves to the user session object, or rejects with the responding error
      * @example
-     * FluroAuth.changeAccount('5be504eabf33991239599d63').then(function(userSession) {
+     * fluro.auth.changeAccount('5be504eabf33991239599d63').then(function(userSession) {
      *     //New user session will be set automatically
-     *     var newUserSession = FluroAuth.getCurrentUser();
+     *     var newUserSession = fluro.auth.getCurrentUser();
      * })
-     * FluroAuth.changeAccount('5be504eabf33991239599d63', {disableAutoAuthenticate:true}).then(function(userSession) {
+     * fluro.auth.changeAccount('5be504eabf33991239599d63', {disableAutoAuthenticate:true}).then(function(userSession) {
      *     //Set the session manually
-     *     FluroAuth.set(userSession)
+     *     fluro.auth.set(userSession)
      * })
      */
 
@@ -189,10 +189,66 @@ var FluroAuth = function(fluro) {
 
     }
 
+
+
+    ///////////////////////////////////////////////////
+
+    /**
+     * 
+     * Impersonates a persona and sets the current session to match the specified persona's context
+     * @alias fluro.auth.impersonate
+     * @param  {String} personaID The _id of the persona you wish to impersonate
+     * @param  {Object} options      
+     * @return {Promise} Resolves to the user session object, or rejects with the responding error
+     * @example
+     * fluro.auth.impersonate('5be504eabf33991239599d63')
+     * .then(function(userSession) {
+     *     //New user session will be set automatically
+     *     var newUserSession = fluro.auth.getCurrentUser();
+     * })
+     */
+
+    service.impersonate = function(personaID, options) {
+
+        //Ensure we just have the ID
+        personaID = fluro.utils.getStringID(personaID);
+
+        //////////////////////////
+
+        if (!options) {
+            options = {};
+        }
+
+        //////////////////////////
+
+        //Change the users current tokens straight away
+        var autoAuthenticate = true;
+
+        if (options.disableAutoAuthenticate) {
+            autoAuthenticate = false;
+        }
+
+        //////////////////////////
+
+        var promise = fluro.api.post(`/token/persona/${personaID}`)
+
+        promise.then(function(res) {
+
+            if (autoAuthenticate) {
+                fluro.cache.reset();
+                service.set(res.data);
+            }
+        }, function(err) {});
+
+
+        return promise;
+
+    }
+
     ///////////////////////////////////////////////////
     /**
      * Logs the user in to Fluro and returns a new user session
-     * @alias FluroAuth.login
+     * @alias fluro.auth.login
      * @param  {Object} credentials 
      * @param  {String} credentials.username The email address of the user to login as
      * @param  {String} credentials.password The password for the user
@@ -303,7 +359,7 @@ var FluroAuth = function(fluro) {
      * only work when called in context of an application with the 'Application Token' authentication style.
      * It will create a new user persona in the account of the application and return a session with all of the application's
      * permissions and application's logged in user permissions
-     * @alias FluroAuth.signup      
+     * @alias fluro.auth.signup      
      * @param  {Object} credentials
      * @param  {String} credentials.firstName The first name for the new user persona
      * @param  {String} credentials.lastName The last name for the new user persona
@@ -426,7 +482,7 @@ var FluroAuth = function(fluro) {
 
     /**
      * Retrieves a user's details by providing a password reset token 
-     * @alias FluroAuth.retrieveUserFromResetToken      
+     * @alias fluro.auth.retrieveUserFromResetToken      
      * @param  {String} token The password reset token that was sent to the user's email address
      * @param  {Object} options other options for the request
      * @param  {Boolean} options.application     If true will retrieve in the context of a managed persona in the same account as the current application.
@@ -480,7 +536,7 @@ var FluroAuth = function(fluro) {
 
     /**
      * Updates a user's details including password by providing a password reset token
-     * @alias FluroAuth.updateUserWithToken      
+     * @alias fluro.auth.updateUserWithToken      
      * @param  {String} token The password reset token that was sent to the user's email address
      * @param  {Object} body The details to change for the user
      * @param  {Object} options other options for the request
@@ -553,7 +609,7 @@ var FluroAuth = function(fluro) {
 
     /**
      * Triggers a new Reset Password email request to the specified user. 
-     * @alias FluroAuth.sendResetPasswordRequest      
+     * @alias fluro.auth.sendResetPasswordRequest      
      * @param  {Object} body
      * @param  {String} body.username The email address of the user to reset the password for
      * @param  {String} body.redirect If the request is in the context of a managed user persona authenticated with an application, then you need to provide the url to direct the user to when they click the reset password link
@@ -637,7 +693,7 @@ var FluroAuth = function(fluro) {
     /**
      * Helper function to refresh an access token for an authenticated user session. This is usually handled automatically
      * from the FluroAuth service itself
-     * @alias FluroAuth.refreshAccessToken
+     * @alias fluro.auth.refreshAccessToken
      * @param  {String}  refreshToken  The refresh token to reactivate
      * @param  {Boolean} isManagedSession Whether or not the refresh token is for a managed persona session or a global Fluro user session
      * @return {Promise}                A promise that either resolves with the refreshed token details or rejects with the responding error from the server
@@ -727,7 +783,7 @@ var FluroAuth = function(fluro) {
      * Helper function to resync the user's session from the server. This is often used when first loading a webpage or app
      * just to see if the user's permissions have changed since the user first logged in
      * from the FluroAuth service itself
-     * @alias FluroAuth.sync
+     * @alias fluro.auth.sync
      * @return {Promise}    A promise that either resolves with the user session 
      */
     service.sync = function() {
@@ -752,7 +808,10 @@ var FluroAuth = function(fluro) {
                 dispatch();
             })
             .catch(function(err) {
-                console.log('ERROR',err);
+                console.log('Auth Sync Error',err);
+                store.user = null;
+                dispatch();
+
             });
     }
 
@@ -760,7 +819,7 @@ var FluroAuth = function(fluro) {
 
     /**
      * Returns the current user's access token
-     * @alias FluroAuth.getCurrentToken
+     * @alias fluro.auth.getCurrentToken
      * @return {String} The Fluro access token for the current user session
      */
     service.getCurrentToken = function() {
@@ -771,7 +830,7 @@ var FluroAuth = function(fluro) {
 
     /**
      * Returns the current user's session data
-     * @alias FluroAuth.getCurrentUser
+     * @alias fluro.auth.getCurrentUser
      * @return {Object} The current user session
      */
     service.getCurrentUser = function() {
@@ -935,33 +994,33 @@ var FluroAuth = function(fluro) {
 
 
     /**
-     * @name FluroAuth.addEventListener
+     * @name fluro.auth.addEventListener
      * @description Adds a callback that will be triggered whenever the specified event occurs
      * @function
      * @param {String} event The event to listen for
      * @param {Function} callback The function to fire when this event is triggered
      * @example
      * //Listen for when the user session changes
-     * FluroAuth.addEventListener('change', function(userSession) {})
+     * fluro.auth.addEventListener('change', function(userSession) {})
      */
 
     /**
-     * @name FluroAuth.removeEventListener
+     * @name fluro.auth.removeEventListener
      * @description Removes all a callback from the listener list
      * @function
      * @param {String} event The event to stop listening for
      * @param {Function} callback The function to remove from the listener list
      * @example
      * //Stop listening for the change event
-     * FluroAuth.removeEventListener('change', myFunction)
+     * fluro.auth.removeEventListener('change', myFunction)
      */
 
     /**
-     * @name FluroAuth.removeAllListeners
+     * @name fluro.auth.removeAllListeners
      * @description Removes all listening callbacks for all events
      * @function
      * @example
-     * FluroAuth.removeAllListeners()
+     * fluro.auth.removeAllListeners()
      */
 
     return service;

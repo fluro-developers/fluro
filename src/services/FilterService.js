@@ -83,7 +83,7 @@ FilterService.activeFilterValues = function(config) {
                     all = all.concat([block.value, block.value2]);
                     break;
                 default:
-                    all.push(block.value);
+                    all.push(block.computedValue, block.value);
                     break;
             }
 
@@ -358,6 +358,8 @@ FilterService.isSimilar = function(input, mustMatchValue, options) {
         options = {};
     }
 
+
+    // var stringSimilarity = () => import('string-similarity');
 
     var score = stringSimilarity.compareTwoStrings(getString(input), getString(mustMatchValue));
     var matches = (score >= 0.6);
@@ -1261,8 +1263,6 @@ FilterService.getComparatorsForType = function(type) {
 
 FilterService.isValidFilter = function(block) {
 
-
-
     if (block.operator) {
         return _.some(block.filters, FilterService.isValidFilter);
     }
@@ -1286,6 +1286,12 @@ FilterService.isValidFilter = function(block) {
     ////////////////////////////////////////////////////////
 
 
+    var computedValue;
+    if(block.computedValue && String(block.computedValue).length) {
+        computedValue = block.computedValue;
+    }
+
+    ////////////////////////////////////////////////////////
 
     switch (comparator.inputType) {
         case 'none':
@@ -1316,7 +1322,12 @@ FilterService.isValidFilter = function(block) {
             }
             break;
         default:
+            //It's a date by process of elimination
 
+            if(block.computedValue) {
+                // console.log('Its a computed value!', block);
+                return true;
+            }
 
             if (!block.value || !_.isDate(new Date(block.value))) {
                 return;
@@ -1430,7 +1441,7 @@ FilterService.filter = function(items, options) {
 
         /////////////////////////////////
 
-         var searchIsCorrect;
+        var searchIsCorrect;
 
         //Check if it matches the search keywords
         if (hasSearchKeywords) {
@@ -1538,6 +1549,12 @@ FilterService.filterMatch = function(filter, item) {
     var mustMatchValue = filter.value;
     var mustMatchValue2 = filter.value2;
 
+    ////////////////////////////////////////
+
+    if(filter.computedValue && filter.computedValue.length) {
+        // console.log('compute the value', filter.computedValue);
+        mustMatchValue = filter.computedValue;
+    }
 
     ////////////////////////////////////////
 
@@ -1630,6 +1647,175 @@ FilterService.filterMatch = function(filter, item) {
     // }
 
     return itMatches;
+}
+
+///////////////////////////////
+///////////////////////////////
+
+FilterService.allKeys = function(initFields, config) {
+
+    if (!config) {
+        return [];
+    }
+
+    if (!initFields) {
+        initFields = [];
+    }
+
+    var definitionFields = _.chain(config)
+        .get('definition.fields')
+        .map(function(field) {
+            return Object.assign({}, field, {
+                key: 'data.' + field.key,
+            })
+        })
+        .value();
+
+    //////////////////////////////////////////////////////////////////////////////////
+
+    var typeFields = _.chain(config)
+        .get('type.fields')
+        .map(function(field) {
+            return Object.assign({}, field)
+        })
+        .value();
+  
+    //////////////////////////////////////////////////////////////////////////////////
+
+    var indexIterator = 0;
+
+
+    //////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////
+
+    function getFlattenedFields(array, trail, titles) {
+
+
+        return _.chain(array)
+            .map(function(field, key) {
+
+                //Create a new object so we don't mutate
+                var field = Object.assign({}, field);
+
+                var returnValue = [];
+
+
+
+                // console.log('FIELD WOOT', field);
+                /////////////////////////////////////////
+
+                //If there are sub fields
+                if (field.fields && field.fields.length) {
+
+
+                    if (field.asObject || field.directive == 'embedded') {
+                        //Push the field itself
+                        trail.push(field.key);
+                        titles.push(field.title)
+
+                        field.trail = trail.slice();
+                        field.titles = titles.slice();
+
+                        trail.pop();
+                        titles.pop();
+                        returnValue.push(field);
+
+
+                        ///////////////////////////////
+
+                        //Prepend the key to all lowed fields
+
+
+
+
+                        if (field.maximum != 1) {
+                            trail.push(field.key + '[' + indexIterator + ']');
+                            titles.push(field.title);
+                        } else {
+                            trail.push(field.key);
+                            titles.push(field.title);
+                        }
+                    }
+
+                    // console.log('Go down', field.key);
+                    var fields = getFlattenedFields(field.fields, trail, titles);
+
+                    if (field.asObject || field.directive == 'embedded') {
+                        trail.pop()
+                        titles.pop();
+                    }
+                    //console.log('Go back up')
+                    returnValue.push(fields);
+
+
+                } else {
+                    /////////////////////////////////////////
+
+                    //Push the field key
+                    trail.push(field.key);
+                    titles.push(field.title);
+
+                    field.trail = trail.slice();
+                    field.titles = titles.slice();
+                    trail.pop();
+                    titles.pop();
+                    returnValue.push(field);
+                }
+
+
+
+                /////////////////////////////////////////
+
+                return returnValue;
+
+            })
+            .flattenDeep()
+            .value();
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////
+
+    var detailSheetFields = _.reduce(config.details, function(set, detailSheet) {
+
+        // //Get all the flattened fields
+        var flattened = getFlattenedFields(detailSheet.fields, [], []);
+
+        //////////////////////////////////
+
+        var mapped = _.chain(flattened)
+            .map(function(field) {
+
+                if (field.type == 'group') {
+                    return;
+                }
+
+                return {
+                    title: detailSheet.title + ' - ' + field.titles.join(' > '),
+                    key: `details.${detailSheet.definitionName}.items[0].data.${field.trail.join('.')}`,
+                    minimum: field.minimum,
+                    maximum: field.maximum,
+                    detail: detailSheet.definitionName,
+                    type: field.type,
+                }
+            })
+            .compact()
+            .value();
+
+        //////////////////////////////////
+
+        return set.concat(mapped);
+
+    }, []);
+
+    //////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////
+
+    var fields = initFields.concat(typeFields,definitionFields,detailSheetFields);
+    return _.orderBy(fields, 'title')
+
+
+
 }
 
 ///////////////////////////////

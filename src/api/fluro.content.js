@@ -346,7 +346,6 @@ var FluroContent = function(fluro) {
      */
     service.get = function(id, params) {
 
-        console.log('GET STRING ID', id);
 
         //Ensure it's a simple single ID
         id = fluro.utils.getStringID(id);
@@ -777,9 +776,9 @@ var FluroContent = function(fluro) {
 
         ids = fluro.utils.arrayIDs(ids);
 
-        if (!ids | !ids.length ) {
-            throw Error(`No ids specified ${ids}`);
-        }
+        // if (!ids | !ids.length ) {
+        //     throw Error(`No ids specified ${ids}`);
+        // }
 
         if (!key | !key.length ) {
             throw Error(`No key specified `);
@@ -808,7 +807,9 @@ var FluroContent = function(fluro) {
             //Retrieve the query results
             return fluro.api.post(url, payload, options)
                 .then(function(res) {
-                    resolve(res.data);
+                    resolve(_.orderBy(res.data, function(entry) {
+                        return entry.title || entry;
+                    }));
                 },reject);
 
         })

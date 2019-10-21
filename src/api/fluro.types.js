@@ -350,6 +350,70 @@ var FluroTypes = function(FluroCore) {
 
     //////////////////////////////////
 
+    var basicTypes = [
+        'asset',
+        'checkin',
+        'image',
+        'audio',
+        'video',
+        'account',
+        'persona',
+        'application',
+        'deployment',
+        'article',
+        'assignment',
+        'post',
+        'resultset',
+        'timetrigger',
+        'onboard',
+        'code',
+        'component',
+        'collection',
+        'family',
+        'contact',
+        'method',
+        'contactdetail',
+        'personadetail',
+        'task',
+        'definition',
+        'endpoint',
+        'event',
+        'view',
+        'process',
+        'eventtrack',
+        'log',
+        'integration',
+        'interaction',
+        'location',
+        'package',
+        'product',
+        'purchase',
+        'query',
+        'realm',
+        'role',
+        'site',
+        'tag',
+        'team',
+        'roster',
+        'capability',
+        'plan',
+        'transaction',
+        'reaction',
+        'user',
+        'policy',
+        'mailout',
+        'ticket',
+        'academic',
+        'attendance',
+    ]
+
+
+    service.isBasicType = function(typeName) {
+        return _.includes(basicTypes, typeName);
+    }
+
+    //////////////////////////////////
+
     /**
      * Input a definition name or basic type and receive the human readable version of that type
      * @alias FluroTypes.readable

@@ -503,6 +503,14 @@ var FluroAccess = function(FluroCore) {
             return true;
         }
 
+        ////////////////////////////////////////////////////
+
+        if(item._type && item._type != 'realm') {
+            if(item.realms && !item.realms.length) {
+                return true;
+            }
+        }
+
         /////////////////////////////////////
 
         //Get the definition name of the item
@@ -636,6 +644,15 @@ var FluroAccess = function(FluroCore) {
         //If we are a Fluro Admin we can do anything!
         if (service.isFluroAdmin()) {
             return true;
+        }
+
+
+        ////////////////////////////////////////////////////
+
+        if(item._type && item._type != 'realm') {
+            if(item.realms && !item.realms.length) {
+                return true;
+            }
         }
 
         /////////////////////////////////////
@@ -796,6 +813,15 @@ var FluroAccess = function(FluroCore) {
         //If we are a Fluro Admin we can do anything!
         if (service.isFluroAdmin()) {
             return true;
+        }
+
+
+        ////////////////////////////////////////////////////
+
+        if(item._type && item._type != 'realm') {
+            if(item.realms && !item.realms.length) {
+                return true;
+            }
         }
 
         /////////////////////////////////////
