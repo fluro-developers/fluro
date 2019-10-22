@@ -657,7 +657,7 @@ var FluroAuth = function(fluro) {
 
             //If a full fledged Fluro User
             //then send directly to the API
-            var url = fluro.apiURL + '/resend';
+            var url = fluro.apiURL + '/auth/resend';
 
             /////////////////////////////////////////////
 
