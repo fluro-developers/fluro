@@ -63,6 +63,53 @@ FilterService.activeFilterKeys = function(config) {
 
 //////////////////////////////////////////////////////////////////////
 
+
+FilterService.activeFilterCriteriaString = function(config) {
+
+
+    var criteriaValue = _.chain(FilterService.activeFilters(config))
+        .map(function(block) {
+
+            if (!block.criteria || !block.criteria.length) {
+                return;
+            }
+
+            //////////////////////////
+
+            var activeCriteria = FilterService.activeFilters({ filters: block.criteria });
+
+            if (!activeCriteria || !activeCriteria.length) {
+                return;
+            }
+
+            //////////////////////////
+
+
+            return FilterService.getFilterChangeString({ filters: activeCriteria });
+        })
+        .flatten()
+        .compact()
+        .map(function(value) {
+            var nameTitle = value.title || value.name || value._id || value;
+            return String(nameTitle).toLowerCase();
+        })
+        .compact()
+        .uniq()
+        .value();
+
+    ////////////////////////
+
+    return criteriaValue;
+
+}
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////
+
+
 FilterService.activeFilterValues = function(config) {
 
     var values = _.chain(FilterService.activeFilters(config))
@@ -70,19 +117,25 @@ FilterService.activeFilterValues = function(config) {
 
             var all = [];
             var comparator = FilterService.getComparator(block.comparator);
+
             if (!comparator) {
                 return;
             }
 
+
+
+
             switch (comparator.inputType) {
                 case 'array':
                     all = all.concat(block.values);
+
                     break;
                 case 'range':
                 case 'daterange':
                     all = all.concat([block.value, block.value2]);
                     break;
                 default:
+
                     all.push(block.computedValue, block.value);
                     break;
             }
@@ -100,7 +153,6 @@ FilterService.activeFilterValues = function(config) {
         .value();
 
 
-    // console.log('FILTER VALUES', values);
 
     return values;
 
@@ -218,6 +270,7 @@ FilterService.getFilterChangeString = function(config) {
     var string = [
         FilterService.activeFilterKeys(config).join(', '),
         FilterService.activeFilterValues(config).join(', '),
+        FilterService.activeFilterCriteriaString(config).join(', '),
         FilterService.activeFilterComparators(config).join(', '),
         FilterService.activeFilterOperators(config).join(', '),
     ].join('');
@@ -325,16 +378,35 @@ function isIn(input, range) {
     return _.some(range, function(entry) {
 
         var entryString = getString(entry, true);
-
-        // console.log('CHECK', range, entry, stringInput, entryString)
         return stringInput == getString(entry, true);
+
     });
 }
 
 ///////////////////////////////////
 
 function isEmpty(input) {
-    return !input;
+
+
+    if(!input) {
+        return true;
+    }
+
+    if(input == undefined) {
+        return true;
+    }
+
+    if(input == null) {
+        return true;
+    }
+
+    if(input == '') {
+        return true;
+    }
+
+    if(_.isArray(input) && !input.length) {
+        return true;
+    }
 }
 
 
@@ -389,7 +461,6 @@ FilterService.isSimilar = function(input, mustMatchValue, options) {
 function isEqual(input, range) {
 
     //Input is the field from the row, range is the filter input typed by the user
-    // console.log('INPUT', input, range);
     var matchAny = getAllStringMatches(input, true);
 
     var rangeAsString = getString(range, true);
@@ -401,31 +472,7 @@ function isEqual(input, range) {
 
     var isMatch = _.includes(matchAny, rangeAsString);
 
-    // if(isMatch) {
-    //     console.log('MATCH', rangeAsString, matchAny)
-    // }
-
     return isMatch
-
-    // var string2 = getString(range);
-    // var inputIsArray = _.isArray(input);
-
-
-    // if(inputIsArray) {
-    // // console.log('Input is array', inputIsArray, input, range);
-    //     return _.some(input, function(entry) {
-    //         return getString(entry) == string2;
-    //     })
-    // } else {
-
-
-    //     var string1 = getString(input);
-    //     // console.log('Input is string', string1, string2);
-    //     return string1 == string2;
-    // }
-
-
-
 }
 
 function isContained(input, range) {
@@ -842,13 +889,14 @@ FilterService.comparators.push({
         if (_.isArray(input)) {
 
             //Check if any match
-            return _.some(input, function(i) {
+            return !_.some(input, function(i) {
+
+                
                 return isIn(i, mustMatchValue);
             });
         } else {
 
             var matches = isIn(input, mustMatchValue);
-            // console.log('Must match value', matches, input, mustMatchValue);
 
             return matches;
         }
@@ -871,8 +919,8 @@ FilterService.comparators.push({
     operator: 'notin',
     match(input, mustMatchValue) {
         if (_.isArray(input)) {
-            return !_.some(input, function(i) {
-                return isIn(i, mustMatchValue);
+            return _.some(input, function(i) {
+                return !isIn(i, mustMatchValue);
             });
         } else {
             return !isIn(input, mustMatchValue);
@@ -1274,7 +1322,7 @@ FilterService.isValidFilter = function(block) {
     }
 
 
-    // console.log('CHECK', block)
+
 
     ////////////////////////////////////////////////////////
 
@@ -1287,7 +1335,7 @@ FilterService.isValidFilter = function(block) {
 
 
     var computedValue;
-    if(block.computedValue && String(block.computedValue).length) {
+    if (block.computedValue && String(block.computedValue).length) {
         computedValue = block.computedValue;
     }
 
@@ -1324,8 +1372,7 @@ FilterService.isValidFilter = function(block) {
         default:
             //It's a date by process of elimination
 
-            if(block.computedValue) {
-                // console.log('Its a computed value!', block);
+            if (block.computedValue) {
                 return true;
             }
 
@@ -1367,7 +1414,6 @@ FilterService.filterGroupMatch = function(filterGroup, item) {
                 returnValue = _.every(validFilters, function(filterBlock) {
 
                     var wasMatch = FilterService.filterMatch(filterBlock, item)
-                    // console.log('Was', wasMatch, filterBlock, item)
                     return wasMatch;
                 })
                 break;
@@ -1498,7 +1544,6 @@ FilterService.filter = function(items, options) {
             //If we have a search but the item doesn't match it
             //then finish and return false here
             if (!searchIsCorrect) {
-                // console.log('Not match for', searchKeywords, row.title);
                 return;
             }
         }
@@ -1551,8 +1596,7 @@ FilterService.filterMatch = function(filter, item) {
 
     ////////////////////////////////////////
 
-    if(filter.computedValue && filter.computedValue.length) {
-        // console.log('compute the value', filter.computedValue);
+    if (filter.computedValue && filter.computedValue.length) {
         mustMatchValue = filter.computedValue;
     }
 
@@ -1565,7 +1609,6 @@ FilterService.filterMatch = function(filter, item) {
     ////////////////////////////////////////
 
     if (!key || !key.length) {
-        // console.log('No Key!')
         return true;
     }
 
@@ -1575,7 +1618,6 @@ FilterService.filterMatch = function(filter, item) {
     //If we are a range type filter
     if (inputType == 'array') {
 
-        // console.log('ARRAY?', inputType);
         //Get the second value
         var mustMatchValue = filter.values || [];
 
@@ -1589,7 +1631,6 @@ FilterService.filterMatch = function(filter, item) {
 
     if (inputType != 'none') {
 
-        // console.log('INPUT TYPE IS', inputType);
         //If we don't have a value yet then return true
         if (typeof mustMatchValue == 'undefined' || mustMatchValue === null) {
             return true;
@@ -1615,10 +1656,7 @@ FilterService.filterMatch = function(filter, item) {
 
     //Get the actual value on the item
     var itemValue = _.get(item, key);
-    // if(key == 'status') {
-    //     console.log('GOT ITEM VALUE', key, itemValue, item)
-    // }
-
+    
     ////////////////////////////////////////
 
     if (inputType != 'none') {
@@ -1639,12 +1677,7 @@ FilterService.filterMatch = function(filter, item) {
         key: key,
     });
 
-    // if(key == 'status') {
-    // console.log('CHECK ITEM VALUE', item.title, itemValue, key, item);
-    // if(itMatches) {
-    // console.log('MATCHES', key, itMatches, item.title, itemValue, mustMatchValue);
-    // }
-    // }
+    
 
     return itMatches;
 }
@@ -1679,7 +1712,7 @@ FilterService.allKeys = function(initFields, config) {
             return Object.assign({}, field)
         })
         .value();
-  
+
     //////////////////////////////////////////////////////////////////////////////////
 
     var indexIterator = 0;
@@ -1701,7 +1734,6 @@ FilterService.allKeys = function(initFields, config) {
 
 
 
-                // console.log('FIELD WOOT', field);
                 /////////////////////////////////////////
 
                 //If there are sub fields
@@ -1737,14 +1769,12 @@ FilterService.allKeys = function(initFields, config) {
                         }
                     }
 
-                    // console.log('Go down', field.key);
                     var fields = getFlattenedFields(field.fields, trail, titles);
 
                     if (field.asObject || field.directive == 'embedded') {
                         trail.pop()
                         titles.pop();
                     }
-                    //console.log('Go back up')
                     returnValue.push(fields);
 
 
@@ -1811,7 +1841,7 @@ FilterService.allKeys = function(initFields, config) {
     //////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////
 
-    var fields = initFields.concat(typeFields,definitionFields,detailSheetFields);
+    var fields = initFields.concat(typeFields, definitionFields, detailSheetFields);
     return _.orderBy(fields, 'title')
 
 

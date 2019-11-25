@@ -10,6 +10,7 @@ import FluroStats from './fluro.stats';
 import FluroTypes from './fluro.types';
 import FluroContent from './fluro.content';
 import FluroAccess from './fluro.access';
+import FluroVideo from './fluro.video';
 import { EventDispatcher } from './fluro.utils';
 // } else {
 
@@ -207,6 +208,20 @@ var FluroCore = function(options) {
     var access = new FluroAccess(core);
     Object.defineProperty(core, 'access', {
         value: access,
+        writable: false,
+    });
+
+
+    ///////////////////////////////////////
+
+    /**
+     * Provides helper functions for working
+     * with Fluro Video data
+     * @type {FluroVideo}
+     */
+    var video = FluroVideo;
+    Object.defineProperty(core, 'video', {
+        value: video,
         writable: false,
     });
 

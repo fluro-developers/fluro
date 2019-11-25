@@ -2,7 +2,7 @@
 
 
 
-console.log('fluro 2.0.22')
+console.log('fluro 2.0.23')
 
 
 ////////////////////////////////////////////
@@ -14,6 +14,11 @@ export { FluroDate as FluroDate };
 //Import the Utils library
 import FluroUtils from './api/fluro.utils';
 export { FluroUtils as FluroUtils };
+
+
+//Import the Utils library
+import FluroVideo from './api/fluro.video';
+export { FluroVideo as FluroVideo };
 
 ////////////////////////////////////////////
 
@@ -55,6 +60,7 @@ import FluroCore from './api/fluro.core';
 //Add Utils as a static property
 FluroCore.utils = FluroUtils;
 FluroCore.date = FluroDate;
+FluroCore.video = FluroVideo;
 
 //Export like this for now 
 FluroCore.FilterService = FilterService;

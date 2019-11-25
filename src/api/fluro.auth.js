@@ -442,7 +442,7 @@ var FluroAuth = function(fluro) {
 
             /////////////////////////////////////////////
 
-            var url = fluro.apiURL + '/token/signup';
+            var url = fluro.apiURL + '/user/signup';
 
             /////////////////////////////////////////////
 
@@ -793,7 +793,12 @@ var FluroAuth = function(fluro) {
         return fluro.api.get('/session')
             .then(function(res) {
 
+                console.log('sync response', res);
+
                 if (res.data) {
+
+
+                    
 
                     //Update the user with any changes 
                     //returned back from the refresh request

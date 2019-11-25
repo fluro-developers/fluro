@@ -27,6 +27,30 @@ var FluroTypes = function(FluroCore) {
 
         var icon;
         switch (type) {
+            case 'academic':
+                icon = 'school';
+                break;
+            case 'deployment':
+                icon = 'cloud-upload';
+                break;
+            case 'roster':
+                icon = 'clipboard-user';
+                break;
+            case 'package':
+                icon = 'box-open';
+                break;
+            case 'method':
+                icon = 'credit-card-front';
+                break;
+            case 'resultset':
+                icon = 'poll-people';
+                break;
+            case 'timetrigger':
+                icon = 'clock';
+                break;
+            case 'user':
+                icon = 'user';
+                break;
             case 'policy':
                 icon = 'id-card';
                 break;
@@ -60,6 +84,9 @@ var FluroTypes = function(FluroCore) {
                 break;
             case 'component':
                 icon = 'tachometer-alt';
+                break;
+            case 'log':
+                icon = 'history';
                 break;
             case 'contact':
                 icon = 'child';
@@ -283,6 +310,8 @@ var FluroTypes = function(FluroCore) {
 
     //////////////////////////////////
 
+
+
     service.terms = function(options) {
 
         if(!options) {
@@ -327,7 +356,13 @@ var FluroTypes = function(FluroCore) {
     }
 
 
+
+   
+
     //////////////////////////////////
+
+
+
 
 
     /**
@@ -445,6 +480,21 @@ var FluroTypes = function(FluroCore) {
     //////////////////////////////////
 
     /**
+     * Input a definition name or basic type and receive the basic details about that definition
+     * @alias FluroTypes.term
+     * @param  {String} definitionName The definition or _type
+     * @return {Object}  The details about this definition as defined in the glossary
+     */
+    service.term = function(definitionName) {
+
+        return service.glossary ? service.glossary[definitionName] : null;
+
+    }
+
+
+    //////////////////////////////////
+
+    /**
      * Input a definition name or basic type and receive the most basic _type of that definition
      * @alias FluroTypes.parentType
      * @param  {String} definitionName The definition or _type
@@ -472,7 +522,8 @@ var FluroTypes = function(FluroCore) {
     service.subTypes = function(typeName) {
 
 
-        var definitions = _.reduce(service.glossary, function(set, term, key) {
+        var definitions = _.chain(service.glossary)
+        .reduce(function(set, term, key) {
 
             term.definitionName = key;
             if (term.parentType == typeName) {
@@ -480,7 +531,11 @@ var FluroTypes = function(FluroCore) {
             }
 
             return set;
-        }, []);
+        }, [])
+        .orderBy(function(definition) {
+            return definition.title;
+        })
+        .value();
 
 
         return Promise.resolve(definitions);

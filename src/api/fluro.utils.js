@@ -1,5 +1,5 @@
 import _ from 'lodash';
-
+import moment from 'moment';
 
 
 
@@ -438,7 +438,80 @@ FluroUtils.errorMessage = function(err) {
 }
 
 
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
+
+
+/**
+ * Helper function for sorting process cards by priority
+ * @alias FluroUtils.processCardPrioritySort
+ * @param  {Object} card The process card to sort
+ * @return {Integer}     An integer representing it's sorting priority
+ */
+
+
+FluroUtils.processCardPrioritySort = function(card) {
+
+    var num = '2';
+    var trailer = 0;
+    var val;
+
+    ///////////////////////////////////////////
+
+    //If we are archived then add straight to the bottom of the list
+    if (card.status == 'archived') {
+        num = '4';
+        val = parseFloat(num + '.' + trailer);
+        return val + '-' + card.title;
+    }
+
+    ///////////////////////////////////////////
+
+    //If we are complete then add us to the bottom of the list
+    if (card.processStatus == 'complete') {
+        num = '3';
+        val = parseFloat(num + '.' + trailer);
+        return val + '-' + card.title;
+    }
+
+    ///////////////////////////////////////////
+
+    if (card.dueDate) {
+
+        var dueMoment = moment(card.dueDate);
+        var dueDate = dueMoment.toDate();
+
+        var nowMoment = moment();
+        var now = nowMoment.toDate();
+
+        var duetime = dueDate.getTime();
+        trailer = dueDate.getTime()
+
+        if (duetime < now.getTime()) {
+            //If it's overdue then we add it to the very very top
+            num = '0';
+        } else {
+            //Otherwise just add it to the top of the 
+            //pending cards
+            num = '1';
+        }
+    }
+
+    ///////////////////////////////////////////
+
+    var val = parseFloat(num + '.' + trailer);
+
+    return val + '-' + card.title;
+
+}
+
+
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
 
 export default FluroUtils;
