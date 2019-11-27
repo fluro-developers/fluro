@@ -32,6 +32,43 @@ FluroUtils.mapParameters = function(parameters) {
 
 
 
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A function that will take an integer and a currency string and return a formatted numeric amount rounded to 2 decimal places
+ * @alias FluroUtils.formatCurrency
+ * @param  {Integer} value The amount in cents
+ * @param  {String} currency The currency to format
+ * @return {String}            The formatted value
+ * @example 
+ * 
+ * //Returns £10.00
+ * FluroUtils.formatCurrency(1000, 'gbp');
+ * 
+ * //Returns $10.00
+ * FluroUtils.formatCurrency(1000, 'usd');
+ * 
+ */
+FluroUtils.formatCurrency = function(value, currency) {
+
+    if(!value || isNaN(value)) {
+        value = 0;
+    }
+
+    var currencyPrefix = '$';
+
+    switch (String(currency).toLowerCase()) {
+        case 'gbp':
+            currencyPrefix = '£';
+            break;
+        case 'eur':
+            currencyPrefix = '€';
+            break;
+    }
+    
+    return `${currencyPrefix}${parseFloat(parseInt(value) / 1000).toFixed(2)}`;
+
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 

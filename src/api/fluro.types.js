@@ -511,6 +511,22 @@ var FluroTypes = function(FluroCore) {
         return definitionName;
     }
 
+
+    //////////////////////////////////
+
+    /**
+     * Retrieve an array of all basic types
+     * @alias FluroTypes.basicTypes
+     * @return {Array}  eg. 'service', 'concert', 'conference'
+     */
+    service.basicTypes = function() {
+        var values = _.map(basicTypes, function(typeName) {
+            return service.glossary[typeName];
+        })
+
+        return Promise.resolve(values);
+    }
+
     //////////////////////////////////
 
     /**
