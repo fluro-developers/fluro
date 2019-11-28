@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>FluroVideo - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,17 +31,98 @@
 
 <div id="main">
     
+    <h1 class="page-title">FluroVideo</h1>
+    
 
     
 
 
 
+
+<section>
+
+<header>
+    
+        <h2>
+        FluroVideo
+        </h2>
+        
+            <div class="class-description">A static service that provides useful tools when working with video content</div>
+        
+    
+</header>
+
+<article>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".hhmmss"><span class="type-signature">(static) </span>hhmmss<span class="signature">(seconds)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
     
 
 
-    <section class="package">
-        <h3> </h3>		
-    </section>
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.video.js.html">fluro.video.js</a>, <a href="fluro.video.js.html#line103">line 103</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
 
 
 
@@ -50,126 +131,434 @@
 
 
 
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns 01:02:00
+Fluro.hhmmss(62)</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>seconds</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The number of seconds to get duration for</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The query string
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
 
     
 
 
 
-    <section class="readme">
-        <article><h1>Fluro Javascript API</h1><p><a href="https://fluro.io">Site</a> |
-<a href="https://fluro-developers.github.io/fluro/">Documentation</a> |
-<a href="https://developer.fluro.io">REST API Documentation</a> |
-<a href="https://support.fluro.io">Support</a></p>
-<h3>Javascript Frameworks</h3><p>Frameworks are available for Vue, Angular and React
-<a href="https://www.npmjs.com/package/fluro-vue">Vue Plugin</a></p>
-<h2>Installation</h2><p>Before installing update the <code>.npmrc</code> file with your font-awesome license number</p>
-<pre class="prettyprint source lang-bash"><code>npm install fluro --save</code></pre><h2>Getting Started</h2><pre class="prettyprint source lang-js"><code>//Import the Fluro module
-import Fluro from 'fluro';
+        
+            
 
-/////////////////////////////////////////////
+    
 
-//Set some defaults 
-const API_URL = 'https://api.fluro.io';
-const APPLICATION_TOKEN = '$55fkshadh12425324...';
-const APPLICATION_DOMAIN_NAME = 'https://myapplication.com'; 
+    <h4 class="name" id=".readableMilliseconds"><span class="type-signature">(static) </span>readableMilliseconds<span class="signature">(milliseconds)</span><span class="type-signature"> &rarr; {String}</span></h4>
 
-/////////////////////////////////////////////
-
-//Create a new Fluro instance
-const fluro = new Fluro({
-    apiURL: API_URL,
-    applicationToken: APPLICATION_TOKEN,
-    domain:APPLICATION_DOMAIN_NAME,
-});
-
-/////////////////////////////////////////////
-
-//Optionally set a default timezone (otherwise will default to browser clock timezone)
-fluro.date.defaultTimezone = 'Australia/Melbourne';
-</code></pre><h2>Authentication</h2><p>The FluroAuth service makes it easy to handle actions and behaviours like login, logout, signup, reset password etc.
-It's often a good idea to save the user's session, which contains refresh and access tokens to local storage
-Once you have authenticated the fluro module will take care of authenticating your requests, refreshing tokens before they expire and caching data
-for more information checkout the <a href="https://fluro-developers.github.io/fluro/FluroAuth.html">FluroAuth module</a></p>
-<p>If a static application token has been set then when a user signs out of the app all requests are made as the application instead of the user</p>
-<h4>Listening to user session changes</h4><p>It's helpful to listen for the 'change' event so that your application can respond to a user logging in/out</p>
-<pre class="prettyprint source lang-js"><code>
-//Listen for when the user logs in/out
-fluro.auth.addEventListener('change', userUpdated);
-
-/////////////////////////////////////////////
-
-//Update whenever the user session changes
-function userUpdated(user) {
-
-    if(user) {
-        //The user is logged in and you have their session details
-        window.localStorage.userSession = user;
-    } else {
-        //The user is logged out
-    }
-
-    //Get new information for the user's 'likes', 'plays', 'pins' etc..
-    fluro.stats.refresh();
-}
-
-//Set the user session object if we already have it in localStorage
-fluro.auth.set(window.localStorage.userSession);
-
-</code></pre><h4>Logging In as a Fluro User</h4><p>To login and authenticate using your Fluro username and password
-you can use the FluroAuth.login function, upon successfuly login all subsequent requests to the API will
-be authenticated with your access token, and your token will be refreshed automatically until you sign out</p>
-<pre class="prettyprint source lang-js"><code>
-//Login to the server as a general Fluro user
-fluro.auth.login({
-    'username':'you@youremail.com',
-    'password':'yourpassword',
-}).then(function(user) {
-    //We are now logged in
-})
-.catch(function(err) {
-    //Couldn't sign in
-    console.log(err.message);
-});</code></pre><h4>Logging in to an application as a managed persona</h4><p>If your application is a public website or a whitelabelled product that you want users to be able to 
-sign up or log in to, you can allow them to authenticate as a 'managed persona', this allows your users
-to authenticate without ever hearing or knowing about Fluro, giving you complete control over their usernames, passwords
-permissions and other information. Managed persona's can sign in to your applications resulting in an access/refresh token pair
-that grants them both the permissions of the persona AND the permissions of the application.</p>
-<pre class="prettyprint source lang-js"><code>
-//Login to the server as a persona (whitelabelled user)
-//By providing the application:true property
-fluro.auth.login({
-    'username':'you@youremail.com',
-    'password':'yourpassword',
-}, {
-    application:true
-}).then(function(user) {
-    //We are now logged in
-})
-.catch(function(err) {
-    //Couldn't sign in
-    console.log(err.message);
-});
-</code></pre><h4>Logging Out</h4><pre class="prettyprint source lang-js"><code>//Logout and clear all caches
-//And revert back to the application if a token has been provided
-fluro.auth.logout()</code></pre><h2>Handling Errors</h2><p>The FluroUtils service has a handy function for translating an error into a human readable message, this can be 
-be helpful when needing to show error messages to the user</p>
-<pre class="prettyprint source lang-js"><code>
-//Get the user session
-fluro.api.get('/content/event/5ca3d64dd2bb085eb9d450db')
-.then(function(response) {
-    //Success
-})
-.catch(function(err) {
-    var errorMessage = fluro.utils.errorMessage(err);
-    console.log(errorMessage);
-});
+    
 
 
 
-</code></pre></article>
-    </section>
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.video.js.html">fluro.video.js</a>, <a href="fluro.video.js.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
 
 
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>Fluro.readableMilliseconds(100000)</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>milliseconds</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The number of milliseconds to get duration for</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The query string
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".readableSeconds"><span class="type-signature">(static) </span>readableSeconds<span class="signature">(seconds)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.video.js.html">fluro.video.js</a>, <a href="fluro.video.js.html#line62">line 62</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>Fluro.readableSeconds(10)</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>seconds</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The number of seconds to get duration for</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The query string
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -181,7 +570,7 @@ fluro.api.get('/content/event/5ca3d64dd2bb085eb9d450db')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 28 2019 19:50:36 GMT+1100 (Australian Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 28 2019 19:50:37 GMT+1100 (Australian Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

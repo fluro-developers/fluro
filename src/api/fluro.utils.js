@@ -55,19 +55,41 @@ FluroUtils.formatCurrency = function(value, currency) {
         value = 0;
     }
 
-    var currencyPrefix = '$';
+    var currencyPrefix = FluroUtils.currencySymbol(currency);
+    return `${currencyPrefix}${parseFloat(parseInt(value) / 100).toFixed(2)}`;
+
+}
+
+
+/**
+ * A function that will take a currency string and return the symbol
+ * @alias FluroUtils.currencySymbol
+ * @param  {String} currency The currency
+ * @return {String}            The symbol
+ * @example 
+ * 
+ * //Returns £
+ * FluroUtils.currencySymbol('gbp');
+ * 
+ * //Returns $
+ * FluroUtils.currencySymbol('usd');
+ * 
+ */
+FluroUtils.currencySymbol = function(currency) {
+    //Ensure lowercase currency
+    currency = String(currency).toLowerCase();
 
     switch (String(currency).toLowerCase()) {
         case 'gbp':
-            currencyPrefix = '£';
+            return '£';
             break;
         case 'eur':
-            currencyPrefix = '€';
+            return '€';
             break;
+        default:
+            return '$';
+        break;
     }
-    
-    return `${currencyPrefix}${parseFloat(parseInt(value) / 1000).toFixed(2)}`;
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -543,6 +565,59 @@ FluroUtils.processCardPrioritySort = function(card) {
 
 }
 
+
+////////////////////////////////////
+////////////////////////////////////
+////////////////////////////////////
+
+var injectedScripts = {}
+
+////////////////////////////////////
+
+
+/**
+ * Helper function for including external javascript resources
+ * This ensures that scripts are only included a single time on each page
+ * @alias FluroUtils.injectScript
+ * @param  {String} url The URL of the script to import
+ * @return {Promise}     A promise that resolves once the script has been included on the page
+ */
+
+FluroUtils.injectScript = function(scriptURL) {
+    
+    return new Promise(function(resolve, reject) {
+
+        if(!document) {
+            return reject('Script injection can only be used when running in a browser context')
+        }
+
+        if (injectedScripts[scriptURL]) {
+            return resolve(scriptURL);
+        }
+
+
+        //Keep note so we don't inject twice
+        injectedScripts[scriptURL] = true;
+
+        //////////////////////////////////////
+
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = true;
+        script.onload = function() {
+             console.log('Included external script', scriptURL);
+            return resolve(scriptURL);
+        };
+        script.src = scriptURL;
+        document.getElementsByTagName('head')[0].appendChild(script);
+
+        ////////////////////////////////////
+
+       
+
+        
+    })
+}
 
 /////////////////////////////////////////////
 /////////////////////////////////////////////

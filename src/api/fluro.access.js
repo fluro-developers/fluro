@@ -104,7 +104,7 @@ var FluroAccess = function(FluroCore) {
     /**
      * Checks whether a user has permission to perform a specified action for a specified type of content
      * If no user is set but an application is then it will return according to the permissions of the application
-     * This function is syncronous and returns a basic true or false boolean
+     * This function is synchronous and returns a basic true or false boolean
      * @param  {String} action     The action to check permissions for eg. 'create', 'view any', 'edit own', 'delete any' etc
      * @param  {String} type       The type or definition name eg. 'photo', 'article', 'team'
      * @param  {String} parentType The basic type, for instance if the type you are checking is 'photo' the parent type would be 'image' so that
@@ -224,6 +224,88 @@ var FluroAccess = function(FluroCore) {
 
         //Nope we cant
         return false;
+
+    }
+
+
+    //////////////////////////////////
+
+    /**
+     * Checks whether a user has permission any permissions for a specified type of content
+     * If no user is set but an application is then it will return according to the permissions of the application
+     * This function is synchronous and returns a basic true or false boolean
+     * @param  {String} type       The type or definition name eg. 'photo', 'article', 'team'
+     * @param  {String} parentType The basic type, for instance if the type you are checking is 'photo' the parent type would be 'image' so that
+     * you can get an accurate return value if the user has permission to perform the action on all definitions of an 'image' type content item 
+     * @return {Boolean}            true or false depending on whether the user has the required permissions
+     * @alias FluroAccess.canKnowOf  
+     * @example
+     *
+     * fluro.access.canKnowOf('photo', 'image');
+     * fluro.access.canKnowOf('event');
+     * 
+     */
+    service.canKnowOf = function(type, parentType) {
+
+        //Get the current session
+        var session = service.retrieveCurrentSession();
+
+        //If we are not logged in and are not
+        //running as an application then we can't
+        //do anything
+        if (!session) {
+            return false;
+        }
+
+        //If we are an administrator
+        //then we have access to do everything
+        //so there is no point continuing with checking all the other criteria
+        if (service.isFluroAdmin()) {
+            return true;
+        }
+
+        /////////////////////////////////////////////////////
+
+        //Get the permission string we actually want to check against
+
+        var actionsToCheck = [
+            'view any',
+            'view own',
+            'view any',
+            'edit own',
+            'create',
+        ]
+
+        /////////////////////////////////////////////////////
+
+        var canAccess = _.some(actionsToCheck, function(action) {
+            return service.can(action, type, parentType);
+        });
+
+        if (canAccess) {
+            return true;
+        }
+
+        /////////////////////////////////////////////////////
+
+        if (FluroCore.types && FluroCore.types.glossary) {
+
+
+            var subTypes = _.some(service.glossary, function(term, key) {
+                if (term.parentType == type) {
+                    return _.some(actionsToCheck, function(action) {
+                        return service.can(action, key);
+                    });
+                }
+            });
+
+            console.log('Last ditch check', type, parentType, subTypes)
+
+            return subTypes;
+
+
+
+        }
 
     }
 
@@ -505,8 +587,8 @@ var FluroAccess = function(FluroCore) {
 
         ////////////////////////////////////////////////////
 
-        if(item._type && item._type != 'realm') {
-            if(item.realms && !item.realms.length) {
+        if (item._type && item._type != 'realm') {
+            if (item.realms && !item.realms.length) {
                 return true;
             }
         }
@@ -649,8 +731,8 @@ var FluroAccess = function(FluroCore) {
 
         ////////////////////////////////////////////////////
 
-        if(item._type && item._type != 'realm') {
-            if(item.realms && !item.realms.length) {
+        if (item._type && item._type != 'realm') {
+            if (item.realms && !item.realms.length) {
                 return true;
             }
         }
@@ -818,8 +900,8 @@ var FluroAccess = function(FluroCore) {
 
         ////////////////////////////////////////////////////
 
-        if(item._type && item._type != 'realm') {
-            if(item.realms && !item.realms.length) {
+        if (item._type && item._type != 'realm') {
+            if (item.realms && !item.realms.length) {
                 return true;
             }
         }
@@ -931,20 +1013,20 @@ var FluroAccess = function(FluroCore) {
 
     service.retrieveSelectableRealms = function(action, definition, type, options) {
 
-        if(!options) {
+        if (!options) {
             options = {}
         }
 
         ///////////////////////////////////
 
         var params = {
-            definition:definition,
-            parentType:type,
+            definition: definition,
+            parentType: type,
         }
 
         ///////////////////////////////////
 
-        if(options.flat) {
+        if (options.flat) {
             params.flat = true;
         }
 
