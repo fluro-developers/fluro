@@ -43,7 +43,7 @@ var FluroAuth = function(fluro) {
     ///////////////////////////////////////////////////
     ///////////////////////////////////////////////////
 
-    function dispatch() {
+    function dispatch(parameters) {
 
         //Get the current user
         var user = store.user;
@@ -54,7 +54,7 @@ var FluroAuth = function(fluro) {
         }
 
         //Dispatch the change event
-        dispatcher.dispatch('change', user);
+        dispatcher.dispatch('change', user, parameters);
     }
 
     ///////////////////////////////////////////////////
@@ -77,11 +77,11 @@ var FluroAuth = function(fluro) {
      * FluroAsset.set({firstName:'Jeff', lastName:'Andrews', ...})
      */
 
-    service.set = function(user) {
+    service.set = function(user, parameters) {
         store.user = user;
 
         log('fluro.auth > user set');
-        return dispatch()
+        return dispatch(parameters)
     }
 
 

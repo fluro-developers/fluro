@@ -299,11 +299,7 @@ var FluroAccess = function(FluroCore) {
                 }
             });
 
-            console.log('Last ditch check', type, parentType, subTypes)
-
             return subTypes;
-
-
 
         }
 

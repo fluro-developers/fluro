@@ -65,6 +65,15 @@ var FluroAPI = function(fluro) {
 
     /////////////////////////////////////////////////////
 
+    // Add relative date and timezone to every request
+    service.interceptors.request.use(function (config) {
+        config.headers['fluro-request-date'] = new Date();
+        config.headers['fluro-request-timezone'] = fluro.date.defaultTimezone;
+        return config;
+    });
+
+    /////////////////////////////////////////////////////
+
     service.interceptors.response.use(function(response) {
         return response;
     }, function(err) {
