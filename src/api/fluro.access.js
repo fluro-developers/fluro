@@ -305,6 +305,10 @@ var FluroAccess = function(FluroCore) {
 
     }
 
+
+
+    
+
     /////////////////////////////////////////////////////
 
     //Flatten all children for a specified permission set

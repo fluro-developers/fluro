@@ -648,14 +648,14 @@ var FluroContent = function(fluro) {
 
 
 
-        
+
             /////////////////////////////////////////////
 
             //Retrieve the query results
             fluro.api.post(`/interact/${type}`, submission, requestOptions)
                 .then(function(res) {
                     resolve(res.data);
-                },reject);
+                }, reject);
 
         })
     }
@@ -701,7 +701,7 @@ var FluroContent = function(fluro) {
             fluro.api.post(`/post/${id}/${type}`, body, requestOptions)
                 .then(function(res) {
                     resolve(res.data);
-                },reject);
+                }, reject);
 
         })
     }
@@ -748,7 +748,7 @@ var FluroContent = function(fluro) {
             fluro.api.get(`/post/${id}/${type}`, requestOptions)
                 .then(function(res) {
                     resolve(res.data);
-                },reject);
+                }, reject);
 
         })
     }
@@ -780,7 +780,7 @@ var FluroContent = function(fluro) {
         //     throw Error(`No ids specified ${ids}`);
         // }
 
-        if (!key | !key.length ) {
+        if (!key | !key.length) {
             throw Error(`No key specified `);
         }
 
@@ -797,10 +797,10 @@ var FluroContent = function(fluro) {
 
             /////////////////////////////////////////////
 
-            var url =`/content/distinct/values`;
+            var url = `/content/distinct/values`;
 
-            if(options.type) {
-                url =`/content/${options.type}/distinct/values`;
+            if (options.type) {
+                url = `/content/${options.type}/distinct/values`;
             }
 
             /////////////////////////////////////////////
@@ -810,7 +810,7 @@ var FluroContent = function(fluro) {
                     resolve(_.orderBy(res.data, function(entry) {
                         return entry.title || entry;
                     }));
-                },reject);
+                }, reject);
 
         })
     }
@@ -835,7 +835,7 @@ var FluroContent = function(fluro) {
 
         ids = fluro.utils.arrayIDs(ids);
 
-        if (!ids | !ids.length ) {
+        if (!ids | !ids.length) {
             throw Error(`No ids specified ${ids}`);
         }
 
@@ -851,10 +851,10 @@ var FluroContent = function(fluro) {
 
             /////////////////////////////////////////////
 
-            var url =`/content/distinct/keys`;
+            var url = `/content/distinct/keys`;
 
-            if(options.type) {
-                url =`/content/${options.type}/distinct/keys`;
+            if (options.type) {
+                url = `/content/${options.type}/distinct/keys`;
             }
 
             /////////////////////////////////////////////
@@ -863,13 +863,105 @@ var FluroContent = function(fluro) {
             return fluro.api.post(url, payload, options)
                 .then(function(res) {
                     resolve(res.data);
-                },reject);
+                }, reject);
 
         })
     }
 
 
     ///////////////////////////////////////////////////
+
+    /**
+     * This function creates a clean copy of a specified content item
+     * @alias FluroContent.duplicate
+     * @param  {Object} item The ID or object representing the item you want to duplicate
+     * @return {Promise}         A promise that will be resolved with a cleaned duplicate of the original item
+     * @example
+     *
+     * 
+     * fluro.content.duplicate({_id:'5be504eabf33991239599d63'})
+     * .then(function(freshItem) {
+     *       //Fresh item is a cleaned duplicate of the original item
+     * })
+     */
+    service.duplicate = function(item) {
+
+        var itemID = fluro.utils.getStringID(item);
+
+        return new Promise(function(resolve, reject) {
+
+            //Load the proper thing
+            service.get(itemID)
+                .then(function(populatedItem) {
+
+                    var definedType = populatedItem.definition || populatedItem._type;
+                    var newItem = JSON.parse(JSON.stringify(populatedItem));
+                    ////////////////////////////////////////////
+
+                    //Remove the bits and pieces
+                    delete newItem._id;
+                    delete newItem.slug;
+                    delete newItem.author;
+                    delete newItem.managedAuthor;
+                    delete newItem.__v;
+                    delete newItem.created;
+                    delete newItem.updated;
+                    delete newItem.updatedBy;
+                    delete newItem.stats;
+                    delete newItem.privateDetails;
+                    delete newItem._external;
+                    delete newItem.apikey;
+
+
+                    ////////////////////////////////////////////
+
+                    switch (newItem._type) {
+                        case 'event':
+                            //Clear out other bits
+                            newItem.plans = [];
+                            newItem.assignments = [];
+                            break;
+                        case 'mailout':
+                            newItem.state = 'ready';
+                            newItem.subject = newItem.title;
+                            newItem.title = newItem.title + ' Copy';
+                            delete newItem.publishDate;
+                            break;
+                        case 'plan':
+                            newItem.startDate = null;
+                            break;
+                        case 'persona':
+                            newItem.user = null;
+                            newItem.collectionEmail = '';
+                            newItem.username = '';
+                            newItem.firstName = '';
+                            newItem.lastName = '';
+                            break;
+                    }
+
+                    //Set the new item as active
+                    newItem.status = 'active';
+
+                    ////////////////////////////////////////////
+
+                    var accountID = fluro.utils.getStringID(newItem.account);
+                    var userAccountID = fluro.utils.getStringID(populatedItem.account);
+
+                    if (userAccountID != accountID) {
+                        newItem.realms = [];
+                    }
+
+                    delete newItem.account;
+
+                    ////////////////////////////////////////////
+
+                    return resolve(newItem);
+                })
+                .catch(reject)
+        })
+    }
+
+    //////////////////////////////////////
 
     return service;
 

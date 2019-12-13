@@ -983,6 +983,7 @@ var FluroAuth = function(fluro) {
                     
                 }
 
+                console.log('logout from 401')
                 service.logout();
             
                 

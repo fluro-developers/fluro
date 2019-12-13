@@ -24,9 +24,17 @@ var FluroUtils = {};
  * FluroUtils.mapParameters({"this":"that", "hello":"world"})
  */
 FluroUtils.mapParameters = function(parameters) {
-    return _.map(parameters, function(v, k) {
+    return _.chain(parameters)
+    .map(function(v, k) {
+        if(v === undefined || v === null || v === false) {
+            return;
+        }
+
         return encodeURIComponent(k) + '=' + encodeURIComponent(v);
-    }).join('&');
+    })
+    .compact()
+    .value()
+    .join('&');
 }
 
 
