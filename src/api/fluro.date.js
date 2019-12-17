@@ -176,7 +176,7 @@ FluroDate.isMultiDayEvent = function(event) {
     if (!event.endDate) {
         return;
     }
-    
+
     ///////////////////////////////////////////////
 
     endDate = FluroDate.localDate(event.endDate, event.timezone);
@@ -290,7 +290,7 @@ FluroDate.readableEventDate = function(event, style) {
 
             if (sameDay) {
                 //8am - 9am Thursday 21 May 2016
-                 return startDate.format('dddd D MMMM')
+                return startDate.format('dddd D MMMM')
             }
 
             if (sameMonth) {
@@ -339,6 +339,7 @@ FluroDate.readableEventDate = function(event, style) {
 
 
 ///////////////////////////////////////
+
 
 /**
  * A helper function that can display a human-readable time for an event
@@ -403,6 +404,70 @@ FluroDate.readableEventTime = function(event) {
 
 
     return FluroDate.readableEventDate(event);
+
+}
+
+
+
+
+
+
+///////////////////////////////////////
+
+
+/**
+ * A helper function that can return the pieces for a countdown clock relative to a specified date
+ * @alias FluroDate.countdown
+ * @param  {Date} date The date we are counting down to
+ * @return {Object}       An object with days, minutes, hours, seconds,
+ */
+FluroDate.countdown = function(date, zeroPadded) {
+
+    var now = new Date().getTime();
+
+    ////////////////////////////////////////
+
+    var when = new Date(date).getTime();
+    var milliseconds = when - now;
+
+
+    var oneSecond = 1000;
+    var oneMinute = oneSecond * 60;
+    var oneHour = oneMinute * 60;
+    var oneDay = oneHour * 24;
+
+    var seconds = (milliseconds % oneMinute) / oneSecond;
+    var minutes = Math.floor((milliseconds % oneHour) / oneMinute);
+    var hours = Math.floor((milliseconds % oneDay) / oneHour);
+    var days = Math.floor(milliseconds / oneDay);
+
+
+    if(zeroPadded) {
+
+        function pad(input) {
+            input = Math.ceil(input);
+
+            if(String(input).length == 1) {
+                return `0${input}`;
+            }
+
+            return String(input);
+        }
+
+        return {
+            days:pad(days),
+            minutes:pad(minutes),
+            hours:pad(hours),
+            seconds:pad(seconds),
+        }
+    }
+
+    return {
+        days,
+        minutes,
+        hours,
+        seconds:Math.ceil(seconds),
+    }
 
 }
 

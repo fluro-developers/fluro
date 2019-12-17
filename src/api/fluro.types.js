@@ -238,7 +238,7 @@ var FluroTypes = function(FluroCore) {
         ////////////////////////////
 
         if (!array || !array.length) {
-            return;
+            return [];
         }
 
         ////////////////////////////
@@ -533,9 +533,10 @@ var FluroTypes = function(FluroCore) {
      * Input a definition name or basic type and receive the most basic _type of that definition
      * @alias FluroTypes.subTypes
      * @param  {String} definitionName The basic _type
+     * @param  {Boolean} includeBasicType Whether to include the basic type definition in the results
      * @return {Array}  eg. 'service', 'concert', 'conference'
      */
-    service.subTypes = function(typeName) {
+    service.subTypes = function(typeName, includeBasicType) {
 
 
         var definitions = _.chain(service.glossary)
@@ -553,6 +554,16 @@ var FluroTypes = function(FluroCore) {
         })
         .value();
 
+        ///////////////////////////////////////
+
+        if(includeBasicType) {
+            var basicTypeMatch = service.glossary[typeName];
+            if(basicTypeMatch) {
+                definitions.unshift(basicTypeMatch)
+            }
+        }
+
+        ///////////////////////////////////////
 
         return Promise.resolve(definitions);
 

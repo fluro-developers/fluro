@@ -20,7 +20,7 @@ var FluroVideo = {};
  * @example 
  * Fluro.readableMilliseconds(100000)
  */
-FluroVideo.readableMilliseconds = function(milliseconds) {
+FluroVideo.readableMilliseconds = function(milliseconds, withoutSuffix) {
 
         var oneSecond = 1000;
         var oneMinute = oneSecond * 60;
@@ -32,18 +32,35 @@ FluroVideo.readableMilliseconds = function(milliseconds) {
         var hours = Math.floor((milliseconds % oneDay) / oneHour);
         var days = Math.floor(milliseconds / oneDay);
 
+
         var timeString = '';
-        if (days !== 0) {
-            timeString += (days !== 1) ? (days + ' days ') : (days + ' day ');
-        }
-        if (hours !== 0) {
-            timeString += (hours !== 1) ? (hours + ' hrs ') : (hours + 'hr ');
-        }
-        if (minutes !== 0) {
-            timeString += (minutes !== 1) ? (minutes + ' mins ') : (minutes + 'min ');
-        }
-        if (seconds !== 0 || milliseconds < 1000) {
-            timeString += (seconds !== 1) ? (seconds.toFixed(0) + 's ') : (seconds.toFixed(0) + 's ');
+
+        if(withoutSuffix) {
+            if (days !== 0) {
+                timeString += (days !== 1) ? (days + 'd ') : (days + 'd ');
+            }
+            if (hours !== 0) {
+                timeString += (hours !== 1) ? (hours + 'h ') : (hours + 'h ');
+            }
+            if (minutes !== 0) {
+                timeString += (minutes !== 1) ? (minutes + 'm ') : (minutes + 'm ');
+            }
+            if (seconds !== 0 || milliseconds < 1000) {
+                timeString += (seconds !== 1) ? (seconds.toFixed(0) + 's ') : (seconds.toFixed(0) + 's ');
+            }
+        } else {
+            if (days !== 0) {
+                timeString += (days !== 1) ? (days + ' days ') : (days + ' day ');
+            }
+            if (hours !== 0) {
+                timeString += (hours !== 1) ? (hours + ' hrs ') : (hours + 'hr ');
+            }
+            if (minutes !== 0) {
+                timeString += (minutes !== 1) ? (minutes + ' mins ') : (minutes + 'min ');
+            }
+            if (seconds !== 0 || milliseconds < 1000) {
+                timeString += (seconds !== 1) ? (seconds.toFixed(0) + 's ') : (seconds.toFixed(0) + 's ');
+            }
         }
 
         return timeString;
@@ -59,34 +76,36 @@ FluroVideo.readableMilliseconds = function(milliseconds) {
  * Fluro.readableSeconds(10)
  */
 
-FluroVideo.readableSeconds = function(seconds) {
+FluroVideo.readableSeconds = function(seconds, withoutSuffix) {
 
-        var milliseconds = seconds * 1000;
-        var oneSecond = 1000;
-        var oneMinute = oneSecond * 60;
-        var oneHour = oneMinute * 60;
-        var oneDay = oneHour * 24;
+    return FluroVideo.readableMilliseconds(seconds * 1000, withoutSuffix);
 
-        var seconds = (milliseconds % oneMinute) / oneSecond;
-        var minutes = Math.floor((milliseconds % oneHour) / oneMinute);
-        var hours = Math.floor((milliseconds % oneDay) / oneHour);
-        var days = Math.floor(milliseconds / oneDay);
+        // var milliseconds = seconds * 1000;
+        // var oneSecond = 1000;
+        // var oneMinute = oneSecond * 60;
+        // var oneHour = oneMinute * 60;
+        // var oneDay = oneHour * 24;
 
-        var timeString = '';
-        if (days !== 0) {
-            timeString += (days !== 1) ? (days + ' days ') : (days + ' day ');
-        }
-        if (hours !== 0) {
-            timeString += (hours !== 1) ? (hours + ' hrs ') : (hours + 'hr ');
-        }
-        if (minutes !== 0) {
-            timeString += (minutes !== 1) ? (minutes + ' mins ') : (minutes + 'min ');
-        }
-        if (seconds !== 0 || milliseconds < 1000) {
-            timeString += (seconds !== 1) ? (seconds.toFixed(1) + 's ') : (seconds.toFixed(1) + 's ');
-        }
+        // var seconds = (milliseconds % oneMinute) / oneSecond;
+        // var minutes = Math.floor((milliseconds % oneHour) / oneMinute);
+        // var hours = Math.floor((milliseconds % oneDay) / oneHour);
+        // var days = Math.floor(milliseconds / oneDay);
 
-        return timeString;
+        // var timeString = '';
+        // if (days !== 0) {
+        //     timeString += (days !== 1) ? (days + ' days ') : (days + ' day ');
+        // }
+        // if (hours !== 0) {
+        //     timeString += (hours !== 1) ? (hours + ' hrs ') : (hours + 'hr ');
+        // }
+        // if (minutes !== 0) {
+        //     timeString += (minutes !== 1) ? (minutes + ' mins ') : (minutes + 'min ');
+        // }
+        // if (seconds !== 0 || milliseconds < 1000) {
+        //     timeString += (seconds !== 1) ? (seconds.toFixed(1) + 's ') : (seconds.toFixed(1) + 's ');
+        // }
+
+        // return timeString;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
