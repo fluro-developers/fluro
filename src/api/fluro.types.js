@@ -345,6 +345,10 @@ var FluroTypes = function(FluroCore) {
             service.glossary = {};
 
             return FluroCore.api.get(`/defined/terms`, options).then(function(res) {
+                _.each(res.data, function(entry, key) {
+                    entry.definitionName = key;
+                });
+                
                 service.glossary = res.data;
                 return resolve(res.data);
             }, reject);

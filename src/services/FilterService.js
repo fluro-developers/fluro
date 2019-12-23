@@ -1715,7 +1715,7 @@ FilterService.allKeys = function(initFields, config) {
 
     //////////////////////////////////////////////////////////////////////////////////
 
-    var indexIterator = 0;
+    var indexIterator = '0';//0;
 
 
     //////////////////////////////////////////////////////////////////////////////////
@@ -1761,7 +1761,8 @@ FilterService.allKeys = function(initFields, config) {
 
 
                         if (field.maximum != 1) {
-                            trail.push(field.key + '[' + indexIterator + ']');
+                            // trail.push(field.key + '[' + indexIterator + ']');
+                            trail.push(field.key + '[]');
                             titles.push(field.title);
                         } else {
                             trail.push(field.key);
@@ -1822,7 +1823,7 @@ FilterService.allKeys = function(initFields, config) {
 
                 return {
                     title: detailSheet.title + ' - ' + field.titles.join(' > '),
-                    key: `details.${detailSheet.definitionName}.items[0].data.${field.trail.join('.')}`,
+                    key: `details.${detailSheet.definitionName}.items[].data.${field.trail.join('.')}`,
                     minimum: field.minimum,
                     maximum: field.maximum,
                     detail: detailSheet.definitionName,

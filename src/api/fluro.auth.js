@@ -786,9 +786,13 @@ var FluroAuth = function(fluro) {
      * @alias fluro.auth.sync
      * @return {Promise}    A promise that either resolves with the user session 
      */
+
+    var retryCount = 0;
+
     service.sync = function() {
 
         console.log('Sync with server')
+        
 
         return fluro.api.get('/session')
             .then(function(res) {
@@ -809,13 +813,23 @@ var FluroAuth = function(fluro) {
                     store.user = null;
                 }
                 log('fluro.auth > server session refreshed');
+                retryCount =0;
 
                 dispatch();
             })
             .catch(function(err) {
                 console.log('Auth Sync Error',err);
-                store.user = null;
-                dispatch();
+
+                if(retryCount > 2) {
+                    store.user = null;
+                    retryCount =0;
+                    dispatch();
+                } else {
+                    console.log('Retry sync')
+                    retryCount++;
+                    service.sync();
+                }
+                
 
             });
     }
