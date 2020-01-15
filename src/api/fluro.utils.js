@@ -25,16 +25,16 @@ var FluroUtils = {};
  */
 FluroUtils.mapParameters = function(parameters) {
     return _.chain(parameters)
-    .map(function(v, k) {
-        if(v === undefined || v === null || v === false) {
-            return;
-        }
+        .map(function(v, k) {
+            if (v === undefined || v === null || v === false) {
+                return;
+            }
 
-        return encodeURIComponent(k) + '=' + encodeURIComponent(v);
-    })
-    .compact()
-    .value()
-    .join('&');
+            return encodeURIComponent(k) + '=' + encodeURIComponent(v);
+        })
+        .compact()
+        .value()
+        .join('&');
 }
 
 
@@ -59,7 +59,7 @@ FluroUtils.mapParameters = function(parameters) {
  */
 FluroUtils.formatCurrency = function(value, currency) {
 
-    if(!value || isNaN(value)) {
+    if (!value || isNaN(value)) {
         value = 0;
     }
 
@@ -96,7 +96,7 @@ FluroUtils.currencySymbol = function(currency) {
             break;
         default:
             return '$';
-        break;
+            break;
     }
 }
 
@@ -583,6 +583,19 @@ var injectedScripts = {}
 ////////////////////////////////////
 
 
+FluroUtils.hhmmss = function(secs) {
+    function pad(str) {
+        return ("0" + str).slice(-2);
+    }
+    var minutes = Math.floor(secs / 60);
+    secs = secs % 60;
+    var hours = Math.floor(minutes / 60)
+    minutes = minutes % 60;
+    return pad(hours) + ":" + pad(minutes) + ":" + pad(secs);
+}
+
+////////////////////////////////////
+
 /**
  * Helper function for including external javascript resources
  * This ensures that scripts are only included a single time on each page
@@ -592,10 +605,10 @@ var injectedScripts = {}
  */
 
 FluroUtils.injectScript = function(scriptURL) {
-    
+
     return new Promise(function(resolve, reject) {
 
-        if(!document) {
+        if (!document) {
             return reject('Script injection can only be used when running in a browser context')
         }
 
@@ -613,7 +626,7 @@ FluroUtils.injectScript = function(scriptURL) {
         script.type = 'text/javascript';
         script.async = true;
         script.onload = function() {
-             console.log('Included external script', scriptURL);
+            console.log('Included external script', scriptURL);
             return resolve(scriptURL);
         };
         script.src = scriptURL;
@@ -621,9 +634,9 @@ FluroUtils.injectScript = function(scriptURL) {
 
         ////////////////////////////////////
 
-       
 
-        
+
+
     })
 }
 

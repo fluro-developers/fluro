@@ -201,15 +201,7 @@ var FluroCore = function(options) {
         writable: false,
     });
 
-    /**
-     * A helper service for understanding a user's access permissions
-     * @type {FluroAccess}
-     */
-    var access = new FluroAccess(core);
-    Object.defineProperty(core, 'access', {
-        value: access,
-        writable: false,
-    });
+    
 
 
     ///////////////////////////////////////
@@ -258,6 +250,16 @@ var FluroCore = function(options) {
     var types = new FluroTypes(core);
     Object.defineProperty(core, 'types', {
         value: types,
+        writable: false,
+    });
+
+    /**
+     * A helper service for understanding a user's access permissions
+     * @type {FluroAccess}
+     */
+    var access = new FluroAccess(core);
+    Object.defineProperty(core, 'access', {
+        value: access,
         writable: false,
     });
 

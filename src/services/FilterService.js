@@ -832,6 +832,30 @@ FilterService.comparators.push({
 
 
 FilterService.comparators.push({
+    title: 'Is not before',
+    operator: 'datenotbefore',
+    match(input, mustMatchValue) {
+        return !dateCompare(input, mustMatchValue, 'before');
+    },
+    restrict: [
+        'date',
+    ],
+})
+
+
+FilterService.comparators.push({
+    title: 'Is not after',
+    operator: 'datenotafter',
+    match(input, mustMatchValue) {
+        return !dateCompare(input, mustMatchValue, 'after');
+    },
+    restrict: [
+        'date',
+    ],
+})
+
+
+FilterService.comparators.push({
     title: 'Is between',
     operator: 'datebetween',
     match(input, mustMatchValue1, mustMatchValue2) {
@@ -1103,6 +1127,8 @@ FilterService.comparators.push({
     ],
 })
 
+
+
 FilterService.comparators.push({
     title: 'Is less than',
     operator: '<',
@@ -1117,6 +1143,9 @@ FilterService.comparators.push({
         'float',
     ],
 })
+
+
+
 
 FilterService.comparators.push({
     title: 'Is greater than or equal to',
@@ -1147,6 +1176,43 @@ FilterService.comparators.push({
         'float',
     ],
 })
+
+
+FilterService.comparators.push({
+    title: 'Is not greater than',
+    operator: '!>',
+    match(input, mustMatchValue) {
+
+        if (!options) {
+            options = {}
+        }
+        return !(parseFloat(input) > parseFloat(mustMatchValue));
+    },
+    restrict: [
+        'number',
+        'integer',
+        'decimal',
+        'float',
+    ],
+})
+
+
+FilterService.comparators.push({
+    title: 'Is not less than',
+    operator: '!<',
+    match(input, mustMatchValue) {
+        return !(parseFloat(input) < parseFloat(mustMatchValue));
+    },
+    restrict: [
+
+        'number',
+        'integer',
+        'decimal',
+        'float',
+    ],
+})
+
+
 
 FilterService.comparators.push({
     title: 'Is between',
@@ -1217,7 +1283,6 @@ FilterService.comparators.push({
         'string',
         'email',
         'url',
-
         'reference',
     ],
 })
@@ -1246,6 +1311,9 @@ FilterService.comparators.push({
 
 var allTypes = [
     'string',
+    'email',
+    'url',
+    'phone',
     'date',
     'boolean',
     'number',
@@ -1843,7 +1911,13 @@ FilterService.allKeys = function(initFields, config) {
     //////////////////////////////////////////////////////////////////////////////////
 
     var fields = initFields.concat(typeFields, definitionFields, detailSheetFields);
-    return _.orderBy(fields, 'title')
+    
+    return _.chain(fields)
+    .filter(function(field) {
+        return field.type != 'object';
+    })
+    .orderBy('title')
+    .value();
 
 
 

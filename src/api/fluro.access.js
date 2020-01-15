@@ -307,7 +307,7 @@ var FluroAccess = function(FluroCore) {
 
 
 
-    
+
 
     /////////////////////////////////////////////////////
 
@@ -1242,6 +1242,285 @@ var FluroAccess = function(FluroCore) {
      * @example
      * FluroAccess.removeAllListeners()
      */
+
+    //////////////////////////////////
+
+    service.retrievePermissions = function(options) {
+
+        return new Promise(function(resolve, reject) {
+
+
+            //Load the glossary
+            FluroCore.types.reloadTerminology(options)
+                .then(function(terms) {
+
+
+                    //////////////////////////////////////////////////////
+
+                    var derivatives = _.reduce(terms, function(set, type) {
+
+                        var basicType = type.parentType;
+                        if (!basicType) {
+                            return set;
+                        }
+
+
+                        var existing = set[basicType];
+                        if (!existing) {
+                            existing = set[basicType] = {
+                                names:[],
+                                types:[],
+                            };
+                        }
+
+                        existing.names.push(type.plural);
+                        existing.types.push(type)
+
+                        return set;
+                    }, {});
+
+                    //////////////////////////////////////////////////////
+
+                    //Loop through and structure the available permissions
+                    var permissions = _.chain(terms)
+                        // .orderBy('title')
+                        .reduce(function(set, type) {
+
+                            //Create a copy so we dont pollute the types entry
+                            type = JSON.parse(JSON.stringify(type));
+
+                            //Get the basic type, or otherwise it is a basic type
+                            var basicType = type.parentType || type.definitionName;
+                            var definitionName = type.definitionName;
+                            var title = terms[basicType] ? terms[basicType].title : basicType;
+
+                            // //Check if an entry exists for this basic type
+                            // var existing = set[basicType];
+
+                            // if (!existing) {
+                            //     existing = set[basicType] = {
+                            //         title,
+                            //         definitionName: basicType,
+                            //         definitions: [],
+                            //     }
+                            // }
+
+                            ///////////////////////////////////////////////////
+
+                            //Create an array for all the possible permissions
+                            type.permissions = [];
+
+                            ///////////////////////////////////////////////////
+
+                            //Push it into the group
+                            // existing.definitions.push(type);
+                            set.push(type);
+
+
+
+                            switch (definitionName) {
+                                case 'account':
+
+                                    type.permissions.push({
+                                        title: `Administrate Account Information`,
+                                        value: `administrate account`,
+                                        description: `Update billing, view invoices, add credit and modify Account Information`,
+                                    });
+
+                                    return set;
+                                    break;
+                            }
+
+
+                            ///////////////////////////////////////////////////
+
+                            type.permissions.push({
+                                title: `Create new ${type.plural}`,
+                                value: `create ${definitionName}`,
+                                description: `Can create new ${type.plural}`,
+                            })
+
+
+                            type.permissions.push({
+                                title: `View any ${type.plural}`,
+                                value: `view any ${definitionName}`,
+                                description: `Can view ${type.plural} regardless of who the creator is`,
+                            })
+
+                            type.permissions.push({
+                                title: `View owned ${type.plural}`,
+                                value: `view own ${definitionName}`,
+                                description: `Can view ${type.plural} that were originally created by the user, or the user is listed as an 'owner'`,
+                            })
+
+                            type.permissions.push({
+                                title: `Edit any ${type.plural}`,
+                                value: `edit any ${definitionName}`,
+                                description: `Can edit ${type.title} regardless of who the creator is`,
+                            })
+
+                            type.permissions.push({
+                                title: `Edit owned ${type.plural}`,
+                                value: `edit own ${definitionName}`,
+                                description: `Can edit ${type.plural} that were originally created by the user, or the user is listed as an 'owner'`,
+                            })
+
+
+                            type.permissions.push({
+                                title: `Delete any ${type.plural}`,
+                                value: `delete any ${definitionName}`,
+                                description: `Can delete ${type.plural} regardless of who the creator is`,
+                            })
+
+                            type.permissions.push({
+                                title: `Delete owned ${type.plural}`,
+                                value: `delete own ${definitionName}`,
+                                description: `Can delete ${type.plural} that were originally created by the user, or the user is listed as an 'owner'`,
+                            })
+
+                            /////////////////////////////////////////////////////
+
+                            switch (definitionName) {
+                                case 'interaction':
+                                case 'post':
+                                    type.permissions.push({
+                                        title: `Submit new ${type.plural}`,
+                                        value: `submit ${definitionName}`,
+                                        description: `Can submit new ${type.plural} through the use of a form.`,
+                                    })
+                                    break;
+                                case 'transaction':
+                                    type.permissions.push({
+                                        title: `Refund ${type.plural}`,
+                                        value: `refund ${definitionName}`,
+                                        description: `Can process ${type.plural} refunds`,
+                                    })
+                                    break;
+
+                                case 'contact':
+                                    type.permissions.push({
+                                        title: `Send SMS Text Message`,
+                                        value: `sms`,
+                                        description: `Can send SMS Messages to ${type.plural} that the user is allowed to view`,
+                                    })
+
+                                    type.permissions.push({
+                                        title: `Send Basic Emails`,
+                                        value: `email`,
+                                        description: `Can send email messages via fluro to contacts that the user is allowed to view`,
+                                    })
+
+
+                                    break;
+                                case 'checkin':
+                                    type.permissions.push({
+                                        title: `Leader Override Checkout ${type.plural}`,
+                                        value: `leader checkout ${definitionName}`,
+                                        description: `Can manually override and checkout a contact without providing the PIN Number`,
+                                    })
+                                    break;
+                                case 'ticket':
+                                    type.permissions.push({
+                                        title: `Scan / Collect ${type.plural}`,
+                                        value: `collect ${definitionName}`,
+                                        description: `Can scan a ticket and mark it as 'collected'`,
+                                    })
+                                    break;
+                                case 'policy':
+                                    type.permissions.push({
+                                        title: `Grant ${type.plural}`,
+                                        value: `grant ${definitionName}`,
+                                        description: `Can allocate any ${type.plural} to other users`,
+                                    })
+
+                                    type.permissions.push({
+                                        title: `Grant held ${type.plural}`,
+                                        value: `grant held ${definitionName}`,
+                                        description: `Can allocate ${type.plural} that are held by the current user to other users`,
+                                    })
+
+                                    type.permissions.push({
+                                        title: `Revoke ${type.plural}`,
+                                        value: `revoke ${definitionName}`,
+                                        description: `Can revoke ${type.plural} from other users`,
+                                    })
+                                    break;
+                                case 'role':
+                                    type.permissions.push({
+                                        title: `Assign individual ${type.plural}`,
+                                        value: `assign role`,
+                                        description: `Can assign individual permission sets to other users`,
+                                    })
+                                    break;
+                                case 'persona':
+                                    type.permissions.push({
+                                        title: `Assign individual roles`,
+                                        value: `assign role`,
+                                        description: `Can assign individual permission sets to other users`,
+                                    })
+
+                                    type.permissions.push({
+                                        title: `Impersonate ${type.plural}`,
+                                        value: `impersonate`,
+                                        description: `Can impersonate other user personas`,
+                                    })
+                                    break;
+                                case 'team':
+                                    type.permissions.push({
+                                        title: `Join ${type.plural}`,
+                                        value: `join ${definitionName}`,
+                                        description: `Can join or add members to ${type.plural} if those ${type.plural} allow provisional membership`,
+                                    })
+
+                                    type.permissions.push({
+                                        title: `Leave ${type.plural}`,
+                                        value: `leave ${definitionName}`,
+                                        description: `Can leave or remove members from ${type.plural} if those ${type.plural} allow provisional membership`,
+                                    })
+                                    break;
+                            }
+
+                            ///////////////////////////////////////////
+
+                            if (definitionName == basicType) {
+
+                                var matchedSet = derivatives[basicType];
+                                var description = `Apply all the selected permissions to all ${type.title} definitions`;
+                                if(matchedSet) {
+                                    description = `Apply all the selected permissions to all ${type.title} definitions, Eg. (${matchedSet.names.join(', ')})`;
+                                }
+
+                                type.permissions.push({
+                                    title: `Include all defined ${type.title} types`,
+                                    value: `included defined ${definitionName}`,
+                                    description,
+                                })
+                            }
+
+
+
+                            // switch(key) {
+                            //     case '':
+                            //     break;
+                            // }
+
+
+
+                            //Return the set
+                            return set;
+                        }, [])
+                        // .values()
+                        .orderBy('title')
+                        .value();
+
+
+                    resolve(permissions);
+                })
+                .catch(reject);
+
+
+        })
+    }
 
     //////////////////////////////////
 
