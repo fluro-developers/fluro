@@ -1,6 +1,6 @@
 {
   "name": "fluro",
-  "version": "2.0.45",
+  "version": "2.0.47",
   "description": "Promise based HTTP Fluro client for the browser and node.js",
   "scripts": {
     "build": "webpack --mode=production && webpack --mode=production && npm run test",
@@ -29,18 +29,18 @@
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
     "chai": "^4.2.0",
-    "docdash": "^1.1.0",
-    "jsdoc": "^3.5.5",
-    "jsdom": "^14.0.0",
-    "mocha": "^6.1.2",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.4"
+    "docdash": "^1.1.1",
+    "jsdoc": "^3.6.3",
+    "jsdom": "^14.1.0",
+    "mocha": "^6.2.2",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "axios-extensions": "^3.0.5",
     "lodash": "^4.17.15",
-    "moment-timezone": "^0.5.26",
+    "moment-timezone": "^0.5.27",
     "string-similarity": "^3.0.0"
   }
 }

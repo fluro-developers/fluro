@@ -578,7 +578,23 @@ FluroUtils.processCardPrioritySort = function(card) {
 ////////////////////////////////////
 ////////////////////////////////////
 
-var injectedScripts = {}
+/**
+ * Helper function for cleaning strings to use as database ids
+ * @alias FluroUtils.machineName
+ * @param  {String} string The string to clean eg. (Awesome Event!)
+ * @return {String}     A cleaned and formatted string eg. (awesomeEvent)
+ */
+
+FluroUtils.machineName = function(string) {
+
+    if (!string || !string.length) {
+        return;
+    }
+
+    var regexp = /[^a-zA-Z0-9-_]+/g;
+    return string.replace(regexp, '');
+}
+
 
 ////////////////////////////////////
 
@@ -596,6 +612,8 @@ FluroUtils.hhmmss = function(secs) {
 
 ////////////////////////////////////
 
+
+var injectedScripts = {}
 /**
  * Helper function for including external javascript resources
  * This ensures that scripts are only included a single time on each page
@@ -637,6 +655,43 @@ FluroUtils.injectScript = function(scriptURL) {
 
 
 
+    })
+}
+
+
+////////////////////////////////////
+
+/**
+ * Helper function for including external javascript resources
+ * This ensures that scripts are only included a single time on each page
+ * @alias FluroUtils.injectModule
+ * @param  {String} url The URL of the script to import
+ * @return {Promise}     A promise that resolves once the script has been included on the page
+ */
+
+var injectedModules = {}
+
+
+FluroUtils.injectModule = function(scriptURL) {
+
+    return new Promise(function(resolve, reject) {
+        if (!document) {
+            return reject('Script injection can only be used when running in a browser context')
+        }
+
+        if (injectedModules[scriptURL]) {
+            return resolve(injectedModules[scriptURL]);
+        }
+
+        var request, script, source;
+        request = new XMLHttpRequest();
+        request.open('GET', scriptURL, false);
+        request.send();
+        source = request.responseText;
+
+        var module = injectedModules[scriptURL] = Function('"use strict";return (' + source + ')')();
+
+        return resolve(module);
     })
 }
 

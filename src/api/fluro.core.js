@@ -2,6 +2,7 @@
 
 import FluroAPI from './fluro.api';
 import FluroAuth from './fluro.auth';
+import FluroComponents from './fluro.components';
 import FluroAsset from './fluro.asset';
 import FluroUtils from './fluro.utils';
 import FluroCache from './fluro.cache';
@@ -11,6 +12,7 @@ import FluroTypes from './fluro.types';
 import FluroContent from './fluro.content';
 import FluroAccess from './fluro.access';
 import FluroVideo from './fluro.video';
+import FluroDevice from './fluro.device';
 import { EventDispatcher } from './fluro.utils';
 // } else {
 
@@ -140,6 +142,18 @@ var FluroCore = function(options) {
 
     ///////////////////////////////////////
 
+    /**
+     * Provides helper functions for understanding the users device
+     * @type {FluroDevice}
+     */
+    var device = FluroDevice;
+    Object.defineProperty(core, 'device', {
+        value: device,
+        writable: false,
+    });
+
+    ///////////////////////////////////////
+
     //Create a new global dispatcher so we can trigger events
     var dispatcher = new EventDispatcher();
     dispatcher.bootstrap(core);
@@ -198,6 +212,17 @@ var FluroCore = function(options) {
     var auth = new FluroAuth(core);
     Object.defineProperty(core, 'auth', {
         value: auth,
+        writable: false,
+    });
+
+
+    /**
+     * Provides helper functions for working with Fluro Components
+     * @type {FluroComponents}
+     */
+    var components = new FluroComponents(core);
+    Object.defineProperty(core, 'components', {
+        value: components,
         writable: false,
     });
 

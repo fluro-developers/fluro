@@ -335,6 +335,7 @@ var FluroAuth = function(fluro) {
 
                 if (autoAuthenticate) {
                     store.user = res.data;
+                    console.log('Persist user', store.user)
                     dispatch();
                     // if (service.onChange) {
                     //     service.onChange(store.user);
@@ -791,7 +792,7 @@ var FluroAuth = function(fluro) {
 
     service.sync = function() {
 
-        console.log('Sync with server')
+        console.log('Sync with server', store.user)
         
 
         return fluro.api.get('/session')
@@ -997,7 +998,7 @@ var FluroAuth = function(fluro) {
                     
                 }
 
-                console.log('logout from 401')
+                console.log('logout from 401', err)
                 service.logout();
             
                 

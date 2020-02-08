@@ -89,6 +89,30 @@ FluroDate.localDate = function(d, specifiedTimezone) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * A helpful function that can quickly get an age from a supplied date string
+ * @alias FluroDate.getAge
+ * @return {Integer}            The age in years
+ * @example 
+ * FluroDate.getAge('2019-04-18T23:00:00.000Z')
+ */
+FluroDate.getAge = function(dateInput) {
+    var date = FluroDate.localDate(dateInput);
+    // var today = new Date();
+    var birthDate = new Date(dateInput);
+    var age = today.getFullYear() - birthDate.getFullYear();
+
+    var m = today.getMonth() - birthDate.getMonth();
+
+    //If the date is on the cusp of the new year
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+
+    return age;
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 
 /**

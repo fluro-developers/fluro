@@ -126,6 +126,7 @@ var FluroAccess = function(FluroCore) {
         //running as an application then we can't
         //do anything
         if (!session) {
+            console.log('No session');
             return false;
         }
 
@@ -134,6 +135,18 @@ var FluroAccess = function(FluroCore) {
         //so there is no point continuing with checking all the other criteria
         if (service.isFluroAdmin()) {
             return true;
+        }
+
+        /////////////////////////////////////////////////////
+
+        //If using shorthand
+        switch(action) {
+            case 'view':
+                return service.can('view any', type, parentType) || service.can('view own', type, parentType);
+            break;
+            case 'edit':
+                return service.can('edit any', type, parentType) || service.can('edit own', type, parentType);
+            break;
         }
 
         /////////////////////////////////////////////////////

@@ -388,23 +388,23 @@ function isIn(input, range) {
 function isEmpty(input) {
 
 
-    if(!input) {
+    if (!input) {
         return true;
     }
 
-    if(input == undefined) {
+    if (input == undefined) {
         return true;
     }
 
-    if(input == null) {
+    if (input == null) {
         return true;
     }
 
-    if(input == '') {
+    if (input == '') {
         return true;
     }
 
-    if(_.isArray(input) && !input.length) {
+    if (_.isArray(input) && !input.length) {
         return true;
     }
 }
@@ -915,7 +915,7 @@ FilterService.comparators.push({
             //Check if any match
             return !_.some(input, function(i) {
 
-                
+
                 return isIn(i, mustMatchValue);
             });
         } else {
@@ -1724,7 +1724,7 @@ FilterService.filterMatch = function(filter, item) {
 
     //Get the actual value on the item
     var itemValue = _.get(item, key);
-    
+
     ////////////////////////////////////////
 
     if (inputType != 'none') {
@@ -1745,7 +1745,7 @@ FilterService.filterMatch = function(filter, item) {
         key: key,
     });
 
-    
+
 
     return itMatches;
 }
@@ -1783,7 +1783,7 @@ FilterService.allKeys = function(initFields, config) {
 
     //////////////////////////////////////////////////////////////////////////////////
 
-    var indexIterator = '0';//0;
+    var indexIterator = '0'; //0;
 
 
     //////////////////////////////////////////////////////////////////////////////////
@@ -1901,6 +1901,30 @@ FilterService.allKeys = function(initFields, config) {
             .compact()
             .value();
 
+
+
+        //Add an 'existence' check for the _id
+        mapped.unshift({
+            title: detailSheet.title,
+            // key: `details.${detailSheet.definitionName}.items[0].data.${field.trail.join('.')}`,
+            key: `details.${detailSheet.definitionName}.items[]._id`,
+            minimum:0,
+            maximum:0,
+            detail: detailSheet.definitionName,
+            type: 'string',
+        })
+
+        //Add an 'existence' check for the _id
+        mapped.unshift({
+            title: `${detailSheet.title} - Number of sheets`,
+            // key: `details.${detailSheet.definitionName}.items[0].data.${field.trail.join('.')}`,
+            key: `details.${detailSheet.definitionName}.items.length`,
+            minimum:0,
+            maximum:0,
+            detail: detailSheet.definitionName,
+            type: 'integer',
+        })
+
         //////////////////////////////////
 
         return set.concat(mapped);
@@ -1911,13 +1935,13 @@ FilterService.allKeys = function(initFields, config) {
     //////////////////////////////////////////////////////////////////////////////////
 
     var fields = initFields.concat(typeFields, definitionFields, detailSheetFields);
-    
+
     return _.chain(fields)
-    .filter(function(field) {
-        return field.type != 'object';
-    })
-    .orderBy('title')
-    .value();
+        .filter(function(field) {
+            return field.type != 'object';
+        })
+        .orderBy('title')
+        .value();
 
 
 
