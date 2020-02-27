@@ -25,6 +25,12 @@ module.exports = {
     },
 
     externals: {
+        'mongoose': {
+            commonjs: 'mongoose',
+            commonjs2: 'mongoose',
+            amd: 'mongoose',
+            root: 'mongoose'
+        },
         'lodash': {
             commonjs: 'lodash',
             commonjs2: 'lodash',

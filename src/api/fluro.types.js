@@ -134,7 +134,7 @@ var FluroTypes = function(FluroCore) {
                 icon = 'clipboard-list';
                 break;
             case 'post':
-                icon = 'sticky-note';
+                icon = 'comment-alt-lines';
                 break;
             case 'process':
                 icon = 'exchange';

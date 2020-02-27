@@ -638,6 +638,7 @@ var FluroContent = function(fluro) {
      */
     service.submitInteraction = function(type, submission, options) {
 
+        console.log('SUBMIT INTERACTION')
         if (!options) {
             options = {}
         }
@@ -650,6 +651,8 @@ var FluroContent = function(fluro) {
 
 
             /////////////////////////////////////////////
+
+            console.log('SUBMISSION ACTIONS', requestOptions);
 
             //Retrieve the query results
             fluro.api.post(`/interact/${type}`, submission, requestOptions)

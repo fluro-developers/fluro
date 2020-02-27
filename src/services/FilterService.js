@@ -492,45 +492,94 @@ function isContained(input, range) {
 ///////////////////////////////
 
 
-function dateCompare(input, range, type, format) {
+function dateCompare(input, range, type, format, timezone) {
+    if (!input) {
+        return false;
+    }
 
+    // var date1 = new Date(input);
+    // date1.setHours(0, 0, 0, 0);
 
-    var date1 = new Date(input);
-    date1.setHours(0, 0, 0, 0);
+    // var date2 = new Date(range);
+    // date2.setHours(0, 0, 0, 0);
 
-    var date2 = new Date(range);
-    date2.setHours(0, 0, 0, 0);
+    var moment1 = moment.tz(input, timezone);
+    var moment2 = moment.tz(range, timezone);
 
+    switch (type) {
+        case 'next':
+        case 'past':
+            //We can go down to hourly
+            break;
+        default:
+            //Just track the day
+            moment1.startOf('day');
+            moment2.startOf('day');
+            break;
+    }
+
+    ///////////////////////////////////////////////////
+
+    var date1 = moment1.toDate();
+    var date2 = moment2.toDate();
+    var now = new Date();
+
+    ///////////////////////////////////////////////////
+
+    var matched;
 
     switch (type) {
         case 'date':
-            return String(date1) == String(date2);
+            matched = String(date1) == String(date2);
+
             break;
         case 'week':
-            return moment(date1).format('W YYYY') == moment(date2).format('W YYYY');
+            matched = moment1.format('W YYYY') == moment2.format('W YYYY');
+
             break;
         case 'month':
-            return moment(date1).format('M YYYY') == moment(date2).format('M YYYY');
+            matched = moment1.format('M YYYY') == moment2.format('M YYYY');
+
             break;
         case 'year':
-            return moment(date1).format('YYYY') == moment(date2).format('YYYY');
+            matched = moment1.format('YYYY') == moment2.format('YYYY');
             break;
         case 'dateanniversary':
-            return moment(date1).format('D MMM') == moment(date2).format('D MMM');
+            matched = moment1.format('D MMM') == moment2.format('D MMM');
             break;
         case 'dateanniversarymonth':
-            return moment(date1).format('MMM') == moment(date2).format('MMM');
+            matched = moment1.format('MMM') == moment2.format('MMM');
             break;
             // case 'weekday':
-            //     return moment(date1).format('dddd') == moment(date2).format('dddd');
+            //     matched = moment(date1).format('dddd') == moment(date2).format('dddd');
             // break;
         case 'before':
-            return date1 < date2
+            matched = date1.getTime() < date2.getTime();
             break;
         case 'after':
-            return date1 > date2
+            matched = date1.getTime() >= date2.getTime();
+            break;
+        case 'next':
+            //If the date is earlier than now
+            if (date1 < now) {
+                matched = false;
+            } else {
+                matched = date1.getTime() < date2.getTime()
+            }
+            break;
+        case 'past':
+            //If the date is later than now
+            if (date1 > now) {
+                matched = false;
+            } else {
+                matched = date1.getTime() >= date2.getTime()
+            }
             break;
     }
+
+    ///////////////////////////////////////////////////
+
+    return matched;
 }
 
 ///////////////////////////////
@@ -807,6 +856,12 @@ FilterService.comparators.push({
     inputType: 'array',
 })
 
+
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+
 FilterService.comparators.push({
     title: 'Is before',
     operator: 'datebefore',
@@ -854,6 +909,92 @@ FilterService.comparators.push({
     ],
 })
 
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+
+FilterService.comparators.push({
+    title: 'Is in the next',
+    operator: 'datenext',
+    // match(input, mustMatchValue) {
+    //     return dateCompare(input, mustMatchValue, 'before');
+    // },
+    match(input, measure, period, options) {
+
+        if (!options) {
+            options = {}
+        }
+
+        if (!input) {
+            return;
+        }
+
+        var mustMatchValue = moment().add(measure, period).toDate();
+
+        if (_.isArray(input)) {
+
+            if (!input.length) {
+                return;
+            }
+
+            return _.some(input, function(i) {
+                // dateCompare(input, range, type, format, timezone)
+                return dateCompare(i, mustMatchValue, 'next');
+            });
+        } else {
+            return dateCompare(input, mustMatchValue, 'next');
+        }
+    },
+    inputType: 'datemeasure',
+    restrict: [
+        'date',
+    ],
+})
+
+
+FilterService.comparators.push({
+    title: 'Is in the last',
+    operator: 'datepast',
+    match(input, measure, period, options) {
+
+
+        if (!options) {
+            options = {}
+        }
+
+        if (!input) {
+            return;
+        }
+
+        var mustMatchValue = moment().subtract(measure, period).toDate();
+
+        if (_.isArray(input)) {
+
+            if (!input.length) {
+                return;
+            }
+
+
+            return _.some(input, function(i) {
+                // dateCompare(input, range, type, format, timezone)
+                return dateCompare(i, mustMatchValue, 'past');
+            });
+        } else {
+            return dateCompare(input, mustMatchValue, 'past');
+        }
+    },
+    inputType: 'datemeasure',
+    restrict: [
+        'date',
+    ],
+})
+
+
+
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
 
 FilterService.comparators.push({
     title: 'Is between',
@@ -1908,8 +2049,8 @@ FilterService.allKeys = function(initFields, config) {
             title: detailSheet.title,
             // key: `details.${detailSheet.definitionName}.items[0].data.${field.trail.join('.')}`,
             key: `details.${detailSheet.definitionName}.items[]._id`,
-            minimum:0,
-            maximum:0,
+            minimum: 0,
+            maximum: 0,
             detail: detailSheet.definitionName,
             type: 'string',
         })
@@ -1919,8 +2060,8 @@ FilterService.allKeys = function(initFields, config) {
             title: `${detailSheet.title} - Number of sheets`,
             // key: `details.${detailSheet.definitionName}.items[0].data.${field.trail.join('.')}`,
             key: `details.${detailSheet.definitionName}.items.length`,
-            minimum:0,
-            maximum:0,
+            minimum: 0,
+            maximum: 0,
             detail: detailSheet.definitionName,
             type: 'integer',
         })

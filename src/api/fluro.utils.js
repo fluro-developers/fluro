@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import moment from 'moment';
-
+import { isBrowser, isNode } from 'browser-or-node';
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -403,20 +403,29 @@ FluroUtils.getStringID = function(input, asObjectID) {
         output = String(input);
     }
 
-    if (!asObjectID) {
+    if (!asObjectID || isBrowser) {
+        // console.log('NORMAL', asObjectID, isBrowser)
         return output;
     }
 
-    return output;
-    // var mongoose = require('mongoose');
-    // var ObjectId = mongoose.Types.ObjectId;
+    //Load mongoose if we can
+    try {
+        var mongoose = require('mongoose');
+    } catch(e) {
+        console.log('ERROR', e);
+        return output;
+    }
 
-    // var isValid = ObjectId.isValid(String(output));
-    // if(!isValid) {
-    // return;
-    // }
+    // console.log('Type as object id')
+    var ObjectId = mongoose.Types.ObjectId;
+    var isValid = ObjectId.isValid(String(output));
+    if (!isValid) {
+        return;
+    }
 
-    // return new ObjectId(output);
+    return new ObjectId(output);
+
+
 
 }
 

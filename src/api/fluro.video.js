@@ -11,6 +11,124 @@ import _ from 'lodash';
 var FluroVideo = {};
 
 ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+FluroVideo.getAssetMediaIDFromURL = function(url, type) {
+    
+    var lowercase = String(url).toLowerCase();
+
+     if(!type) {
+         if(lowercase.includes('youtube')) {
+             type = 'youtube'
+         } else if(lowercase.includes('vimeo')) {
+             type = 'vimeo'
+         }
+     }
+
+
+    var mediaID;
+    switch(type) {
+        case 'youtube':
+            mediaID = FluroVideo.getYouTubeIDFromURL(url)
+        break;
+        case 'vimeo':
+            mediaID = FluroVideo.getVimeoIDFromURL(url)
+        break;
+    }
+
+    return mediaID;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+FluroVideo.getYouTubeIDFromURL = function(url) {
+
+    if(!url || !url.length) {
+        return;
+    }
+
+
+    function contains(str, substr) {
+        return (str.indexOf(substr) > -1);
+    }
+
+    //////////////////////////////////////
+
+    function getParm(url, base) {
+        var re = new RegExp("(\\?|&)" + base + "\\=([^&]*)(&|$)");
+        var matches = url.match(re);
+        if (matches) {
+            return (matches[2]);
+        } else {
+            return ("");
+        }
+    }
+
+    //////////////////////////////////////
+
+    var videoID;
+    var matches;
+
+    //////////////////////////////////////
+
+
+    if (url.indexOf("youtube.com/watch") != -1) {
+        videoID = getParm(url, "v");
+    } else {
+
+        var youtubeRegexp = /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*[^\w\s-])([\w-]{11})(?=[^\w-]|$)(?![?=&+%\w.-]*(?:['"][^<>]*>|<\/a>))[?=&+%\w.-]*/ig;
+
+        //Get the id
+        var YoutubeID = url.replace(youtubeRegexp, '$1');
+
+        if (contains(YoutubeID, ';')) {
+            var pieces = YoutubeID.split(';');
+
+            if (contains(pieces[1], '%')) {
+                // links like this:
+                // "http://www.youtube.com/attribution_link?a=pxa6goHqzaA&amp;u=%2Fwatch%3Fv%3DdPdgx30w9sU%26feature%3Dshare"
+                // have the real query string URI encoded behind a ';'.
+                // at this point, `YoutubeID is 'pxa6goHqzaA;u=%2Fwatch%3Fv%3DdPdgx30w9sU%26feature%3Dshare'
+                var uriComponent = decodeURIComponent(YoutubeID.split(';')[1]);
+                YoutubeID = ('https://youtube.com' + uriComponent)
+                    .replace(youtubeRegexp, '$1');
+            } else {
+                // https://www.youtube.com/watch?v=VbNF9X1waSc&amp;feature=youtu.be
+                // `YoutubeID` looks like 'VbNF9X1waSc;feature=youtu.be' currently.
+                // strip the ';feature=youtu.be'
+                YoutubeID = pieces[0];
+            }
+        } else if (contains(YoutubeID, '#')) {
+            // YoutubeID might look like '93LvTKF_jW0#t=1'
+            // and we want '93LvTKF_jW0'
+            YoutubeID = YoutubeID.split('#')[0];
+        }
+        videoID = YoutubeID;
+    }
+
+    //////console.log('Video thumb', url, retVal);
+    return videoID;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+FluroVideo.getVimeoIDFromURL = function(url) {
+
+    if(!url || !url.length) {
+        return;
+    }
+    
+    //Vimeo RegExp
+    var reg = /https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/;
+    var match = url.match(reg);
+    if (match) {
+        return match[3];
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 
 /**
