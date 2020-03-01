@@ -136,7 +136,7 @@ FilterService.activeFilterValues = function(config) {
                     break;
                 default:
 
-                    all.push(block.computedValue, block.value);
+                    all.push(block.computedValue, block.value, block.value2);
                     break;
             }
 
