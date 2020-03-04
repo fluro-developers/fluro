@@ -408,22 +408,24 @@ FluroUtils.getStringID = function(input, asObjectID) {
         return output;
     }
 
-    //Load mongoose if we can
-    try {
-        var mongoose = require('mongoose');
-    } catch(e) {
-        console.log('ERROR', e);
-        return output;
-    }
+    return output;
 
-    // console.log('Type as object id')
-    var ObjectId = mongoose.Types.ObjectId;
-    var isValid = ObjectId.isValid(String(output));
-    if (!isValid) {
-        return;
-    }
+    // //Load mongoose if we can
+    // try {
+    //     var mongoose = require('mongoose');
+    // } catch(e) {
+    //     console.log('ERROR', e);
+    //     return output;
+    // }
 
-    return new ObjectId(output);
+    // // console.log('Type as object id')
+    // var ObjectId = mongoose.Types.ObjectId;
+    // var isValid = ObjectId.isValid(String(output));
+    // if (!isValid) {
+    //     return;
+    // }
+
+    // return new ObjectId(output);
 
 
 
