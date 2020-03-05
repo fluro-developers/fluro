@@ -22,10 +22,15 @@ var FluroDevice = function() {
 
     ////////////////////////////////
 
+    var mounted;
+    let WindowReference;
+
+    ////////////////////////////////
+
     service.resize = function() {
 
-        var width = Math.max(window.innerWidth || 0);
-        var height = Math.max(window.innerHeight || 0);
+        var width = Math.max(WindowReference.innerWidth || 0);
+        var height = Math.max(WindowReference.innerHeight || 0);
 
         service.screen = {
             width,
@@ -36,17 +41,17 @@ var FluroDevice = function() {
         var tablet;
         var desktop;
 
-        if (width <= 320) {
+        if (width < 768) {
             mobile = true;
             // console.log('- mobile')
         }
 
-        if (width > 320 && width <= 768) {
+        if (width >= 768 && width <= 1024) {
             tablet = true;
             // console.log('- tablet')
         }
 
-        if (width > 768) {
+        if (width > 1024) {
             desktop = true;
             // console.log('- desktop')
         }
@@ -56,20 +61,19 @@ var FluroDevice = function() {
         service.breakpoint.tablet = tablet;
         service.breakpoint.desktop = desktop;
 
-        // console.log('Resized', width, height, window)
+        console.log('Device size changed', width, height, WindowReference)
     }
 
 
-    var mounted;
-    let WindowReference;
+
 
     ////////////////////////////////
 
     service.mount = function(window) {
-        if(mounted) {
+        if (mounted) {
             return;
         }
-        
+
         WindowReference = window;
         mounted = true;
         WindowReference.addEventListener('resize', service.resize);
