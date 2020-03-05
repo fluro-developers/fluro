@@ -6,9 +6,11 @@
  * @hideconstructor
  */
 
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
-var FluroDevice = function(window) {
+var FluroDevice = function() {
 
     var service = {
         breakpoint: {
@@ -36,14 +38,17 @@ var FluroDevice = function(window) {
 
         if (width <= 320) {
             mobile = true;
+            // console.log('- mobile')
         }
 
         if (width > 320 && width <= 768) {
             tablet = true;
+            // console.log('- tablet')
         }
 
         if (width > 768) {
             desktop = true;
+            // console.log('- desktop')
         }
 
         //Update the breakpoint
@@ -55,16 +60,33 @@ var FluroDevice = function(window) {
     }
 
 
+    var mounted;
+    let WindowReference;
+
     ////////////////////////////////
 
-    window.addEventListener('resize', service.resize);
-    service.resize();
+    service.mount = function(window) {
+        if(mounted) {
+            return;
+        }
+        
+        WindowReference = window;
+        mounted = true;
+        WindowReference.addEventListener('resize', service.resize);
+        service.resize();
+    }
 
 
     ////////////////////////////////
 
     service.destroy = function() {
-        window.removeEventListener('resize', service.resize);
+        WindowReference.removeEventListener('resize', service.resize);
+    }
+
+    ////////////////////////////////
+
+    if (!(typeof window === 'undefined')) {
+        service.mount(window);
     }
 
     ////////////////////////////////
