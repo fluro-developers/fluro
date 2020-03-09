@@ -61,7 +61,7 @@ var FluroDevice = function() {
         service.breakpoint.tablet = tablet;
         service.breakpoint.desktop = desktop;
 
-        console.log('Device size changed', width, height, WindowReference)
+        // console.log('Device size changed', width, height, WindowReference)
     }
 
 
