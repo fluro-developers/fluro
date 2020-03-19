@@ -244,9 +244,9 @@ var FluroTypes = function(FluroCore) {
         ////////////////////////////
 
         return _.chain(array)
-            .orderBy(function(item) {
-                return String(item.title).toLowerCase()
-            })
+            // .orderBy(function(item) {
+            //     return String(item.title).toLowerCase()
+            // })
             .reduce(function(set, entry) {
 
                 var key = entry.definition || backup;
@@ -662,23 +662,6 @@ var FluroTypes = function(FluroCore) {
             }
         }
 
-        // FluroContent.endpoint('process/types/' + type, true, true)
-        //         .query({
-        //             list:true,
-        //             strict:true,
-        //         })
-        //         .$promise.then(function(res) {
-        //             var filtered = _.filter(res, function(definition) {
-        //                 var definitionName = definition.definitionName;
-        //                 var canView = FluroAccess.can('view', definitionName, 'process');
-        //                 var canCreate = FluroAccess.can('create', definitionName, 'process');
-        //                 return (canView || canCreate);
-        //             });
-
-        //             return deferred.resolve(filtered);
-
-        //         }, deferred.reject);
-
         return new Promise(function(resolve, reject) {
 
             FluroCore.api.get(`/process/types/${typeName}`, {
@@ -699,36 +682,40 @@ var FluroTypes = function(FluroCore) {
                 }, reject);
 
         });
-
-
-
-        // FluroContent.endpoint('post/types/' + type, true, true)
-        //     .query(options)
-        //     .$promise.then(function(res) {
-        //         var filtered = _.filter(res, function(definition) {
-        //             var definitionName = definition.definitionName;
-        //             var canView = FluroAccess.can('view', definitionName, 'post');
-        //             var canCreate = FluroAccess.can('create', definitionName, 'post');
-        //             var canSubmit = FluroAccess.can('submit', definitionName, 'post');
-
-        //             // console.log('CAN?', $rootScope.user, type, canCreate, canSubmit);
-
-        //             return (canCreate || canSubmit);
-        //         });
-
-        //         return deferred.resolve(filtered);
-
-        //     }, deferred.reject);
-
-        // var match = service.glossary ? service.glossary[definitionName] : null;
-
-        // if (match) {
-        //     definitionName = match.parentType || definitionName;
-        // }
-
-        // return definitionName;
     }
-    /**/
+
+
+    //////////////////////////////////
+
+    // /**
+    //  * Input definition names or basic types and receive a list of all
+    //  * posts that can be attached to that type of content
+    //  * @alias FluroTypes.postTypes
+    //  * @param  {Array} definitionNames The definitions or _types to check
+    //  * @param  {Object} options Extra options
+    //  * @return {Array} an array of definitions that can be posted
+    //  *
+    //  */
+    // service.postTypes = function(typeName, options) {
+
+    //     if (!options) {
+    //         options = {
+    //             list: true,
+    //             strict: true,
+    //         }
+    //     }
+
+    //     return new Promise(function(resolve, reject) {
+
+    //         FluroCore.api.get(`/post/types/${typeName}`, {
+    //                 params: options
+    //             })
+    //             .then(function(res) {
+    //                 resolve(res.data);
+    //             }, reject);
+
+    //     });
+    // }
 
     //////////////////////////////////
 

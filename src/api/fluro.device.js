@@ -89,9 +89,9 @@ var FluroDevice = function() {
 
     ////////////////////////////////
 
-    if (!(typeof window === 'undefined')) {
-        service.mount(window);
-    }
+    // if (!(typeof window === 'undefined')) {
+    //     service.mount(window);
+    // }
 
     ////////////////////////////////
 
