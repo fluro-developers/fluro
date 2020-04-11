@@ -2,6 +2,9 @@ import _ from 'lodash';
 import axios from 'axios';
 const CancelToken = axios.CancelToken;
 
+import {
+    Cache,
+} from 'axios-extensions';
 
 ///////////////////////////////////////////////////
 
@@ -344,8 +347,13 @@ var FluroContent = function(fluro) {
      * //Retrieve just the title for item '5be504eabf33991239599d63'
      * fluro.content.get('5be504eabf33991239599d63', {select:'title'})
      */
-    service.get = function(id, params) {
+    service.get = function(id, params, requestOptions) {
 
+        if (!requestOptions) {
+            requestOptions = {};
+        }
+
+        /////////////////////////////////////
 
         //Ensure it's a simple single ID
         id = fluro.utils.getStringID(id);
@@ -360,11 +368,6 @@ var FluroContent = function(fluro) {
 
         return new Promise(function(resolve, reject) {
 
-
-            var requestOptions = {
-                params: {}
-            }
-
             //If there are query string parameters
             if (params) {
                 requestOptions.params = params;
@@ -372,10 +375,13 @@ var FluroContent = function(fluro) {
 
             /////////////////////////////////////////////
 
+            // console.log('REQUEST OPTIONS', requestOptions);
+
             //Retrieve the query results
-            fluro.api.get(`/content/get/${id}`, requestOptions).then(function(res) {
-                resolve(res.data);
-            }, reject);
+            fluro.api.get(`/content/get/${id}`, requestOptions)
+                .then(function(res) {
+                    resolve(res.data);
+                }, reject);
 
         })
     }
@@ -398,7 +404,13 @@ var FluroContent = function(fluro) {
      * //Retrieve just the title for item with external id that matches '5be504-eabf33991-239599-d63'
      * fluro.content.external('5be504-eabf33991-239599-d63', {select:'title'})
      */
-    service.external = function(id, params) {
+    service.external = function(id, params, requestOptions) {
+
+        if (!requestOptions) {
+            requestOptions = {};
+        }
+
+        /////////////////////////////////////
 
         if (!params) {
             params = {}
@@ -406,15 +418,11 @@ var FluroContent = function(fluro) {
 
         return new Promise(function(resolve, reject) {
 
-
-            var requestOptions = {
-                params: {}
-            }
-
             //If there are query string parameters
             if (params) {
                 requestOptions.params = params;
             }
+
 
             /////////////////////////////////////////////
 
@@ -439,18 +447,20 @@ var FluroContent = function(fluro) {
      * //Retrieve just the title for item with the slug 'my-article'
      * fluro.content.slug('my-article', {select:'title'})
      */
-    service.slug = function(id, params) {
+    service.slug = function(id, params, requestOptions) {
+
+        if (!requestOptions) {
+            requestOptions = {}
+        }
 
         if (!params) {
             params = {}
         }
 
+
+
         return new Promise(function(resolve, reject) {
 
-
-            var requestOptions = {
-                params: {}
-            }
 
             //If there are query string parameters
             if (params) {
@@ -458,6 +468,7 @@ var FluroContent = function(fluro) {
             }
 
             /////////////////////////////////////////////
+
 
             //Retrieve the query results
             fluro.api.get(`/content/slug/${id}`, requestOptions).then(function(res) {
@@ -597,7 +608,7 @@ var FluroContent = function(fluro) {
 
         return new Promise(function(resolve, reject) {
 
-            var requestOptions = {
+            var requestOptions = options.requestOptions || {
                 // params: {}
             }
 
@@ -611,9 +622,10 @@ var FluroContent = function(fluro) {
 
             // /////////////////////////////////////////////
 
+            console.log('request form', id, requestOptions);
             //Retrieve the query results
             fluro.api.get(`/form/${id}`, requestOptions).then(function(res) {
-                console.log('RESOLVE!', res.data);
+                console.log('resolve form', res.data);
                 resolve(res.data);
             }, reject);
 
@@ -818,6 +830,63 @@ var FluroContent = function(fluro) {
         })
     }
 
+
+    service.createDuplicate = function(populatedItem) {
+
+        var definedType = populatedItem.definition || populatedItem._type;
+        var newItem = JSON.parse(JSON.stringify(populatedItem));
+        ////////////////////////////////////////////
+
+        delete newItem._id;
+        delete newItem.slug;
+        delete newItem.author;
+        delete newItem.managedAuthor;
+        delete newItem.__v;
+        delete newItem.created;
+        delete newItem.updated;
+        delete newItem.updatedBy;
+        delete newItem.stats;
+        delete newItem.privateDetails;
+        delete newItem._external;
+        delete newItem.apikey;
+
+        ////////////////////////////////////////////
+
+        switch (newItem._type) {
+            case 'event':
+                //Clear out other bits
+                newItem.plans = [];
+                newItem.assignments = [];
+                break;
+            case 'mailout':
+                newItem.state = 'ready';
+                newItem.subject = newItem.title;
+                newItem.title = newItem.title + ' Copy';
+                delete newItem.publishDate;
+                break;
+            case 'plan':
+                newItem.startDate = null;
+                break;
+            case 'persona':
+                newItem.user = null;
+                newItem.collectionEmail = '';
+                newItem.username = '';
+                newItem.firstName = '';
+                newItem.lastName = '';
+                break;
+        }
+
+
+        newItem.status = 'active';
+
+        ////////////////////////////////////////////
+
+        newItem.realms = [];
+        delete newItem.account;
+
+        return Promise.resolve(newItem);
+    }
+
     ///////////////////////////////////////////////////
 
     /**
@@ -887,7 +956,13 @@ var FluroContent = function(fluro) {
      *       //Fresh item is a cleaned duplicate of the original item
      * })
      */
-    service.duplicate = function(item) {
+    service.duplicate = function(item, options) {
+
+        if(!options) {
+            options = {};
+        }
+
+        ///////////////////////////////////////
 
         var itemID = fluro.utils.getStringID(item);
 
@@ -914,6 +989,16 @@ var FluroContent = function(fluro) {
                     delete newItem.privateDetails;
                     delete newItem._external;
                     delete newItem.apikey;
+
+                    
+                    ////////////////////////////////////////////
+
+                    if(options.customise) {
+                        //Keep the definition name
+                    } else {
+                        delete newItem.definitionName;
+                        console.log('Dupliacate', newItem)
+                    }
 
 
                     ////////////////////////////////////////////

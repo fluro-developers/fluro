@@ -658,12 +658,15 @@ var FluroTypes = function(FluroCore) {
         if (!options) {
             options = {
                 list: true,
-                strict: true,
+                strict: false,
             }
         }
 
         return new Promise(function(resolve, reject) {
 
+            console.log('GET THE PROCESS TYPES')
+            // return resolve([]);
+            
             FluroCore.api.get(`/process/types/${typeName}`, {
                     params: options
                 })

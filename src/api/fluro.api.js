@@ -69,6 +69,11 @@ var FluroAPI = function(fluro) {
     service.interceptors.request.use(function (config) {
         config.headers['fluro-request-date'] = new Date().getTime();
         config.headers['fluro-request-timezone'] = fluro.date.defaultTimezone;
+
+        // // console.log('CONFIG >> ', config);
+        // if(params.cache === false) {
+        //     console.log('REQUEST WITH FALSE CACHE')
+        // }
         return config;
     });
 

@@ -440,6 +440,135 @@ FluroDate.readableEventTime = function(event) {
 
 
 /**
+ * @alias FluroDate.groupEventByDate
+ * @param  {Array} events The events we want to group
+ * @return {Array}       A grouped array of dates and events
+ */
+FluroDate.groupEventByDate = function(events) {
+
+    return _.chain(events)
+        .reduce(function(set, row, index) {
+
+            var format = 'ddd D MMM';
+            var startDate = row.startDate ? new moment(row.startDate) : new moment(row.created);
+
+            if (moment().format('YYYY') != startDate.format('YYYY')) {
+                format = 'ddd D MMM YYYY';
+            }
+
+            var groupingKey = startDate.format(format);
+
+
+
+
+            var existing = set[groupingKey];
+            if (!existing) {
+                existing = set[groupingKey] = {
+                    title: groupingKey,
+                    items: [],
+                    index,
+                }
+            }
+
+            existing.items.push(row);
+
+            return set;
+        }, {})
+        .values()
+        .orderBy('index')
+        .value();
+}
+
+
+
+///////////////////////////////////////
+
+
+/**
+ * @alias FluroDate.timeline
+ * @param  {Array} items The items we want to group on the timeline
+ * @return {Array}       A grouped array of dates
+ */
+FluroDate.timeline = function(items, dateKey) {
+
+    if (!dateKey) {
+        dateKey = 'created';
+    }
+
+    return _.chain(items)
+        .orderBy(function(entry) {
+            var date = new Date(_.get(entry, dateKey));
+            return date;
+        })
+        .reverse()
+        .reduce(function(set, entry, index) {
+
+            var date = new Date(_.get(entry, dateKey));
+
+            ////////////////////////////////////////
+
+            var dayKey = moment(date).format('D MMM YYYY');
+            var monthKey = moment(date).format('MMM YYYY');
+            var yearKey = moment(date).format('YYYY');
+
+            ////////////////////////////////////////
+
+            //Check if we already have an entry for this year
+            var existingYear = set.lookup[yearKey];
+            if (!existingYear) {
+                existingYear = set.lookup[yearKey] = {
+                    date,
+                    months: [],
+                }
+
+                //Add the year to our results
+                set.years.push(existingYear);
+            }
+
+            ////////////////////////////////////////
+
+            //Check if we already have an entry for this month
+            var existingMonth = set.lookup[monthKey];
+            if (!existingMonth) {
+                existingMonth = set.lookup[monthKey] = {
+                    date,
+                    days: [],
+                }
+
+                existingYear.months.push(existingMonth);
+            }
+
+            ////////////////////////////////////////
+
+            //Check if we already have an entry for this month
+            var existingDay = set.lookup[dayKey];
+            if (!existingDay) {
+                existingDay = set.lookup[dayKey] = {
+                    date,
+                    items: [],
+                }
+
+                existingMonth.days.push(existingDay);
+            }
+
+            existingDay.items.push(entry);
+
+
+            return set;
+
+        }, { lookup: {}, years: [] })
+        .get('years')
+        .value();
+
+
+}
+
+
+
+///////////////////////////////////////
+
+
+/**
  * A helper function that can return the pieces for a countdown clock relative to a specified date
  * @alias FluroDate.countdown
  * @param  {Date} date The date we are counting down to
@@ -466,12 +595,12 @@ FluroDate.countdown = function(date, zeroPadded) {
     var days = Math.floor(milliseconds / oneDay);
 
 
-    if(zeroPadded) {
+    if (zeroPadded) {
 
         function pad(input) {
             input = Math.ceil(input);
 
-            if(String(input).length == 1) {
+            if (String(input).length == 1) {
                 return `0${input}`;
             }
 
@@ -479,10 +608,10 @@ FluroDate.countdown = function(date, zeroPadded) {
         }
 
         return {
-            days:pad(days),
-            minutes:pad(minutes),
-            hours:pad(hours),
-            seconds:pad(seconds),
+            days: pad(days),
+            minutes: pad(minutes),
+            hours: pad(hours),
+            seconds: pad(seconds),
         }
     }
 
@@ -490,7 +619,7 @@ FluroDate.countdown = function(date, zeroPadded) {
         days,
         minutes,
         hours,
-        seconds:Math.ceil(seconds),
+        seconds: Math.ceil(seconds),
     }
 
 }

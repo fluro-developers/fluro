@@ -440,7 +440,7 @@ var FluroStats = function(Fluro) {
 
         //Get/Create the stat storage bucket
         var store = service.getUserStore(statName, true);
-        store.set(targetID)
+        return store.set(targetID)
     }
 
     ///////////////////////////////////////////////////
@@ -452,7 +452,7 @@ var FluroStats = function(Fluro) {
 
         //Get/Create the stat storage bucket
         var store = service.getUserStore(statName, true);
-        store.unset(targetID)
+        return store.unset(targetID)
     }
 
 

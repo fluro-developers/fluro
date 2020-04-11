@@ -1,6 +1,6 @@
 {
   "name": "fluro",
-  "version": "2.0.62",
+  "version": "2.0.63",
   "description": "Promise based HTTP Fluro client for the browser and node.js",
   "scripts": {
     "build": "webpack --mode=production && webpack --mode=production && npm run test",
@@ -9,7 +9,7 @@
     "test:watch": "mocha  --colors -w ./test/*.spec.js",
     "document": "jsdoc -r  . -d docs -c jsdoc.conf README.md"
   },
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fluro-developers/fluro.git"
@@ -35,11 +35,11 @@
     "mocha": "^6.2.2",
     "mongoose": "^5.9.2",
     "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "axios-extensions": "^3.0.5",
+    "axios": "^0.18.1",
+    "axios-extensions": "^3.1.2",
     "browser-or-node": "^1.2.1",
     "lodash": "^4.17.15",
     "moment-timezone": "^0.5.27",

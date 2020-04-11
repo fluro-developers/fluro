@@ -632,6 +632,81 @@ FilterService.comparators.push({
 
 
 
+FilterService.comparators.push({
+    title: 'Anniversary is in the next',
+    operator: 'dateanniversarynext',
+    match(input, measure, period, options) {
+        if (!options) {
+            options = {}
+        }
+
+        if (!input) {
+            return;
+        }
+
+        var mustMatchValue = moment().add(measure, period).toDate();
+
+        if (_.isArray(input)) {
+
+            if (!input.length) {
+                return;
+            }
+
+            return _.some(input, function(i) {
+                // dateCompare(input, range, type, format, timezone)
+                return dateCompare(i, mustMatchValue, 'dateanniversarynext');
+            });
+        } else {
+            return dateCompare(input, mustMatchValue, 'dateanniversarynext');
+        }
+    },
+    inputType: 'datemeasure',
+    restrict: [
+        'date',
+    ],
+})
+
+
+
+FilterService.comparators.push({
+    title: 'Anniversary is in the last',
+    operator: 'dateanniversarypast',
+    match(input, measure, period, options) {
+
+
+        if (!options) {
+            options = {}
+        }
+
+        if (!input) {
+            return;
+        }
+
+        var mustMatchValue = moment().subtract(measure, period).toDate();
+
+        if (_.isArray(input)) {
+
+            if (!input.length) {
+                return;
+            }
+
+
+            return _.some(input, function(i) {
+                // dateCompare(input, range, type, format, timezone)
+                return dateCompare(i, mustMatchValue, 'dateanniversarypast');
+            });
+        } else {
+            return dateCompare(input, mustMatchValue, 'dateanniversarypast');
+        }
+    },
+    inputType: 'datemeasure',
+    restrict: [
+        'date',
+    ],
+})
+
+
+
 // FilterService.comparators.push({
 //     title: 'Is between',
 //     operator: 'datebetween',

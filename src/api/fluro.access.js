@@ -152,7 +152,7 @@ var FluroAccess = function(FluroCore) {
         /////////////////////////////////////////////////////
 
         //Get the permission string we actually want to check against
-        var permissionString = `${action} ${type}`;
+        var permissionString = (`${action} ${type}`).trim();
 
         /////////////////////////////////////////////////////
 

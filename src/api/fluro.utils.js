@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import moment from 'moment';
+import axios from 'axios';
 import { isBrowser, isNode } from 'browser-or-node';
 
 
@@ -680,30 +681,53 @@ FluroUtils.injectScript = function(scriptURL) {
  * @return {Promise}     A promise that resolves once the script has been included on the page
  */
 
-var injectedModules = {}
+var inflightPromises = {};
 
 
-FluroUtils.injectModule = function(scriptURL) {
+FluroUtils.injectModule = function(scriptURL, options) {
 
-    return new Promise(function(resolve, reject) {
-        if (!document) {
-            return reject('Script injection can only be used when running in a browser context')
+    if (!options) {
+        options = {};
+    }
+
+    ////////////////////////////////////////////////////
+
+    if (!document) {
+        return Promise.reject('Script injection can only be used when running in a browser context');
+    }
+
+    ////////////////////////////////////////////////////
+
+    //If we aren't requesting a cache clear
+    if (!options.clearCache) {
+
+        //If there is an inflight promise
+        if (inflightPromises[scriptURL]) {
+            return inflightPromises[scriptURL];
         }
+    }
 
-        if (injectedModules[scriptURL]) {
-            return resolve(injectedModules[scriptURL]);
-        }
+    ////////////////////////////////////////////////////
 
-        var request, script, source;
-        request = new XMLHttpRequest();
-        request.open('GET', scriptURL, false);
-        request.send();
-        source = request.responseText;
+    var promise = new Promise(function(resolve, reject) {
+        axios.get(scriptURL).then(function(res) {
+            var source = res.data;
+            var script = `"use strict"; var object = {}; try {object = ${source}} catch(e) {console.log(e)} finally {return object}`;
 
-        var module = injectedModules[scriptURL] = Function('"use strict";return (' + source + ')')();
 
-        return resolve(module);
+            var compiled = Function(script)();
+            return resolve(compiled);
+        })
+
+
     })
+
+    ////////////////////////////////////////////////////
+
+    //Cache for multiple requests
+    inflightPromises[scriptURL] = promise;
+
+    return promise;
 }
 
 /////////////////////////////////////////////
