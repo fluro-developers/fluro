@@ -622,10 +622,10 @@ var FluroContent = function(fluro) {
 
             // /////////////////////////////////////////////
 
-            console.log('request form', id, requestOptions);
+            // console.log('request form', id, requestOptions);
             //Retrieve the query results
             fluro.api.get(`/form/${id}`, requestOptions).then(function(res) {
-                console.log('resolve form', res.data);
+                // console.log('resolve form', res.data);
                 resolve(res.data);
             }, reject);
 
