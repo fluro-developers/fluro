@@ -2,7 +2,7 @@
 
 
 
-console.log('fluro 2.0.66')
+console.log('fluro 2.0.68')
 
 
 ////////////////////////////////////////////
@@ -60,6 +60,7 @@ import FluroCore from './api/fluro.core';
 //Add Utils as a static property
 FluroCore.utils = FluroUtils;
 FluroCore.date = FluroDate;
+FluroCore.moment = FluroDate.moment;
 FluroCore.video = FluroVideo;
 
 //Export like this for now 

@@ -106,7 +106,7 @@ var FluroAPI = function(fluro) {
                 break;
             default:
                 //Some other error
-                console.log('fluro.api > connection error', status, err.config.url);
+                console.log('fluro.api > connection error', status, err);
                 break;
         }
 
