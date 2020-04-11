@@ -196,6 +196,7 @@ var FluroAPI = function(fluro) {
      */
 
     service.CancelToken = CancelToken;
+    service.axios = axios;
 
     ///////////////////////////////////////
 
