@@ -24,7 +24,9 @@ if (!(typeof window === 'undefined')) {
 
 const FluroDate = {
     defaultTimezone: DEFAULT_TIMEZONE,
+    moment,
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
