@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 // var JsDocPlugin = require('jsdoc-webpack-plugin-v2');
 
 module.exports = {
@@ -11,6 +12,23 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         globalObject: 'typeof self !== \'undefined\' ? self : this',
     },
+
+
+    //     module.exports = () => {
+    //     return {
+    //         output: {
+    //             path: path.resolve(__dirname, 'build'),
+    //             filename: 'app.js',
+    //         },
+    //         entry: './src/index.js',
+    plugins: [
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    ],
+    //     };
+    // };
+
+
+
     // plugins: [
     //       new JsDocPlugin(
     //       // {
@@ -20,7 +38,7 @@ module.exports = {
     //   ],
     optimization: {
         // splitChunks: {
-            // chunks: 'all'
+        // chunks: 'all'
         // }
     },
 
