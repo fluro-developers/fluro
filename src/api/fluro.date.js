@@ -523,6 +523,7 @@ FluroDate.timeline = function(items, dateKey) {
                     months: [],
                 }
 
+                //console.log('Push to year', set.years)
                 //Add the year to our results
                 set.years.push(existingYear);
             }
@@ -537,10 +538,13 @@ FluroDate.timeline = function(items, dateKey) {
                     days: [],
                 }
 
+                //console.log('Push to month', existingYear)
                 existingYear.months.push(existingMonth);
             }
 
             ////////////////////////////////////////
+
+            
 
             //Check if we already have an entry for this month
             var existingDay = set.lookup[dayKey];
@@ -550,9 +554,11 @@ FluroDate.timeline = function(items, dateKey) {
                     items: [],
                 }
 
+                 //console.log('Push to day', existingMonth)
                 existingMonth.days.push(existingDay);
             }
 
+             //console.log('Push to item', existingDay)
             existingDay.items.push(entry);
 
 
