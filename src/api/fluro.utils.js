@@ -236,9 +236,9 @@ FluroUtils.getDefaultValueForField = function(field) {
         if (!blankValue) {
 
             switch (field.type) {
-                // case 'string':
-                //     blankValue = '';
-                // break;
+                case 'string':
+                    blankValue = '';
+                break;
                 default:
                     switch (field.directive) {
                         case 'wysiwyg':
@@ -669,6 +669,7 @@ FluroUtils.injectScript = function(scriptURL) {
 
     })
 }
+
 
 
 ////////////////////////////////////
