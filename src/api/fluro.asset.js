@@ -342,6 +342,67 @@ var FluroAsset = function(Fluro) {
 
     }
 
+    ///////////////////////////////////////////////////
+
+    /**
+     * A helper function that returns what type of content Fluro will attribute a specified mimetype to
+     * @alias FluroAsset.typeFromMime
+     * @param  {string} mimetype The mimetype of a file
+     * @return {string}          Whether this mimetype is an 'asset', 'video', 'image', or 'audio' file
+     * @example
+     * // returns 'audio'
+     * FluroAsset.typeFromMime('audio/aac')
+     * // returns 'video'
+     * FluroAsset.typeFromMime('video/ogg')
+     * // returns 'asset'
+     * FluroAsset.typeFromMime('application/pdf')
+     * 
+     */
+
+    service.typeFromMime = function(mimetype) {
+
+        switch (mimetype) {
+            case 'image/jpeg':
+            case 'image/png':
+            case 'image/gif':
+            case 'image/bmp':
+            case 'image/svg+xml':
+                return 'image'
+                break;
+            case 'video/mp4':
+            case 'video/quicktime':
+            case 'video/ogg':
+            case 'video/webm':
+                return 'video'
+                break;
+            case 'audio/aac':
+            case 'audio/aiff':
+            case 'audio/mp3':
+            case 'audio/x-m4a':
+            case 'audio/mpeg':
+            case 'audio/ogg':
+            case 'audio/wav':
+            case 'audio/webm':
+                return 'audio'
+                break;
+            default:
+            	if(_.startsWith(mimetype, 'image/')) {
+            		return 'image';
+            	}
+            	if(_.startsWith(mimetype, 'video/')) {
+            		return 'video';
+            	}
+
+            	if(_.startsWith(mimetype, 'audio/')) {
+            		return 'audio';
+            	}
+            break;
+        }
+
+        return 'asset';
+
+    }
+
 
     ///////////////////////////////////////////////////
 
