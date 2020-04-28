@@ -386,9 +386,9 @@ var FluroAsset = function(Fluro) {
                 return 'audio'
                 break;
             default:
-            	if(_.startsWith(mimetype, 'image/')) {
-            		return 'image';
-            	}
+            	// if(_.startsWith(mimetype, 'image/')) {
+            	// 	return 'image';
+            	// }
             	if(_.startsWith(mimetype, 'video/')) {
             		return 'video';
             	}
