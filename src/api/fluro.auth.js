@@ -335,7 +335,7 @@ var FluroAuth = function(fluro) {
 
                 if (autoAuthenticate) {
                     store.user = res.data;
-                    console.log('Persist user', store.user)
+                    // console.log('Persist user', store.user)
                     dispatch();
                     // if (service.onChange) {
                     //     service.onChange(store.user);
@@ -589,6 +589,7 @@ var FluroAuth = function(fluro) {
 
             /////////////////////////////////////////////
 
+            console.log('post request', url, body, postOptions)
             fluro.api.post(url, body, postOptions).then(function(res) {
 
                 //If we should automatically authenticate
@@ -792,13 +793,13 @@ var FluroAuth = function(fluro) {
 
     service.sync = function() {
 
-        console.log('Sync with server', store.user)
+        // console.log('Sync with server', store.user)
         
 
         return fluro.api.get('/session')
             .then(function(res) {
 
-                console.log('sync response', res);
+                // console.log('sync response', res);
 
                 if (res.data) {
 
@@ -826,7 +827,7 @@ var FluroAuth = function(fluro) {
                     retryCount =0;
                     dispatch();
                 } else {
-                    console.log('Retry sync')
+                    // console.log('Retry sync')
                     retryCount++;
                     service.sync();
                 }
