@@ -65,18 +65,31 @@ var FluroAPI = function(fluro) {
 
     /////////////////////////////////////////////////////
 
+
     // Add relative date and timezone to every request
-    service.interceptors.request.use(function (config) {
+    service.interceptors.request.use(function(config) {
         config.headers['fluro-request-date'] = new Date().getTime();
-        if(fluro.date.defaultTimezone) {
+        if (fluro.date.defaultTimezone) {
             config.headers['fluro-request-timezone'] = fluro.date.defaultTimezone;
         }
 
-        // // console.log('CONFIG >> ', config);
-        // if(params.cache === false) {
-        //     console.log('REQUEST WITH FALSE CACHE')
-        // }
+        //It's just a normal request
+        if (!config.application) {
+            return config;
+        }
+
+        ////////////////////////
+
+        //There's no app or app user defined anyway
+        if (!fluro.app || !fluro.app.user) {
+            return config;
+        }
+
+        ////////////////////////
+
+        console.log('request the thing in application context with a user', fluro.app.user.firstName);
         return config;
+
     });
 
     /////////////////////////////////////////////////////
@@ -105,6 +118,8 @@ var FluroAPI = function(fluro) {
                 //Try it again
                 console.log(`fluro.api > ${status} connection error retrying`)
                 return fluro.api.request(err.config);
+                break;
+            case 404:
                 break;
             default:
                 //Some other error

@@ -30,7 +30,7 @@ var FluroAuth = function(fluro) {
     ///////////////////////////////////////////////////
 
     var service = {
-        debug:false,
+        debug: false,
     }
 
 
@@ -111,18 +111,18 @@ var FluroAuth = function(fluro) {
         log('fluro.auth > user logout');
 
 
-        if(fluro.withCredentials) {
-            
+        if (fluro.withCredentials) {
+
             //Logout of the current application
             window.location.href = '/fluro/logout';
-        
-        
+
+
         }
 
 
-          // if(window && window.localStorage) {
-          //    window.localStorage.removeItem('fluro.user');
-          // }
+        // if(window && window.localStorage) {
+        //    window.localStorage.removeItem('fluro.user');
+        // }
 
         return dispatch()
 
@@ -700,7 +700,7 @@ var FluroAuth = function(fluro) {
      * @param  {Boolean} isManagedSession Whether or not the refresh token is for a managed persona session or a global Fluro user session
      * @return {Promise}                A promise that either resolves with the refreshed token details or rejects with the responding error from the server
      */
-    service.refreshAccessToken = function(refreshToken, isManagedSession) {
+    service.refreshAccessToken = function(refreshToken, isManagedSession, appContext) {
 
         //If there is already a request in progress
         if (refreshContext.inflightRefreshRequest) {
@@ -725,7 +725,7 @@ var FluroAuth = function(fluro) {
                 })
                 .then(function tokenRefreshComplete(res) {
 
-                    console.log('TOKEN REFRSH COMPLETE',res)
+                    console.log('TOKEN REFRSH COMPLETE', res)
 
                     //Update the user with any changes 
                     //returned back from the refresh request
@@ -736,11 +736,23 @@ var FluroAuth = function(fluro) {
 
                     } else {
 
-                        if (store.user) {
-                            Object.assign(store.user, res.data);
+                        if (appContext) {
+                            if (fluro.app) {
+                                if (fluro.app.user) {
+                                    _.assign(fluro.app.user, res.data);
+                                    fluro.app.user = fluro.app.user;
+                                } else {
+                                    fluro.app.user = res.data;
+                                }
+                            }
                         } else {
-                            store.user = res.data;
+                            if (store.user) {
+                                Object.assign(store.user, res.data);
+                            } else {
+                                store.user = res.data;
+                            }
                         }
+
 
                         log('fluro.auth > token refreshed');
 
@@ -766,7 +778,7 @@ var FluroAuth = function(fluro) {
                     refreshContext.inflightRefreshRequest = null;
                     reject(err);
 
-                    console.log('TOKEN REFRSH ERROR',err)
+                    console.log('TOKEN REFRSH ERROR', err)
 
                 });
         });
@@ -794,7 +806,7 @@ var FluroAuth = function(fluro) {
     service.sync = function() {
 
         // console.log('Sync with server', store.user)
-        
+
 
         return fluro.api.get('/session')
             .then(function(res) {
@@ -804,7 +816,7 @@ var FluroAuth = function(fluro) {
                 if (res.data) {
 
 
-                    
+
 
                     //Update the user with any changes 
                     //returned back from the refresh request
@@ -815,23 +827,23 @@ var FluroAuth = function(fluro) {
                     store.user = null;
                 }
                 log('fluro.auth > server session refreshed');
-                retryCount =0;
+                retryCount = 0;
 
                 dispatch();
             })
             .catch(function(err) {
-                console.log('Auth Sync Error',err);
+                console.log('Auth Sync Error', err);
 
-                if(retryCount > 2) {
+                if (retryCount > 2) {
                     store.user = null;
-                    retryCount =0;
+                    retryCount = 0;
                     dispatch();
                 } else {
                     // console.log('Retry sync')
                     retryCount++;
                     service.sync();
                 }
-                
+
 
             });
     }
@@ -866,17 +878,40 @@ var FluroAuth = function(fluro) {
         //If we want to bypass the interceptor
         //then just return the request
         if (config.bypassInterceptor) {
+            // console.log('auth interceptor was bypassed');
             return config;
         }
 
+
+
+        //////////////////////////////
+        //////////////////////////////
+        //////////////////////////////
         //////////////////////////////
 
         //Get the original request
         var originalRequest = config;
 
+
+
         //If we aren't logged in or don't have a token
-        var token = _.get(store, 'user.token');
-        var refreshToken = _.get(store, 'user.refreshToken');
+        var token;
+        var refreshToken;
+        var applicationToken = fluro.applicationToken;
+
+
+        //////////////////////////////
+
+        //If we are running in an application context
+        if (config.application) {
+            token = _.get(fluro, 'app.user.token');
+            refreshToken = _.get(fluro, 'app.user.refreshToken');
+        } else {
+
+            //Get the token and refresh token
+            token = _.get(store, 'user.token');
+            refreshToken = _.get(store, 'user.refreshToken');
+        }
 
         //////////////////////////////
 
@@ -887,13 +922,12 @@ var FluroAuth = function(fluro) {
             originalRequest.headers['Authorization'] = 'Bearer ' + token;
             log('fluro.auth > using user token');
 
-
-        } else if (fluro.applicationToken && fluro.applicationToken.length) {
+        } else if (applicationToken && applicationToken.length) {
 
             //If there is a static application token
             //For example we have logged out from a website
             //that has public content also
-            originalRequest.headers['Authorization'] = 'Bearer ' + fluro.applicationToken;
+            originalRequest.headers['Authorization'] = 'Bearer ' + applicationToken;
 
             log('fluro.auth > using app token');
 
@@ -927,7 +961,14 @@ var FluroAuth = function(fluro) {
         now.setSeconds(now.getSeconds() + 10);
 
 
-        var expiryDate = _.get(store, 'user.expires');
+        var expiryDate;
+
+        if (config.application) {
+            expiryDate = _.get(fluro, 'app.user.expires');
+        } else {
+            expiryDate = _.get(store, 'user.expires');
+        }
+
         var expires = new Date(expiryDate);
 
         //If we are not debugging
@@ -942,7 +983,7 @@ var FluroAuth = function(fluro) {
 
         /////////////////////////////////////////////////////
 
-        var isManagedUser = _.get(store, 'user.accountType') == 'managed';
+        var isManagedUser = config.application || _.get(store, 'user.accountType') == 'managed';
         //The token is stale by this point
 
         log('fluro.auth > token expired');
@@ -950,7 +991,7 @@ var FluroAuth = function(fluro) {
         return new Promise(function(resolve, reject) {
 
             //Refresh the token
-            service.refreshAccessToken(refreshToken, isManagedUser)
+            service.refreshAccessToken(refreshToken, isManagedUser, config.application)
                 .then(function(newToken) {
                     log('fluro.auth > token refreshed', isManagedUser);
                     //Update the original request with our new token
@@ -976,6 +1017,10 @@ var FluroAuth = function(fluro) {
         return response;
     }, function(err) {
 
+
+
+        //////////////////////////////
+
         //Get the response status
         var status = _.get(err, 'response.status') || err.status;
 
@@ -983,26 +1028,39 @@ var FluroAuth = function(fluro) {
         switch (status) {
             case 401:
 
-                // console.log('AUTH ERROR 401', err);
+                //////////////////////////////
 
-                //If it's an invalid refresh token
-                //In case it was a mismatch between tabs or sessions
-                //we should try it a second time just in case
-                var data = _.get(err, 'response.data');
-                if(data == 'invalid_refresh_token') {
-
-                    //Try it again
-                    // console.log('Refresh failed but its ok')
-
-                } else {
-                    //Logout and destroy the session
-                    
+                console.log('Err', err);
+                //If we are running in an application context
+                if (_.get(err, 'config.application')) {
+                    //Kill our app user store
+                    if (fluro.app) {
+                        fluro.app.user = null;
+                    }
+                    return Promise.reject(err);
                 }
+
+
+                // //////////////////////////////
+
+                // //If it's an invalid refresh token
+                // //In case it was a mismatch between tabs or sessions
+                // //we should try it a second time just in case
+                // var data = _.get(err, 'response.data');
+                // if (data == 'invalid_refresh_token') {
+
+                //     //Try it again
+                //     // console.log('Refresh failed but its ok')
+
+                // } else {
+                //     //Logout and destroy the session
+
+                // }
 
                 console.log('logout from 401', err)
                 service.logout();
-            
-                
+
+
                 break;
             default:
                 //Some other error
@@ -1010,7 +1068,7 @@ var FluroAuth = function(fluro) {
         }
 
         /////////////////////////////////////////////////////
-        
+
         return Promise.reject(err);
     })
 

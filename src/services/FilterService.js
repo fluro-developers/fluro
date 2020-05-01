@@ -2148,11 +2148,13 @@ FilterService.allKeys = function(initFields, config) {
     }, []);
 
     //////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////
 
     var fields = initFields.concat(typeFields, definitionFields, detailSheetFields);
 
     return _.chain(fields)
+        .uniqBy(function(field) {
+            return field.key;
+        })
         .filter(function(field) {
             return field.type != 'object';
         })

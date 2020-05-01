@@ -193,6 +193,12 @@ var FluroCore = function(options) {
         writable: false,
     });
 
+    var appContextAPI = new FluroAPI(core, true);
+    Object.defineProperty(core, 'appContextAPI', {
+        value: appContextAPI,
+        writable: false,
+    });
+
     /**
      * A helper service for CRUD operations that wraps around the fluro.api service
      * @type {FluroContent}
