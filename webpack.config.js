@@ -61,6 +61,12 @@ module.exports = {
             amd: 'moment-timezone',
             root: 'moment-timezone'
         },
+        'moment': {
+            commonjs: 'moment',
+            commonjs2: 'moment',
+            amd: 'moment',
+            root: 'moment'
+        },
         'axios': {
             commonjs: 'axios',
             commonjs2: 'axios',
