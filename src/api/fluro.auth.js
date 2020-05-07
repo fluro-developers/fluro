@@ -26,12 +26,21 @@ var FluroAuth = function(fluro) {
     var defaultStore = {};
     var store = defaultStore;
 
+
+
+
     ///////////////////////////////////////////////////
     ///////////////////////////////////////////////////
 
     var service = {
         debug: false,
     }
+
+
+    Object.defineProperty(service, 'store', {
+        value: store,
+        writable: false,
+    });
 
 
     //Create a new dispatcher
@@ -77,7 +86,8 @@ var FluroAuth = function(fluro) {
      * FluroAsset.set({firstName:'Jeff', lastName:'Andrews', ...})
      */
 
-    service.set = function(user, parameters) {
+    service.set = function(user, parameters, ignoreEvent) {
+
         store.user = user;
 
         log('fluro.auth > user set');
@@ -725,8 +735,6 @@ var FluroAuth = function(fluro) {
                 })
                 .then(function tokenRefreshComplete(res) {
 
-                    console.log('TOKEN REFRSH COMPLETE', res)
-
                     //Update the user with any changes 
                     //returned back from the refresh request
                     if (!res) {
@@ -774,6 +782,8 @@ var FluroAuth = function(fluro) {
                 .catch(function(err) {
                     console.log('TOKEN REFRESH FAILED', err);
 
+                    //TODO Check if invalid_refresh_token
+
                     //console.log('Refresh request Failed')
                     refreshContext.inflightRefreshRequest = null;
                     reject(err);
@@ -814,10 +824,6 @@ var FluroAuth = function(fluro) {
                 // console.log('sync response', res);
 
                 if (res.data) {
-
-
-
-
                     //Update the user with any changes 
                     //returned back from the refresh request
                     if (store.user) {
@@ -832,17 +838,18 @@ var FluroAuth = function(fluro) {
                 dispatch();
             })
             .catch(function(err) {
-                console.log('Auth Sync Error', err);
+                
 
-                if (retryCount > 2) {
+                // if (retryCount > 2) {
+                	console.log('auth sync not logged in');
                     store.user = null;
                     retryCount = 0;
                     dispatch();
-                } else {
+                // } else {
                     // console.log('Retry sync')
-                    retryCount++;
-                    service.sync();
-                }
+                    // retryCount++;
+                    // service.sync();
+                // }
 
 
             });
@@ -878,7 +885,7 @@ var FluroAuth = function(fluro) {
         //If we want to bypass the interceptor
         //then just return the request
         if (config.bypassInterceptor) {
-            // console.log('auth interceptor was bypassed');
+            console.log('auth interceptor was bypassed');
             return config;
         }
 
@@ -1057,7 +1064,7 @@ var FluroAuth = function(fluro) {
 
                 // }
 
-                console.log('logout from 401', err)
+                console.log('logout from 401')
                 service.logout();
 
 

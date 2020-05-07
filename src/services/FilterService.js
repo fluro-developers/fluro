@@ -1,20 +1,23 @@
 import _ from 'lodash';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import stringSimilarity from 'string-similarity';
 
-// const stringSimilarity = () => import('string-similarity');
+var chrono; //= require('chrono-node');
+var verboseDEBUG;
 
 
 //////////////////////////////////////////////////////////////////////
 
-var FilterService = {};
+var service = {};
 
 //////////////////////////////////////////////////////////////////////
 
-FilterService.activeFilters = function(config) {
+service.activeFilters = function(config) {
 
     var memo = [];
     getActiveFilter(config, memo);
+
+
 
     return memo;
 
@@ -22,7 +25,7 @@ FilterService.activeFilters = function(config) {
 
     function getActiveFilter(block, memo) {
 
-        var isValid = FilterService.isValidFilter(block);
+        var isValid = service.isValidFilter(block);
         if (isValid) {
             memo.push(block);
         }
@@ -32,27 +35,37 @@ FilterService.activeFilters = function(config) {
                 getActiveFilter(b, memo);
             })
         }
+
+
     }
 }
 
 //////////////////////////////////////////////////////////////////////
 
-FilterService.activeFilterRows = function(config) {
+function isNotANumber(input) {
+    return isNaN(parseInt(input));
+}
 
-    return _.filter(FilterService.activeFilters, function(row) {
+//////////////////////////////////////////////////////////////////////
+
+service.activeFilterRows = function(config) {
+
+    return _.filter(service.activeFilters, function(row) {
         return row.comparator && row.comparator.length;
     })
 }
 
 
-FilterService.activeFilterKeys = function(config) {
-    var keys = _.chain(FilterService.activeFilters(config))
+service.activeFilterKeys = function(config) {
+    var keys = _.chain(service.activeFilters(config))
         .map(function(entry) {
             if (!entry || !entry.key) {
                 return;
             }
 
-            return FilterService.getRootKey(entry.key);
+            var rootKey = service.getRootKey(entry.key);
+            // //console.log('ROOT KEY', rootKey);
+            return rootKey;
         })
         .compact()
         .uniq()
@@ -61,13 +74,14 @@ FilterService.activeFilterKeys = function(config) {
     return keys;
 }
 
+
 //////////////////////////////////////////////////////////////////////
 
 
-FilterService.activeFilterCriteriaString = function(config) {
+service.activeFilterCriteriaString = function(config) {
 
 
-    var criteriaValue = _.chain(FilterService.activeFilters(config))
+    var criteriaValue = _.chain(service.activeFilters(config))
         .map(function(block) {
 
             if (!block.criteria || !block.criteria.length) {
@@ -76,8 +90,9 @@ FilterService.activeFilterCriteriaString = function(config) {
 
             //////////////////////////
 
-            var activeCriteria = FilterService.activeFilters({ filters: block.criteria });
+            var activeCriteria = service.activeFilters({ filters: block.criteria });
 
+            // ////console.log('ACTIVE CRITERIA', block.criteria, activeCriteria)
             if (!activeCriteria || !activeCriteria.length) {
                 return;
             }
@@ -85,7 +100,7 @@ FilterService.activeFilterCriteriaString = function(config) {
             //////////////////////////
 
 
-            return FilterService.getFilterChangeString({ filters: activeCriteria });
+            return service.getFilterChangeString({ filters: activeCriteria });
         })
         .flatten()
         .compact()
@@ -99,44 +114,39 @@ FilterService.activeFilterCriteriaString = function(config) {
 
     ////////////////////////
 
+    // if (criteriaValue && criteriaValue.length) {
+    // ////console.log('FILTER VALUES', criteriaValue);
+    // }
+
+    ////////////////////////
+
     return criteriaValue;
 
 }
 
-
-
-
-
 //////////////////////////////////////////////////////////////////////
 
+service.activeFilterValues = function(config) {
 
-FilterService.activeFilterValues = function(config) {
-
-    var values = _.chain(FilterService.activeFilters(config))
+    var values = _.chain(service.activeFilters(config))
         .map(function(block) {
 
             var all = [];
-            var comparator = FilterService.getComparator(block.comparator);
-
+            var comparator = service.getComparator(block.comparator);
             if (!comparator) {
                 return;
             }
 
-
-
-
             switch (comparator.inputType) {
                 case 'array':
                     all = all.concat(block.values);
-
                     break;
                 case 'range':
                 case 'daterange':
                     all = all.concat([block.value, block.value2]);
                     break;
                 default:
-
-                    all.push(block.computedValue, block.value, block.value2);
+                     all = all.concat([block.value, block.value2]);
                     break;
             }
 
@@ -153,12 +163,13 @@ FilterService.activeFilterValues = function(config) {
         .value();
 
 
+    // ////console.log('FILTER VALUES', values);
 
     return values;
 
 }
 
-FilterService.activeFilterComparators = function(config) {
+service.activeFilterComparators = function(config) {
     var memo = [];
     getActiveFilterComparator(config, memo);
     return memo;
@@ -168,7 +179,7 @@ FilterService.activeFilterComparators = function(config) {
 
     function getActiveFilterComparator(block, memo) {
 
-        var isValid = FilterService.isValidFilter(block);
+        var isValid = service.isValidFilter(block);
         if (isValid) {
             memo.push(block.comparator);
         }
@@ -185,7 +196,7 @@ FilterService.activeFilterComparators = function(config) {
     }
 }
 
-FilterService.activeFilterOperators = function(config) {
+service.activeFilterOperators = function(config) {
     var memo = [];
     var trail = [];
 
@@ -235,7 +246,7 @@ FilterService.activeFilterOperators = function(config) {
 
             //Check if any of it's filters are valid and active
             var isValid = _.some(block.filters, function(filter) {
-                return FilterService.isValidFilter(filter);
+                return service.isValidFilter(filter);
             })
 
 
@@ -262,17 +273,16 @@ FilterService.activeFilterOperators = function(config) {
 //////////////////////////////////////////////////////////////////////
 
 
-FilterService.getFilterChangeString = function(config) {
+service.getFilterChangeString = function(config) {
 
     //Put all this together so we only refilter when we actually need to
     //each of these will only return if the filter is valid and actually changes
     //effects the results, without this step the table will update everytime you change the filters
     var string = [
-        FilterService.activeFilterKeys(config).join(', '),
-        FilterService.activeFilterValues(config).join(', '),
-        FilterService.activeFilterCriteriaString(config).join(', '),
-        FilterService.activeFilterComparators(config).join(', '),
-        FilterService.activeFilterOperators(config).join(', '),
+        service.activeFilterKeys(config).join(', '),
+        service.activeFilterValues(config).join(', '),
+        service.activeFilterComparators(config).join(', '),
+        service.activeFilterOperators(config).join(', '),
     ].join('');
 
 
@@ -291,11 +301,11 @@ function getString(input, includeIDs) {
 
     if (includeIDs) {
         if (input._id) {
-            return String(input._id);
+            return String(input._id).toLowerCase();
         }
 
         if (input._external) {
-            return String(input._external);
+            return String(input._external).toLowerCase();
         }
     }
 
@@ -319,31 +329,43 @@ function getAllStringMatches(input, includeIDs) {
         return matches;
     }
 
+    //If it's text or a number
     if (!_.isObject(input)) {
-        return [String(input).toLowerCase()];
+        return [getString(input, includeIDs)];
     }
 
+    //If it's an array
     if (_.isArray(input)) {
         return _.flatten(getAllStringMatches(input, includeIDs))
     }
 
-    if (includeIDs) {
-        if (input._id && input._id.length) {
-            matches.push(input._id);
-        }
+    //Otherwise it's likely an object
+    matches.push(getString(input, includeIDs));
 
-        if (input._external && input._external.length) {
-            matches.push(input._external);
-        }
+
+    if (matches.length == 1) {
+        return matches[0];
     }
 
-    if (input.title && input.title.length) {
-        matches.push(String(input.title).toLowerCase());
-    }
 
-    if (input.name && input.name.length) {
-        matches.push(String(input.name).toLowerCase());
-    }
+    // if (includeIDs) {
+
+    //     if (input._id && input._id.length) {
+    //         matches.push(String(input._id).toLowerCase());
+    //     }
+
+    //     if (input._external && input._external.length) {
+    //         matches.push(String(input._external).toLowerCase());
+    //     }
+    // }
+
+    // if (input.title && input.title.length) {
+    //     matches.push(String(input.title).toLowerCase());
+    // }
+
+    // if (input.name && input.name.length) {
+    //     matches.push(String(input.name).toLowerCase());
+    // }
 
 
 
@@ -356,7 +378,7 @@ function isBetween(input, from, to) {
 
     var startFloat = parseFloat(from);
     var endFloat = parseFloat(to);
-    var checkFloat = parseFloat(input);
+    var checkFloat = parseFloat(input || 0);
 
     var start = Math.min(startFloat, endFloat);
     var end = Math.max(startFloat, endFloat);
@@ -378,8 +400,9 @@ function isIn(input, range) {
     return _.some(range, function(entry) {
 
         var entryString = getString(entry, true);
-        return stringInput == getString(entry, true);
 
+        // ////console.log('CHECK', range, entry, stringInput, entryString)
+        return stringInput == getString(entry, true);
     });
 }
 
@@ -387,10 +410,11 @@ function isIn(input, range) {
 
 function isEmpty(input) {
 
-
     if (!input) {
         return true;
     }
+
+
 
     if (input == undefined) {
         return true;
@@ -407,13 +431,17 @@ function isEmpty(input) {
     if (_.isArray(input) && !input.length) {
         return true;
     }
+
+    if (input == 0 || input == '0') {
+        return true;
+    }
 }
 
 
 ///////////////////////////////////
 
 
-FilterService.matchAnyString = function(keywords, row) {
+service.matchAnyString = function(keywords, row) {
 
     var values = _.values(row);
     var string = getString(keywords);
@@ -424,14 +452,11 @@ FilterService.matchAnyString = function(keywords, row) {
 
 ///////////////////////////////////
 
-FilterService.isSimilar = function(input, mustMatchValue, options) {
+service.isSimilar = function(input, mustMatchValue, options) {
 
     if (!options) {
         options = {};
     }
-
-
-    // var stringSimilarity = () => import('string-similarity');
 
     var score = stringSimilarity.compareTwoStrings(getString(input), getString(mustMatchValue));
     var matches = (score >= 0.6);
@@ -461,18 +486,17 @@ FilterService.isSimilar = function(input, mustMatchValue, options) {
 function isEqual(input, range) {
 
     //Input is the field from the row, range is the filter input typed by the user
+    // ////console.log('INPUT', input, range);
     var matchAny = getAllStringMatches(input, true);
-
     var rangeAsString = getString(range, true);
 
+    // //console.log('CHECK MATCH', matchAny, rangeAsString);
     if (matchAny == rangeAsString) {
         return true;
     }
 
+    return _.includes(matchAny, rangeAsString);
 
-    var isMatch = _.includes(matchAny, rangeAsString);
-
-    return isMatch
 }
 
 function isContained(input, range) {
@@ -503,14 +527,18 @@ function dateCompare(input, range, type, format, timezone) {
     // var date2 = new Date(range);
     // date2.setHours(0, 0, 0, 0);
 
-    var moment1 = moment.tz(input, timezone);
-    var moment2 = moment.tz(range, timezone);
+
+    // ////console.log('CHECK DATE>>>>', input, range)
+    var moment1 = moment.tz(input, timezone); //Birthday
+    var moment2 = moment.tz(range, timezone); //Relative Date
 
     switch (type) {
+
         case 'next':
         case 'past':
             //We can go down to hourly
             break;
+
         default:
             //Just track the day
             moment1.startOf('day');
@@ -531,33 +559,102 @@ function dateCompare(input, range, type, format, timezone) {
     switch (type) {
         case 'date':
             matched = String(date1) == String(date2);
-
+            if (verboseDEBUG) {
+                ////console.log('Matched', type, matched, String(date1), String(date2))
+            }
             break;
         case 'week':
             matched = moment1.format('W YYYY') == moment2.format('W YYYY');
-
+            if (verboseDEBUG) {
+                ////console.log('Matched', type, matched, moment1.format('W YYYY'), moment2.format('W YYYY'))
+            }
             break;
         case 'month':
             matched = moment1.format('M YYYY') == moment2.format('M YYYY');
-
+            if (verboseDEBUG) {
+                ////console.log('Matched', type, matched, moment1.format('M YYYY'), moment2.format('M YYYY'))
+            }
             break;
         case 'year':
             matched = moment1.format('YYYY') == moment2.format('YYYY');
+            if (verboseDEBUG) {
+                ////console.log('Matched', type, matched, moment1.format('YYYY'), moment2.format('YYYY'))
+            }
             break;
         case 'dateanniversary':
             matched = moment1.format('D MMM') == moment2.format('D MMM');
+            if (verboseDEBUG) {
+                ////console.log('Matched', type, matched, moment1.format('D MMM'), moment2.format('D MMM'))
+            }
             break;
+        case 'dateanniversarynext':
+            var startRange = moment();
+            var dateDiffYears = startRange.diff(moment1, 'years', true);
+            var checkDate = moment1.add(Math.ceil(dateDiffYears), 'years').toDate();
+
+            // //console.log('CHECK DATE Anniversary NEXT', date1, 'CHECK DATES', dateDiffYears, 'start:', startRange.toDate(), 'Anniversary:', checkDate, 'end:', date2);
+            //If the date is earlier than now
+            if (checkDate < now) {
+                matched = false;
+            } else {
+                matched = checkDate.getTime() <= date2.getTime()
+            }
+
+
+            if (verboseDEBUG) {
+                ////console.log('Matched', type, matched, date1, date2)
+            }
+            break;
+        case 'dateanniversarypast':
+
+            //moment1 the birthday
+            //moment 2 is 5 days ago
+
+            ///////////////////////////////////
+
+            var startRange = moment2;
+            var dateDiffYears = startRange.diff(moment1, 'years', true);
+            var checkDate = moment1.add(Math.ceil(dateDiffYears), 'years').toDate();
+
+            //If the date is earlier than now
+            if (checkDate > now) {
+                matched = false;
+            } else {
+                matched = checkDate.getTime() >= date2.getTime()
+            }
+
+            // if (matched) {
+            // //console.log('CHECK DATE Anniversary PAST', startRange.toDate(), '-', checkDate, '-', now);
+            // }
+
+
+
+            if (verboseDEBUG) {
+                ////console.log('Matched', type, matched, date1, date2)
+            }
+            break;
+
+
         case 'dateanniversarymonth':
             matched = moment1.format('MMM') == moment2.format('MMM');
+            if (verboseDEBUG) {
+                ////console.log('Matched', type, matched, moment1.format('MMM'), moment2.format('MMM'))
+            }
             break;
             // case 'weekday':
             //     matched = moment(date1).format('dddd') == moment(date2).format('dddd');
             // break;
         case 'before':
-            matched = date1.getTime() < date2.getTime();
+            matched = date1.getTime() < date2.getTime()
+            if (verboseDEBUG) {
+                ////console.log('Matched', type, matched, date1, date2)
+            }
             break;
         case 'after':
-            matched = date1.getTime() >= date2.getTime();
+            matched = date1.getTime() >= date2.getTime()
+            if (verboseDEBUG) {
+                ////console.log('Matched', type, matched, date1, date2)
+            }
             break;
         case 'next':
             //If the date is earlier than now
@@ -566,6 +663,11 @@ function dateCompare(input, range, type, format, timezone) {
             } else {
                 matched = date1.getTime() < date2.getTime()
             }
+
+
+            if (verboseDEBUG) {
+                ////console.log('Matched', type, matched, date1, date2)
+            }
             break;
         case 'past':
             //If the date is later than now
@@ -573,6 +675,11 @@ function dateCompare(input, range, type, format, timezone) {
                 matched = false;
             } else {
                 matched = date1.getTime() >= date2.getTime()
+            }
+
+
+            if (verboseDEBUG) {
+                ////console.log('Matched', type, matched, date1, date2)
             }
             break;
     }
@@ -584,22 +691,36 @@ function dateCompare(input, range, type, format, timezone) {
 
 ///////////////////////////////
 
-FilterService.comparators = [];
+service.comparators = [];
 
+///////////////////////////////
+///////////////////////////////
+///////////////////////////////
+///////////////////////////////
+///////////////////////////////
+///////////////////////////////
+///////////////////////////////
+///////////////////////////////
 ///////////////////////////////
 
 //Date Comparators
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is on day ',
     operator: 'datesameday',
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
 
         if (_.isArray(input)) {
             return _.some(input, function(i) {
-                return dateCompare(i, mustMatchValue, 'date');
+                // dateCompare(input, range, type, format, timezone)
+                return dateCompare(i, mustMatchValue, 'date', null, options.timezone);
             });
         } else {
-            return dateCompare(input, mustMatchValue, 'date');
+            // dateCompare(input, range, type, format, timezone)
+            return dateCompare(input, mustMatchValue, 'date', null, options.timezone);
         }
 
     },
@@ -609,97 +730,26 @@ FilterService.comparators.push({
     ],
 })
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Anniversary Date',
     operator: 'dateanniversary',
-    match(input, mustMatchValue) {
-
-        if (_.isArray(input)) {
-            return _.some(input, function(i) {
-                return dateCompare(i, mustMatchValue, 'dateanniversary');
-            });
-        } else {
-            return dateCompare(input, mustMatchValue, 'dateanniversary');
-        }
-
-    },
-    // dateDisplayFormat: 'YYYY',
-    restrict: [
-        'date',
-    ],
-
-})
-
-
-
-FilterService.comparators.push({
-    title: 'Anniversary is in the next',
-    operator: 'dateanniversarynext',
-    match(input, measure, period, options) {
-        if (!options) {
-            options = {}
-        }
-
-        if (!input) {
-            return;
-        }
-
-        var mustMatchValue = moment().add(measure, period).toDate();
-
-        if (_.isArray(input)) {
-
-            if (!input.length) {
-                return;
-            }
-
-            return _.some(input, function(i) {
-                // dateCompare(input, range, type, format, timezone)
-                return dateCompare(i, mustMatchValue, 'dateanniversarynext');
-            });
-        } else {
-            return dateCompare(input, mustMatchValue, 'dateanniversarynext');
-        }
-    },
-    inputType: 'datemeasure',
-    restrict: [
-        'date',
-    ],
-})
-
-
-
-FilterService.comparators.push({
-    title: 'Anniversary is in the last',
-    operator: 'dateanniversarypast',
-    match(input, measure, period, options) {
-
+    match(input, mustMatchValue, NOT_USED, options) {
 
         if (!options) {
             options = {}
         }
 
-        if (!input) {
-            return;
-        }
-
-        var mustMatchValue = moment().subtract(measure, period).toDate();
-
         if (_.isArray(input)) {
-
-            if (!input.length) {
-                return;
-            }
-
-
             return _.some(input, function(i) {
                 // dateCompare(input, range, type, format, timezone)
-                return dateCompare(i, mustMatchValue, 'dateanniversarypast');
+                return dateCompare(i, mustMatchValue, 'dateanniversary', null, options.timezone);
             });
         } else {
-            return dateCompare(input, mustMatchValue, 'dateanniversarypast');
+            return dateCompare(input, mustMatchValue, 'dateanniversary', null, options.timezone);
         }
+
     },
-    inputType: 'datemeasure',
+    dateDisplayFormat: 'YYYY',
     restrict: [
         'date',
     ],
@@ -707,7 +757,7 @@ FilterService.comparators.push({
 
 
 
-// FilterService.comparators.push({
+// service.comparators.push({
 //     title: 'Is between',
 //     operator: 'datebetween',
 //     match(input, mustMatchValue1, mustMatchValue2) {
@@ -728,10 +778,14 @@ FilterService.comparators.push({
 //     inputType: 'daterange',
 // })
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Anniversary is Between',
     operator: 'dateanniversarybetween',
-    match(input, mustMatchValue1, mustMatchValue2) {
+    match(input, mustMatchValue1, mustMatchValue2, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
 
         if (!input) {
             return;
@@ -787,11 +841,11 @@ FilterService.comparators.push({
 
 
 
-// FilterService.comparators.push({
+// service.comparators.push({
 //     title: 'Anniversary Month',
 //     operator: 'dateanniversarymonth',
 //     match(input, mustMatchValue) {
-//         // console.log('TEST MONTH', mustMatchValue);
+//         // ////console.log('TEST MONTH', mustMatchValue);
 
 //         if (_.isArray(input)) {
 //             //Check if any of the dates on the row
@@ -819,17 +873,22 @@ FilterService.comparators.push({
 // })
 
 /**/
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is same week as',
     operator: 'datesameweek',
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
 
         if (_.isArray(input)) {
             return _.some(input, function(i) {
-                return dateCompare(i, mustMatchValue, 'week');
+                // dateCompare(input, range, type, format, timezone)
+                return dateCompare(i, mustMatchValue, 'week', null, options.timezone);
             });
         } else {
-            return dateCompare(input, mustMatchValue, 'week');
+            return dateCompare(input, mustMatchValue, 'week', null, options.timezone);
         }
 
     },
@@ -840,16 +899,20 @@ FilterService.comparators.push({
     inputType: 'array',
 })
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is same month as',
     operator: 'datesamemonth',
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
 
         //     match(input, mustMatchValue) {
 
         //     var mustMatchString = String(mustMatchValue);
 
-        //     // console.log('Check date input', input);
+        //     // ////console.log('Check date input', input);
 
 
         //     if (_.isArray(input)) {
@@ -870,10 +933,11 @@ FilterService.comparators.push({
 
         if (_.isArray(input)) {
             return _.some(input, function(i) {
-                return dateCompare(i, mustMatchValue, 'month');
+                // dateCompare(input, range, type, format, timezone)
+                return dateCompare(i, mustMatchValue, 'month', null, options.timezone);
             });
         } else {
-            return dateCompare(input, mustMatchValue, 'month');
+            return dateCompare(input, mustMatchValue, 'month', null, options.timezone);
         }
 
     },
@@ -883,17 +947,22 @@ FilterService.comparators.push({
     ],
 })
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is same year as',
     operator: 'datesameyear',
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
 
         if (_.isArray(input)) {
             return _.some(input, function(i) {
-                return dateCompare(i, mustMatchValue, 'year');
+                // dateCompare(input, range, type, format, timezone)
+                return dateCompare(i, mustMatchValue, 'year', null, options.timezone);
             });
         } else {
-            return dateCompare(input, mustMatchValue, 'year');
+            return dateCompare(input, mustMatchValue, 'year', null, options.timezone);
         }
 
     },
@@ -904,14 +973,18 @@ FilterService.comparators.push({
 })
 /**/
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is weekday',
     operator: 'datesameweekday',
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
 
         var mustMatchString = String(mustMatchValue);
 
-        // console.log('Check date input', input);
+        // ////console.log('Check date input', input);
 
 
         if (_.isArray(input)) {
@@ -937,11 +1010,37 @@ FilterService.comparators.push({
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 
-FilterService.comparators.push({
+
+service.comparators.push({
     title: 'Is before',
     operator: 'datebefore',
-    match(input, mustMatchValue) {
-        return dateCompare(input, mustMatchValue, 'before');
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
+
+        if (!input) {
+            return;
+        }
+
+        if (_.isArray(input)) {
+
+            if (!input.length) {
+                return;
+            }
+
+            return _.some(input, function(i) {
+                // dateCompare(input, range, type, format, timezone)
+                return dateCompare(i, mustMatchValue, 'before', null, options.timezone);
+            });
+        } else {
+            return dateCompare(input, mustMatchValue, 'before', null, options.timezone);
+        }
+
+
+
+
     },
     restrict: [
         'date',
@@ -949,11 +1048,39 @@ FilterService.comparators.push({
 })
 
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is after',
     operator: 'dateafter',
-    match(input, mustMatchValue) {
-        return dateCompare(input, mustMatchValue, 'after');
+    match(input, mustMatchValue, NOT_USED, options) {
+
+
+        if (!options) {
+            options = {}
+        }
+
+        if (!input) {
+            return;
+        }
+
+        if (_.isArray(input)) {
+
+            if (!input.length) {
+                return;
+            }
+
+
+            return _.some(input, function(i) {
+                // dateCompare(input, range, type, format, timezone)
+                return dateCompare(i, mustMatchValue, 'after', null, options.timezone);
+            });
+        } else {
+
+            // ////console.log('COMPARE DATE', input)
+            var RESULT = dateCompare(input, mustMatchValue, 'after', null, options.timezone);
+
+            // ////console.log('CHECK', RESULT, input, mustMatchValue, options);
+            return RESULT;
+        }
     },
     restrict: [
         'date',
@@ -961,11 +1088,34 @@ FilterService.comparators.push({
 })
 
 
-FilterService.comparators.push({
+
+
+service.comparators.push({
     title: 'Is not before',
     operator: 'datenotbefore',
-    match(input, mustMatchValue) {
-        return !dateCompare(input, mustMatchValue, 'before');
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
+
+        if (!input) {
+            return true;
+        }
+
+        if (_.isArray(input)) {
+            if (!input.length) {
+                return true;
+            }
+
+            //Every entry is not before
+            return _.every(input, function(i) {
+                // dateCompare(input, range, type, format, timezone)
+                return !dateCompare(i, mustMatchValue, 'before', null, options.timezone);
+            });
+        } else {
+            return !dateCompare(input, mustMatchValue, 'before', null, options.timezone);
+        }
     },
     restrict: [
         'date',
@@ -973,26 +1123,59 @@ FilterService.comparators.push({
 })
 
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is not after',
     operator: 'datenotafter',
-    match(input, mustMatchValue) {
-        return !dateCompare(input, mustMatchValue, 'after');
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
+
+        if (!input) {
+            // ////console.log('TEST > NO INPUT')
+            return true;
+        }
+
+        if (_.isArray(input)) {
+            if (!input.length) {
+                // ////console.log('TEST > NO INPUT LENGTH')
+                return true;
+            }
+
+            //Every entry is not after
+            var allMatch = _.every(input, function(i) {
+                // dateCompare(input, range, type, format, timezone)
+                return !dateCompare(i, mustMatchValue, 'after', null, options.timezone);
+            });
+
+            // ////console.log('TEST > ALL MATCH?', allMatch)
+            return allMatch;
+        } else {
+            var matchSingle = !dateCompare(input, mustMatchValue, 'after', null, options.timezone);
+            // ////console.log('TEST > MATCH SINGLE', matchSingle, input, mustMatchValue)
+            return matchSingle;
+        }
     },
     restrict: [
         'date',
     ],
 })
 
+
+
+
+
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 
-FilterService.comparators.push({
-    title: 'Is in the next',
-    operator: 'datenext',
-    // match(input, mustMatchValue) {
-    //     return dateCompare(input, mustMatchValue, 'before');
-    // },
+
+
+
+service.comparators.push({
+    title: 'Anniversary is in the next',
+    inputType: 'datemeasure',
+    operator: 'dateanniversarynext',
     match(input, measure, period, options) {
 
         if (!options) {
@@ -1013,21 +1196,106 @@ FilterService.comparators.push({
 
             return _.some(input, function(i) {
                 // dateCompare(input, range, type, format, timezone)
-                return dateCompare(i, mustMatchValue, 'next');
+                return dateCompare(i, mustMatchValue, 'dateanniversarynext', null, options.timezone);
             });
         } else {
-            return dateCompare(input, mustMatchValue, 'next');
+            return dateCompare(input, mustMatchValue, 'dateanniversarynext', null, options.timezone);
         }
+
+
+
+
     },
-    inputType: 'datemeasure',
     restrict: [
         'date',
     ],
 })
 
 
-FilterService.comparators.push({
+service.comparators.push({
+    title: 'Anniversary is in the last',
+    inputType: 'datemeasure',
+    operator: 'dateanniversarypast',
+    match(input, measure, period, options) {
+
+
+        if (!options) {
+            options = {}
+        }
+
+        if (!input) {
+            return;
+        }
+
+        var mustMatchValue = moment().subtract(measure, period).toDate();
+
+        if (_.isArray(input)) {
+
+            if (!input.length) {
+                return;
+            }
+
+
+            return _.some(input, function(i) {
+                // dateCompare(input, range, type, format, timezone)
+                return dateCompare(i, mustMatchValue, 'dateanniversarypast', null, options.timezone);
+            });
+        } else {
+            return dateCompare(input, mustMatchValue, 'dateanniversarypast', null, options.timezone);
+        }
+    },
+    restrict: [
+        'date',
+    ],
+})
+
+
+
+
+
+service.comparators.push({
+    title: 'Is in the next',
+    inputType: 'datemeasure',
+    operator: 'datenext',
+    match(input, measure, period, options) {
+
+        if (!options) {
+            options = {}
+        }
+
+        if (!input) {
+            return;
+        }
+
+        var mustMatchValue = moment().add(measure, period).toDate();
+
+        if (_.isArray(input)) {
+
+            if (!input.length) {
+                return;
+            }
+
+            return _.some(input, function(i) {
+                // dateCompare(input, range, type, format, timezone)
+                return dateCompare(i, mustMatchValue, 'next', null, options.timezone);
+            });
+        } else {
+            return dateCompare(input, mustMatchValue, 'next', null, options.timezone);
+        }
+
+
+
+
+    },
+    restrict: [
+        'date',
+    ],
+})
+
+
+service.comparators.push({
     title: 'Is in the last',
+    inputType: 'datemeasure',
     operator: 'datepast',
     match(input, measure, period, options) {
 
@@ -1051,13 +1319,12 @@ FilterService.comparators.push({
 
             return _.some(input, function(i) {
                 // dateCompare(input, range, type, format, timezone)
-                return dateCompare(i, mustMatchValue, 'past');
+                return dateCompare(i, mustMatchValue, 'past', null, options.timezone);
             });
         } else {
-            return dateCompare(input, mustMatchValue, 'past');
+            return dateCompare(input, mustMatchValue, 'past', null, options.timezone);
         }
     },
-    inputType: 'datemeasure',
     restrict: [
         'date',
     ],
@@ -1065,18 +1332,33 @@ FilterService.comparators.push({
 
 
 
+
+
+
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 
-FilterService.comparators.push({
+
+service.comparators.push({
     title: 'Is between',
     operator: 'datebetween',
-    match(input, mustMatchValue1, mustMatchValue2) {
-        var checkDate = new Date(input);
-        checkDate.setHours(0, 0, 0, 0);
+    match(input, mustMatchValue1, mustMatchValue2, options) {
+
+        if (!options) {
+            options = {}
+        }
+
+        // ////console.log('----------------------------------------')
+        // ////console.log('TIMEZONE Check timezone options', options.timezone)
+        // ////console.log('Before', input, mustMatchValue1, mustMatchValue2);
+
+
+
 
         var date1 = new Date(mustMatchValue1)
         date1.setHours(0, 0, 0, 0);
@@ -1084,7 +1366,22 @@ FilterService.comparators.push({
         var date2 = new Date(mustMatchValue2)
         date2.setHours(0, 0, 0, 0);
 
-        return isBetween(checkDate.getTime(), date1.getTime(), date2.getTime());
+
+        // ////console.log('After', input, date1, date2);
+
+
+        if (_.isArray(input)) {
+            return _.some(input, function(i) {
+                var checkDate = new Date(i);
+                checkDate.setHours(0, 0, 0, 0);
+                return isBetween(checkDate.getTime(), date1.getTime(), date2.getTime());
+            });
+        } else {
+            var checkDate = new Date(input);
+            checkDate.setHours(0, 0, 0, 0);
+
+            return isBetween(checkDate.getTime(), date1.getTime(), date2.getTime());
+        }
     },
     restrict: [
         'date',
@@ -1092,12 +1389,14 @@ FilterService.comparators.push({
     inputType: 'daterange',
 })
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is not between',
     operator: 'datenotbetween',
-    match(input, mustMatchValue1, mustMatchValue2) {
-        var checkDate = new Date(input);
-        checkDate.setHours(0, 0, 0, 0);
+    match(input, mustMatchValue1, mustMatchValue2, options) {
+
+        if (!options) {
+            options = {}
+        }
 
         var date1 = new Date(mustMatchValue1)
         date1.setHours(0, 0, 0, 0);
@@ -1105,7 +1404,22 @@ FilterService.comparators.push({
         var date2 = new Date(mustMatchValue2)
         date2.setHours(0, 0, 0, 0);
 
-        return !isBetween(checkDate.getTime(), date1.getTime(), date2.getTime());
+        if (_.isArray(input)) {
+
+            return !_.some(input, function(i) {
+                var checkDate = new Date(i);
+                checkDate.setHours(0, 0, 0, 0);
+                return isBetween(checkDate.getTime(), date1.getTime(), date2.getTime());
+            });
+
+        } else {
+            var checkDate = new Date(input);
+            checkDate.setHours(0, 0, 0, 0);
+
+            return !isBetween(checkDate.getTime(), date1.getTime(), date2.getTime());
+        }
+
+
     },
     restrict: [
         'date',
@@ -1120,23 +1434,26 @@ FilterService.comparators.push({
 ///////////////////////////////
 
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is one of',
     operator: 'in',
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
 
 
         if (_.isArray(input)) {
 
             //Check if any match
-            return !_.some(input, function(i) {
-
-
+            return _.some(input, function(i) {
                 return isIn(i, mustMatchValue);
             });
         } else {
 
             var matches = isIn(input, mustMatchValue);
+            // ////console.log('Must match value', matches, input, mustMatchValue);
 
             return matches;
         }
@@ -1154,13 +1471,17 @@ FilterService.comparators.push({
     inputType: 'array',
 })
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is not one of',
     operator: 'notin',
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
         if (_.isArray(input)) {
-            return _.some(input, function(i) {
-                return !isIn(i, mustMatchValue);
+            return !_.some(input, function(i) {
+                return isIn(i, mustMatchValue);
             });
         } else {
             return !isIn(input, mustMatchValue);
@@ -1181,11 +1502,15 @@ FilterService.comparators.push({
 
 
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is ',
     operator: '==',
 
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
         if (_.isArray(input)) {
             return _.some(input, function(i) {
                 return isEqual(i, mustMatchValue);
@@ -1207,11 +1532,15 @@ FilterService.comparators.push({
     ],
 })
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is not',
     operator: '!=',
     positive: false,
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
         if (_.isArray(input)) {
             return !_.some(input, function(i) {
                 return isEqual(i, mustMatchValue);
@@ -1233,11 +1562,15 @@ FilterService.comparators.push({
     ],
 })
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Starts with',
     operator: 'startswith',
 
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
         if (_.isArray(input)) {
             return _.some(input, function(i) {
                 return _.startsWith(getString(i), getString(mustMatchValue))
@@ -1257,11 +1590,15 @@ FilterService.comparators.push({
 
 
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Ends with',
     operator: 'endswith',
 
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
         if (_.isArray(input)) {
             return _.some(input, function(i) {
                 return _.endsWith(getString(i), getString(mustMatchValue))
@@ -1280,7 +1617,7 @@ FilterService.comparators.push({
 })
 
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is similar to',
     operator: 'like',
 
@@ -1288,20 +1625,24 @@ FilterService.comparators.push({
 
         if (_.isArray(input)) {
             return _.some(input, function(i) {
-                return FilterService.isSimilar(i, mustMatchValue);
+                return service.isSimilar(i, mustMatchValue);
             });
         } else {
-            return FilterService.isSimilar(input, mustMatchValue);
+            return service.isSimilar(input, mustMatchValue);
         }
     },
     restrict: ['string'],
 })
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Contains characters',
     operator: 'contains',
 
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
         if (_.isArray(input)) {
             return _.some(input, function(i) {
                 return isContained(mustMatchValue, i);
@@ -1313,10 +1654,14 @@ FilterService.comparators.push({
     restrict: ['string'],
 })
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Does not contain characters',
     operator: 'excludes',
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
         if (_.isArray(input)) {
             return !_.some(input, function(i) {
                 return isContained(mustMatchValue, i);
@@ -1329,80 +1674,15 @@ FilterService.comparators.push({
 })
 
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is greater than',
     operator: '>',
-    match(input, mustMatchValue) {
-        return parseFloat(input) > parseFloat(mustMatchValue);
-    },
-    restrict: [
-        'number',
-        'integer',
-        'decimal',
-        'float',
-    ],
-})
-
-
-
-FilterService.comparators.push({
-    title: 'Is less than',
-    operator: '<',
-    match(input, mustMatchValue) {
-        return parseFloat(input) < parseFloat(mustMatchValue);
-    },
-    restrict: [
-
-        'number',
-        'integer',
-        'decimal',
-        'float',
-    ],
-})
-
-
-
-
-FilterService.comparators.push({
-    title: 'Is greater than or equal to',
-    operator: '>=',
-    match(input, mustMatchValue) {
-        return parseFloat(input) >= parseFloat(mustMatchValue);
-    },
-    restrict: [
-
-        'number',
-        'integer',
-        'decimal',
-        'float',
-    ],
-})
-
-FilterService.comparators.push({
-    title: 'Is less than or equal to',
-    operator: '<=',
-    match(input, mustMatchValue) {
-        return parseFloat(input) <= parseFloat(mustMatchValue);
-    },
-    restrict: [
-
-        'number',
-        'integer',
-        'decimal',
-        'float',
-    ],
-})
-
-
-FilterService.comparators.push({
-    title: 'Is not greater than',
-    operator: '!>',
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
 
         if (!options) {
             options = {}
         }
-        return !(parseFloat(input) > parseFloat(mustMatchValue));
+        return parseFloat(input || 0) > parseFloat(mustMatchValue || 0);
     },
     restrict: [
         'number',
@@ -1413,11 +1693,58 @@ FilterService.comparators.push({
 })
 
 
-FilterService.comparators.push({
+
+service.comparators.push({
+    title: 'Is less than',
+    operator: '<',
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
+
+        if (isNotANumber(input)) {
+            return;
+        }
+
+        return parseFloat(input || 0) < parseFloat(mustMatchValue || 0);
+    },
+    restrict: [
+
+        'number',
+        'integer',
+        'decimal',
+        'float',
+    ],
+})
+
+service.comparators.push({
+    title: 'Is not greater than',
+    operator: '!>',
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
+        return !(parseFloat(input || 0) > parseFloat(mustMatchValue || 0));
+    },
+    restrict: [
+        'number',
+        'integer',
+        'decimal',
+        'float',
+    ],
+})
+
+
+service.comparators.push({
     title: 'Is not less than',
     operator: '!<',
-    match(input, mustMatchValue) {
-        return !(parseFloat(input) < parseFloat(mustMatchValue));
+    match(input, mustMatchValue, NOT_USED, options) {
+        if (!options) {
+            options = {}
+        }
+        return !(parseFloat(input || 0) < parseFloat(mustMatchValue || 0));
     },
     restrict: [
 
@@ -1428,12 +1755,65 @@ FilterService.comparators.push({
     ],
 })
 
+service.comparators.push({
+    title: 'Is greater than or equal to',
+    operator: '>=',
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
+
+        if (isNotANumber(input)) {
+            return;
+        }
+
+        return parseFloat(input || 0) >= parseFloat(mustMatchValue || 0);
+    },
+    restrict: [
+
+        'number',
+        'integer',
+        'decimal',
+        'float',
+    ],
+})
+
+service.comparators.push({
+    title: 'Is less than or equal to',
+    operator: '<=',
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
+
+        if (isNotANumber(input)) {
+            return;
+        }
 
 
-FilterService.comparators.push({
+        return parseFloat(input || 0) <= parseFloat(mustMatchValue || 0);
+    },
+    restrict: [
+
+        'number',
+        'integer',
+        'decimal',
+        'float',
+    ],
+})
+
+service.comparators.push({
     title: 'Is between',
     operator: 'between',
-    match(input, mustMatchValue1, mustMatchValue2) {
+    match(input, mustMatchValue1, mustMatchValue2, options) {
+
+        if (!options) {
+            options = {}
+        }
+
+
         return isBetween(input, mustMatchValue1, mustMatchValue2);
     },
     restrict: [
@@ -1447,10 +1827,14 @@ FilterService.comparators.push({
 })
 
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is not between',
     operator: 'notbetween',
-    match(input, mustMatchValue1, mustMatchValue2) {
+    match(input, mustMatchValue1, mustMatchValue2, options) {
+
+        if (!options) {
+            options = {}
+        }
         return !isBetween(input, mustMatchValue1, mustMatchValue2);
     },
     restrict: [
@@ -1463,19 +1847,33 @@ FilterService.comparators.push({
     inputType: 'range',
 })
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is empty',
     operator: 'empty',
-    match(input, mustMatchValue) {
-        return isEmpty(input);
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
+
+
+        var result = isEmpty(input);
+
+        // ////console.log('CHECK IF IS EMPTY!!', result, input, mustMatchValue)
+
+        return result;
     },
     inputType: 'none',
 })
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Is not empty',
     operator: 'notempty',
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
         return !isEmpty(input);
     },
     inputType: 'none',
@@ -1483,10 +1881,14 @@ FilterService.comparators.push({
 
 
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Does not start with',
     operator: 'doesnotstartwith',
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
         if (_.isArray(input)) {
             return !_.some(input, function(i) {
                 return _.startsWith(getString(i), getString(mustMatchValue))
@@ -1499,14 +1901,19 @@ FilterService.comparators.push({
         'string',
         'email',
         'url',
+
         'reference',
     ],
 })
 
-FilterService.comparators.push({
+service.comparators.push({
     title: 'Does not end with',
     operator: 'doesnotendwith',
-    match(input, mustMatchValue) {
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
         if (_.isArray(input)) {
             return !_.some(input, function(i) {
                 return _.endsWith(getString(i), getString(mustMatchValue))
@@ -1541,16 +1948,16 @@ var allTypes = [
 
 ///////////////////////////////
 
-FilterService.comparatorLookup = {};
-FilterService.comparatorTypeLookup = {};
+service.comparatorLookup = {};
+service.comparatorTypeLookup = {};
 
 ///////////////////////////////
 
 //Loop through each available comparator
-_.each(FilterService.comparators, function(comparator) {
+_.each(service.comparators, function(comparator) {
 
     //map each comparator
-    FilterService.comparatorLookup[comparator.operator] = comparator;
+    service.comparatorLookup[comparator.operator] = comparator;
 
     //Find any restrictions for this comparator
     var restrictTypes = comparator.restrict || [];
@@ -1563,10 +1970,10 @@ _.each(FilterService.comparators, function(comparator) {
     //And map to each type it's restricted for
     _.each(restrictTypes, function(type) {
 
-        var existing = FilterService.comparatorTypeLookup[type];
+        var existing = service.comparatorTypeLookup[type];
 
         if (!existing) {
-            existing = FilterService.comparatorTypeLookup[type] = [];
+            existing = service.comparatorTypeLookup[type] = [];
         }
 
         //Add the comparator to the list
@@ -1576,44 +1983,47 @@ _.each(FilterService.comparators, function(comparator) {
 
 });
 
+// ////console.log('COMPARATOR KEYS', _.keys(service.comparatorLookup));
+
 ///////////////////////////////
 
 
 //Quick fast way to retrieve the comparator
-FilterService.getComparator = function(operator) {
-    return FilterService.comparatorLookup[operator]
+service.getComparator = function(operator) {
+    return service.comparatorLookup[operator]
 }
 
 //////////////////////////////////////////////////////////////////
 
-FilterService.getComparatorsForType = function(type) {
+service.getComparatorsForType = function(type) {
     //Return the matches or just all comparators
-    return FilterService.comparatorTypeLookup[type] || FilterService.comparators;
+    return service.comparatorTypeLookup[type] || service.comparators;
 }
 
 ////////////////////////////////////////////////////////
 
-FilterService.isValidFilter = function(block) {
+service.isValidFilter = function(block) {
 
     if (block.operator) {
-        return _.some(block.filters, FilterService.isValidFilter);
+        return _.some(block.filters, service.isValidFilter);
     }
     ////////////////////////////////////////////////////////
 
-    var comparator = FilterService.getComparator(block.comparator);
+    var comparator = service.getComparator(block.comparator);
     if (!comparator) {
         return;
     }
 
 
-
+    // ////console.log('CHECK', block)
 
     ////////////////////////////////////////////////////////
 
-    var key = FilterService.getRootKey(block.key);
+    var key = service.getRootKey(block.key);
     if (!key || !key.length) {
         return;
     }
+
 
     ////////////////////////////////////////////////////////
 
@@ -1624,6 +2034,8 @@ FilterService.isValidFilter = function(block) {
     }
 
     ////////////////////////////////////////////////////////
+
+
 
     switch (comparator.inputType) {
         case 'none':
@@ -1654,9 +2066,9 @@ FilterService.isValidFilter = function(block) {
             }
             break;
         default:
-            //It's a date by process of elimination
 
             if (block.computedValue) {
+                // ////console.log('Its a computed value!', block);
                 return true;
             }
 
@@ -1674,35 +2086,125 @@ FilterService.isValidFilter = function(block) {
 
 //////////////////////////////////////////////////////////////////
 
-FilterService.filterGroupMatch = function(filterGroup, item) {
+service.filterGroupMatch = function(filterGroup, filterOptions, item) {
 
     //If it's a group
+    if (!filterOptions) {
+        filterOptions = {};
+    }
+
+    ///////////////////////////////
 
     var operator = filterGroup.operator;
     var returnValue;
 
+    //Find valid filters and order by weight (so we can try and be as efficient as possible)
+    function filterWeight(filter) {
 
-    var validFilters = _.filter(filterGroup.filters, FilterService.isValidFilter);
+        var dataKey = filter.dataType;
+        var comparatorKey = filter.comparator;
+
+        if (!dataKey && !comparatorKey) {
+            return 0;
+        }
+
+        /////////////////////////////////////
+
+        var pathComplexity = occurrences(filter.key, '[]');
+
+        /////////////////////////////////////
+
+        var comparatorWeight = service.getComparatorWeight(comparatorKey);
+
+        /////////////////////////////////////
+
+        var dataTypeWeight = 0;
+
+        switch (dataKey) {
+
+            case 'number':
+            case 'integer':
+            case 'decimal':
+            case 'float':
+                dataTypeWeight = 2;
+                break;
+            case 'date':
+                dataTypeWeight = 3;
+                break;
+            case 'reference':
+                dataTypeWeight = 4;
+                break;
+            case 'string':
+            case 'email':
+            case 'url':
+            default:
+                dataKey = 'string';
+                dataTypeWeight = 1;
+                break;
+
+        }
+
+        /////////////////////////////////////
+
+        var weightString = `${pathComplexity}${dataTypeWeight}${comparatorWeight}`;
+
+
+        var finalWeight = parseInt(weightString);
+        // ////console.log('WEIGHT', filter.key, weightString);//dataKey, comparatorKey, finalWeight, 'FROM', weightString);
+        return finalWeight;
+    }
+
+
+    ///////////////////////////////
+
+    var validFilters = _.chain(filterGroup.filters)
+        .filter(service.isValidFilter)
+        .orderBy(filterWeight)
+        .value();
+
+    ///////////////////////////////
+
+    // ////console.log('check filter', item)
+
+    // ////console.log('ALL VALID FILTERS?', validFilters, '____', _.get(item, 'details.safeChurchTraining.items[0].data'))
 
     if (validFilters && validFilters.length) {
 
         switch (operator) {
             case 'or':
                 returnValue = _.some(validFilters, function(filterBlock) {
-                    var wasMatch = FilterService.filterMatch(filterBlock, item)
+                    var wasMatch = service.filterMatch(filterBlock, filterOptions, item)
+
                     return wasMatch;
                 })
+                break;
+            case 'nor':
+
+                //If any of these return true
+                returnValue = _.some(validFilters, function(filterBlock) {
+                    var wasMatch = service.filterMatch(filterBlock, filterOptions, item)
+                    return !wasMatch;
+                })
+
+                // ////console.log('NOR', returnValue)
+
                 break;
             case 'and':
             default:
                 returnValue = _.every(validFilters, function(filterBlock) {
+                    var wasMatch = service.filterMatch(filterBlock, filterOptions, item)
+                    // if(!wasMatch) {
+                    //     //console.log(wasMatch, 'was not a match', filterBlock)
+                    // }
 
-                    var wasMatch = FilterService.filterMatch(filterBlock, item)
+                    // //console.log('Was', item, wasMatch, filterBlock)
                     return wasMatch;
                 })
                 break;
         }
 
+    } else {
+    	////console.log('No valid filters!');
     }
 
     return returnValue;
@@ -1710,8 +2212,10 @@ FilterService.filterGroupMatch = function(filterGroup, item) {
 }
 
 //////////////////////////////////////////////////////////////////
+service.getRootKey = function(key) {
 
-FilterService.getRootKey = function(key) {
+    // key = String(key).split('[]')[0];
+
     return String(key).split('|')[0];
 
 }
@@ -1719,20 +2223,17 @@ FilterService.getRootKey = function(key) {
 //////////////////////////////////////////////////////////////////
 
 
-// FilterService.filter(cards, {
-//     filter:filterConfig,
-//     startDate:'',
-//     endDate:'',
-//     search:'Sophia',
-// })
-
 
 //Easy function to filter according to all specified criteria when in the front end
-FilterService.filter = function(items, options) {
+service.filter = function(items, options) {
 
     if (!options) {
         options = {};
     }
+
+    //////////////////////////////////////
+
+    var filterOptions;
 
     //////////////////////////////////////
 
@@ -1763,7 +2264,7 @@ FilterService.filter = function(items, options) {
         //There is filter criteria
         if (hasActiveFilters) {
             //Check if it matches the filters and if it doesn't
-            var matchesFilters = FilterService.filterGroupMatch(filterConfig, item);
+            var matchesFilters = FilterService.filterGroupMatch(filterConfig, filterOptions, item);
             if (!matchesFilters) {
                 return;
             }
@@ -1828,6 +2329,7 @@ FilterService.filter = function(items, options) {
             //If we have a search but the item doesn't match it
             //then finish and return false here
             if (!searchIsCorrect) {
+                // ////console.log('Not match for', searchKeywords, row.title);
                 return;
             }
         }
@@ -1867,41 +2369,185 @@ FilterService.filter = function(items, options) {
 //////////////////////////////////////////////////////////////////
 
 //Pass through
-FilterService.filterMatch = function(filter, item) {
+service.filterMatch = function(filter, filterOptions, item) {
+
+
+    if (!filterOptions) {
+        filterOptions = {};
+    }
+
     if (filter.filters) {
-        return FilterService.filterGroupMatch(filter, item);
+        return service.filterGroupMatch(filter, filterOptions, item);
     }
 
 
+    // console.log('FILTER', filter.key, filter, item)
+    ////////////////////////////////////////
 
-    var key = FilterService.getRootKey(filter.key);
-    var mustMatchValue = filter.value;
-    var mustMatchValue2 = filter.value2;
+    var filterKey = filter.key; //.split('|')[0];
+    var arrayDelimiter = '[]';
+
+
+
+
+    if (_.includes(filterKey, arrayDelimiter)) {
+
+
+        var splitPieces = filterKey.split(arrayDelimiter);
+        var splitKey = splitPieces.shift();
+        var splitParameters = splitPieces.join('[]');
+
+        var newFilter = JSON.parse(JSON.stringify(filter));
+        newFilter.key = splitParameters;
+        var subItems = _.get(item, splitKey) || [];
+
+        //////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////
+
+        // //Here we should check what kind of filter it is and whether to do a falsey/truthy check on the path
+        if (isFalsey(newFilter.comparator)) {
+            if (!subItems.length) {
+                return true;
+            }
+
+            //Ensure that none of the sub items match
+            return _.every(subItems, function(subItem) {
+                return service.filterMatch(newFilter, filterOptions, subItem)
+            });
+        } else {
+
+            if (!subItems.length) {
+                return;
+            }
+
+            //Find as soon as there is a match
+            var someMatch = _.some(subItems, function(subItem) {
+                var isAMatch = service.filterMatch(newFilter, filterOptions, subItem)
+                // console.log('sub item has a match', isAMatch, subItem)
+                return isAMatch;
+            });
+
+
+            // console.log('IS MATCH WITH SUB ITEMS', someMatch)
+            return someMatch
+        }
+
+
+
+
+        ////////////////////////////////////////////////
+
+
+        // return _.filter(subItems, function(subItem) {
+        //     var isMatch = service.filterMatch(newFilter, subItem)
+        //     if(isMatch) {
+        //         subItem._matchesFilter = true;
+        //     }
+
+        //     return isMatch;
+        // }).length;
+    }
 
     ////////////////////////////////////////
 
-    if (filter.computedValue && filter.computedValue.length) {
-        mustMatchValue = filter.computedValue;
+    var key = service.getRootKey(filterKey);
+
+    if (key[0] == '.') {
+        key = key.slice(1);
+    }
+    var mustMatchValue = filter.value;
+    var mustMatchValue2 = filter.value2;
+
+
+
+
+    ////////////////////////////////////////
+
+
+
+    // console.log('ROOT KEY', key, filter.dataType, mustMatchValue, mustMatchValue2);
+    // console.log('ROOT KEY', key, filter.dataType, mustMatchValue, mustMatchValue2, item);
+
+    ////////////////////////////////////////
+
+    if (filter.dataType == 'date' && filter.computedValue && filter.computedValue.length) {
+
+        // console.log('DATE CHECKER', item, mustMatchValue, mustMatchValue2)
+        var dynamicString = filter.computedValue;
+        if (dynamicString == 'now') {
+            mustMatchValue = new Date();
+        } else {
+
+            //Get the context date
+            var contextDateInput = filterOptions.contextDate ? filterOptions.contextDate : new Date();
+
+            //////////////////////////////////////////////////
+
+            // if(_.startsWith(dynamicString.trim(), '-')) {
+            //     dynamicString = `${dynamicString} ago`;
+            // } else {
+            //     ////console.log('In future')
+            // }
+
+            if (filterOptions.timezone) {
+                var zone = moment.tz.zone(filterOptions.timezone);
+                if (zone) {
+                    var TimezoneAbbr = zone.abbr(contextDateInput);
+                    dynamicString = `${dynamicString} ${TimezoneAbbr}`;
+                }
+            }
+
+            //////////////////////////////////////////////////
+
+
+            var timestamp;
+
+            if (chrono) {
+                timestamp = chrono.parseDate(dynamicString, contextDateInput);
+            }
+
+            //If it failed then use strtotime
+            if (!timestamp) {
+
+                //Create a new date from the relative date
+
+                timestamp = new Date(contextDateInput).strtotime(dynamicString);
+            } else {
+                // ////console.log('Chrono', dynamicString, contextDateInput, timestamp);
+            }
+
+            //Use the timestamp as the value we need to match
+            mustMatchValue = new Date(timestamp);
+
+
+
+            // ////console.log('ComputedValue', TimezoneAbbr, filterOptions.timezone, filterOptions.contextDate, ':::', dynamicString, timestamp, mustMatchValue);
+        }
+
     }
 
     ////////////////////////////////////////
 
     //Find the comparator
-    var comparator = FilterService.getComparator(filter.comparator || '==');
+    var comparator = service.getComparator(filter.comparator || '==');
     var inputType = comparator.inputType;
 
     ////////////////////////////////////////
 
+
     if (!key || !key.length) {
+        ////console.log('No Key!', key)
         return true;
     }
 
 
-    ////////////////////////////////////////
+
 
     //If we are a range type filter
     if (inputType == 'array') {
 
+        // ////console.log('ARRAY?', inputType);
         //Get the second value
         var mustMatchValue = filter.values || [];
 
@@ -1915,6 +2561,7 @@ FilterService.filterMatch = function(filter, item) {
 
     if (inputType != 'none') {
 
+        // ////console.log('INPUT TYPE IS', inputType);
         //If we don't have a value yet then return true
         if (typeof mustMatchValue == 'undefined' || mustMatchValue === null) {
             return true;
@@ -1932,14 +2579,45 @@ FilterService.filterMatch = function(filter, item) {
         }
     }
 
-
-
-
-
     ////////////////////////////////////////
 
     //Get the actual value on the item
     var itemValue = _.get(item, key);
+
+    // ////console.log('GET ITEM VALUE', key, itemValue);
+
+
+    ////////////////////////////////////////
+
+    var discriminatorDelimiter = '|';
+    if (_.includes(filterKey, discriminatorDelimiter)) {
+
+        ////////////////////////////////////////
+
+        // if (_.startsWith(key, 'tags')) {
+        //     //console.log('CHECK', inputType, key, item[key], mustMatchValue, mustMatchValue2)
+        // }
+
+        ////////////////////////////////////////
+        var discriminatorPieces = filterKey.split(discriminatorDelimiter);
+        var discriminatorKey = discriminatorPieces[0];
+        var discriminator = discriminatorPieces[1];
+
+        if (discriminator && key != 'tags') {
+
+
+            itemValue = _.filter(itemValue, function(realm) {
+
+
+                return realm.definition == discriminator || realm._discriminatorType == discriminator || realm._discriminator == discriminator;
+            })
+
+
+        }
+    }
+
+
+    // //console.log('TAGS CHECK', key, itemValue.length)
 
     ////////////////////////////////////////
 
@@ -1951,33 +2629,231 @@ FilterService.filterMatch = function(filter, item) {
     }
 
 
+
+
+
     ////////////////////////////////////////
 
-    //Return if it matches
+
+    if (filter.criteria && filter.criteria.length) {
+
+        var arraySourceKey = key.split('.length')[0];
+        var arrayValue = _.get(item, arraySourceKey);
+
+
+        // console.log('ARRAY', item.title, _.map(arrayValue,function(post) {return `${post.parent} - ${post._id}`}));
+
+        //If there are items to filter
+        //itemValue should be an array 
+        if (arrayValue && arrayValue.length) {
+
+            ////////////////////////////////////////
+
+
+            //We need to filter the arrayValue array to match our criteria
+            arrayValue = _.filter(arrayValue, function(entry) {
+
+                // ////console.log('ARRAY VALUE', entry, discriminator);
+                var val = service.filterMatch({ filters: filter.criteria }, filterOptions, entry);
+
+                // if (entry._id == '5e798a7e5bf8a3465952d923') {
+                //     ////console.log('FOUND IT', val, entry);
+                // }
+                return val;
+            });
+
+            ////console.log('FILTERED ARRAY VALUE', arrayValue)
+
+            // ////console.log('CRITERIA KEY', arraySourceKey, key, itemValue.length)
+            //console.log('cHECK MATCH FILTER', filter.sourceKey, itemValue.length);//, filter.criteria);
+        } else {
+            arrayValue = []
+        }
+
+
+        // //console.log('ARRAY CHECK', filter.criteria)
+
+        // var keys = _.map(filter.criteria, 'key');
+
+        // _.each(arrayValue, function(entry) {
+        // 	entry.title = entry.title
+        // })
+
+        ////////////////////////////
+
+        //Augment with the details
+        if (!item._matchedFilters) {
+            item._matchedFilters = {};
+        }
+
+        if (!item._matchedFilters[key]) {
+            item._matchedFilters[key] = []; //{total:arrayValue.length, items:[]};
+        }
+
+        item._matchedFilters[key].push(arrayValue.slice(0, 100))
+
+        ////////////////////////////
+
+        if (_.endsWith(key, '.length')) {
+            itemValue = arrayValue.length;
+        } else {
+            itemValue = arrayValue;
+        }
+    }
+
+
+
+    ////////////////////////////////////////
 
 
     var itMatches = comparator.match(itemValue, mustMatchValue, mustMatchValue2, {
         source: item,
         key: key,
+        timezone: filterOptions.timezone,
+        contextDate: filterOptions.contextDate,
     });
 
+    // if (itMatches && key == 'tags') {
+    //     //console.log('CHECK IT MATCHES', item._id, item.title, itMatches, itemValue)
+    //     // //console.log('CHECK IT MATCHES', item.title, item.track, itMatches, itemValue)
+    // }
 
+
+    ////////////////////////////////////////
 
     return itMatches;
 }
 
 ///////////////////////////////
+
+
+service.getComparatorWeight = function(key) {
+
+    var weight = 0;
+
+    //////////////////////////////////////////
+
+    switch (key) {
+
+        //Exact Comparators
+        case '==':
+        case '!=':
+        case 'empty':
+        case 'notempty':
+            return 0;
+            break;
+
+            //Numeric Comparators
+        case '>':
+        case '<':
+        case '!>':
+        case '!<':
+        case '>=':
+        case '<=':
+        case 'between':
+        case 'notbetween':
+            return 1;
+            break;
+
+            //String Comparators
+        case 'startswith':
+        case 'endswith':
+        case 'doesnotstartwith':
+        case 'doesnotendwith':
+        case 'contains':
+        case 'excludes':
+            return 2
+            break;
+
+            //Array Comparators
+        case 'in':
+        case 'notin':
+            return 3
+            break;
+
+            //Date Comparators
+        case 'datesameday':
+        case 'dateanniversary':
+        case 'dateanniversarybetween':
+        case 'dateanniversarynext':
+        case 'dateanniversarypast':
+        case 'datesameweek':
+        case 'datesamemonth':
+        case 'datesameyear':
+        case 'datesameweekday':
+        case 'datebefore':
+        case 'dateafter':
+        case 'datenotbefore':
+        case 'datenotafter':
+        case 'datebetween':
+        case 'datenotbetween':
+            return 4
+            break;
+
+            //Fuzzy Search Comparators
+        case 'like':
+            return 5
+            break;
+    }
+
+    ///////////////////////////////////
+
+    return weight;
+}
+
+
+function isFalsey(comparator) {
+    switch (comparator) {
+        case 'excludes':
+        case 'doesnotstartwith':
+        case 'doesnotendwith':
+        case '!>':
+        case '!<':
+        case '!=':
+        case 'notbetween':
+        case 'notin':
+        case 'empty':
+        case 'datenotbetween':
+        case 'datenotafter':
+        case 'datenotbefore':
+            return true;
+            break;
+
+    }
+}
+
 ///////////////////////////////
 
-FilterService.allKeys = function(initFields, config) {
+function occurrences(string, substring) {
 
-    if (!config) {
-        return [];
+    var n = 0;
+    var pos = 0;
+    var l = substring.length;
+
+    while (true) {
+
+        pos = (string || '').indexOf(substring, pos);
+        if (pos > -1) {
+            n++;
+            pos += l;
+        } else {
+            break;
+        }
     }
+    return (n);
+}
+
+
+service.allKeys = function(initFields, config) {
+
+    // if (!confi) {
+    //     return [];
+    // }
 
     if (!initFields) {
         initFields = [];
     }
+
 
     var definitionFields = _.chain(config)
         .get('definition.fields')
@@ -2091,65 +2967,71 @@ FilterService.allKeys = function(initFields, config) {
     //////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////
 
-    var detailSheetFields = _.reduce(config.details, function(set, detailSheet) {
+    var detailSheetFields = [];
 
-        // //Get all the flattened fields
-        var flattened = getFlattenedFields(detailSheet.fields, [], []);
+    if(config && config.details) {
+	    detailSheetFields = _.reduce(config.details, function(set, detailSheet) {
 
-        //////////////////////////////////
+	        // //Get all the flattened fields
+	        var flattened = getFlattenedFields(detailSheet.fields, [], []);
 
-        var mapped = _.chain(flattened)
-            .map(function(field) {
+	        //////////////////////////////////
 
-                if (field.type == 'group') {
-                    return;
-                }
+	        var mapped = _.chain(flattened)
+	            .map(function(field) {
 
-                return {
-                    title: detailSheet.title + ' - ' + field.titles.join(' > '),
-                    key: `details.${detailSheet.definitionName}.items[].data.${field.trail.join('.')}`,
-                    minimum: field.minimum,
-                    maximum: field.maximum,
-                    detail: detailSheet.definitionName,
-                    type: field.type,
-                }
-            })
-            .compact()
-            .value();
+	                if (field.type == 'group') {
+	                    return;
+	                }
+
+	                return {
+	                    title: detailSheet.title + ' - ' + field.titles.join(' > '),
+	                    key: `details.${detailSheet.definitionName}.items[].data.${field.trail.join('.')}`,
+	                    minimum: field.minimum,
+	                    maximum: field.maximum,
+	                    detail: detailSheet.definitionName,
+	                    type: field.type,
+	                }
+	            })
+	            .compact()
+	            .value();
 
 
 
-        //Add an 'existence' check for the _id
-        mapped.unshift({
-            title: detailSheet.title,
-            // key: `details.${detailSheet.definitionName}.items[0].data.${field.trail.join('.')}`,
-            key: `details.${detailSheet.definitionName}.items[]._id`,
-            minimum: 0,
-            maximum: 0,
-            detail: detailSheet.definitionName,
-            type: 'string',
-        })
+	        //Add an 'existence' check for the _id
+	        mapped.unshift({
+	            title: detailSheet.title,
+	            // key: `details.${detailSheet.definitionName}.items[0].data.${field.trail.join('.')}`,
+	            key: `details.${detailSheet.definitionName}.items[]._id`,
+	            minimum: 0,
+	            maximum: 0,
+	            detail: detailSheet.definitionName,
+	            type: 'string',
+	        })
 
-        //Add an 'existence' check for the _id
-        mapped.unshift({
-            title: `${detailSheet.title} - Number of sheets`,
-            // key: `details.${detailSheet.definitionName}.items[0].data.${field.trail.join('.')}`,
-            key: `details.${detailSheet.definitionName}.items.length`,
-            minimum: 0,
-            maximum: 0,
-            detail: detailSheet.definitionName,
-            type: 'integer',
-        })
+	        //Add an 'existence' check for the _id
+	        mapped.unshift({
+	            title: `${detailSheet.title} - Number of sheets`,
+	            // key: `details.${detailSheet.definitionName}.items[0].data.${field.trail.join('.')}`,
+	            key: `details.${detailSheet.definitionName}.items.length`,
+	            minimum: 0,
+	            maximum: 0,
+	            detail: detailSheet.definitionName,
+	            type: 'integer',
+	        })
 
-        //////////////////////////////////
+	        //////////////////////////////////
 
-        return set.concat(mapped);
+	        return set.concat(mapped);
 
-    }, []);
+	    }, []);
+	}
 
     //////////////////////////////////////////////////////////////////////////////////
 
     var fields = initFields.concat(typeFields, definitionFields, detailSheetFields);
+
+    //////////////////////////////////////////////////////////////////////////////////
 
     return _.chain(fields)
         .uniqBy(function(field) {
@@ -2167,4 +3049,5 @@ FilterService.allKeys = function(initFields, config) {
 
 ///////////////////////////////
 
-export default FilterService;
+
+export default service;

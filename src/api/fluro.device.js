@@ -8,15 +8,114 @@
 
 
 
+
+
 ///////////////////////////////////////////////////////////////////////////////
+
+// class FluroDevice {
+
+// 	var service = {
+// 		screen: {
+//             width: 1024,
+//             height: 768,
+//         },
+//         limits: {
+//             xs: 600,
+//             sm: 960,
+//             md: 1264,
+//             lg: 1904,
+//         },
+//         breakpoint: {
+//             mobile: false,
+//             tablet: false,
+//             desktop: false,
+
+//             ///////////////////////
+
+//             xs: false,
+//             sm: false,
+//             md: false,
+//             lg: false,
+//             xl: false,
+//             xsOnly: false,
+//             smOnly: false,
+//             smAndDown: false,
+//             smAndUp: false,
+//             mdOnly: false,
+//             mdAndDown: false,
+//             mdAndUp: false,
+//             lgOnly: false,
+//             lgAndDown: false,
+//             lgAndUp: false,
+//             xlOnly: false,
+//             width: 0,
+//             height: 0,
+//         },
+// 	}
+
+
+//     constructor(defaults) {
+//         if (!defaults) {
+//             defaults = {};
+//         }
+
+
+//     }
+
+//     get name() {
+//         return this._name.toUpperCase();
+//     }
+
+//     set name(newName) {
+//         this._name = newName; // validation could be checked here such as only allowing non numerical values
+//     }
+
+//     walk() {
+//         console.log(this._name + ' is walking.');
+//     }
+// }
+
+
+
 
 var FluroDevice = function() {
 
     var service = {
+        screen: {
+            width: 1024,
+            height: 768,
+        },
+        limits: {
+            xs: 600,
+            sm: 960,
+            md: 1264,
+            lg: 1904,
+        },
         breakpoint: {
             mobile: false,
             tablet: false,
             desktop: false,
+
+            ///////////////////////
+
+            xs: false,
+            sm: false,
+            md: false,
+            lg: false,
+            xl: false,
+            xsOnly: false,
+            smOnly: false,
+            smAndDown: false,
+            smAndUp: false,
+            mdOnly: false,
+            mdAndDown: false,
+            mdAndUp: false,
+            lgOnly: false,
+            lgAndDown: false,
+            lgAndUp: false,
+            xlOnly: false,
+            width: 0,
+            height: 0,
         },
     };
 
@@ -36,6 +135,11 @@ var FluroDevice = function() {
             width,
             height,
         }
+
+        ///////////////////////////////////////////
+
+
+        ///////////////////////////////////////////
 
         var mobile;
         var tablet;

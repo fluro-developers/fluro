@@ -1264,6 +1264,7 @@ var FluroAccess = function(FluroCore) {
 
 
             //Load the glossary
+            console.log('Reload terminology for permissions');
             FluroCore.types.reloadTerminology(options)
                 .then(function(terms) {
 

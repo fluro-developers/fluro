@@ -318,6 +318,9 @@ var FluroTypes = function(FluroCore) {
             options = {}
         }
 
+        // console.log('LETS LOAD TERMS', options, FluroCore.auth.getCurrentUser());
+
+
         ///////////////////////////
 
         if (inflightTermsRequest && !options.forceRefresh) {
@@ -382,7 +385,7 @@ var FluroTypes = function(FluroCore) {
                 forceRefresh:true,
             }
         }
-
+         // console.log('load terms reloadTerminology')
         return service.terms(options);
     }
    

@@ -75,6 +75,7 @@ var FluroAPI = function(fluro) {
 
         //It's just a normal request
         if (!config.application) {
+        	
             return config;
         }
 
