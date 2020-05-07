@@ -283,6 +283,8 @@ service.getFilterChangeString = function(config) {
         service.activeFilterValues(config).join(', '),
         service.activeFilterComparators(config).join(', '),
         service.activeFilterOperators(config).join(', '),
+        service.activeFilterCriteriaString(config).join(', '),
+        
     ].join('');
 
 
