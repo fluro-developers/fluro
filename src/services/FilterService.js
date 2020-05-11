@@ -1958,8 +1958,11 @@ service.comparatorTypeLookup = {};
 //Loop through each available comparator
 _.each(service.comparators, function(comparator) {
 
+
     //map each comparator
     service.comparatorLookup[comparator.operator] = comparator;
+
+    ///////////////////////////////////////////////
 
     //Find any restrictions for this comparator
     var restrictTypes = comparator.restrict || [];
@@ -1968,6 +1971,8 @@ _.each(service.comparators, function(comparator) {
     if (!restrictTypes.length) {
         restrictTypes = allTypes;
     }
+
+	// console.log('ADD', comparator.operator, restrictTypes);
 
     //And map to each type it's restricted for
     _.each(restrictTypes, function(type) {
@@ -1985,7 +1990,7 @@ _.each(service.comparators, function(comparator) {
 
 });
 
-// ////console.log('COMPARATOR KEYS', _.keys(service.comparatorLookup));
+// console.log('COMPARATOR KEYS', _.keys(service.comparatorLookup), _.keys(service.comparatorTypeLookup));
 
 ///////////////////////////////
 
