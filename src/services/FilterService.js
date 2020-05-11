@@ -146,7 +146,7 @@ service.activeFilterValues = function(config) {
                     all = all.concat([block.value, block.value2]);
                     break;
                 default:
-                     all = all.concat([block.value, block.value2]);
+                    all = all.concat([block.value, block.value2]);
                     break;
             }
 
@@ -284,7 +284,7 @@ service.getFilterChangeString = function(config) {
         service.activeFilterComparators(config).join(', '),
         service.activeFilterOperators(config).join(', '),
         service.activeFilterCriteriaString(config).join(', '),
-        
+
     ].join('');
 
 
@@ -1972,7 +1972,7 @@ _.each(service.comparators, function(comparator) {
         restrictTypes = allTypes;
     }
 
-	// console.log('ADD', comparator.operator, restrictTypes);
+    // console.log('ADD', comparator.operator, restrictTypes);
 
     //And map to each type it's restricted for
     _.each(restrictTypes, function(type) {
@@ -2211,7 +2211,7 @@ service.filterGroupMatch = function(filterGroup, filterOptions, item) {
         }
 
     } else {
-    	////console.log('No valid filters!');
+        ////console.log('No valid filters!');
     }
 
     return returnValue;
@@ -2873,6 +2873,26 @@ service.allKeys = function(initFields, config) {
 
     //////////////////////////////////////////////////////////////////////////////////
 
+    //Include filters that have been set on the definition
+    var definitionFilters = _.chain(config)
+        .get('definition.filters')
+        .map(function(field) {
+            return Object.assign({}, field)
+        })
+        .value();
+
+    //////////////////////////////////////////////////////////////////////////////////
+
+    //Include filters that have been set on the definition
+    var dynamicFilters = _.chain(config)
+        .get('definition.dynamicFilters')
+        .map(function(field) {
+            return Object.assign({}, field)
+        })
+        .value();
+
+    //////////////////////////////////////////////////////////////////////////////////
+
     var typeFields = _.chain(config)
         .get('type.fields')
         .map(function(field) {
@@ -2976,67 +2996,72 @@ service.allKeys = function(initFields, config) {
 
     var detailSheetFields = [];
 
-    if(config && config.details) {
-	    detailSheetFields = _.reduce(config.details, function(set, detailSheet) {
+    if (config && config.details) {
+        detailSheetFields = _.reduce(config.details, function(set, detailSheet) {
 
-	        // //Get all the flattened fields
-	        var flattened = getFlattenedFields(detailSheet.fields, [], []);
+            // //Get all the flattened fields
+            var flattened = getFlattenedFields(detailSheet.fields, [], []);
 
-	        //////////////////////////////////
+            //////////////////////////////////
 
-	        var mapped = _.chain(flattened)
-	            .map(function(field) {
+            var mapped = _.chain(flattened)
+                .map(function(field) {
 
-	                if (field.type == 'group') {
-	                    return;
-	                }
+                    if (field.type == 'group') {
+                        return;
+                    }
 
-	                return {
-	                    title: detailSheet.title + ' - ' + field.titles.join(' > '),
-	                    key: `details.${detailSheet.definitionName}.items[].data.${field.trail.join('.')}`,
-	                    minimum: field.minimum,
-	                    maximum: field.maximum,
-	                    detail: detailSheet.definitionName,
-	                    type: field.type,
-	                }
-	            })
-	            .compact()
-	            .value();
+                    return {
+                        title: detailSheet.title + ' - ' + field.titles.join(' > '),
+                        key: `details.${detailSheet.definitionName}.items[].data.${field.trail.join('.')}`,
+                        minimum: field.minimum,
+                        maximum: field.maximum,
+                        detail: detailSheet.definitionName,
+                        type: field.type,
+                    }
+                })
+                .compact()
+                .value();
 
 
 
-	        //Add an 'existence' check for the _id
-	        mapped.unshift({
-	            title: detailSheet.title,
-	            // key: `details.${detailSheet.definitionName}.items[0].data.${field.trail.join('.')}`,
-	            key: `details.${detailSheet.definitionName}.items[]._id`,
-	            minimum: 0,
-	            maximum: 0,
-	            detail: detailSheet.definitionName,
-	            type: 'string',
-	        })
+            //Add an 'existence' check for the _id
+            mapped.unshift({
+                title: detailSheet.title,
+                // key: `details.${detailSheet.definitionName}.items[0].data.${field.trail.join('.')}`,
+                key: `details.${detailSheet.definitionName}.items[]._id`,
+                minimum: 0,
+                maximum: 0,
+                detail: detailSheet.definitionName,
+                type: 'string',
+            })
 
-	        //Add an 'existence' check for the _id
-	        mapped.unshift({
-	            title: `${detailSheet.title} - Number of sheets`,
-	            // key: `details.${detailSheet.definitionName}.items[0].data.${field.trail.join('.')}`,
-	            key: `details.${detailSheet.definitionName}.items.length`,
-	            minimum: 0,
-	            maximum: 0,
-	            detail: detailSheet.definitionName,
-	            type: 'integer',
-	        })
+            //Add an 'existence' check for the _id
+            mapped.unshift({
+                title: `${detailSheet.title} - Number of sheets`,
+                // key: `details.${detailSheet.definitionName}.items[0].data.${field.trail.join('.')}`,
+                key: `details.${detailSheet.definitionName}.items.length`,
+                minimum: 0,
+                maximum: 0,
+                detail: detailSheet.definitionName,
+                type: 'integer',
+            })
 
-	        //////////////////////////////////
+            //////////////////////////////////
 
-	        return set.concat(mapped);
+            return set.concat(mapped);
 
-	    }, []);
-	}
+        }, []);
+    }
 
     //////////////////////////////////////////////////////////////////////////////////
 
-    var fields = initFields.concat(typeFields, definitionFields, detailSheetFields);
+    
+
+    //////////////////////////////////////////////////////////////////////////////////
+
+    // console.log('Filter all keys> ', definitionFilters, dynamicFilters, config);
+    var fields = initFields.concat(typeFields, definitionFields, detailSheetFields, dynamicFilters, definitionFilters);
 
     //////////////////////////////////////////////////////////////////////////////////
 
