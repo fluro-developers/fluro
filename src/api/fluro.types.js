@@ -550,6 +550,10 @@ var FluroTypes = function(FluroCore) {
         var definitions = _.chain(service.glossary)
         .reduce(function(set, term, key) {
 
+        	if(term.status == 'archived') {
+        		return set;
+        	}
+
             term.definitionName = key;
             if (term.parentType == typeName) {
                 set.push(term);
