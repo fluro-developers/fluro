@@ -294,6 +294,7 @@ var FluroCore = function(options) {
         writable: false,
     });
 
+    
 
     ///////////////////////////////////////
 

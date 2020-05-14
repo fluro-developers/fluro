@@ -2252,7 +2252,7 @@ service.filter = function(items, options) {
 
     //////////////////////////////////////
 
-    var activeFilters = FilterService.activeFilters(filterConfig);
+    var activeFilters = service.activeFilters(filterConfig);
     var hasActiveFilters = (activeFilters && activeFilters.length);
     var hasSearchKeywords = (searchKeywords && searchKeywords.length);
     var hasDateBoundaries = (startDate && endDate);
@@ -2271,7 +2271,7 @@ service.filter = function(items, options) {
         //There is filter criteria
         if (hasActiveFilters) {
             //Check if it matches the filters and if it doesn't
-            var matchesFilters = FilterService.filterGroupMatch(filterConfig, filterOptions, item);
+            var matchesFilters = service.filterGroupMatch(filterConfig, filterOptions, item);
             if (!matchesFilters) {
                 return;
             }
@@ -2325,7 +2325,7 @@ service.filter = function(items, options) {
                                 searchIsCorrect = true;
                             }
 
-                            // return FilterService.matchAnyString(searchKeywords, item);
+                            // return service.matchAnyString(searchKeywords, item);
                         }
                     }
                 }
