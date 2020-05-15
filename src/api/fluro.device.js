@@ -95,9 +95,6 @@ var FluroDevice = function() {
             mobile: false,
             tablet: false,
             desktop: false,
-
-            ///////////////////////
-
             xs: false,
             sm: false,
             md: false,
@@ -114,8 +111,7 @@ var FluroDevice = function() {
             lgAndDown: false,
             lgAndUp: false,
             xlOnly: false,
-            width: 0,
-            height: 0,
+            point: 0,
         },
     };
 
@@ -138,34 +134,120 @@ var FluroDevice = function() {
 
         ///////////////////////////////////////////
 
+        var breakpoint = {
+            mobile: false,
+            tablet: false,
+            desktop: false,
+            xs: false,
+            sm: false,
+            md: false,
+            lg: false,
+            xl: false,
+            xsOnly: false,
+            smOnly: false,
+            smAndDown: false,
+            smAndUp: false,
+            mdOnly: false,
+            mdAndDown: false,
+            mdAndUp: false,
+            lgOnly: false,
+            lgAndDown: false,
+            lgAndUp: false,
+            xlOnly: false,
+            point: 0,
+        }
 
         ///////////////////////////////////////////
 
-        var mobile;
-        var tablet;
-        var desktop;
+        var point = 0;
 
-        if (width < 768) {
-            mobile = true;
-            // console.log('- mobile')
+        if (width > service.limits.xs) {
+            point++;
         }
 
-        if (width >= 768 && width <= 1024) {
-            tablet = true;
-            // console.log('- tablet')
+        if (width > service.limits.sm) {
+            point++;
         }
 
-        if (width > 1024) {
-            desktop = true;
-            // console.log('- desktop')
+        if (width > service.limits.md) {
+            point++;
         }
 
-        //Update the breakpoint
-        service.breakpoint.mobile = mobile;
-        service.breakpoint.tablet = tablet;
-        service.breakpoint.desktop = desktop;
+        if (width > service.limits.lg) {
+            point++;
+        }
 
-        // console.log('Device size changed', width, height, WindowReference)
+        ///////////////////////////////////////////
+
+        //XS Mobile
+        if (point < 1) {
+            breakpoint.mobile = true;
+            breakpoint.xs = true;
+            breakpoint.xsOnly = true;
+
+            //Down
+            breakpoint.smAndDown = true;
+            breakpoint.mdAndDown = true;
+            breakpoint.lgAndDown = true;
+
+        }
+
+        //SM Tablet
+        if (point == 1) {
+            breakpoint.tablet = true;
+            breakpoint.sm = true;
+            breakpoint.smOnly = true;
+
+            //Down
+            breakpoint.smAndDown = true;
+            breakpoint.mdAndDown = true;
+            breakpoint.lgAndDown = true;
+
+            //Up
+            breakpoint.smAndUp = true;
+        }
+
+        //MD Tablet
+        if (point == 2) {
+            breakpoint.desktop = true;
+            breakpoint.md = true;
+            breakpoint.mdOnly = true;
+            //Down
+            breakpoint.mdAndDown = true;
+            breakpoint.lgAndDown = true;
+
+            //Up
+            breakpoint.smAndUp = true;
+            breakpoint.mdAndUp = true;
+        }
+
+        //LG Desktop
+        if (point == 3) {
+            breakpoint.desktop = true;
+            breakpoint.lg = true;
+            breakpoint.lgOnly = true;
+            //Down
+            breakpoint.lgAndDown = true;
+
+            //Up
+            breakpoint.lgAndUp = true;
+        }
+
+        //XL Desktop
+        if (point > 3) {
+            breakpoint.desktop = true;
+            breakpoint.xl = true;
+            breakpoint.xlOnly = true;
+            //Up
+            breakpoint.lgAndUp = true;
+        }
+
+
+        service.point = point;
+        service.breakpoint = breakpoint;
+
+        // console.log('SERVICE', point, service.screen, breakpoint)
+
     }
 
 

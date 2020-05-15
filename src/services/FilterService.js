@@ -3056,7 +3056,7 @@ service.allKeys = function(initFields, config) {
 
     //////////////////////////////////////////////////////////////////////////////////
 
-    
+
 
     //////////////////////////////////////////////////////////////////////////////////
 
@@ -3079,7 +3079,72 @@ service.allKeys = function(initFields, config) {
 
 }
 
-///////////////////////////////
+
+
+///////////////////////////////////////
+
+function addValueToSet(values, entry) {
+
+    //If it's not an object
+    if (!entry._id && !entry.title && !entry.name && !entry.id) {
+        return values[entry] = entry;
+    }
+
+    return values[entry._id || entry.title || entry.name || entry.id] = entry;
+}
+
+///////////////////////////////////////
+
+service.getDeepValue = function(set, node, keyPath) {
+
+    if (_.includes(keyPath, '[]')) {
+        var splitPieces = keyPath.split('[]');
+        var splitKey = splitPieces.shift();
+        var subPath = splitPieces.join('[]');
+        var subItems = _.get(node, splitKey) || [];
+        return _.each(subItems, function(subItem) {
+            service.getDeepValue(set, subItem, subPath)
+        });
+    }
+
+    //Matching Value
+    var value = _.get(node, keyPath);
+
+    if (value == undefined || value == null || value == [] || value == '') {
+        return;
+    }
+
+    ///////////////////////////////////////
+
+    if (_.isArray(value)) {
+        if (value.length) {
+            _.each(value, function(v) {
+                addValueToSet(set, v);
+            })
+        }
+    } else {
+        addValueToSet(set, value);
+    }
+
+}
+
+
+
+//////////////////////////////////////////////////////////////
+
+service.extractDeepValues = function(node, fieldKey) {
+    var values = {};
+
+    //Get the deep value
+    // console.log('get deep value', node, fieldKey);
+    service.getDeepValue(values, node, fieldKey);
+
+    //////////////////////////////////////////
+
+    return _.values(values);
+}
+
+//////////////////////////////////////////////////////////////
 
 
 export default service;
