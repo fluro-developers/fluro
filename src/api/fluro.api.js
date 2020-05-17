@@ -54,7 +54,8 @@ var FluroAPI = function(fluro) {
     ///////////////////////////////////////
 
     var service = axios.create({
-        adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter, { defaultCache: defaultCache }))
+        // adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter, { defaultCache: defaultCache }))
+        // adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter, { defaultCache: defaultCache }))
     });
 
     ///////////////////////////////////////
@@ -63,11 +64,123 @@ var FluroAPI = function(fluro) {
     service.defaults.headers.common.Accept = 'application/json';
     service.defaults.withCredentials = fluro.withCredentials;
 
+    ///////////////////////////////////////
+
+    //Get the default adapter
+    const defaultAdapter = axios.defaults.adapter
+
+    //Add our own adapter
+    service.defaults.adapter = function(config) {
+
+
+        var useCache;
+        var cachedResponse;
+
+        ///////////////////////////////////////
+
+        //Don't cache action methods
+        switch (String(config.method).toLowerCase()) {
+            case 'post':
+            case 'patch':
+            case 'put':
+            case 'delete':
+                //Unless we've specified we want a cache
+                if (!config.cache) {
+                    //Don't use the cache
+                    config.cache = false;
+                }
+                break;
+        }
+
+        ///////////////////////////////////////
+        ///////////////////////////////////////
+
+        if (config.cache === false) {
+            //No cache so make new request
+        } else {
+
+            //Use the cache specified or the default cache
+            useCache = config.cache || defaultCache;
+
+            //If there is a cache
+            if (useCache) {
+
+                //Generate the cache key from the request
+                var cacheKey = getCacheKeyFromConfig(config);
+
+                //If we have the cachedResponse version
+                cachedResponse = useCache.get(cacheKey);
+            }
+        }
+
+        ///////////////////////////////////////
+        ///////////////////////////////////////
+
+        return new Promise(function(resolve, reject) {
+
+            /////////////////////////////////////////
+
+            //We don't have a cachedResponse version
+            if (!cachedResponse) {
+                // console.log('Get BRAND NEW', config.url);
+
+                const axiosWithoutAdapter = axios.create(Object.assign(config, { adapter: defaultAdapter }));
+                return axiosWithoutAdapter.request(config).then(function(res) {
+
+                    // console.log('RESPONSE', res)
+                    resolve(res);
+                }, function(err) {
+
+                    // console.log('ERROR', err)
+                    reject(err);
+                });
+            }
+
+            /////////////////////////////////////////
+
+            console.log('From cache', cachedResponse);
+            return resolve(cachedResponse);
+
+            // self.$apiCache.get(config.url + JSON.stringify(config.params))
+            //     .then(data => {
+            //         if (data) {
+            //             return Promise.resolve({
+            //                 data,
+            //                 status: 200,
+            //                 statusText: 'OK',
+            //                 headers: {},
+            //                 config: config,
+            //                 request: {}
+            //             })
+            //         } else {
+            //             return fetch()
+            //         }
+            //     })
+            //     .catch(fetch)
+        })
+    }
+
     /////////////////////////////////////////////////////
 
+    function getCacheKeyFromConfig(config) {
+
+
+        var key = _.compact([
+            config.method,
+            config.url,
+            JSON.stringify({ params: config.params, data: config.data })
+        ]).join('-')
+
+
+        // console.log('GET CACHE KEY', key)
+        return key;
+    }
+
+    /////////////////////////////////////////////////////
 
     // Add relative date and timezone to every request
     service.interceptors.request.use(function(config) {
+
         config.headers['fluro-request-date'] = new Date().getTime();
         if (fluro.date.defaultTimezone) {
             config.headers['fluro-request-timezone'] = fluro.date.defaultTimezone;
@@ -75,7 +188,7 @@ var FluroAPI = function(fluro) {
 
         //It's just a normal request
         if (!config.application) {
-        	
+
             return config;
         }
 
@@ -94,8 +207,79 @@ var FluroAPI = function(fluro) {
     });
 
     /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////
+
+    //Get all mongo ids from a string
+    function retrieveIDs(data) {
+
+        var dataString;
+
+        if (_.isString(data)) {
+            dataString = data;
+        } else {
+            dataString = JSON.stringify(data);
+        }
+
+        //Find all mongo ids included in the object
+        var myregexp = /[0-9a-fA-F]{24}/g;
+        var matches = dataString.match(myregexp);
+
+        //Make sure the matches are unique
+        return _.uniq(matches);
+    }
+
+    /////////////////////////////////////////////////////
 
     service.interceptors.response.use(function(response) {
+
+
+        var config = response.config
+        var cacheKey = getCacheKeyFromConfig(config);
+        var cache = response.config.cache || defaultCache;
+
+        /////////////////////////////////////////////////////
+
+        if (!cache) {
+            return response;
+        }
+
+        /////////////////////////////////////////////////////
+
+        switch (String(config.method).toLowerCase()) {
+            case 'put':
+            case 'patch':
+            case 'post':
+            case 'delete':
+
+            	var ids = retrieveIDs({_id:(config.data || {})._id, params:config.params, url:config.url});
+
+                // var ids = config.url.split('/').forEach(function(part) {
+                //     var myregexp = /[0-9a-fA-F]{24}/g;
+                //     return myregexp.test(part);
+                // });
+
+                cache.forEach(function(value, key, cache) {
+            		var cacheIDs = retrieveIDs({key, value});
+            		var crossover = _.intersection(cacheIDs, ids).length;
+            		if(crossover) {
+            			cache.del(key);
+            			console.log('WIPE RELATED KEY', key);
+            		}
+
+                    
+                });
+                break;
+            default:
+                //Save into the cache
+                cache.set(cacheKey, response);
+                break;
+        }
+
+
+
+
+        /////////////////////////////////////////////////////
+
         return response;
     }, function(err) {
 
