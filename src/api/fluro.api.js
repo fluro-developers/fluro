@@ -56,6 +56,7 @@ var FluroAPI = function(fluro) {
     ///////////////////////////////////////
 
     var service = axios.create({
+    	paramsSerializer: params => qs.stringify(params, {arrayFormat: 'repeat'}),
         // adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter, { defaultCache: defaultCache }))
         // adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter, { defaultCache: defaultCache }))
     });
@@ -80,9 +81,10 @@ var FluroAPI = function(fluro) {
 
         ///////////////////////////////////////
 
-        config.paramsSerializer = function(params) {
-	       return qs.stringify(params, {arrayFormat: 'repeat'})
-	    }
+
+     //    config.paramsSerializer = function(params) {
+	    //    return qs.stringify(params, {arrayFormat: 'repeat'})
+	    // }
 
         ///////////////////////////////////////
 
