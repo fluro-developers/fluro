@@ -1,5 +1,7 @@
 import axios from 'axios';
 import _ from 'lodash';
+import qs from 'qs';
+
 
 import {
     cacheAdapterEnhancer,
@@ -75,6 +77,12 @@ var FluroAPI = function(fluro) {
 
         var useCache;
         var cachedResponse;
+
+        ///////////////////////////////////////
+
+        config.paramsSerializer = function(params) {
+	       return qs.stringify(params, {arrayFormat: 'repeat'})
+	    }
 
         ///////////////////////////////////////
 
