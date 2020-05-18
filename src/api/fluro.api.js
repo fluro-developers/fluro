@@ -3,6 +3,7 @@ import _ from 'lodash';
 import qs from 'qs';
 
 
+
 import {
     cacheAdapterEnhancer,
     throttleAdapterEnhancer,
@@ -55,87 +56,81 @@ var FluroAPI = function(fluro) {
 
     ///////////////////////////////////////
 
-    var service = axios.create({
-    	paramsSerializer: params => qs.stringify(params, {arrayFormat: 'repeat'}),
-        // adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter, { defaultCache: defaultCache }))
-        // adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter, { defaultCache: defaultCache }))
-    });
-
-    ///////////////////////////////////////
-
-    service.defaults.baseURL = fluro.apiURL;
-    service.defaults.headers.common.Accept = 'application/json';
-    service.defaults.withCredentials = fluro.withCredentials;
-
-    ///////////////////////////////////////
-
     //Get the default adapter
     const defaultAdapter = axios.defaults.adapter
-
-    //Add our own adapter
-    service.defaults.adapter = function(config) {
+    // console.log('DEFAULT ADAPTER', defaultAdapter)
 
 
-        var useCache;
-        var cachedResponse;
+    ///////////////////////////////////////
 
-        ///////////////////////////////////////
-
-
-     //    config.paramsSerializer = function(params) {
-	    //    return qs.stringify(params, {arrayFormat: 'repeat'})
-	    // }
-
-        ///////////////////////////////////////
-
-        //Don't cache action methods
-        switch (String(config.method).toLowerCase()) {
-            case 'post':
-            case 'patch':
-            case 'put':
-            case 'delete':
-                //Unless we've specified we want a cache
-                if (!config.cache) {
-                    //Don't use the cache
-                    config.cache = false;
-                }
-                break;
-        }
-
-        ///////////////////////////////////////
-        ///////////////////////////////////////
-
-        if (config.cache === false) {
-            //No cache so make new request
-        } else {
-
-            //Use the cache specified or the default cache
-            useCache = config.cache || defaultCache;
-
-            //If there is a cache
-            if (useCache) {
-
-                //Generate the cache key from the request
-                var cacheKey = getCacheKeyFromConfig(config);
-
-                //If we have the cachedResponse version
-                cachedResponse = useCache.get(cacheKey);
-            }
-        }
-
-        ///////////////////////////////////////
-        ///////////////////////////////////////
+    //Add our own adapter to the service
+    let cacheAdapter = function(config) {
 
         return new Promise(function(resolve, reject) {
 
-            /////////////////////////////////////////
 
-            //We don't have a cachedResponse version
-            if (!cachedResponse) {
-                // console.log('Get BRAND NEW', config.url);
+            var useCache;
+            var cachedResponse;
 
-                const axiosWithoutAdapter = axios.create(Object.assign(config, { adapter: defaultAdapter }));
-                return axiosWithoutAdapter.request(config).then(function(res) {
+            ///////////////////////////////////////
+
+            //Don't cache action methods
+            switch (String(config.method).toLowerCase()) {
+                case 'post':
+                case 'patch':
+                case 'put':
+                case 'delete':
+                    //Unless we've specified we want a cache
+                    if (!config.cache) {
+                        //Don't use the cache
+                        config.cache = false;
+                    }
+                    break;
+            }
+
+            ///////////////////////////////////////
+            ///////////////////////////////////////
+
+            if (config.cache === false) {
+                //No cache so make new request
+            } else {
+
+                //Use the cache specified or the default cache
+                useCache = config.cache || defaultCache;
+
+                //If there is a cache
+                if (useCache) {
+
+                    //Generate the cache key from the request
+                    var cacheKey = getCacheKeyFromConfig(config);
+
+                    //If we have the cachedResponse version
+                    cachedResponse = useCache.get(cacheKey);
+                }
+            }
+
+            ///////////////////////////////////////
+            ///////////////////////////////////////
+
+            if (cachedResponse) {
+                // console.log('FROM CACHE', config.url, cachedResponse);
+                return resolve(cachedResponse);
+            }
+
+
+
+            // const axiosWithoutAdapter = createNewAxios();
+
+
+            var copy = Object.assign(config, { adapter: defaultAdapter });
+           
+
+            // console.log('NEW ADAPTER THING', copy)
+            // const axiosWithoutAdapter = axios(copy);
+
+
+            return axios.request(config)
+                .then(function(res) {
 
                     // console.log('RESPONSE', res)
                     resolve(res);
@@ -144,188 +139,149 @@ var FluroAPI = function(fluro) {
                     // console.log('ERROR', err)
                     reject(err);
                 });
-            }
 
-            /////////////////////////////////////////
-
-            console.log('From cache', cachedResponse);
-            return resolve(cachedResponse);
-
-            // self.$apiCache.get(config.url + JSON.stringify(config.params))
-            //     .then(data => {
-            //         if (data) {
-            //             return Promise.resolve({
-            //                 data,
-            //                 status: 200,
-            //                 statusText: 'OK',
-            //                 headers: {},
-            //                 config: config,
-            //                 request: {}
-            //             })
-            //         } else {
-            //             return fetch()
-            //         }
-            //     })
-            //     .catch(fetch)
         })
     }
 
-    /////////////////////////////////////////////////////
 
-    function getCacheKeyFromConfig(config) {
+    //////////////////////////////////////////////////////////////////////////////
 
+    const service = createNewAxios(cacheAdapter);
 
-        var key = _.compact([
-            config.method,
-            config.url,
-            JSON.stringify({ params: config.params, data: config.data })
-        ]).join('-')
+    //////////////////////////////////////////////////////////////////////////////
 
+    function createNewAxios(adapter) {
 
-        // console.log('GET CACHE KEY', key)
-        return key;
-    }
+        var instance = axios.create({
+            paramsSerializer: params => qs.stringify(params, { arrayFormat: 'repeat' }),
+            adapter,
+            // adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter, { defaultCache: defaultCache }))
+            // adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter, { defaultCache: defaultCache }))
+        });
 
-    /////////////////////////////////////////////////////
+        ///////////////////////////////////////
 
-    // Add relative date and timezone to every request
-    service.interceptors.request.use(function(config) {
-
-        config.headers['fluro-request-date'] = new Date().getTime();
-        if (fluro.date.defaultTimezone) {
-            config.headers['fluro-request-timezone'] = fluro.date.defaultTimezone;
-        }
-
-        //It's just a normal request
-        if (!config.application) {
-
-            return config;
-        }
-
-        ////////////////////////
-
-        //There's no app or app user defined anyway
-        if (!fluro.app || !fluro.app.user) {
-            return config;
-        }
-
-        ////////////////////////
-
-        console.log('request the thing in application context with a user', fluro.app.user.firstName);
-        return config;
-
-    });
-
-    /////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////
-
-    //Get all mongo ids from a string
-    function retrieveIDs(data) {
-
-        var dataString;
-
-        if (_.isString(data)) {
-            dataString = data;
-        } else {
-            dataString = JSON.stringify(data);
-        }
-
-        //Find all mongo ids included in the object
-        var myregexp = /[0-9a-fA-F]{24}/g;
-        var matches = dataString.match(myregexp);
-
-        //Make sure the matches are unique
-        return _.uniq(matches);
-    }
-
-    /////////////////////////////////////////////////////
-
-    service.interceptors.response.use(function(response) {
-
-
-        var config = response.config
-        var cacheKey = getCacheKeyFromConfig(config);
-        var cache = response.config.cache || defaultCache;
+        instance.defaults.baseURL = fluro.apiURL;
+        instance.defaults.headers.common.Accept = 'application/json';
+        instance.defaults.withCredentials = fluro.withCredentials;
 
         /////////////////////////////////////////////////////
 
-        if (!cache) {
+        // Add relative date and timezone to every request
+        instance.interceptors.request.use(function(config) {
+
+            config.headers['fluro-request-date'] = new Date().getTime();
+            if (fluro.date.defaultTimezone) {
+                config.headers['fluro-request-timezone'] = fluro.date.defaultTimezone;
+            }
+
+            //It's just a normal request
+            if (!config.application) {
+                return config;
+            }
+
+            ////////////////////////
+
+            //There's no app or app user defined anyway
+            if (!fluro.app || !fluro.app.user) {
+                return config;
+            }
+
+            ////////////////////////
+
+            console.log('request the thing in application context with a user', fluro.app.user.firstName);
+            return config;
+
+        });
+
+        /////////////////////////////////////////////////////
+
+        instance.interceptors.response.use(function(response) {
+
+
+            var config = response.config
+            var cacheKey = getCacheKeyFromConfig(config);
+            var cache = response.config.cache || defaultCache;
+
+            /////////////////////////////////////////////////////
+
+            if (!cache) {
+                return response;
+            }
+
+            /////////////////////////////////////////////////////
+
+            switch (String(config.method).toLowerCase()) {
+                case 'put':
+                case 'patch':
+                case 'post':
+                case 'delete':
+
+                    var ids = retrieveIDs({ _id: (config.data || {})._id, params: config.params, url: config.url });
+                    cache.forEach(function(value, key, cache) {
+                        var cacheIDs = retrieveIDs({ key, value });
+                        var crossover = _.intersection(cacheIDs, ids).length;
+                        if (crossover) {
+                            cache.del(key);
+                            console.log('WIPE RELATED KEY', key);
+                        }
+                    });
+                    break;
+                default:
+                    //Save into the cache
+                    cache.set(cacheKey, response);
+                    break;
+            }
+
+            /////////////////////////////////////////////////////
+
             return response;
-        }
+        }, function(err) {
 
-        /////////////////////////////////////////////////////
+            if (axios.isCancel(err)) {
+                console.log('Request cancelled');
+                return Promise.reject(err);
+            }
 
-        switch (String(config.method).toLowerCase()) {
-            case 'put':
-            case 'patch':
-            case 'post':
-            case 'delete':
+            //Get the response status
+            var status = _.get(err, 'response.status') || err.status;
 
-            	var ids = retrieveIDs({_id:(config.data || {})._id, params:config.params, url:config.url});
+            //Check the status
+            switch (status) {
+                case 401:
+                    //Ignore and allow fluro.auth to handle it
+                    break;
+                case 502:
+                    // case 503:
+                case 504:
+                    //Retry
+                    //Try it again
+                    console.log(`fluro.api > ${status} connection error retrying`)
+                    return instance.request(err.config);
+                    break;
+                case 404:
+                    break;
+                default:
+                    //Some other error
+                    console.log('fluro.api > connection error', status, err);
+                    break;
+            }
 
-                // var ids = config.url.split('/').forEach(function(part) {
-                //     var myregexp = /[0-9a-fA-F]{24}/g;
-                //     return myregexp.test(part);
-                // });
+            /////////////////////////////////////////////////////
 
-                cache.forEach(function(value, key, cache) {
-            		var cacheIDs = retrieveIDs({key, value});
-            		var crossover = _.intersection(cacheIDs, ids).length;
-            		if(crossover) {
-            			cache.del(key);
-            			console.log('WIPE RELATED KEY', key);
-            		}
-
-                    
-                });
-                break;
-            default:
-                //Save into the cache
-                cache.set(cacheKey, response);
-                break;
-        }
-
-
-
-
-        /////////////////////////////////////////////////////
-
-        return response;
-    }, function(err) {
-
-        if (axios.isCancel(err)) {
-            console.log('Request cancelled');
             return Promise.reject(err);
-        }
-
-        //Get the response status
-        var status = _.get(err, 'response.status') || err.status;
-
-        //Check the status
-        switch (status) {
-            case 401:
-                //Ignore and allow fluro.auth to handle it
-                break;
-            case 502:
-                // case 503:
-            case 504:
-                //Retry
-                //Try it again
-                console.log(`fluro.api > ${status} connection error retrying`)
-                return fluro.api.request(err.config);
-                break;
-            case 404:
-                break;
-            default:
-                //Some other error
-                console.log('fluro.api > connection error', status, err);
-                break;
-        }
+        })
 
         /////////////////////////////////////////////////////
 
-        return Promise.reject(err);
-    })
+        return instance;
+    }
+
+
+
+
+
+    ///////////////////////////////////////
 
 
     /**
@@ -406,6 +362,49 @@ var FluroAPI = function(fluro) {
      *   console.log(error);
      * });
      */
+
+
+
+
+    /////////////////////////////////////////////////////
+
+    //Get all mongo ids from a string
+    function retrieveIDs(data) {
+
+        var dataString;
+
+        if (_.isString(data)) {
+            dataString = data;
+        } else {
+            dataString = JSON.stringify(data);
+        }
+
+        //Find all mongo ids included in the object
+        var myregexp = /[0-9a-fA-F]{24}/g;
+        var matches = dataString.match(myregexp);
+
+        //Make sure the matches are unique
+        return _.uniq(matches);
+    }
+
+    /////////////////////////////////////////////////////
+
+    function getCacheKeyFromConfig(config) {
+
+
+        var key = _.compact([
+            config.method,
+            config.url,
+            JSON.stringify({ params: config.params, data: config.data })
+        ]).join('-')
+
+
+        // console.log('GET CACHE KEY', key)
+        return key;
+    }
+
+    ///////////////////////////////////////
+
 
     service.CancelToken = CancelToken;
     service.axios = axios;

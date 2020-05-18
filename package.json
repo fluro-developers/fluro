@@ -1,6 +1,6 @@
 {
   "name": "fluro",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "Promise based HTTP Fluro client for the browser and node.js",
   "scripts": {
     "build": "webpack --mode=production && npm run test",
@@ -38,7 +38,7 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.19.2",
     "axios-extensions": "^3.1.2",
     "browser-or-node": "^1.2.1",
     "lodash": "^4.17.15",
