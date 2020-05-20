@@ -447,11 +447,27 @@ function isEmpty(input) {
 
 service.matchAnyString = function(keywords, row) {
 
-    var values = _.values(row);
-    var string = getString(keywords);
-    return _.some(values, function(input) {
-        return _.includes(getString(input), string)
-    })
+    //Get the keywords we want to search on
+    var searchString = getString(keywords);
+
+    if (_.isString(row)) {
+        return checkString(row);
+    } else {
+        var values = _.values(row);
+        return _.some(values, checkString)
+    }
+
+    /////////////////////////////////////
+
+    function checkString(input) {
+        var stringInput = getString(input);
+        var exactMatch = _.includes(stringInput, searchString);
+        // console.log('EXACT MATCH?', stringInput, string)
+        return exactMatch || service.isSimilar(stringInput, searchString)
+    }
+
+
+
 }
 
 ///////////////////////////////////
@@ -2252,6 +2268,8 @@ service.filter = function(items, options) {
     var endDate = options.endDate ? new Date(options.endDate) : null;
     var filterConfig = options.filter;
 
+
+
     //////////////////////////////////////
 
     var activeFilters = service.activeFilters(filterConfig);
@@ -2297,12 +2315,16 @@ service.filter = function(items, options) {
                 searchIsCorrect = true;
             } else {
 
+
+
                 //If the title matches the keywords exactly
                 var exactMatch = _.includes(itemTitle, searchKeywords);
 
                 if (exactMatch) {
                     //We are all done here
+
                     searchIsCorrect = true;
+
                 } else {
 
                     //Check if the the keywords matches
@@ -2310,6 +2332,8 @@ service.filter = function(items, options) {
 
                     //If there are keywords
                     if (keywordString.length) {
+
+                        // console.log('We have keywords!', keywordString)
 
                         //Check if there is an exact match for keywords
                         var exactMatch = _.includes(keywordString, searchKeywords);
@@ -2322,13 +2346,39 @@ service.filter = function(items, options) {
                             var multiMatch = _.every(searchPieces, function(partial) {
                                 return _.includes(itemTitle, partial) || _.includes(keywordString, partial);
                             })
+                            // console.log('Is it a multimatch?', multimatch)
 
                             if (multiMatch) {
                                 searchIsCorrect = true;
                             }
-
-                            // return service.matchAnyString(searchKeywords, item);
                         }
+                    }
+
+                    //////////////////////////////////////////
+
+                    //Search is correct
+                    if (!searchIsCorrect) {
+
+
+
+                        function recursiveDeepSearch(entry) {
+
+                            if (_.isString(entry)) {
+                                return service.matchAnyString(searchKeywords, entry);
+                            }
+
+                            if (_.isArray(entry) || _.isObject(entry)) {
+                                return _.some(entry, function(value) {
+                                    return recursiveDeepSearch(value);
+                                })
+                            }
+
+                        }
+
+
+
+
+                        searchIsCorrect = recursiveDeepSearch(item);
                     }
                 }
             }
