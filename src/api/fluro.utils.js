@@ -733,6 +733,101 @@ FluroUtils.injectModule = function(scriptURL, options) {
 
 /////////////////////////////////////////////
 /////////////////////////////////////////////
+
+////////////////////////////////////
+
+/**
+ * Helper function for getting a flattened list of all nested fields
+ * defined for a definition in Fluro
+ * @alias FluroUtils.getFlattenedFields
+ * @param  {Array} fields The array of fields
+ * @param  {Array} trail An array to append trails to (required)
+ * @param  {Array} trail An array to append titles to (required)
+ * @return {Array}     A flattened list of all fields with their nested trails and titles
+ */
+
+FluroUtils.getFlattenedFields = function(array, trail, titles) {
+
+    return _.chain(array)
+        .map(function(field, key) {
+
+            //Create a new object so we don't mutate
+            var field = Object.assign({}, field);
+
+            var returnValue = [];
+
+
+
+            /////////////////////////////////////////
+
+            //If there are sub fields
+            if (field.fields && field.fields.length) {
+
+
+                if (field.asObject || field.directive == 'embedded') {
+                    //Push the field itself
+                    trail.push(field.key);
+                    titles.push(field.title)
+
+                    field.trail = trail.slice();
+                    field.titles = titles.slice();
+
+                    trail.pop();
+                    titles.pop();
+                    returnValue.push(field);
+
+
+                    ///////////////////////////////
+
+                    //Prepend the key to all lowed fields
+
+
+
+
+                    if (field.maximum != 1) {
+                        // trail.push(field.key + '[' + indexIterator + ']');
+                        trail.push(field.key + '[]');
+                        titles.push(field.title);
+                    } else {
+                        trail.push(field.key);
+                        titles.push(field.title);
+                    }
+                }
+
+                var fields = FluroUtils.getFlattenedFields(field.fields, trail, titles);
+
+                if (field.asObject || field.directive == 'embedded') {
+                    trail.pop()
+                    titles.pop();
+                }
+                returnValue.push(fields);
+
+
+            } else {
+                /////////////////////////////////////////
+
+                //Push the field key
+                trail.push(field.key);
+                titles.push(field.title);
+
+                field.trail = trail.slice();
+                field.titles = titles.slice();
+                trail.pop();
+                titles.pop();
+                returnValue.push(field);
+            }
+
+            /////////////////////////////////////////
+
+            return returnValue;
+
+        })
+        .flattenDeep()
+        .value();
+}
+
+
+
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 /////////////////////////////////////////////
