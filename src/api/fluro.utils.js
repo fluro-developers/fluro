@@ -324,6 +324,7 @@ FluroUtils.matchInArray = function(array, key, value, operator) {
 
         ///////////////////////
 
+        // console.log('MATCH IN ARRAY', isMatch, key, value, retrievedValue,operator)
         return isMatch;
     })
 
