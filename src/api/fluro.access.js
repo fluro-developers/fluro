@@ -1506,7 +1506,7 @@ var FluroAccess = function(FluroCore) {
 
                                 type.permissions.push({
                                     title: `Include all defined ${type.title} types`,
-                                    value: `included defined ${definitionName}`,
+                                    value: `include defined ${definitionName}`,
                                     description,
                                 })
                             }
