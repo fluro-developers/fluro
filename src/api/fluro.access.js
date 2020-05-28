@@ -140,13 +140,13 @@ var FluroAccess = function(FluroCore) {
         /////////////////////////////////////////////////////
 
         //If using shorthand
-        switch(action) {
+        switch (action) {
             case 'view':
                 return service.can('view any', type, parentType) || service.can('view own', type, parentType);
-            break;
+                break;
             case 'edit':
                 return service.can('edit any', type, parentType) || service.can('edit own', type, parentType);
-            break;
+                break;
         }
 
         /////////////////////////////////////////////////////
@@ -619,6 +619,34 @@ var FluroAccess = function(FluroCore) {
             definitionName = item.definition;
             parentType = item._type;
         }
+
+        ////////////////////////////////////////
+
+        if (item._type == 'process') {
+            if (item.assignedTo && item.assignedTo.length) {
+                var intersect = _.intersection(FluroCore.utils.arrayIDs(item.assignedTo), user.contacts);
+                if (intersect && intersect.length) {
+                    return true;
+                }
+            }
+
+            
+            if (item.assignedToTeam && item.assignedToTeam.length) {
+
+                //Check if the user is in any of the teams
+                var userTeams = _.map(user.visibleRealms, '_team');
+
+                var intersect = _.intersection(config.arrayIDs(item.assignedToTeam), userTeams);
+                if (intersect && intersect.length) {
+                    if (!callback) {
+                        return true;
+                    }
+
+                    return callback(true);
+                }
+            }
+        }
+
 
         ////////////////////////////////////////
 
@@ -1282,8 +1310,8 @@ var FluroAccess = function(FluroCore) {
                         var existing = set[basicType];
                         if (!existing) {
                             existing = set[basicType] = {
-                                names:[],
-                                types:[],
+                                names: [],
+                                types: [],
                             };
                         }
 
@@ -1500,7 +1528,7 @@ var FluroAccess = function(FluroCore) {
 
                                 var matchedSet = derivatives[basicType];
                                 var description = `Apply all the selected permissions to all ${type.title} definitions`;
-                                if(matchedSet) {
+                                if (matchedSet) {
                                     description = `Apply all the selected permissions to all ${type.title} definitions, Eg. (${matchedSet.names.join(', ')})`;
                                 }
 
