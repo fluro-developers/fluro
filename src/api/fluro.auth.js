@@ -700,7 +700,8 @@ var FluroAuth = function(fluro) {
     ///////////////////////////////////////////////////
 
 
-    var refreshContext = {};
+    var nonAppRefreshContext = {};
+    var appRefreshContext = {};
 
     /**
      * Helper function to refresh an access token for an authenticated user session. This is usually handled automatically
@@ -711,6 +712,18 @@ var FluroAuth = function(fluro) {
      * @return {Promise}                A promise that either resolves with the refreshed token details or rejects with the responding error from the server
      */
     service.refreshAccessToken = function(refreshToken, isManagedSession, appContext) {
+
+    	var refreshContext = appContext ? appRefreshContext : nonAppRefreshContext;
+
+        // /////////////////////////////////////////////
+
+        // if (appContext) {
+        //     console.log('refresh token in app context')
+        // } else {
+        //     console.log('refresh token in normal context')
+        // }
+
+        // /////////////////////////////////////////////
 
         //If there is already a request in progress
         if (refreshContext.inflightRefreshRequest) {
@@ -723,6 +736,7 @@ var FluroAuth = function(fluro) {
         //Create an refresh request
         refreshContext.inflightRefreshRequest = new Promise(function(resolve, reject) {
 
+
             log(`fluro.auth > refresh token ${refreshToken}`);
 
             //Bypass the interceptor on all token refresh calls
@@ -732,6 +746,7 @@ var FluroAuth = function(fluro) {
                     managed: isManagedSession,
                 }, {
                     bypassInterceptor: true,
+                    application:appContext,
                 })
                 .then(function tokenRefreshComplete(res) {
 
@@ -788,7 +803,7 @@ var FluroAuth = function(fluro) {
                     refreshContext.inflightRefreshRequest = null;
                     reject(err);
 
-                    console.log('TOKEN REFRSH ERROR', err)
+                  
 
                 });
         });
@@ -838,17 +853,17 @@ var FluroAuth = function(fluro) {
                 dispatch();
             })
             .catch(function(err) {
-                
+
 
                 // if (retryCount > 2) {
-                	console.log('auth sync not logged in');
-                    store.user = null;
-                    retryCount = 0;
-                    dispatch();
+                console.log('auth sync not logged in');
+                store.user = null;
+                retryCount = 0;
+                dispatch();
                 // } else {
-                    // console.log('Retry sync')
-                    // retryCount++;
-                    // service.sync();
+                // console.log('Retry sync')
+                // retryCount++;
+                // service.sync();
                 // }
 
 
@@ -1037,7 +1052,7 @@ var FluroAuth = function(fluro) {
 
                 //////////////////////////////
 
-                console.log('Err', err);
+                console.log('ERROR CAPTURE HERE', err.response, err.config);
                 //If we are running in an application context
                 if (_.get(err, 'config.application')) {
                     //Kill our app user store
