@@ -258,15 +258,19 @@ var FluroDevice = function() {
 
     service.mount = function(window) {
         if (mounted) {
+        	console.log('already mounted');
             return;
         }
 
         WindowReference = window;
-        mounted = true;
-        WindowReference.addEventListener('resize', service.resize);
         service.resize();
-        console.log('device has mounted')
+        mounted = true;
         service.mounted = true;
+        WindowReference.addEventListener('resize', service.resize);
+        
+
+        // console.log('device has mounted', window)
+        
     }
 
 
