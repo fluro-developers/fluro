@@ -81,6 +81,7 @@
 var FluroDevice = function() {
 
     var service = {
+    	mounted:false,
         screen: {
             width: 1024,
             height: 768,
@@ -264,6 +265,8 @@ var FluroDevice = function() {
         mounted = true;
         WindowReference.addEventListener('resize', service.resize);
         service.resize();
+        console.log('device has mounted')
+        service.mounted = true;
     }
 
 
@@ -271,6 +274,9 @@ var FluroDevice = function() {
 
     service.destroy = function() {
         WindowReference.removeEventListener('resize', service.resize);
+        WindowReference = false;
+        mounted = false;
+        service.mounted = false;
     }
 
     ////////////////////////////////

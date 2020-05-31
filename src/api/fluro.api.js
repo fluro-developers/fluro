@@ -223,7 +223,7 @@ var FluroAPI = function(fluro) {
                         var crossover = _.intersection(cacheIDs, ids).length;
                         if (crossover) {
                             cache.del(key);
-                            console.log('WIPE RELATED KEY', key);
+                            // console.log('WIPE RELATED KEY', key);
                         }
                     });
                     break;
