@@ -491,18 +491,31 @@ FluroDate.groupEventByDate = function(events) {
  * @param  {Array} items The items we want to group on the timeline
  * @return {Array}       A grouped array of dates
  */
-FluroDate.timeline = function(items, dateKey) {
+FluroDate.timeline = function(items, dateKey, chronological) {
 
     if (!dateKey) {
         dateKey = 'created';
     }
 
+    //////////////////////////////////
+
+    items = _.orderBy(items, function(entry) {
+        var date = new Date(_.get(entry, dateKey));
+        return date;
+    })
+
+    //////////////////////////////////
+
+
+    if(chronological) {
+    	//Leave in the same order
+    } else {
+    	items = items.reverse();
+    }
+
+    //////////////////////////////////
+
     return _.chain(items)
-        .orderBy(function(entry) {
-            var date = new Date(_.get(entry, dateKey));
-            return date;
-        })
-        .reverse()
         .reduce(function(set, entry, index) {
 
             var date = new Date(_.get(entry, dateKey));
