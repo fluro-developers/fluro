@@ -42,6 +42,49 @@ FluroDate.timezones = function() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+
+FluroDate.currentTimezone = function() {
+    return moment.tz.guess();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A function that returns all of the available timezones. Often used to populate a select box
+ * @alias FluroDate.isDifferentTimezoneThanUser
+ * @return {Boolean}                   True if the specified timezone is different than the viewing user
+ */
+
+FluroDate.isDifferentTimezoneThanUser = function(timezone) {
+
+
+    var browserTimezone = moment.tz.guess();
+
+    if (!timezone) {
+       // console.log('NO TIMEZONE')
+        return false;
+    }
+
+    timezone = String(timezone);
+    if (browserTimezone == timezone) {
+       // console.log('TIMEZONE IS SAME')
+        return false;
+    }
+
+    var now = new Date();
+    var current = moment.tz(now, browserTimezone).utcOffset();
+    var checked = moment.tz(now, timezone).utcOffset();
+
+    if (current == checked) {
+        return false;
+    }
+
+    return true;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
 /**
  * A function that will return a date in context of a specified timezone
  * If no timezone is specified then the default timezone of the current clock will be used.
@@ -133,7 +176,16 @@ FluroDate.getAge = function(dateInput) {
 FluroDate.formatDate = function(dateString, format, timezone) {
     var date = FluroDate.localDate(dateString, timezone);
 
-    return moment(date).format(format);
+    if (timezone) {
+
+        return moment(date).format(format);
+        var d = moment(dateString).tz(timezone).format(format);
+
+        // // console.log('DATE', dateString, d, timezone, format)
+        return d;
+    } else {
+        return moment(date).format(format);
+    }
 }
 
 
@@ -269,7 +321,14 @@ FluroDate.readableEventDate = function(event, style) {
         endDate = startDate;
     }
 
+    ///////////////////////////////////////////////
 
+    var differentTimezone = event.timezone && FluroDate.isDifferentTimezoneThanUser(event.timezone);
+    var appendage = '';
+
+    if(differentTimezone) {
+        appendage = `(${event.timezone})`;
+    }
     ///////////////////////////////////////////////
 
     startDate = moment(startDate);
@@ -286,75 +345,75 @@ FluroDate.readableEventDate = function(event, style) {
         case 'short':
             // console.log('SHORT', startDate, endDate);
             if (noEndDate) {
-                return startDate.format('D MMM')
+                return `${startDate.format('D MMM')} ${appendage}`
             }
 
             if (sameDay) {
                 //8am - 9am Thursday 21 May 2016
-                return startDate.format('D MMM')
+                return `${startDate.format('D MMM')} ${appendage}`
             }
 
             if (sameMonth) {
                 //20 - 21 May 2016
-                return startDate.format('D') + ' - ' + endDate.format('D MMM')
+                return `${startDate.format('D') + ' - ' + endDate.format('D MMM')} ${appendage}`
             }
 
             if (sameYear) {
                 //20 Aug - 21 Sep 2016
-                return startDate.format('D') + ' - ' + endDate.format('D MMM')
+                return `${startDate.format('D') + ' - ' + endDate.format('D MMM')} ${appendage}`
             }
 
             //20 Aug 2015 - 21 Sep 2016
-            return startDate.format('D MMM Y') + ' - ' + endDate.format('D MMM Y')
+            return `${startDate.format('D MMM Y') + ' - ' + endDate.format('D MMM Y')} ${appendage}`
 
             break;
         case 'day':
             // console.log('SHORT', startDate, endDate);
             if (noEndDate) {
-                return startDate.format('dddd D MMMM')
+                return `${startDate.format('dddd D MMMM')} ${appendage}`
             }
 
             if (sameDay) {
                 //8am - 9am Thursday 21 May 2016
-                return startDate.format('dddd D MMMM')
+                return `${startDate.format('dddd D MMMM')} ${appendage}`
             }
 
             if (sameMonth) {
                 //20 - 21 May 2016
-                return startDate.format('D') + ' - ' + endDate.format('D MMMM Y')
+                return `${startDate.format('D') + ' - ' + endDate.format('D MMMM Y')} ${appendage}`
             }
 
             if (sameYear) {
                 //20 Aug - 21 Sep 2016
-                return startDate.format('D MMM') + ' - ' + endDate.format('D MMM Y')
+                return `${startDate.format('D MMM') + ' - ' + endDate.format('D MMM Y')} ${appendage}`
             }
 
             //20 Aug 2015 - 21 Sep 2016
-            return startDate.format('D MMM Y') + ' - ' + endDate.format('D MMM Y')
+            return `${startDate.format('D MMM Y') + ' - ' + endDate.format('D MMM Y')} ${appendage}`
 
             break;
         default:
             if (noEndDate) {
-                return startDate.format('h:mma dddd D MMM Y')
+                return `${startDate.format('h:mma dddd D MMM Y')} ${appendage}`;
             }
 
             if (sameDay) {
                 //8am - 9am Thursday 21 May 2016
-                return startDate.format('h:mma') + ' - ' + endDate.format('h:mma dddd D MMM Y')
+                return `${startDate.format('h:mma') + ' - ' + endDate.format('h:mma dddd D MMM Y')} ${appendage}`;
             }
 
             if (sameMonth) {
                 //20 - 21 May 2016
-                return startDate.format('D') + ' - ' + endDate.format('D MMM Y')
+                return `${startDate.format('D') + ' - ' + endDate.format('D MMM Y')} ${appendage}`;
             }
 
             if (sameYear) {
                 //20 Aug - 21 Sep 2016
-                return startDate.format('D MMM') + ' - ' + endDate.format('D MMM Y')
+                return `${startDate.format('D MMM') + ' - ' + endDate.format('D MMM Y')} ${appendage}`;
             }
 
             //20 Aug 2015 - 21 Sep 2016
-            return startDate.format('D MMM Y') + ' - ' + endDate.format('D MMM Y')
+            return `${startDate.format('D MMM Y') + ' - ' + endDate.format('D MMM Y')} ${appendage}`;
 
             break;
     }
@@ -451,11 +510,11 @@ FluroDate.groupEventByDate = function(events) {
     return _.chain(events)
         .reduce(function(set, row, index) {
 
-            var format = 'ddd D MMM';
+            var format = 'dddd D MMMM';
             var startDate = row.startDate ? new moment(row.startDate) : new moment(row.created);
 
             if (moment().format('YYYY') != startDate.format('YYYY')) {
-                format = 'ddd D MMM YYYY';
+                format = 'dddd D MMMM YYYY';
             }
 
             var groupingKey = startDate.format(format);
@@ -507,10 +566,10 @@ FluroDate.timeline = function(items, dateKey, chronological) {
     //////////////////////////////////
 
 
-    if(chronological) {
-    	//Leave in the same order
+    if (chronological) {
+        //Leave in the same order
     } else {
-    	items = items.reverse();
+        items = items.reverse();
     }
 
     //////////////////////////////////
@@ -557,7 +616,7 @@ FluroDate.timeline = function(items, dateKey, chronological) {
 
             ////////////////////////////////////////
 
-            
+
 
             //Check if we already have an entry for this month
             var existingDay = set.lookup[dayKey];
@@ -567,11 +626,11 @@ FluroDate.timeline = function(items, dateKey, chronological) {
                     items: [],
                 }
 
-                 //console.log('Push to day', existingMonth)
+                //console.log('Push to day', existingMonth)
                 existingMonth.days.push(existingDay);
             }
 
-             //console.log('Push to item', existingDay)
+            //console.log('Push to item', existingDay)
             existingDay.items.push(entry);
 
 
