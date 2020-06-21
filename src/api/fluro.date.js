@@ -61,13 +61,13 @@ FluroDate.isDifferentTimezoneThanUser = function(timezone) {
     var browserTimezone = moment.tz.guess();
 
     if (!timezone) {
-       // console.log('NO TIMEZONE')
+        // console.log('NO TIMEZONE')
         return false;
     }
 
     timezone = String(timezone);
     if (browserTimezone == timezone) {
-       // console.log('TIMEZONE IS SAME')
+        // console.log('TIMEZONE IS SAME')
         return false;
     }
 
@@ -326,7 +326,7 @@ FluroDate.readableEventDate = function(event, style) {
     var differentTimezone = event.timezone && FluroDate.isDifferentTimezoneThanUser(event.timezone);
     var appendage = '';
 
-    if(differentTimezone) {
+    if (differentTimezone) {
         appendage = `(${event.timezone})`;
     }
     ///////////////////////////////////////////////
@@ -511,7 +511,17 @@ FluroDate.groupEventByDate = function(events) {
         .reduce(function(set, row, index) {
 
             var format = 'dddd D MMMM';
-            var startDate = row.startDate ? new moment(row.startDate) : new moment(row.created);
+
+            ////////////////////////////////////
+
+            var startDate = new moment(row.startDate || _.get(row, 'event.startDate') || row.created);
+            if (row.timezone) {
+                startDate.tz(row.timezone);
+            }
+
+            ////////////////////////////////////
+
+            // var startDate = row.startDate ? new moment(row.startDate) : new moment(row.created);
 
             if (moment().format('YYYY') != startDate.format('YYYY')) {
                 format = 'dddd D MMMM YYYY';
@@ -575,15 +585,28 @@ FluroDate.timeline = function(items, dateKey, chronological) {
     //////////////////////////////////
 
     return _.chain(items)
-        .reduce(function(set, entry, index) {
+        .reduce(function(set, entry, index, options) {
 
             var date = new Date(_.get(entry, dateKey));
 
             ////////////////////////////////////////
 
-            var dayKey = moment(date).format('D MMM YYYY');
-            var monthKey = moment(date).format('MMM YYYY');
-            var yearKey = moment(date).format('YYYY');
+            var dayKey;
+            var monthKey;
+            var yearKey;
+
+            var specifiedTimezone = options.timezone || entry.timezone;
+            if (specifiedTimezone && FluroDate.isDifferentTimezoneThanUser(specifiedTimezone)) {
+                dayKey = `${moment(date).tz(specifiedTimezone).format('D MMM YYYY')}`;// (${specifiedTimezone})`;
+                monthKey = `${moment(date).tz(specifiedTimezone).format('MMM YYYY')}`;// (${specifiedTimezone})`;
+                yearKey = `${moment(date).tz(specifiedTimezone).format('YYYY')}`;// (${specifiedTimezone})`;
+
+            } else {
+                dayKey = moment(date).format('D MMM YYYY');
+                monthKey = moment(date).format('MMM YYYY');
+                yearKey = moment(date).format('YYYY');
+            }
+
 
             ////////////////////////////////////////
 
