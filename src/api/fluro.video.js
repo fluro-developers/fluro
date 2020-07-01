@@ -14,26 +14,26 @@ var FluroVideo = {};
 ///////////////////////////////////////////////////////////////////////////////
 
 FluroVideo.getAssetMediaIDFromURL = function(url, type) {
-    
+
     var lowercase = String(url).toLowerCase();
 
-     if(!type) {
-         if(lowercase.includes('youtube')) {
-             type = 'youtube'
-         } else if(lowercase.includes('vimeo')) {
-             type = 'vimeo'
-         }
-     }
+    if (!type) {
+        if (lowercase.includes('youtube')) {
+            type = 'youtube'
+        } else if (lowercase.includes('vimeo')) {
+            type = 'vimeo'
+        }
+    }
 
 
     var mediaID;
-    switch(type) {
+    switch (type) {
         case 'youtube':
             mediaID = FluroVideo.getYouTubeIDFromURL(url)
-        break;
+            break;
         case 'vimeo':
             mediaID = FluroVideo.getVimeoIDFromURL(url)
-        break;
+            break;
     }
 
     return mediaID;
@@ -44,7 +44,7 @@ FluroVideo.getAssetMediaIDFromURL = function(url, type) {
 
 FluroVideo.getYouTubeIDFromURL = function(url) {
 
-    if(!url || !url.length) {
+    if (!url || !url.length) {
         return;
     }
 
@@ -116,10 +116,10 @@ FluroVideo.getYouTubeIDFromURL = function(url) {
 
 FluroVideo.getVimeoIDFromURL = function(url) {
 
-    if(!url || !url.length) {
+    if (!url || !url.length) {
         return;
     }
-    
+
     //Vimeo RegExp
     var reg = /https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/;
     var match = url.match(reg);
@@ -140,48 +140,48 @@ FluroVideo.getVimeoIDFromURL = function(url) {
  */
 FluroVideo.readableMilliseconds = function(milliseconds, withoutSuffix) {
 
-        var oneSecond = 1000;
-        var oneMinute = oneSecond * 60;
-        var oneHour = oneMinute * 60;
-        var oneDay = oneHour * 24;
+    var oneSecond = 1000;
+    var oneMinute = oneSecond * 60;
+    var oneHour = oneMinute * 60;
+    var oneDay = oneHour * 24;
 
-        var seconds = (milliseconds % oneMinute) / oneSecond;
-        var minutes = Math.floor((milliseconds % oneHour) / oneMinute);
-        var hours = Math.floor((milliseconds % oneDay) / oneHour);
-        var days = Math.floor(milliseconds / oneDay);
+    var seconds = (milliseconds % oneMinute) / oneSecond;
+    var minutes = Math.floor((milliseconds % oneHour) / oneMinute);
+    var hours = Math.floor((milliseconds % oneDay) / oneHour);
+    var days = Math.floor(milliseconds / oneDay);
 
 
-        var timeString = '';
+    var timeString = '';
 
-        if(withoutSuffix) {
-            if (days !== 0) {
-                timeString += (days !== 1) ? (days + 'd ') : (days + 'd ');
-            }
-            if (hours !== 0) {
-                timeString += (hours !== 1) ? (hours + 'h ') : (hours + 'h ');
-            }
-            if (minutes !== 0) {
-                timeString += (minutes !== 1) ? (minutes + 'm ') : (minutes + 'm ');
-            }
-            if (seconds !== 0 || milliseconds < 1000) {
-                timeString += (seconds !== 1) ? (seconds.toFixed(0) + 's ') : (seconds.toFixed(0) + 's ');
-            }
-        } else {
-            if (days !== 0) {
-                timeString += (days !== 1) ? (days + ' days ') : (days + ' day ');
-            }
-            if (hours !== 0) {
-                timeString += (hours !== 1) ? (hours + ' hrs ') : (hours + 'hr ');
-            }
-            if (minutes !== 0) {
-                timeString += (minutes !== 1) ? (minutes + ' mins ') : (minutes + 'min ');
-            }
-            if (seconds !== 0 || milliseconds < 1000) {
-                timeString += (seconds !== 1) ? (seconds.toFixed(0) + 's ') : (seconds.toFixed(0) + 's ');
-            }
+    if (withoutSuffix) {
+        if (days !== 0) {
+            timeString += (days !== 1) ? (days + 'd ') : (days + 'd ');
         }
+        if (hours !== 0) {
+            timeString += (hours !== 1) ? (hours + 'h ') : (hours + 'h ');
+        }
+        if (minutes !== 0) {
+            timeString += (minutes !== 1) ? (minutes + 'm ') : (minutes + 'm ');
+        }
+        if (seconds !== 0 || milliseconds < 1000) {
+            timeString += (seconds !== 1) ? (seconds.toFixed(0) + 's ') : (seconds.toFixed(0) + 's ');
+        }
+    } else {
+        if (days !== 0) {
+            timeString += (days !== 1) ? (days + ' days ') : (days + ' day ');
+        }
+        if (hours !== 0) {
+            timeString += (hours !== 1) ? (hours + ' hrs ') : (hours + 'hr ');
+        }
+        if (minutes !== 0) {
+            timeString += (minutes !== 1) ? (minutes + ' mins ') : (minutes + 'min ');
+        }
+        if (seconds !== 0 || milliseconds < 1000) {
+            timeString += (seconds !== 1) ? (seconds.toFixed(0) + 's ') : (seconds.toFixed(0) + 's ');
+        }
+    }
 
-        return timeString;
+    return timeString;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -198,32 +198,32 @@ FluroVideo.readableSeconds = function(seconds, withoutSuffix) {
 
     return FluroVideo.readableMilliseconds(seconds * 1000, withoutSuffix);
 
-        // var milliseconds = seconds * 1000;
-        // var oneSecond = 1000;
-        // var oneMinute = oneSecond * 60;
-        // var oneHour = oneMinute * 60;
-        // var oneDay = oneHour * 24;
+    // var milliseconds = seconds * 1000;
+    // var oneSecond = 1000;
+    // var oneMinute = oneSecond * 60;
+    // var oneHour = oneMinute * 60;
+    // var oneDay = oneHour * 24;
 
-        // var seconds = (milliseconds % oneMinute) / oneSecond;
-        // var minutes = Math.floor((milliseconds % oneHour) / oneMinute);
-        // var hours = Math.floor((milliseconds % oneDay) / oneHour);
-        // var days = Math.floor(milliseconds / oneDay);
+    // var seconds = (milliseconds % oneMinute) / oneSecond;
+    // var minutes = Math.floor((milliseconds % oneHour) / oneMinute);
+    // var hours = Math.floor((milliseconds % oneDay) / oneHour);
+    // var days = Math.floor(milliseconds / oneDay);
 
-        // var timeString = '';
-        // if (days !== 0) {
-        //     timeString += (days !== 1) ? (days + ' days ') : (days + ' day ');
-        // }
-        // if (hours !== 0) {
-        //     timeString += (hours !== 1) ? (hours + ' hrs ') : (hours + 'hr ');
-        // }
-        // if (minutes !== 0) {
-        //     timeString += (minutes !== 1) ? (minutes + ' mins ') : (minutes + 'min ');
-        // }
-        // if (seconds !== 0 || milliseconds < 1000) {
-        //     timeString += (seconds !== 1) ? (seconds.toFixed(1) + 's ') : (seconds.toFixed(1) + 's ');
-        // }
+    // var timeString = '';
+    // if (days !== 0) {
+    //     timeString += (days !== 1) ? (days + ' days ') : (days + ' day ');
+    // }
+    // if (hours !== 0) {
+    //     timeString += (hours !== 1) ? (hours + ' hrs ') : (hours + 'hr ');
+    // }
+    // if (minutes !== 0) {
+    //     timeString += (minutes !== 1) ? (minutes + ' mins ') : (minutes + 'min ');
+    // }
+    // if (seconds !== 0 || milliseconds < 1000) {
+    //     timeString += (seconds !== 1) ? (seconds.toFixed(1) + 's ') : (seconds.toFixed(1) + 's ');
+    // }
 
-        // return timeString;
+    // return timeString;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -238,19 +238,35 @@ FluroVideo.readableSeconds = function(seconds, withoutSuffix) {
  */
 
 FluroVideo.hhmmss = function(secs) {
-        function pad(str) {
-            return ("0" + str).slice(-2);
-        }
 
-        // function hhmmss(secs) {
-        var minutes = Math.floor(secs / 60);
-        secs = secs % 60;
-        var hours = Math.floor(minutes / 60)
-        minutes = minutes % 60;
-        return pad(hours) + ":" + pad(minutes) + ":" + pad(secs);
-        // return pad(minutes)+":"+pad(secs);
-        // }
-        // return hhmmss(seconds);
+
+    function secToTimer(sec) {
+        let o = new Date(0)
+        let p = new Date(sec * 1000)
+        return new Date(p.getTime() - o.getTime())
+            .toISOString()
+            .split("T")[1]
+            .split("Z")[0]
+    }
+
+
+    return secToTimer(secs).split('.')[0];
+
+
+
+    // function pad(str) {
+    //     return ("0" + str).slice(-2);
+    // }
+
+    // // function hhmmss(secs) {
+    // var minutes = Math.floor(secs / 60);
+    // secs = secs % 60;
+    // var hours = Math.floor(minutes / 60)
+    // minutes = minutes % 60;
+    // return pad(hours) + ":" + pad(minutes) + ":" + pad(secs);
+    // return pad(minutes)+":"+pad(secs);
+    // }
+    // return hhmmss(seconds);
 }
 
 

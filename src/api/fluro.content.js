@@ -288,7 +288,7 @@ var FluroContent = function(fluro) {
      * @param  {Object} options.variables Any query variables you wish to inject each key will be mapped ?variables[key]=value
      * @return {Promise}         A promise that will be resolved with the results or an error
      */
-    service.query = function(queryID, options) {
+    service.query = function(queryID, options, requestOptions) {
 
         //Get as just a query
         queryID = fluro.utils.getStringID(queryID);
@@ -297,12 +297,14 @@ var FluroContent = function(fluro) {
             options = {}
         }
 
-        return new Promise(function(resolve, reject) {
-
-
-            var requestOptions = {
-                params: {}
+        if (!requestOptions) {
+            requestOptions = {
+                params:{},
             }
+        }
+        
+
+        return new Promise(function(resolve, reject) {
 
             //If there are query string parameters
             if (options.params) {
@@ -491,23 +493,23 @@ var FluroContent = function(fluro) {
      * //Find all events that have a status of active or archived where the endDate is greater than or equal to now and return the titles
      * fluro.content.retrieve({_type:'event', status:{$in:['active', 'archived']}, endDate:{$gte:"date('now')"}}}, {select:'title'})
      */
-    service.retrieve = function(criteria, options) {
+    service.retrieve = function(criteria, params, requestOptions) {
 
-        if (!options) {
-            options = {}
+        if (!params) {
+            params = {}
+        }
+
+        if(!requestOptions) {
+            requestOptions = {}
         }
 
 
         return new Promise(function(resolve, reject) {
 
 
-            var requestOptions = {
-                params: {}
-            }
-
             //If there are query string parameters
-            if (options) {
-                requestOptions.params = options;
+            if (params) {
+                requestOptions.params = params;
             }
 
             /////////////////////////////////////////////
@@ -537,7 +539,9 @@ var FluroContent = function(fluro) {
      * //Retrieve some related items for '5be504eabf33991239599d63'
      * fluro.content.related('5be504eabf33991239599d63', {select:'title'})
      */
-    service.related = function(id, params) {
+    service.related = function(id, params, requestOptions) {
+
+
 
 
         id = fluro.utils.getStringID(id);
@@ -546,15 +550,16 @@ var FluroContent = function(fluro) {
             throw Error(`No id specified ${id}`);
         }
 
+
+         if(!requestOptions) {
+            requestOptions = {}
+        }
+
         if (!params) {
             params = {}
         }
 
         return new Promise(function(resolve, reject) {
-
-            var requestOptions = {
-                params: {}
-            }
 
             //If there are query string parameters
             if (params) {
@@ -595,22 +600,27 @@ var FluroContent = function(fluro) {
      * //Retrieve a form ('58dca23c21428d2d045a1cf7') in testing mode
      * fluro.content.form('58dca23c21428d2d045a1cf7', {testing:true})
      */
-    service.form = function(id, options) {
+    service.form = function(id, options, requestOptions) {
         id = fluro.utils.getStringID(id);
 
         if (!id) {
             throw Error(`No id specified ${id}`);
         }
 
+        if (!requestOptions) {
+            requestOptions = {}
+        }
+
         if (!options) {
             options = {}
         }
 
+        if (options.requestOptions) {
+            requestOptions = options.requestOptions;
+        }
+
         return new Promise(function(resolve, reject) {
 
-            var requestOptions = options.requestOptions || {
-                // params: {}
-            }
 
             //If there are query string parameters
             // if (params) {
