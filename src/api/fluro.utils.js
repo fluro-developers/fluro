@@ -739,6 +739,7 @@ FluroUtils.injectModule = function(scriptURL, options) {
 
 ////////////////////////////////////
 
+
 /**
  * Helper function for getting a flattened list of all nested fields
  * defined for a definition in Fluro
@@ -751,6 +752,14 @@ FluroUtils.injectModule = function(scriptURL, options) {
 
 FluroUtils.getFlattenedFields = function(array, trail, titles) {
 
+    if(!trail) {
+        trail = [];
+    }
+
+    if(!titles) {
+        titles = [];
+    }
+    
     return _.chain(array)
         .map(function(field, key) {
 
