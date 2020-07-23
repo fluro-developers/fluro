@@ -40,6 +40,31 @@ FluroDate.timezones = function() {
     return moment.tz.names();
 }
 
+
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A function that converts a timestamp string '13:30' to '1:30pm';
+ * @alias FluroDate.timestampToAmPm
+ * @return {Array}                   An array of all availble timezones.
+ */
+
+FluroDate.timestampToAmPm = function(s) {
+
+    s = s.split(':').join('');
+
+    var am = true;
+    var hours = parseInt(s.substring(0,2));
+    var mins = parseInt(s.substring(2));
+
+    if(hours > 12) {
+        am = false;
+        hours = hours - 12;
+    }
+
+    return `${hours}:${minutes}${am ? 'am' : 'pm'}`;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -597,9 +622,9 @@ FluroDate.timeline = function(items, dateKey, chronological) {
 
             var specifiedTimezone = options.timezone || entry.timezone;
             if (specifiedTimezone && FluroDate.isDifferentTimezoneThanUser(specifiedTimezone)) {
-                dayKey = `${moment(date).tz(specifiedTimezone).format('D MMM YYYY')}`;// (${specifiedTimezone})`;
-                monthKey = `${moment(date).tz(specifiedTimezone).format('MMM YYYY')}`;// (${specifiedTimezone})`;
-                yearKey = `${moment(date).tz(specifiedTimezone).format('YYYY')}`;// (${specifiedTimezone})`;
+                dayKey = `${moment(date).tz(specifiedTimezone).format('D MMM YYYY')}`; // (${specifiedTimezone})`;
+                monthKey = `${moment(date).tz(specifiedTimezone).format('MMM YYYY')}`; // (${specifiedTimezone})`;
+                yearKey = `${moment(date).tz(specifiedTimezone).format('YYYY')}`; // (${specifiedTimezone})`;
 
             } else {
                 dayKey = moment(date).format('D MMM YYYY');

@@ -1063,6 +1063,7 @@ var FluroAccess = function(FluroCore) {
         var params = {
             definition: definition,
             parentType: type,
+            type,
         }
 
         ///////////////////////////////////
