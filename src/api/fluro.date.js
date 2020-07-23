@@ -51,6 +51,9 @@ FluroDate.timezones = function() {
 
 FluroDate.timestampToAmPm = function(s) {
 
+    if(!s) {
+        s = '';
+    }
     s = s.split(':').join('');
 
     var am = true;
