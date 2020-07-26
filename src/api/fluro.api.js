@@ -285,7 +285,7 @@ var FluroAPI = function(fluro) {
 
 
     /**
-     * @name FluroAPI.get
+     * @name fluro.api.get
      * @description Makes a get http request to the Fluro REST API
      * @function
      * @param {String} path The Fluro API endpoint to request
@@ -309,7 +309,7 @@ var FluroAPI = function(fluro) {
 
 
     /**
-     * @name FluroAPI.post
+     * @name fluro.api.post
      * @description Makes a post http request to the Fluro REST API
      * @function
      * @param {String} path The Fluro API endpoint to request
@@ -328,7 +328,7 @@ var FluroAPI = function(fluro) {
      */
 
     /**
-     * @name FluroAPI.put
+     * @name fluro.api.put
      * @description Makes a put http request to the Fluro REST API
      * @function
      * @param {String} path The Fluro API endpoint to request
@@ -347,7 +347,7 @@ var FluroAPI = function(fluro) {
      */
 
     /**
-     * @name FluroAPI.delete
+     * @name fluro.api.delete
      * @description Makes a delete http request to the Fluro REST API
      * @function
      * @param {String} path The Fluro API endpoint to request

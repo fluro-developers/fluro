@@ -132,11 +132,11 @@ FluroVideo.getVimeoIDFromURL = function(url) {
 
 
 /**
- * @alias FluroVideo.readableMilliseconds
+ * @alias fluro.video.readableMilliseconds
  * @param  {Number} milliseconds The number of milliseconds to get duration for
  * @return {String}            The query string
  * @example 
- * Fluro.readableMilliseconds(100000)
+ * fluro.video.readableMilliseconds(100000)
  */
 FluroVideo.readableMilliseconds = function(milliseconds, withoutSuffix) {
 
@@ -187,11 +187,11 @@ FluroVideo.readableMilliseconds = function(milliseconds, withoutSuffix) {
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @alias FluroVideo.readableSeconds
+ * @alias fluro.video.readableSeconds
  * @param  {Number} seconds The number of seconds to get duration for
  * @return {String}            The query string
  * @example 
- * Fluro.readableSeconds(10)
+ * fluro.video.readableSeconds(10)
  */
 
 FluroVideo.readableSeconds = function(seconds, withoutSuffix) {
@@ -229,12 +229,12 @@ FluroVideo.readableSeconds = function(seconds, withoutSuffix) {
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @alias FluroVideo.hhmmss
+ * @alias fluro.video.hhmmss
  * @param  {Number} seconds The number of seconds to get duration for
  * @return {String}            The query string
  * @example 
  * //Returns 01:02:00
- * Fluro.hhmmss(62)
+ * fluro.video.hhmmss(62)
  */
 
 FluroVideo.hhmmss = function(secs) {

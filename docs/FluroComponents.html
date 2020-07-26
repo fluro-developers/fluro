@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>fluro.cache.js - Documentation</title>
+    <title>FluroComponents - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -32,74 +32,191 @@
 
 <div id="main">
     
-    <h1 class="page-title">fluro.cache.js</h1>
+    <h1 class="page-title">FluroComponents</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import _ from 'lodash';
+        <h2>
+        FluroComponents
+        </h2>
+        
+    
+</header>
 
-import {Cache} from 'axios-extensions';
-
-
-///////////////////////////////////////////////////////////////////////////////
-
-var caches = {};
-
-
-/**
- * @classdesc A static service that provides tools for caching api requests and other information
- * @class
- * @hideconstructor
- */
-var FluroCache = {
-
-    ///////////////////////////////////////////////////
+<article>
+    
+        <div class="container-overview">
+        
+            
 
     
-    /**
-     * A helper function to reset all cache objects, useful if changing account or logging in or out as another user     
-     * @alias fluro.cache.reset    
-     */
-    reset() {
-        _.each(caches, function(cache, key) {
-            // console.log(`Reset ${key} cache`, cache);
-            cache.reset();
-        })
-    },
 
-    ///////////////////////////////////////////////////
+    <h4 class="name" id="FluroComponents"><span class="type-signature"></span>new FluroComponents<span class="signature">(fluro)</span><span class="type-signature"></span></h4>
 
-    /**
-     * A helper function to retrieve a specific cache  
-     * @alias fluro.cache.get    
-     * @param  {string} key The key for the cache you want to retrieve
-     * @return {LRUCache} The cache store for the specified key
-     */
-    get(key, options) {
-
-        if (caches[key]) {
-            return caches[key];
-        }
-        caches[key] = new Cache(options)
-
-        // console.log('Created new cache', key);
-        return caches[key];
-
-    }
-}
+    
 
 
-///////////////////////////////////////////////////////////////////////////////
 
-export default FluroCache;</code></pre>
-        </article>
-    </section>
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.components.js.html">fluro.components.js</a>, <a href="fluro.components.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Creates a new FluroComponents instance.
+This module provides a number of helper functions for working with Fluro components
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fluro</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="FluroCore.html">FluroCore</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A reference to the parent instance of the FluroCore module. This module is usually created by a FluroCore instance that passes itself in as the first argument.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

@@ -190,7 +190,7 @@ var FluroTypes = function(FluroCore) {
 
     /**
      * Retrieves a specified definition or primitive type object
-     * @alias FluroTypes.get
+     * @alias fluro.types.get
      * @param  {string} definedName The definition or type name you want to retrieve
      * @param  {object} options extra options for the request
      * @return {promise}       An promise that will resolve to the type definition from Fluro
@@ -222,13 +222,13 @@ var FluroTypes = function(FluroCore) {
 
     /**
      * A helpful function for mapping an array of items into a grouped array broken up by definition
-     * @alias FluroTypes.mapDefinitionItems
+     * @alias fluro.types.mapDefinitionItems
      * @param  {Array} array An array of content items
      * @param  {String} baseType The default base type to map, eg. 'tag', 'contact', 'event'
      * @return {Array}            A mapped array broken up by definition
      * @example 
      * //Returns {something:[{title:'Demographic', plural:'Demographics',  key:'demographic', entries:[{...},{...}]}]}
-     * FluroTypes.mapDefinitionItems([{title:'test', definition:'demographic'}], 'tag');
+     * fluro.types.mapDefinitionItems([{title:'test', definition:'demographic'}], 'tag');
      * 
      */
     service.mapDefinitionItems = function(array, backup) {
@@ -273,7 +273,7 @@ var FluroTypes = function(FluroCore) {
 
     /**
      * Retrieves all definitions available in the current account. Useful for making one request and caching
-     * @alias FluroTypes.all
+     * @alias fluro.types.all
      * @param  {object} options extra options for the request
      * @return {promise}       An promise that will resolve to the array of definitions
      */
@@ -301,7 +301,7 @@ var FluroTypes = function(FluroCore) {
     //////////////////////////////////
     /**
      * Retrieves all definitions available in the current account. Useful for making one request and caching
-     * @alias FluroTypes.terms
+     * @alias fluro.types.terms
      * @param  {object} options extra options for the request
      * @return {promise}       An promise that will resolve to the array of definitions and their names
      */
@@ -374,7 +374,7 @@ var FluroTypes = function(FluroCore) {
 
     /**
      * Retrieves a glossary of glossary for readable definition titles and plurals
-     * @alias FluroTypes.reloadTerminology
+     * @alias fluro.types.reloadTerminology
      * @return {promise}       An promise that will resolve to the matching basic types or reject with the responding error
      */
    
@@ -458,7 +458,7 @@ var FluroTypes = function(FluroCore) {
 
     /**
      * Input a definition name or basic type and receive the human readable version of that type
-     * @alias FluroTypes.readable
+     * @alias fluro.types.readable
      * @param  {String} definitionName The definition or _type
      * @param  {Boolean} plural Whether to return it's plural version
      * @return {String}  Eg. 'Audio', 'Detail Sheet', or 'Events'...
@@ -488,7 +488,7 @@ var FluroTypes = function(FluroCore) {
 
     /**
      * Input a definition name or basic type and receive the basic details about that definition
-     * @alias FluroTypes.term
+     * @alias fluro.types.term
      * @param  {String} definitionName The definition or _type
      * @return {Object}  The details about this definition as defined in the glossary
      */
@@ -503,7 +503,7 @@ var FluroTypes = function(FluroCore) {
 
     /**
      * Input a definition name or basic type and receive the most basic _type of that definition
-     * @alias FluroTypes.parentType
+     * @alias fluro.types.parentType
      * @param  {String} definitionName The definition or _type
      * @return {String}  Eg. 'photo', 'service', or 'song'...
      */
@@ -524,7 +524,7 @@ var FluroTypes = function(FluroCore) {
 
     /**
      * Retrieve an array of all basic types
-     * @alias FluroTypes.basicTypes
+     * @alias fluro.types.basicTypes
      * @return {Array}  eg. 'service', 'concert', 'conference'
      */
     service.basicTypes = function() {
@@ -539,7 +539,7 @@ var FluroTypes = function(FluroCore) {
 
     /**
      * Input a definition name or basic type and receive the most basic _type of that definition
-     * @alias FluroTypes.subTypes
+     * @alias fluro.types.subTypes
      * @param  {String} definitionName The basic _type
      * @param  {Boolean} includeBasicType Whether to include the basic type definition in the results
      * @return {Array}  eg. 'service', 'concert', 'conference'
@@ -593,7 +593,7 @@ var FluroTypes = function(FluroCore) {
 
     /**
      * Input a definition name or basic type and receive the most basic _type of that definition
-     * @alias FluroTypes.postableTypes
+     * @alias fluro.types.postableTypes
      * @param  {String} definitionName The definition or _type
      * @param  {Object} options Extra options
      * @return {Array} an array of definitions that can be posted
@@ -654,7 +654,7 @@ var FluroTypes = function(FluroCore) {
 
     /**
      * Input a definition name or basic type and receive the most basic _type of that definition
-     * @alias FluroTypes.postableTypes
+     * @alias fluro.types.postableTypes
      * @param  {String} definitionName The definition or _type
      * @param  {Object} options Extra options
      * @return {Array} an array of definitions that can be posted
@@ -700,7 +700,7 @@ var FluroTypes = function(FluroCore) {
     // /**
     //  * Input definition names or basic types and receive a list of all
     //  * posts that can be attached to that type of content
-    //  * @alias FluroTypes.postTypes
+    //  * @alias fluro.types.postTypes
     //  * @param  {Array} definitionNames The definitions or _types to check
     //  * @param  {Object} options Extra options
     //  * @return {Array} an array of definitions that can be posted
@@ -731,7 +731,7 @@ var FluroTypes = function(FluroCore) {
 
     /**
      * Retrieves a list of specified types and their respective definitions
-     * @alias FluroTypes.retrieve
+     * @alias fluro.types.retrieve
      * @param  {array} types The names of the basic types you want to retrieve
      * @return {promise}       An promise that will resolve to the matching basic types or reject with the responding error
      */

@@ -6,7 +6,7 @@ import { EventDispatcher } from './fluro.utils';
 
 
 /**
- * Creates a new FluroAsset instance.
+ * Creates a new FluroAuth instance.
  * This module provides a number of helper functions for authentication, logging in, signing up, generating and refreshing tokens
  * 
  * @constructor

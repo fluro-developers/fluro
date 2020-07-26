@@ -84,16 +84,16 @@ var FluroAsset = function(Fluro) {
      * 
      * This function generates a url for the binary data of an
      * asset, image, audio, or video file that has been uploaded to Fluro
-     * @alias FluroAsset.getUrl
+     * @alias fluro.asset.getUrl
      * @param  {string} assetID The _id of the item you want to retrieve
      * @param  {object} params      
      * @return {string}         A valid Fluro URL
      * @example
      * // returns 'https://api.fluro.io/get/5be504eabf33991239599d63'
-     * FluroAsset.getUrl('5be504eabf33991239599d63')
+     * fluro.asset.getUrl('5be504eabf33991239599d63')
      * 
      * // returns 'https://api.fluro.io/get/5be504eabf33991239599d63/file/MyFile.pdf'
-     * FluroAsset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})
+     * fluro.asset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})
      */
 
 
@@ -137,13 +137,13 @@ var FluroAsset = function(Fluro) {
      * 
      * This function generates a player url for a video file that has been uploaded to Fluro
      * This is useful to force browsers to renderer a html5 video player instead of downloading the video file on desktop
-     * @alias FluroAsset.playerUrl
+     * @alias fluro.asset.playerUrl
      * @param  {string} videoID The _id of the video you want to play
      * @param  {object} params      
      * @return {string}         A valid Fluro URL
      * @example
      * // returns 'https://api.fluro.io/get/player?url=https://api.fluro.io/get/5be504eabf33991239599d63'
-     * FluroAsset.playerUrl('5be504eabf33991239599d63')
+     * fluro.asset.playerUrl('5be504eabf33991239599d63')
      */
 
 
@@ -184,7 +184,7 @@ var FluroAsset = function(Fluro) {
 
     /**
      * A helper function to generate a url for retrieving a user, persona or contact's avatar  
-     * @alias FluroAsset.avatarUrl      
+     * @alias fluro.asset.avatarUrl      
      * @param  {string} personID The id of the person you want to retrieve the avatar for
      * @param  {string} style    Can be 'contact', 'persona' or 'user'
      * @param  {object} params   
@@ -193,7 +193,7 @@ var FluroAsset = function(Fluro) {
      * @return {string}          A full URL that links to the image the user is requesting
      * @example
      * // returns 'https://api.fluro.io/get/avatar/contact/5be504eabf33991239599d63?w=100&h=100'
-     * FluroAsset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})
+     * fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})
      * 
      */
 
@@ -237,7 +237,7 @@ var FluroAsset = function(Fluro) {
 
     /**
      * A helper function to retrieve the main image for an event, group, realm or other content
-     * @alias FluroAsset.coverUrl
+     * @alias fluro.asset.coverUrl
      * @param  {string} contentID The id of the item you want to retrieve the image for
      * @param  {string} style    Can be 'event', 'group', 'tag' or 'realm'
      * @param  {object} params   
@@ -246,7 +246,7 @@ var FluroAsset = function(Fluro) {
      * @return {string}          A full URL that links to the image the user is requesting
      * @example
      * // returns 'https://api.fluro.io/get/event/5be504eabf33991239599d63?w=100&h=100'
-     * FluroAsset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})
+     * fluro.asset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})
      * 
      */
 
@@ -295,17 +295,17 @@ var FluroAsset = function(Fluro) {
     /**
      * A helper function that returns a download url for a specific asset
      * @param  {string} assetID The id of the asset, or the asset object you want to download
-     * @alias FluroAsset.downloadUrl
+     * @alias fluro.asset.downloadUrl
      * @param  {object} params   
      * @param  {string} params.filename The filename you want to download the file as
      * @param  {string} params.extension The extension of the file you want to download, eg. 'pdf'  
      * @return {string}          A full URL that will download the file
      * @example
      * // returns 'https://api.fluro.io/download/5be504eabf33991239599d63'
-     * FluroAsset.downloadUrl('5be504eabf33991239599d63')
+     * fluro.asset.downloadUrl('5be504eabf33991239599d63')
      * 
      * // returns 'https://api.fluro.io/download/5be504eabf33991239599d63/file/MyFile.docx'
-     * FluroAsset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})
+     * fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})
      * 
      */
 
@@ -346,16 +346,16 @@ var FluroAsset = function(Fluro) {
 
     /**
      * A helper function that returns what type of content Fluro will attribute a specified mimetype to
-     * @alias FluroAsset.typeFromMime
+     * @alias fluro.asset.typeFromMime
      * @param  {string} mimetype The mimetype of a file
      * @return {string}          Whether this mimetype is an 'asset', 'video', 'image', or 'audio' file
      * @example
      * // returns 'audio'
-     * FluroAsset.typeFromMime('audio/aac')
+     * fluro.asset.typeFromMime('audio/aac')
      * // returns 'video'
-     * FluroAsset.typeFromMime('video/ogg')
+     * fluro.asset.typeFromMime('video/ogg')
      * // returns 'asset'
-     * FluroAsset.typeFromMime('application/pdf')
+     * fluro.asset.typeFromMime('application/pdf')
      * 
      */
 
@@ -408,7 +408,7 @@ var FluroAsset = function(Fluro) {
 
     /**
      * A helper function that returns a poster image for a specified video
-     * @alias FluroAsset.posterUrl
+     * @alias fluro.asset.posterUrl
      * @param  {string} videoID The id of the video, or a video object that has an _id property
      * @param  {number} width The width of the poster image. If none specified will default to 16:9 based on the requesting user's screen size
      * @param  {number} height The height of the poster image. If none specified will default to 16:9 based on the requesting user's screen size
@@ -416,14 +416,14 @@ var FluroAsset = function(Fluro) {
      * @return {string}          A full URL of the poster image
      * @example
      * // returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63?w=1920&h=1080'
-     * FluroAsset.posterUrl('5be504eabf33991239599d63', 1920, 1080)
+     * fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, 1080)
      *
      * // returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63/file/file.jpg?w=1920&h=1080'
-     * FluroAsset.posterUrl('5be504eabf33991239599d63', 1920, 1080, {extension:'jpg'})
+     * fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, 1080, {extension:'jpg'})
      * 
      * //Not providing a height property will default to 16:9 ratio inferred from the width 
      * //returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63/file/MyPoster.jpg?w=1920&h=1080'
-     * FluroAsset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoster.jpg'})
+     * fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoster.jpg'})
      * 
      * 
      */
@@ -544,7 +544,7 @@ var FluroAsset = function(Fluro) {
 
     /**
      * A helper function that creates a url image for a specified image
-     * @alias FluroAsset.imageUrl
+     * @alias fluro.asset.imageUrl
      * @param  {string} imageID The id of the image or an object representing the image that has an _id property
      * @param  {Integer} width The width of the image to retrieve from Fluro. If none is specified then will default to a size based on the requesting user's screen dimensions.
      * @param  {Integer} height The height of the image to retrieve from Fluro. If none is specified then will default to a size based on the requesting user's screen dimensions.
@@ -555,10 +555,10 @@ var FluroAsset = function(Fluro) {
      * @return {string}          A full URL of the image
      * @example
      * // returns 'https://api.fluro.io/get/5be504eabf33991239599d63?w=800'
-     * FluroAsset.imageUrl('5be504eabf33991239599d63', 800)
+     * fluro.asset.imageUrl('5be504eabf33991239599d63', 800)
      * 
      * // returns 'https://api.fluro.io/get/5be504eabf33991239599d63/file/image.jpg?w=800'
-     * FluroAsset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pdf'})
+     * fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pdf'})
      */
 
 
@@ -663,12 +663,12 @@ var FluroAsset = function(Fluro) {
 
     /**
      * Helper function to translate bytes into a human readable format
-     * @alias FluroAsset.filesize
+     * @alias fluro.asset.filesize
      * @param  {Integer} bytes The number of bytes
      * @return {String}       The human readable filesize
      * @example
      * // returns '1mb'
-     * FluroAsset.filesize(1000000)
+     * fluro.asset.filesize(1000000)
      */
     service.filesize = function(bytes) {
         var sizes = ['Bytes', 'kb', 'mb', 'gb', 'tb'];

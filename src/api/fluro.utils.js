@@ -17,12 +17,12 @@ var FluroUtils = {};
 
 /**
  * A helpful function that can take a keyed object literal and map it to url query string parameters
- * @alias FluroUtils.mapParameters
+ * @alias fluro.utils.mapParameters
  * @param  {Object} parameters The object you want to transalte
  * @return {String}            The query string
  * @example 
  * //Returns &this=that&hello=world
- * FluroUtils.mapParameters({"this":"that", "hello":"world"})
+ * fluro.utils.mapParameters({"this":"that", "hello":"world"})
  */
 FluroUtils.mapParameters = function(parameters) {
     return _.chain(parameters)
@@ -45,17 +45,17 @@ FluroUtils.mapParameters = function(parameters) {
 
 /**
  * A function that will take an integer and a currency string and return a formatted numeric amount rounded to 2 decimal places
- * @alias FluroUtils.formatCurrency
+ * @alias fluro.utils.formatCurrency
  * @param  {Integer} value The amount in cents
  * @param  {String} currency The currency to format
  * @return {String}            The formatted value
  * @example 
  * 
  * //Returns £10.00
- * FluroUtils.formatCurrency(1000, 'gbp');
+ * fluro.utils.formatCurrency(1000, 'gbp');
  * 
  * //Returns $10.00
- * FluroUtils.formatCurrency(1000, 'usd');
+ * fluro.utils.formatCurrency(1000, 'usd');
  * 
  */
 FluroUtils.formatCurrency = function(value, currency) {
@@ -72,16 +72,16 @@ FluroUtils.formatCurrency = function(value, currency) {
 
 /**
  * A function that will take a currency string and return the symbol
- * @alias FluroUtils.currencySymbol
+ * @alias fluro.utils.currencySymbol
  * @param  {String} currency The currency
  * @return {String}            The symbol
  * @example 
  * 
  * //Returns £
- * FluroUtils.currencySymbol('gbp');
+ * fluro.utils.currencySymbol('gbp');
  * 
  * //Returns $
- * FluroUtils.currencySymbol('usd');
+ * fluro.utils.currencySymbol('usd');
  * 
  */
 FluroUtils.currencySymbol = function(currency) {
@@ -105,13 +105,13 @@ FluroUtils.currencySymbol = function(currency) {
 
 /**
  * A helpful function for creating a fast hash object that can be used for more efficient loops
- * @alias FluroUtils.hash
+ * @alias fluro.utils.hash
  * @param  {Array} array The array to reduce
  * @param  {String} key The key or path to the property to group by
  * @return {Object}            A hash object literal
  * @example 
  * //Returns {something:[{title:'test', definition:'something'}]}
- * FluroUtils.mapReduce([{title:'test', definition:'something'}], 'definition');
+ * fluro.utils.mapReduce([{title:'test', definition:'something'}], 'definition');
  * 
  */
 FluroUtils.hash = function(array, key) {
@@ -129,11 +129,11 @@ FluroUtils.hash = function(array, key) {
 
 /**
  * A helpful function that can create a globally unique id
- * @alias FluroUtils.guid
+ * @alias fluro.utils.guid
  * @return {String}            The new guid
  * @example 
  * //Returns 20354d7a-e4fe-47af-8ff6-187bca92f3f9
- * FluroUtils.guid()
+ * fluro.utils.guid()
  */
 FluroUtils.guid = function() {
     var u = (new Date()).getTime().toString(16) +
@@ -150,7 +150,7 @@ FluroUtils.guid = function() {
 
 /**
  * A helper function to extract a default value from a fluro field definition
- * @alias FluroUtils.getDefaultValueForField
+ * @alias fluro.utils.getDefaultValueForField
  * @return {String|Number|Object}            The default value
  */
 FluroUtils.getDefaultValueForField = function(field) {
@@ -274,7 +274,7 @@ FluroUtils.getDefaultValueForField = function(field) {
 /**
  * A helpful function that can return a subset of an array compared to specified criteria, This is usually used
  * to evaluate expressions on Fluro forms
- * @alias FluroUtils.matchInArray
+ * @alias fluro.utils.matchInArray
  * @param  {Array} array The array you want to filter
  * @param  {String} path The path to the property you want to compare on each item in the array
  * @param  {String} value The value to compare with
@@ -282,7 +282,7 @@ FluroUtils.getDefaultValueForField = function(field) {
  * @return {Array}           An array that contains all items that matched
  * @example 
  * //Returns {name:'Jerry', age:26} as that is only item in the array that matches the criteria
- * FluroUtils.matchInArray([{name:'Jerry', age:26}, {name:'Susan', age:19}], 'age', 26, '>=');
+ * fluro.utils.matchInArray([{name:'Jerry', age:26}, {name:'Susan', age:19}], 'age', 26, '>=');
  * 
  */
 FluroUtils.matchInArray = function(array, key, value, operator) {
@@ -336,16 +336,16 @@ FluroUtils.matchInArray = function(array, key, value, operator) {
 /**
  * A helpful class that can take an array of values and return them as a comma seperated
  * string, If the values are objects, then a property to use as the string representation can be specified
- * @alias FluroUtils.comma
+ * @alias fluro.utils.comma
  * @param  {Array} array The array of values to translate
  * @param  {String} path  An optional property key to use for each value
  * @return {String}       The resulting comma seperated string
  * @example
  * //Returns 'cat, dog, bird'
- * FluroUtils.comma(['cat', 'dog', 'bird']);
+ * fluro.utils.comma(['cat', 'dog', 'bird']);
  * 
  * //Returns 'cat, dog, bird'
- * FluroUtils.comma([{title:'cat'}, {title:'dog'}, {title:'bird'}], 'title');
+ * fluro.utils.comma([{title:'cat'}, {title:'dog'}, {title:'bird'}], 'title');
  */
 FluroUtils.comma = function(array, path, limit) {
 
@@ -373,7 +373,7 @@ FluroUtils.comma = function(array, path, limit) {
 
 /**
  * Returns a specified _id for an object
- * @alias FluroUtils.getStringID
+ * @alias fluro.utils.getStringID
  * @param  {Object} input      An object that is or has an _id property
  * @param  {Boolean} asObjectID Whether to convert to a Mongo ObjectId
  * @return {String}            Will return either a string or a Mongo ObjectId
@@ -381,7 +381,7 @@ FluroUtils.comma = function(array, path, limit) {
  * @example
  *
  * //Returns '5cb3d8b3a2219970e6f86927'
- * FluroUtils.getStringID('5cb3d8b3a2219970e6f86927')
+ * fluro.utils.getStringID('5cb3d8b3a2219970e6f86927')
  *
  * //Returns true
  * typeof FluroUtils.getStringID({_id:'5cb3d8b3a2219970e6f86927', title, ...}) == 'string';
@@ -443,14 +443,14 @@ FluroUtils.getStringID = function(input, asObjectID) {
 
 /**
  * Cleans and maps an array of objects to an array of IDs  
- * @alias FluroUtils.arrayIDs      
+ * @alias fluro.utils.arrayIDs      
  * @param  {Array} array      An array of objects or object ids
  * @param  {Boolean} asObjectID Whether or not to map the ids as Mongo ObjectIds
  * @return {Array}            An array of Ids
  *
  * @example
  * //Returns ['5cb3d8b3a2219970e6f86927', '5cb3d8b3a2219970e6f86927', '5cb3d8b3a2219970e6f86927']
- * FluroUtils.arrayIDs([{_id:'5cb3d8b3a2219970e6f86927'}, {_id:'5cb3d8b3a2219970e6f86927'}, null, '5cb3d8b3a2219970e6f86927'])
+ * fluro.utils.arrayIDs([{_id:'5cb3d8b3a2219970e6f86927'}, {_id:'5cb3d8b3a2219970e6f86927'}, null, '5cb3d8b3a2219970e6f86927'])
  */
 FluroUtils.arrayIDs = function(array, asObjectID) {
 
@@ -473,7 +473,7 @@ FluroUtils.arrayIDs = function(array, asObjectID) {
 
 /**
  * Helper function for retrieving a human readable error message from server error response objects
- * @alias FluroUtils.errorMessage
+ * @alias fluro.utils.errorMessage
  * @param  {Object} error The error object to translate    
  * @return {String}     The resulting human readable error message
  */
@@ -527,7 +527,7 @@ FluroUtils.errorMessage = function(err) {
 
 /**
  * Helper function for sorting process cards by priority
- * @alias FluroUtils.processCardPrioritySort
+ * @alias fluro.utils.processCardPrioritySort
  * @param  {Object} card The process card to sort
  * @return {Integer}     An integer representing it's sorting priority
  */
@@ -595,7 +595,7 @@ FluroUtils.processCardPrioritySort = function(card) {
 
 /**
  * Helper function for cleaning strings to use as database ids
- * @alias FluroUtils.machineName
+ * @alias fluro.utils.machineName
  * @param  {String} string The string to clean eg. (Awesome Event!)
  * @return {String}     A cleaned and formatted string eg. (awesomeEvent)
  */
@@ -632,7 +632,7 @@ var injectedScripts = {}
 /**
  * Helper function for including external javascript resources
  * This ensures that scripts are only included a single time on each page
- * @alias FluroUtils.injectScript
+ * @alias fluro.utils.injectScript
  * @param  {String} url The URL of the script to import
  * @return {Promise}     A promise that resolves once the script has been included on the page
  */
@@ -680,7 +680,7 @@ FluroUtils.injectScript = function(scriptURL) {
 /**
  * Helper function for including external javascript resources
  * This ensures that scripts are only included a single time on each page
- * @alias FluroUtils.injectModule
+ * @alias fluro.utils.injectModule
  * @param  {String} url The URL of the script to import
  * @return {Promise}     A promise that resolves once the script has been included on the page
  */
@@ -743,7 +743,7 @@ FluroUtils.injectModule = function(scriptURL, options) {
 /**
  * Helper function for getting a flattened list of all nested fields
  * defined for a definition in Fluro
- * @alias FluroUtils.getFlattenedFields
+ * @alias fluro.utils.getFlattenedFields
  * @param  {Array} fields The array of fields
  * @param  {Array} trail An array to append trails to (required)
  * @param  {Array} trail An array to append titles to (required)

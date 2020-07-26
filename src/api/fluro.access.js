@@ -39,10 +39,10 @@ var FluroAccess = function(FluroCore) {
      * in the context of an application and not an authenticated user this
      * service can still understand and respond according to the permission sets of the 
      * application itself
-     * @alias FluroAccess.setDefaultApplication
+     * @alias fluro.access.setDefaultApplication
      * @param  {Object} application The application session data, usually available before this service is initialized
      * @example
-     * FluroAccess.setDefaultApplication(window.applicationData._application)
+     * fluro.access.setDefaultApplication(window.applicationData._application)
      */
 
     service.setDefaultApplication = function(application) {
@@ -80,7 +80,7 @@ var FluroAccess = function(FluroCore) {
 
     /**
      * Returns either the currently logged in user, or the acting application
-     * @alias FluroAccess.retrieveCurrentSession
+     * @alias fluro.access.retrieveCurrentSession
      * @return {Object} The user or application session that is currently active
      */
     service.retrieveCurrentSession = function() {
@@ -110,7 +110,7 @@ var FluroAccess = function(FluroCore) {
      * @param  {String} parentType The basic type, for instance if the type you are checking is 'photo' the parent type would be 'image' so that
      * you can get an accurate return value if the user has permission to perform the action on all definitions of an 'image' type content item 
      * @return {Boolean}            true or false depending on whether the user has the required permissions
-     * @alias FluroAccess.can  
+     * @alias fluro.access.can  
      * @example
      *
      * fluro.access.can('create' 'photo', 'image');
@@ -251,7 +251,7 @@ var FluroAccess = function(FluroCore) {
      * @param  {String} parentType The basic type, for instance if the type you are checking is 'photo' the parent type would be 'image' so that
      * you can get an accurate return value if the user has permission to perform the action on all definitions of an 'image' type content item 
      * @return {Boolean}            true or false depending on whether the user has the required permissions
-     * @alias FluroAccess.canKnowOf  
+     * @alias fluro.access.canKnowOf  
      * @example
      *
      * fluro.access.canKnowOf('photo', 'image');
@@ -344,7 +344,7 @@ var FluroAccess = function(FluroCore) {
      * Retrieves all realms the acting user or application can perform an action in
      * @param  {String} permission The permission string to retrieve realms for
      * @return {Array}        An array of realms that the user can perform the action in
-     * @alias FluroAccess.retrieveActionableRealms  
+     * @alias fluro.access.retrieveActionableRealms  
      * @example
      *
      * //Returns an array of all realms the user is allowed to do the specified action
@@ -399,7 +399,7 @@ var FluroAccess = function(FluroCore) {
      * or simply whether or not a user has a permission in any realm
      * @param  {String}  permission The permission to check
      * @return {Boolean}            
-     * @alias FluroAccess.has  
+     * @alias fluro.access.has  
      * @example
      *
      * //Returns true or false if the user has the permission 
@@ -447,7 +447,7 @@ var FluroAccess = function(FluroCore) {
      * content item
      * @param  {Object}  item The item to check if the user is an author of
      * @return {Boolean}      
-     * @alias FluroAccess.isAuthor  
+     * @alias fluro.access.isAuthor  
      * @example
      *
      * //Returns true or false
@@ -556,7 +556,7 @@ var FluroAccess = function(FluroCore) {
      * Check whether the current acting user can edit a specified content item
      * @param  {Object} item The item to check if the user can edit
      * @return {Boolean}    
-     * @alias FluroAccess.canEditItem  
+     * @alias fluro.access.canEditItem  
      * @example
      *
      * //Returns true
@@ -743,7 +743,7 @@ var FluroAccess = function(FluroCore) {
      * Check whether the current acting user can view a specified content item
      * @param  {Object} item The item to check if the user can view
      * @return {Boolean}    
-     * @alias FluroAccess.canViewItem  
+     * @alias fluro.access.canViewItem  
      * @example
      *
      * //Returns true
@@ -896,7 +896,7 @@ var FluroAccess = function(FluroCore) {
      * Check whether the current acting user can delete a specified content item
      * @param  {Object} item The item to check if the user can delete
      * @return {Boolean}  
-     * @alias FluroAccess.canDeleteItem  
+     * @alias fluro.access.canDeleteItem  
      * @example
      *
      * //Returns true
@@ -1256,33 +1256,33 @@ var FluroAccess = function(FluroCore) {
 
 
     /**
-     * @name FluroAccess.addEventListener
+     * @name fluro.access.addEventListener
      * @description Adds a callback that will be triggered whenever the specified event occurs
      * @function
      * @param {String} event The event to listen for
      * @param {Function} callback The function to fire when this event is triggered
      * @example
      * //Listen for when the user session changes
-     * FluroAccess.addEventListener('change', function(userSession) {})
+     * fluro.access.addEventListener('change', function(userSession) {})
      */
 
     /**
-     * @name FluroAccess.removeEventListener
+     * @name fluro.access.removeEventListener
      * @description Removes all a callback from the listener list
      * @function
      * @param {String} event The event to stop listening for
      * @param {Function} callback The function to remove from the listener list
      * @example
      * //Stop listening for the change event
-     * FluroAccess.removeEventListener('change', myFunction)
+     * fluro.access.removeEventListener('change', myFunction)
      */
 
     /**
-     * @name FluroAccess.removeAllListeners
+     * @name fluro.access.removeAllListeners
      * @description Removes all listening callbacks for all events
      * @function
      * @example
-     * FluroAccess.removeAllListeners()
+     * fluro.access.removeAllListeners()
      */
 
     //////////////////////////////////

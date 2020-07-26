@@ -32,7 +32,7 @@ const FluroDate = {
 
 /**
  * A function that returns all of the available timezones. Often used to populate a select box
- * @alias FluroDate.timezones
+ * @alias fluro.date.timezones
  * @return {Array}                   An array of all availble timezones.
  */
 
@@ -45,7 +45,7 @@ FluroDate.timezones = function() {
 
 /**
  * A function that converts a timestamp string '13:30' to '1:30pm';
- * @alias FluroDate.timestampToAmPm
+ * @alias fluro.date.timestampToAmPm
  * @return {Array}                   An array of all availble timezones.
  */
 
@@ -54,7 +54,8 @@ FluroDate.timestampToAmPm = function(s) {
     if(!s) {
         s = '';
     }
-    s = s.split(':').join('');
+
+    s = String(s).split(':').join('');
 
     var am = true;
     var hours = parseInt(s.substring(0,2));
@@ -65,7 +66,10 @@ FluroDate.timestampToAmPm = function(s) {
         hours = hours - 12;
     }
 
-    return `${hours}:${minutes}${am ? 'am' : 'pm'}`;
+    if(String(mins).length < 2) {
+        mins = `0${mins}`;
+    }
+    return `${hours}:${mins}${am ? 'am' : 'pm'}`;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -79,7 +83,7 @@ FluroDate.currentTimezone = function() {
 
 /**
  * A function that returns all of the available timezones. Often used to populate a select box
- * @alias FluroDate.isDifferentTimezoneThanUser
+ * @alias fluro.date.isDifferentTimezoneThanUser
  * @return {Boolean}                   True if the specified timezone is different than the viewing user
  */
 
@@ -119,7 +123,7 @@ FluroDate.isDifferentTimezoneThanUser = function(timezone) {
  * This will return dates that are incorrect on purpose. So that it can appear to the user as if they were in another timezone.
  * As Javascript dates are always in the context of the timezone they are being viewed in, this function will give you a date that is technically
  * not the Universal point in time of the date, but rather a time that reads in your timezone as if you were in the specified timezone.
- * @alias FluroDate.localDate
+ * @alias fluro.date.localDate
  * @param  {Date} date      Either a javascript date object, or a string timestamp representing a javascript date object        
  * @param  {String} specifiedTimezone The timezone to retrieve the date in eg. Australia/Melbourne   
  * @return {Date}                   A javascript date object transformed to match the specified timezone
@@ -164,10 +168,10 @@ FluroDate.localDate = function(d, specifiedTimezone) {
 
 /**
  * A helpful function that can quickly get an age from a supplied date string
- * @alias FluroDate.getAge
+ * @alias fluro.date.getAge
  * @return {Integer}            The age in years
  * @example 
- * FluroDate.getAge('2019-04-18T23:00:00.000Z')
+ * fluro.date.getAge('2019-04-18T23:00:00.000Z')
  */
 FluroDate.getAge = function(dateInput) {
     var date = FluroDate.localDate(dateInput);
@@ -196,10 +200,10 @@ FluroDate.getAge = function(dateInput) {
  * @return {String}            A human readable string
  * @example
  * var date = new Date()
- * return FluroDate.formatDate(date, 'h:mma DDD MMM YYYY')
+ * return fluro.date.formatDate(date, 'h:mma DDD MMM YYYY')
  * 
  * var dateString = '2019-04-18T23:00:00.000Z' 
- * return FluroDate.formatDate(dateString, 'D M YYYY', 'Australia/Melbourne')
+ * return fluro.date.formatDate(dateString, 'D M YYYY', 'Australia/Melbourne')
  */
 FluroDate.formatDate = function(dateString, format, timezone) {
     var date = FluroDate.localDate(dateString, timezone);
@@ -305,23 +309,23 @@ FluroDate.isMultiDayEvent = function(event) {
  * taking into consideration the context of the current time, the event's start and end time.
  * This is often used as a string filter
  * and what is relevant
- * @alias FluroDate.readableEventDate
+ * @alias fluro.date.readableEventDate
  * @param  {Object} event An object that has both a startDate and endDate property, Usually an event object from the Fluro API
  * @param  {String} style Whether to return a 'short', 'medium' or 'long' date
  * @return {String}       The human readable date for the event
  * @example
  * //Returns 5:30pm 1 May
- * FluroDate.readableEventDate({"startDate": "2019-05-01T07:30:00.000Z", "endDate":"2019-05-01T07:30:00.000Z"})
+ * fluro.date.readableEventDate({"startDate": "2019-05-01T07:30:00.000Z", "endDate":"2019-05-01T07:30:00.000Z"})
 
  * //Returns 5:30pm - 7:30pm 1 May
- * FluroDate.readableEventDate({"startDate": "2019-05-01T07:30:00.000Z", "endDate":"2019-05-01T09:30:00.000Z"})
+ * fluro.date.readableEventDate({"startDate": "2019-05-01T07:30:00.000Z", "endDate":"2019-05-01T09:30:00.000Z"})
 
 
  * //Returns 1 - 5 May 2015
- * FluroDate.readableEventDate({"startDate": "2015-05-01T07:30:00.000Z", "endDate":"2015-05-05T09:30:00.000Z"})
+ * fluro.date.readableEventDate({"startDate": "2015-05-01T07:30:00.000Z", "endDate":"2015-05-05T09:30:00.000Z"})
 
  * //1 May - 21 Jun 2019
- * FluroDate.readableEventDate({"startDate": "2019-05-01T07:30:00.000Z", "endDate":"2019-06-21T09:30:00.000Z"})
+ * fluro.date.readableEventDate({"startDate": "2019-05-01T07:30:00.000Z", "endDate":"2019-06-21T09:30:00.000Z"})
 
  */
 FluroDate.readableEventDate = function(event, style) {
@@ -458,15 +462,15 @@ FluroDate.readableEventDate = function(event, style) {
  * A helper function that can display a human-readable time for an event
  * taking into consideration the context of the current time, the event's start and end time.
  * This is often used as a string filter
- * @alias FluroDate.readableEventTime
+ * @alias fluro.date.readableEventTime
  * @param  {Object} event An object that has both a startDate and endDate property, Usually an event object from the Fluro API
  * @return {String}       The human readable time for the event
  * @example
  * //Returns 5:30pm
- * FluroDate.readableEventTime({"startDate": "2019-05-01T07:30:00.000Z", "endDate":null})
+ * fluro.date.readableEventTime({"startDate": "2019-05-01T07:30:00.000Z", "endDate":null})
 
  * //Returns 5:30pm - 7:30pm
- * FluroDate.readableEventTime({"startDate": "2019-05-01T07:30:00.000Z", "endDate":"2019-05-01T09:30:00.000Z"})
+ * fluro.date.readableEventTime({"startDate": "2019-05-01T07:30:00.000Z", "endDate":"2019-05-01T09:30:00.000Z"})
  */
 FluroDate.readableEventTime = function(event) {
 
@@ -529,7 +533,7 @@ FluroDate.readableEventTime = function(event) {
 
 
 /**
- * @alias FluroDate.groupEventByDate
+ * @alias fluro.date.groupEventByDate
  * @param  {Array} events The events we want to group
  * @return {Array}       A grouped array of dates and events
  */
@@ -584,7 +588,7 @@ FluroDate.groupEventByDate = function(events) {
 
 
 /**
- * @alias FluroDate.timeline
+ * @alias fluro.date.timeline
  * @param  {Array} items The items we want to group on the timeline
  * @return {Array}       A grouped array of dates
  */
@@ -701,7 +705,7 @@ FluroDate.timeline = function(items, dateKey, chronological) {
 
 /**
  * A helper function that can return the pieces for a countdown clock relative to a specified date
- * @alias FluroDate.countdown
+ * @alias fluro.date.countdown
  * @param  {Date} date The date we are counting down to
  * @return {Object}       An object with days, minutes, hours, seconds,
  */
