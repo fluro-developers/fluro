@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>asset - Documentation</title>
+    <title>types - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -32,7 +32,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">asset</h1>
+    <h1 class="page-title">types</h1>
     
 
     
@@ -47,7 +47,7 @@
         <h2>
             <span class="ancestors"><a href="fluro.html">fluro</a>.</span>
         
-        asset
+        types
         </h2>
         
     
@@ -61,7 +61,7 @@
 
     
 
-    <h4 class="name" id="asset"><span class="type-signature"></span>new asset<span class="signature">(fluro)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="types"><span class="type-signature"></span>new types<span class="signature">(fluro)</span><span class="type-signature"></span></h4>
 
     
 
@@ -73,7 +73,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line8">line 8</a>
+        <a href="fluro.types.js.html">fluro.types.js</a>, <a href="fluro.types.js.html#line13">line 13</a>
     </li></ul></dd>
     
 
@@ -113,8 +113,9 @@
 
 
 <div class="description">
-    Creates a new FluroAsset instance.
-This module provides a number of helper functions for managing asset, image, video and audio items in Fluro
+    Creates a new FluroTypes service
+This module provides a number of helpful functions for retrieving, translating and understanding types, schemas and definitions
+that are defined within Fluro
 </div>
 
 
@@ -168,7 +169,7 @@ This module provides a number of helper functions for managing asset, image, vid
 
             
 
-            <td class="description last">A reference to the parent instance of the FluroCore module. The FluroAsset module is usually created by a FluroCore instance that passes itself in as the first argument.</td>
+            <td class="description last">A reference to the parent instance of the FluroCore module. This module is usually created by a FluroCore instance that passes itself in as the first argument.</td>
         </tr>
 
     
@@ -214,7 +215,7 @@ This module provides a number of helper functions for managing asset, image, vid
 
         
             
-<h4 class="name" id=".coverUrl"><span class="type-signature">(static) </span>coverUrl<span class="type-signature"></span></h4>
+<h4 class="name" id=".terms"><span class="type-signature">(static) </span>terms<span class="type-signature"></span></h4>
 
 
 
@@ -225,7 +226,7 @@ This module provides a number of helper functions for managing asset, image, vid
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line255">line 255</a>
+        <a href="fluro.types.js.html">fluro.types.js</a>, <a href="fluro.types.js.html#line309">line 309</a>
     </li></ul></dd>
     
 
@@ -265,19 +266,13 @@ This module provides a number of helper functions for managing asset, image, vid
 
 
 <div class="description">
-    A helper function to retrieve the main image for an event, group, realm or other content
+    Retrieves all definitions available in the current account. Useful for making one request and caching
 </div>
 
 
 
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/event/5be504eabf33991239599d63?w=100&amp;h=100'
-fluro.asset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})</code></pre>
 
 
 
@@ -292,7 +287,7 @@ fluro.asset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})</code>
 
     
 
-    <h4 class="name" id=".avatarUrl"><span class="type-signature">(static) </span>avatarUrl<span class="signature">(personID, style, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".all"><span class="type-signature">(static) </span>all<span class="signature">(options)</span><span class="type-signature"> &rarr; {promise}</span></h4>
 
     
 
@@ -304,7 +299,7 @@ fluro.asset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line200">line 200</a>
+        <a href="fluro.types.js.html">fluro.types.js</a>, <a href="fluro.types.js.html#line280">line 280</a>
     </li></ul></dd>
     
 
@@ -344,7 +339,7 @@ fluro.asset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})</code>
 
 
 <div class="description">
-    A helper function to generate a url for retrieving a user, persona or contact's avatar
+    Retrieves all definitions available in the current account. Useful for making one request and caching
 </div>
 
 
@@ -353,12 +348,6 @@ fluro.asset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})</code>
 
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/avatar/contact/5be504eabf33991239599d63?w=100&amp;h=100'
-fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</code></pre>
 
 
 
@@ -388,53 +377,7 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
 
         <tr>
             
-                <td class="name"><code>personID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The id of the person you want to retrieve the avatar for</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>style</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Can be 'contact', 'persona' or 'user'</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
+                <td class="name"><code>options</code></td>
             
 
             <td class="type">
@@ -450,79 +393,7 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
 
             
 
-            <td class="description last">
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>w</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The width of the image you are requesting from Fluro</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>h</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The height of the image you are requesting from Fluro</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
+            <td class="description last">extra options for the request</td>
         </tr>
 
     
@@ -548,7 +419,7 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
 
         
 <div class="param-desc">
-    A full URL that links to the image the user is requesting
+    An promise that will resolve to the array of definitions
 </div>
 
 
@@ -559,7 +430,7 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">promise</span>
 
 
     </dd>
@@ -574,7 +445,7 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
 
     
 
-    <h4 class="name" id=".downloadUrl"><span class="type-signature">(static) </span>downloadUrl<span class="signature">(assetID, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".basicTypes"><span class="type-signature">(static) </span>basicTypes<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span></h4>
 
     
 
@@ -586,7 +457,7 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line313">line 313</a>
+        <a href="fluro.types.js.html">fluro.types.js</a>, <a href="fluro.types.js.html#line530">line 530</a>
     </li></ul></dd>
     
 
@@ -626,7 +497,7 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
 
 
 <div class="description">
-    A helper function that returns a download url for a specific asset
+    Retrieve an array of all basic types
 </div>
 
 
@@ -637,13 +508,113 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
 
 
 
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/download/5be504eabf33991239599d63'
-fluro.asset.downloadUrl('5be504eabf33991239599d63')
 
-// returns 'https://api.fluro.io/download/5be504eabf33991239599d63/file/MyFile.docx'
-fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    eg. 'service', 'concert', 'conference'
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".get"><span class="type-signature">(static) </span>get<span class="signature">(definedName, options)</span><span class="type-signature"> &rarr; {promise}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.types.js.html">fluro.types.js</a>, <a href="fluro.types.js.html#line198">line 198</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Retrieves a specified definition or primitive type object
+</div>
+
+
+
+
+
+
+
 
 
 
@@ -673,7 +644,7 @@ fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</c
 
         <tr>
             
-                <td class="name"><code>assetID</code></td>
+                <td class="name"><code>definedName</code></td>
             
 
             <td class="type">
@@ -689,14 +660,14 @@ fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</c
 
             
 
-            <td class="description last">The id of the asset, or the asset object you want to download</td>
+            <td class="description last">The definition or type name you want to retrieve</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>params</code></td>
+                <td class="name"><code>options</code></td>
             
 
             <td class="type">
@@ -712,79 +683,7 @@ fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</c
 
             
 
-            <td class="description last">
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>filename</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The filename you want to download the file as</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>extension</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The extension of the file you want to download, eg. 'pdf'</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
+            <td class="description last">extra options for the request</td>
         </tr>
 
     
@@ -810,7 +709,7 @@ fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</c
 
         
 <div class="param-desc">
-    A full URL that will download the file
+    An promise that will resolve to the type definition from Fluro
 </div>
 
 
@@ -821,7 +720,7 @@ fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</c
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">promise</span>
 
 
     </dd>
@@ -836,7 +735,7 @@ fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</c
 
     
 
-    <h4 class="name" id=".filesize"><span class="type-signature">(static) </span>filesize<span class="signature">(bytes)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    <h4 class="name" id=".mapDefinitionItems"><span class="type-signature">(static) </span>mapDefinitionItems<span class="signature">(array, baseType)</span><span class="type-signature"> &rarr; {Array}</span></h4>
 
     
 
@@ -848,7 +747,7 @@ fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</c
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line673">line 673</a>
+        <a href="fluro.types.js.html">fluro.types.js</a>, <a href="fluro.types.js.html#line234">line 234</a>
     </li></ul></dd>
     
 
@@ -888,7 +787,7 @@ fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</c
 
 
 <div class="description">
-    Helper function to translate bytes into a human readable format
+    A helpful function for mapping an array of items into a grouped array broken up by definition
 </div>
 
 
@@ -901,8 +800,8 @@ fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</c
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// returns '1mb'
-fluro.asset.filesize(1000000)</code></pre>
+    <pre class="prettyprint"><code>//Returns {something:[{title:'Demographic', plural:'Demographics',  key:'demographic', entries:[{...},{...}]}]}
+fluro.types.mapDefinitionItems([{title:'test', definition:'demographic'}], 'tag');</code></pre>
 
 
 
@@ -932,13 +831,13 @@ fluro.asset.filesize(1000000)</code></pre>
 
         <tr>
             
-                <td class="name"><code>bytes</code></td>
+                <td class="name"><code>array</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Integer</span>
+<span class="param-type">Array</span>
 
 
             
@@ -948,7 +847,30 @@ fluro.asset.filesize(1000000)</code></pre>
 
             
 
-            <td class="description last">The number of bytes</td>
+            <td class="description last">An array of content items</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>baseType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The default base type to map, eg. 'tag', 'contact', 'event'</td>
         </tr>
 
     
@@ -974,7 +896,165 @@ fluro.asset.filesize(1000000)</code></pre>
 
         
 <div class="param-desc">
-    The human readable filesize
+    A mapped array broken up by definition
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".parentType"><span class="type-signature">(static) </span>parentType<span class="signature">(definitionName)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.types.js.html">fluro.types.js</a>, <a href="fluro.types.js.html#line510">line 510</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Input a definition name or basic type and receive the most basic _type of that definition
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>definitionName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The definition or _type</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Eg. 'photo', 'service', or 'song'...
 </div>
 
 
@@ -1000,7 +1080,7 @@ fluro.asset.filesize(1000000)</code></pre>
 
     
 
-    <h4 class="name" id=".getUrl"><span class="type-signature">(static) </span>getUrl<span class="signature">(assetID, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".postableTypes"><span class="type-signature">(static) </span>postableTypes<span class="signature">(definitionName, options)</span><span class="type-signature"> &rarr; {Array}</span></h4>
 
     
 
@@ -1012,7 +1092,7 @@ fluro.asset.filesize(1000000)</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line100">line 100</a>
+        <a href="fluro.types.js.html">fluro.types.js</a>, <a href="fluro.types.js.html#line663">line 663</a>
     </li></ul></dd>
     
 
@@ -1052,8 +1132,7 @@ fluro.asset.filesize(1000000)</code></pre>
 
 
 <div class="description">
-    This function generates a url for the binary data of an
-asset, image, audio, or video file that has been uploaded to Fluro
+    Input a definition name or basic type and receive the most basic _type of that definition
 </div>
 
 
@@ -1062,15 +1141,6 @@ asset, image, audio, or video file that has been uploaded to Fluro
 
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/5be504eabf33991239599d63'
-fluro.asset.getUrl('5be504eabf33991239599d63')
-
-// returns 'https://api.fluro.io/get/5be504eabf33991239599d63/file/MyFile.pdf'
-fluro.asset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></pre>
 
 
 
@@ -1100,331 +1170,7 @@ fluro.asset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></
 
         <tr>
             
-                <td class="name"><code>assetID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The _id of the item you want to retrieve</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    A valid Fluro URL
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".imageUrl"><span class="type-signature">(static) </span>imageUrl<span class="signature">(imageID, width, height, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line566">line 566</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    A helper function that creates a url image for a specified image
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/5be504eabf33991239599d63?w=800'
-fluro.asset.imageUrl('5be504eabf33991239599d63', 800)
-
-// returns 'https://api.fluro.io/get/5be504eabf33991239599d63/file/image.jpg?w=800'
-fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pdf'})</code></pre>
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>imageID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The id of the image or an object representing the image that has an _id property</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>width</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Integer</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The width of the image to retrieve from Fluro. If none is specified then will default to a size based on the requesting user's screen dimensions.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>height</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Integer</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The height of the image to retrieve from Fluro. If none is specified then will default to a size based on the requesting user's screen dimensions.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>quality</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Integer</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The quality of the image to retrieve from Fluro as a percent eg. 85</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>filename</code></td>
+                <td class="name"><code>definitionName</code></td>
             
 
             <td class="type">
@@ -1440,14 +1186,172 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
 
             
 
-            <td class="description last">The filename to use for the image url</td>
+            <td class="description last">The definition or _type</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>extension</code></td>
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Extra options</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    an array of definitions that can be posted
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".readable"><span class="type-signature">(static) </span>readable<span class="signature">(definitionName, plural)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.types.js.html">fluro.types.js</a>, <a href="fluro.types.js.html#line466">line 466</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Input a definition name or basic type and receive the human readable version of that type
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>definitionName</code></td>
             
 
             <td class="type">
@@ -1463,14 +1367,30 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
 
             
 
-            <td class="description last">An extension to use for the url if no filename is specified</td>
+            <td class="description last">The definition or _type</td>
         </tr>
 
     
-    </tbody>
-</table>
 
+        <tr>
+            
+                <td class="name"><code>plural</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
             </td>
+
+            
+
+            
+
+            <td class="description last">Whether to return it's plural version</td>
         </tr>
 
     
@@ -1496,7 +1416,7 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
 
         
 <div class="param-desc">
-    A full URL of the image
+    Eg. 'Audio', 'Detail Sheet', or 'Events'...
 </div>
 
 
@@ -1507,7 +1427,7 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">String</span>
 
 
     </dd>
@@ -1522,7 +1442,7 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
 
     
 
-    <h4 class="name" id=".playerUrl"><span class="type-signature">(static) </span>playerUrl<span class="signature">(videoID, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".reloadTerminology"><span class="type-signature">(static) </span>reloadTerminology<span class="signature">()</span><span class="type-signature"> &rarr; {promise}</span></h4>
 
     
 
@@ -1534,7 +1454,7 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line150">line 150</a>
+        <a href="fluro.types.js.html">fluro.types.js</a>, <a href="fluro.types.js.html#line381">line 381</a>
     </li></ul></dd>
     
 
@@ -1574,8 +1494,7 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
 
 
 <div class="description">
-    This function generates a player url for a video file that has been uploaded to Fluro
-This is useful to force browsers to renderer a html5 video player instead of downloading the video file on desktop
+    Retrieves a glossary of glossary for readable definition titles and plurals
 </div>
 
 
@@ -1586,84 +1505,6 @@ This is useful to force browsers to renderer a html5 video player instead of dow
 
 
 
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/player?url=https://api.fluro.io/get/5be504eabf33991239599d63'
-fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>videoID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The _id of the video you want to play</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -1684,7 +1525,7 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
 
         
 <div class="param-desc">
-    A valid Fluro URL
+    An promise that will resolve to the matching basic types or reject with the responding error
 </div>
 
 
@@ -1695,7 +1536,7 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">promise</span>
 
 
     </dd>
@@ -1710,7 +1551,7 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
 
     
 
-    <h4 class="name" id=".posterUrl"><span class="type-signature">(static) </span>posterUrl<span class="signature">(videoID, width, height, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".retrieve"><span class="type-signature">(static) </span>retrieve<span class="signature">(types)</span><span class="type-signature"> &rarr; {promise}</span></h4>
 
     
 
@@ -1722,7 +1563,7 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line433">line 433</a>
+        <a href="fluro.types.js.html">fluro.types.js</a>, <a href="fluro.types.js.html#line738">line 738</a>
     </li></ul></dd>
     
 
@@ -1762,7 +1603,7 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
 
 
 <div class="description">
-    A helper function that returns a poster image for a specified video
+    Retrieves a list of specified types and their respective definitions
 </div>
 
 
@@ -1771,19 +1612,6 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
 
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63?w=1920&amp;h=1080'
-fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, 1080)
-
-// returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63/file/file.jpg?w=1920&amp;h=1080'
-fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, 1080, {extension:'jpg'})
-
-//Not providing a height property will default to 16:9 ratio inferred from the width 
-//returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63/file/MyPoster.jpg?w=1920&amp;h=1080'
-fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoster.jpg'})</code></pre>
 
 
 
@@ -1813,13 +1641,13 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
         <tr>
             
-                <td class="name"><code>videoID</code></td>
+                <td class="name"><code>types</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">array</span>
 
 
             
@@ -1829,76 +1657,7 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
             
 
-            <td class="description last">The id of the video, or a video object that has an _id property</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>width</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The width of the poster image. If none specified will default to 16:9 based on the requesting user's screen size</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>height</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The height of the poster image. If none specified will default to 16:9 based on the requesting user's screen size</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
+            <td class="description last">The names of the basic types you want to retrieve</td>
         </tr>
 
     
@@ -1924,7 +1683,7 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
         
 <div class="param-desc">
-    A full URL of the poster image
+    An promise that will resolve to the matching basic types or reject with the responding error
 </div>
 
 
@@ -1935,7 +1694,7 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">promise</span>
 
 
     </dd>
@@ -1950,7 +1709,7 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
     
 
-    <h4 class="name" id=".typeFromMime"><span class="type-signature">(static) </span>typeFromMime<span class="signature">(mimetype)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".subTypes"><span class="type-signature">(static) </span>subTypes<span class="signature">(definitionName, includeBasicType)</span><span class="type-signature"> &rarr; {Array}</span></h4>
 
     
 
@@ -1962,7 +1721,7 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line362">line 362</a>
+        <a href="fluro.types.js.html">fluro.types.js</a>, <a href="fluro.types.js.html#line547">line 547</a>
     </li></ul></dd>
     
 
@@ -2002,7 +1761,7 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
 
 <div class="description">
-    A helper function that returns what type of content Fluro will attribute a specified mimetype to
+    Input a definition name or basic type and receive the most basic _type of that definition
 </div>
 
 
@@ -2011,16 +1770,6 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns 'audio'
-fluro.asset.typeFromMime('audio/aac')
-// returns 'video'
-fluro.asset.typeFromMime('video/ogg')
-// returns 'asset'
-fluro.asset.typeFromMime('application/pdf')</code></pre>
 
 
 
@@ -2050,13 +1799,13 @@ fluro.asset.typeFromMime('application/pdf')</code></pre>
 
         <tr>
             
-                <td class="name"><code>mimetype</code></td>
+                <td class="name"><code>definitionName</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">String</span>
 
 
             
@@ -2066,7 +1815,30 @@ fluro.asset.typeFromMime('application/pdf')</code></pre>
 
             
 
-            <td class="description last">The mimetype of a file</td>
+            <td class="description last">The basic _type</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>includeBasicType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Whether to include the basic type definition in the results</td>
         </tr>
 
     
@@ -2092,7 +1864,7 @@ fluro.asset.typeFromMime('application/pdf')</code></pre>
 
         
 <div class="param-desc">
-    Whether this mimetype is an 'asset', 'video', 'image', or 'audio' file
+    eg. 'service', 'concert', 'conference'
 </div>
 
 
@@ -2103,7 +1875,165 @@ fluro.asset.typeFromMime('application/pdf')</code></pre>
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".term"><span class="type-signature">(static) </span>term<span class="signature">(definitionName)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.types.js.html">fluro.types.js</a>, <a href="fluro.types.js.html#line495">line 495</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Input a definition name or basic type and receive the basic details about that definition
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>definitionName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The definition or _type</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The details about this definition as defined in the glossary
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
 
 
     </dd>

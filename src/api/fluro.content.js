@@ -12,7 +12,7 @@ import {
 /**
  * Creates a new FluroContent instance.
  * This module provides a number of helper functions for Creating, Reading, Updating and Deleting content via the Fluro API
- * 
+* @alias fluro.content
  * @constructor
  * @param {FluroCore} fluro A reference to the parent instance of the FluroCore module. This module is usually created by a FluroCore instance that passes itself in as the first argument.
  */

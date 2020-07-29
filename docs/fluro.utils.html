@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>asset - Documentation</title>
+    <title>utils - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -32,7 +32,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">asset</h1>
+    <h1 class="page-title">utils</h1>
     
 
     
@@ -47,154 +47,15 @@
         <h2>
             <span class="ancestors"><a href="fluro.html">fluro</a>.</span>
         
-        asset
+        utils
         </h2>
+        
+            <div class="class-description">A static service that provides useful helper functions and tools for other Fluro services</div>
         
     
 </header>
 
 <article>
-    
-        <div class="container-overview">
-        
-            
-
-    
-
-    <h4 class="name" id="asset"><span class="type-signature"></span>new asset<span class="signature">(fluro)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line8">line 8</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Creates a new FluroAsset instance.
-This module provides a number of helper functions for managing asset, image, video and audio items in Fluro
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>fluro</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">FluroCore</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">A reference to the parent instance of the FluroCore module. The FluroAsset module is usually created by a FluroCore instance that passes itself in as the first argument.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        </div>
     
 
     
@@ -214,7 +75,7 @@ This module provides a number of helper functions for managing asset, image, vid
 
         
             
-<h4 class="name" id=".coverUrl"><span class="type-signature">(static) </span>coverUrl<span class="type-signature"></span></h4>
+<h4 class="name" id=".injectModule"><span class="type-signature">(static) </span>injectModule<span class="type-signature"></span></h4>
 
 
 
@@ -225,7 +86,7 @@ This module provides a number of helper functions for managing asset, image, vid
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line255">line 255</a>
+        <a href="fluro.utils.js.html">fluro.utils.js</a>, <a href="fluro.utils.js.html#line689">line 689</a>
     </li></ul></dd>
     
 
@@ -265,19 +126,14 @@ This module provides a number of helper functions for managing asset, image, vid
 
 
 <div class="description">
-    A helper function to retrieve the main image for an event, group, realm or other content
+    Helper function for including external javascript resources
+This ensures that scripts are only included a single time on each page
 </div>
 
 
 
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/event/5be504eabf33991239599d63?w=100&amp;h=100'
-fluro.asset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})</code></pre>
 
 
 
@@ -292,7 +148,7 @@ fluro.asset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})</code>
 
     
 
-    <h4 class="name" id=".avatarUrl"><span class="type-signature">(static) </span>avatarUrl<span class="signature">(personID, style, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".arrayIDs"><span class="type-signature">(static) </span>arrayIDs<span class="signature">(array, asObjectID)</span><span class="type-signature"> &rarr; {Array}</span></h4>
 
     
 
@@ -304,7 +160,7 @@ fluro.asset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line200">line 200</a>
+        <a href="fluro.utils.js.html">fluro.utils.js</a>, <a href="fluro.utils.js.html#line456">line 456</a>
     </li></ul></dd>
     
 
@@ -344,7 +200,7 @@ fluro.asset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})</code>
 
 
 <div class="description">
-    A helper function to generate a url for retrieving a user, persona or contact's avatar
+    Cleans and maps an array of objects to an array of IDs
 </div>
 
 
@@ -357,8 +213,8 @@ fluro.asset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})</code>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/avatar/contact/5be504eabf33991239599d63?w=100&amp;h=100'
-fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</code></pre>
+    <pre class="prettyprint"><code>//Returns ['5cb3d8b3a2219970e6f86927', '5cb3d8b3a2219970e6f86927', '5cb3d8b3a2219970e6f86927']
+fluro.utils.arrayIDs([{_id:'5cb3d8b3a2219970e6f86927'}, {_id:'5cb3d8b3a2219970e6f86927'}, null, '5cb3d8b3a2219970e6f86927'])</code></pre>
 
 
 
@@ -388,13 +244,13 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
 
         <tr>
             
-                <td class="name"><code>personID</code></td>
+                <td class="name"><code>array</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Array</span>
 
 
             
@@ -404,20 +260,20 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
 
             
 
-            <td class="description last">The id of the person you want to retrieve the avatar for</td>
+            <td class="description last">An array of objects or object ids</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>style</code></td>
+                <td class="name"><code>asObjectID</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Boolean</span>
 
 
             
@@ -427,102 +283,7 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
 
             
 
-            <td class="description last">Can be 'contact', 'persona' or 'user'</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>w</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The width of the image you are requesting from Fluro</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>h</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The height of the image you are requesting from Fluro</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
+            <td class="description last">Whether or not to map the ids as Mongo ObjectIds</td>
         </tr>
 
     
@@ -548,7 +309,7 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
 
         
 <div class="param-desc">
-    A full URL that links to the image the user is requesting
+    An array of Ids
 </div>
 
 
@@ -559,7 +320,7 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">Array</span>
 
 
     </dd>
@@ -574,7 +335,7 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
 
     
 
-    <h4 class="name" id=".downloadUrl"><span class="type-signature">(static) </span>downloadUrl<span class="signature">(assetID, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".comma"><span class="type-signature">(static) </span>comma<span class="signature">(array, path)</span><span class="type-signature"> &rarr; {String}</span></h4>
 
     
 
@@ -586,7 +347,7 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line313">line 313</a>
+        <a href="fluro.utils.js.html">fluro.utils.js</a>, <a href="fluro.utils.js.html#line351">line 351</a>
     </li></ul></dd>
     
 
@@ -626,7 +387,8 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
 
 
 <div class="description">
-    A helper function that returns a download url for a specific asset
+    A helpful class that can take an array of values and return them as a comma seperated
+string, If the values are objects, then a property to use as the string representation can be specified
 </div>
 
 
@@ -639,11 +401,11 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/download/5be504eabf33991239599d63'
-fluro.asset.downloadUrl('5be504eabf33991239599d63')
+    <pre class="prettyprint"><code>//Returns 'cat, dog, bird'
+fluro.utils.comma(['cat', 'dog', 'bird']);
 
-// returns 'https://api.fluro.io/download/5be504eabf33991239599d63/file/MyFile.docx'
-fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</code></pre>
+//Returns 'cat, dog, bird'
+fluro.utils.comma([{title:'cat'}, {title:'dog'}, {title:'bird'}], 'title');</code></pre>
 
 
 
@@ -673,13 +435,13 @@ fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</c
 
         <tr>
             
-                <td class="name"><code>assetID</code></td>
+                <td class="name"><code>array</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Array</span>
 
 
             
@@ -689,20 +451,20 @@ fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</c
 
             
 
-            <td class="description last">The id of the asset, or the asset object you want to download</td>
+            <td class="description last">The array of values to translate</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>params</code></td>
+                <td class="name"><code>path</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">String</span>
 
 
             
@@ -712,79 +474,7 @@ fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</c
 
             
 
-            <td class="description last">
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>filename</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The filename you want to download the file as</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>extension</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The extension of the file you want to download, eg. 'pdf'</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
+            <td class="description last">An optional property key to use for each value</td>
         </tr>
 
     
@@ -810,171 +500,7 @@ fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</c
 
         
 <div class="param-desc">
-    A full URL that will download the file
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".filesize"><span class="type-signature">(static) </span>filesize<span class="signature">(bytes)</span><span class="type-signature"> &rarr; {String}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line673">line 673</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Helper function to translate bytes into a human readable format
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns '1mb'
-fluro.asset.filesize(1000000)</code></pre>
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>bytes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Integer</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The number of bytes</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    The human readable filesize
+    The resulting comma seperated string
 </div>
 
 
@@ -1000,7 +526,7 @@ fluro.asset.filesize(1000000)</code></pre>
 
     
 
-    <h4 class="name" id=".getUrl"><span class="type-signature">(static) </span>getUrl<span class="signature">(assetID, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".currencySymbol"><span class="type-signature">(static) </span>currencySymbol<span class="signature">(currency)</span><span class="type-signature"> &rarr; {String}</span></h4>
 
     
 
@@ -1012,7 +538,7 @@ fluro.asset.filesize(1000000)</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line100">line 100</a>
+        <a href="fluro.utils.js.html">fluro.utils.js</a>, <a href="fluro.utils.js.html#line88">line 88</a>
     </li></ul></dd>
     
 
@@ -1052,8 +578,7 @@ fluro.asset.filesize(1000000)</code></pre>
 
 
 <div class="description">
-    This function generates a url for the binary data of an
-asset, image, audio, or video file that has been uploaded to Fluro
+    A function that will take a currency string and return the symbol
 </div>
 
 
@@ -1066,11 +591,11 @@ asset, image, audio, or video file that has been uploaded to Fluro
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/5be504eabf33991239599d63'
-fluro.asset.getUrl('5be504eabf33991239599d63')
+    <pre class="prettyprint"><code>//Returns £
+fluro.utils.currencySymbol('gbp');
 
-// returns 'https://api.fluro.io/get/5be504eabf33991239599d63/file/MyFile.pdf'
-fluro.asset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></pre>
+//Returns $
+fluro.utils.currencySymbol('usd');</code></pre>
 
 
 
@@ -1100,331 +625,7 @@ fluro.asset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></
 
         <tr>
             
-                <td class="name"><code>assetID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The _id of the item you want to retrieve</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    A valid Fluro URL
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".imageUrl"><span class="type-signature">(static) </span>imageUrl<span class="signature">(imageID, width, height, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line566">line 566</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    A helper function that creates a url image for a specified image
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/5be504eabf33991239599d63?w=800'
-fluro.asset.imageUrl('5be504eabf33991239599d63', 800)
-
-// returns 'https://api.fluro.io/get/5be504eabf33991239599d63/file/image.jpg?w=800'
-fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pdf'})</code></pre>
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>imageID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The id of the image or an object representing the image that has an _id property</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>width</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Integer</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The width of the image to retrieve from Fluro. If none is specified then will default to a size based on the requesting user's screen dimensions.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>height</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Integer</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The height of the image to retrieve from Fluro. If none is specified then will default to a size based on the requesting user's screen dimensions.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>quality</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Integer</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The quality of the image to retrieve from Fluro as a percent eg. 85</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>filename</code></td>
+                <td class="name"><code>currency</code></td>
             
 
             <td class="type">
@@ -1440,14 +641,339 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
 
             
 
-            <td class="description last">The filename to use for the image url</td>
+            <td class="description last">The currency</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The symbol
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".errorMessage"><span class="type-signature">(static) </span>errorMessage<span class="signature">(error)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.utils.js.html">fluro.utils.js</a>, <a href="fluro.utils.js.html#line481">line 481</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Helper function for retrieving a human readable error message from server error response objects
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The error object to translate</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The resulting human readable error message
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".formatCurrency"><span class="type-signature">(static) </span>formatCurrency<span class="signature">(value, currency)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.utils.js.html">fluro.utils.js</a>, <a href="fluro.utils.js.html#line62">line 62</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    A function that will take an integer and a currency string and return a formatted numeric amount rounded to 2 decimal places
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns £10.00
+fluro.utils.formatCurrency(1000, 'gbp');
+
+//Returns $10.00
+fluro.utils.formatCurrency(1000, 'usd');</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Integer</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The amount in cents</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>extension</code></td>
+                <td class="name"><code>currency</code></td>
             
 
             <td class="type">
@@ -1463,14 +989,7 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
 
             
 
-            <td class="description last">An extension to use for the url if no filename is specified</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
+            <td class="description last">The currency to format</td>
         </tr>
 
     
@@ -1496,7 +1015,7 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
 
         
 <div class="param-desc">
-    A full URL of the image
+    The formatted value
 </div>
 
 
@@ -1507,7 +1026,7 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">String</span>
 
 
     </dd>
@@ -1522,7 +1041,7 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
 
     
 
-    <h4 class="name" id=".playerUrl"><span class="type-signature">(static) </span>playerUrl<span class="signature">(videoID, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".getDefaultValueForField"><span class="type-signature">(static) </span>getDefaultValueForField<span class="signature">()</span><span class="type-signature"> &rarr; {String|Number|Object}</span></h4>
 
     
 
@@ -1534,7 +1053,7 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line150">line 150</a>
+        <a href="fluro.utils.js.html">fluro.utils.js</a>, <a href="fluro.utils.js.html#line157">line 157</a>
     </li></ul></dd>
     
 
@@ -1574,8 +1093,7 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
 
 
 <div class="description">
-    This function generates a player url for a video file that has been uploaded to Fluro
-This is useful to force browsers to renderer a html5 video player instead of downloading the video file on desktop
+    A helper function to extract a default value from a fluro field definition
 </div>
 
 
@@ -1586,84 +1104,6 @@ This is useful to force browsers to renderer a html5 video player instead of dow
 
 
 
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/player?url=https://api.fluro.io/get/5be504eabf33991239599d63'
-fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>videoID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The _id of the video you want to play</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -1684,7 +1124,7 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
 
         
 <div class="param-desc">
-    A valid Fluro URL
+    The default value
 </div>
 
 
@@ -1695,7 +1135,13 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">Object</span>
 
 
     </dd>
@@ -1710,7 +1156,7 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
 
     
 
-    <h4 class="name" id=".posterUrl"><span class="type-signature">(static) </span>posterUrl<span class="signature">(videoID, width, height, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".getFlattenedFields"><span class="type-signature">(static) </span>getFlattenedFields<span class="signature">(fields, trail, trail)</span><span class="type-signature"> &rarr; {Array}</span></h4>
 
     
 
@@ -1722,7 +1168,7 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line433">line 433</a>
+        <a href="fluro.utils.js.html">fluro.utils.js</a>, <a href="fluro.utils.js.html#line754">line 754</a>
     </li></ul></dd>
     
 
@@ -1762,7 +1208,8 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
 
 
 <div class="description">
-    A helper function that returns a poster image for a specified video
+    Helper function for getting a flattened list of all nested fields
+defined for a definition in Fluro
 </div>
 
 
@@ -1771,19 +1218,6 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
 
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63?w=1920&amp;h=1080'
-fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, 1080)
-
-// returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63/file/file.jpg?w=1920&amp;h=1080'
-fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, 1080, {extension:'jpg'})
-
-//Not providing a height property will default to 16:9 ratio inferred from the width 
-//returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63/file/MyPoster.jpg?w=1920&amp;h=1080'
-fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoster.jpg'})</code></pre>
 
 
 
@@ -1813,13 +1247,13 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
         <tr>
             
-                <td class="name"><code>videoID</code></td>
+                <td class="name"><code>fields</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Array</span>
 
 
             
@@ -1829,20 +1263,20 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
             
 
-            <td class="description last">The id of the video, or a video object that has an _id property</td>
+            <td class="description last">The array of fields</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>width</code></td>
+                <td class="name"><code>trail</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Array</span>
 
 
             
@@ -1852,20 +1286,20 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
             
 
-            <td class="description last">The width of the poster image. If none specified will default to 16:9 based on the requesting user's screen size</td>
+            <td class="description last">An array to append trails to (required)</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>height</code></td>
+                <td class="name"><code>trail</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Array</span>
 
 
             
@@ -1875,30 +1309,7 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
             
 
-            <td class="description last">The height of the poster image. If none specified will default to 16:9 based on the requesting user's screen size</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
+            <td class="description last">An array to append titles to (required)</td>
         </tr>
 
     
@@ -1924,7 +1335,7 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
         
 <div class="param-desc">
-    A full URL of the poster image
+    A flattened list of all fields with their nested trails and titles
 </div>
 
 
@@ -1935,7 +1346,7 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">Array</span>
 
 
     </dd>
@@ -1950,7 +1361,7 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
     
 
-    <h4 class="name" id=".typeFromMime"><span class="type-signature">(static) </span>typeFromMime<span class="signature">(mimetype)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".getStringID"><span class="type-signature">(static) </span>getStringID<span class="signature">(input, asObjectID)</span><span class="type-signature"> &rarr; {String}</span></h4>
 
     
 
@@ -1962,7 +1373,7 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line362">line 362</a>
+        <a href="fluro.utils.js.html">fluro.utils.js</a>, <a href="fluro.utils.js.html#line393">line 393</a>
     </li></ul></dd>
     
 
@@ -2002,7 +1413,7 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
 
 <div class="description">
-    A helper function that returns what type of content Fluro will attribute a specified mimetype to
+    Returns a specified _id for an object
 </div>
 
 
@@ -2015,12 +1426,13 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// returns 'audio'
-fluro.asset.typeFromMime('audio/aac')
-// returns 'video'
-fluro.asset.typeFromMime('video/ogg')
-// returns 'asset'
-fluro.asset.typeFromMime('application/pdf')</code></pre>
+    <pre class="prettyprint"><code>//Returns '5cb3d8b3a2219970e6f86927'
+fluro.utils.getStringID('5cb3d8b3a2219970e6f86927')
+
+//Returns true
+typeof FluroUtils.getStringID({_id:'5cb3d8b3a2219970e6f86927', title, ...}) == 'string';
+//Returns true
+typeof FluroUtils.getStringID({_id:'5cb3d8b3a2219970e6f86927'}, true) == 'object';</code></pre>
 
 
 
@@ -2050,13 +1462,13 @@ fluro.asset.typeFromMime('application/pdf')</code></pre>
 
         <tr>
             
-                <td class="name"><code>mimetype</code></td>
+                <td class="name"><code>input</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Object</span>
 
 
             
@@ -2066,7 +1478,30 @@ fluro.asset.typeFromMime('application/pdf')</code></pre>
 
             
 
-            <td class="description last">The mimetype of a file</td>
+            <td class="description last">An object that is or has an _id property</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>asObjectID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Whether to convert to a Mongo ObjectId</td>
         </tr>
 
     
@@ -2092,7 +1527,7 @@ fluro.asset.typeFromMime('application/pdf')</code></pre>
 
         
 <div class="param-desc">
-    Whether this mimetype is an 'asset', 'video', 'image', or 'audio' file
+    Will return either a string or a Mongo ObjectId
 </div>
 
 
@@ -2103,7 +1538,1182 @@ fluro.asset.typeFromMime('application/pdf')</code></pre>
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".guid"><span class="type-signature">(static) </span>guid<span class="signature">()</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.utils.js.html">fluro.utils.js</a>, <a href="fluro.utils.js.html#line139">line 139</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    A helpful function that can create a globally unique id
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns 20354d7a-e4fe-47af-8ff6-187bca92f3f9
+fluro.utils.guid()</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The new guid
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".hash"><span class="type-signature">(static) </span>hash<span class="signature">(array, key)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.utils.js.html">fluro.utils.js</a>, <a href="fluro.utils.js.html#line118">line 118</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    A helpful function for creating a fast hash object that can be used for more efficient loops
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns {something:[{title:'test', definition:'something'}]}
+fluro.utils.mapReduce([{title:'test', definition:'something'}], 'definition');</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>array</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The array to reduce</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The key or path to the property to group by</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    A hash object literal
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".injectScript"><span class="type-signature">(static) </span>injectScript<span class="signature">(url)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.utils.js.html">fluro.utils.js</a>, <a href="fluro.utils.js.html#line641">line 641</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Helper function for including external javascript resources
+This ensures that scripts are only included a single time on each page
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The URL of the script to import</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    A promise that resolves once the script has been included on the page
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".machineName"><span class="type-signature">(static) </span>machineName<span class="signature">(string)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.utils.js.html">fluro.utils.js</a>, <a href="fluro.utils.js.html#line604">line 604</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Helper function for cleaning strings to use as database ids
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>string</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The string to clean eg. (Awesome Event!)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    A cleaned and formatted string eg. (awesomeEvent)
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".mapParameters"><span class="type-signature">(static) </span>mapParameters<span class="signature">(parameters)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.utils.js.html">fluro.utils.js</a>, <a href="fluro.utils.js.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    A helpful function that can take a keyed object literal and map it to url query string parameters
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns &amp;this=that&amp;hello=world
+fluro.utils.mapParameters({"this":"that", "hello":"world"})</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>parameters</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The object you want to transalte</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The query string
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".matchInArray"><span class="type-signature">(static) </span>matchInArray<span class="signature">(array, path, value, operator)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.utils.js.html">fluro.utils.js</a>, <a href="fluro.utils.js.html#line289">line 289</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    A helpful function that can return a subset of an array compared to specified criteria, This is usually used
+to evaluate expressions on Fluro forms
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns {name:'Jerry', age:26} as that is only item in the array that matches the criteria
+fluro.utils.matchInArray([{name:'Jerry', age:26}, {name:'Susan', age:19}], 'age', 26, '>=');</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>array</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The array you want to filter</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>path</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The path to the property you want to compare on each item in the array</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The value to compare with</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>operator</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Can be Possible options are ('>', '<', '>=', '<=', 'in', '==') Defaults to '==' (Is equal to)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    An array that contains all items that matched
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".processCardPrioritySort"><span class="type-signature">(static) </span>processCardPrioritySort<span class="signature">(card)</span><span class="type-signature"> &rarr; {Integer}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.utils.js.html">fluro.utils.js</a>, <a href="fluro.utils.js.html#line537">line 537</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Helper function for sorting process cards by priority
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>card</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The process card to sort</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    An integer representing it's sorting priority
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Integer</span>
 
 
     </dd>

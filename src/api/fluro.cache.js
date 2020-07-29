@@ -10,6 +10,7 @@ var caches = {};
 
 /**
  * @classdesc A static service that provides tools for caching api requests and other information
+ * @alias fluro.cache
  * @class
  * @hideconstructor
  */

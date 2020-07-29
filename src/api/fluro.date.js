@@ -17,6 +17,7 @@ if (!(typeof window === 'undefined')) {
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * @alias fluro.date
  * @classdesc A static service that provides useful functions for working with dates and timestamps.
  * @class
  * @hideconstructor
@@ -51,7 +52,7 @@ FluroDate.timezones = function() {
 
 FluroDate.timestampToAmPm = function(s) {
 
-    if(!s) {
+    if(!s || !String(s)) {
         s = '';
     }
 

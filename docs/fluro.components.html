@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>FluroAPI - Documentation</title>
+    <title>components - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -32,7 +32,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">FluroAPI</h1>
+    <h1 class="page-title">components</h1>
     
 
     
@@ -45,7 +45,9 @@
 <header>
     
         <h2>
-        FluroAPI
+            <span class="ancestors"><a href="fluro.html">fluro</a>.</span>
+        
+        components
         </h2>
         
     
@@ -59,7 +61,7 @@
 
     
 
-    <h4 class="name" id="FluroAPI"><span class="type-signature"></span>new FluroAPI<span class="signature">(fluro)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="components"><span class="type-signature"></span>new components<span class="signature">(fluro)</span><span class="type-signature"></span></h4>
 
     
 
@@ -71,7 +73,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.api.js.html">fluro.api.js</a>, <a href="fluro.api.js.html#line36">line 36</a>
+        <a href="fluro.components.js.html">fluro.components.js</a>, <a href="fluro.components.js.html#line8">line 8</a>
     </li></ul></dd>
     
 
@@ -111,9 +113,8 @@
 
 
 <div class="description">
-    Creates a new FluroAPI instance.
-This module is a wrapper around the <a href="https://www.npmjs.com/package/axios">axios</a> package. It aims to make it easier for you to connect with and consume endpoints from the
-Fluro REST API for more information about the available endpoints see <a href="https://developer.fluro.io">Fluro REST API Documentation</a>
+    Creates a new FluroComponents instance.
+This module provides a number of helper functions for working with Fluro components
 </div>
 
 
@@ -122,18 +123,6 @@ Fluro REST API for more information about the available endpoints see <a href="h
 
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>//Make a request to get the current user session
-fluro.api.get('/session')
-.then(function (response) {
-  console.log(response);
-})
-.catch(function (error) {
-  console.log(error);
-});</code></pre>
 
 
 
@@ -179,7 +168,7 @@ fluro.api.get('/session')
 
             
 
-            <td class="description last">A reference to the parent instance of the FluroCore module. The FluroAPI module is usually created by a FluroCore instance that passes itself in as the first argument.</td>
+            <td class="description last">A reference to the parent instance of the FluroCore module. This module is usually created by a FluroCore instance that passes itself in as the first argument.</td>
         </tr>
 
     
@@ -222,6 +211,191 @@ fluro.api.get('/session')
 
     
 
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".hydrateModel"><span class="type-signature">(static) </span>hydrateModel<span class="signature">(componentID, model)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.components.js.html">fluro.components.js</a>, <a href="fluro.components.js.html#line27">line 27</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Hydrates a data model by providing the component id
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>componentID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The id of the component that defines the fields</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>model</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The data model to hydrate</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    A copy of the data model with all references populated
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
     
 
     

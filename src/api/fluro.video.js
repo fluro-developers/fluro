@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 /**
  * @classdesc A static service that provides useful tools when working with video content
+ * @alias fluro.video
  * @class
  * @hideconstructor
  */

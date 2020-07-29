@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>asset - Documentation</title>
+    <title>access - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -32,7 +32,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">asset</h1>
+    <h1 class="page-title">access</h1>
     
 
     
@@ -47,7 +47,7 @@
         <h2>
             <span class="ancestors"><a href="fluro.html">fluro</a>.</span>
         
-        asset
+        access
         </h2>
         
     
@@ -61,7 +61,7 @@
 
     
 
-    <h4 class="name" id="asset"><span class="type-signature"></span>new asset<span class="signature">(fluro)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="access"><span class="type-signature"></span>new access<span class="signature">(fluro)</span><span class="type-signature"></span></h4>
 
     
 
@@ -73,7 +73,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line8">line 8</a>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line18">line 18</a>
     </li></ul></dd>
     
 
@@ -113,8 +113,8 @@
 
 
 <div class="description">
-    Creates a new FluroAsset instance.
-This module provides a number of helper functions for managing asset, image, video and audio items in Fluro
+    Creates a new FluroAccess service
+This module provides helpful functions and tools for managing and understanding a user's permissions and access control
 </div>
 
 
@@ -168,7 +168,7 @@ This module provides a number of helper functions for managing asset, image, vid
 
             
 
-            <td class="description last">A reference to the parent instance of the FluroCore module. The FluroAsset module is usually created by a FluroCore instance that passes itself in as the first argument.</td>
+            <td class="description last">A reference to the parent instance of the FluroCore module. This module is usually created by a FluroCore instance that passes itself in as the first argument.</td>
         </tr>
 
     
@@ -210,79 +210,6 @@ This module provides a number of helper functions for managing asset, image, vid
     
 
     
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id=".coverUrl"><span class="type-signature">(static) </span>coverUrl<span class="type-signature"></span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line255">line 255</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    A helper function to retrieve the main image for an event, group, realm or other content
-</div>
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/event/5be504eabf33991239599d63?w=100&amp;h=100'
-fluro.asset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})</code></pre>
-
-
-
-        
-    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -292,7 +219,7 @@ fluro.asset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})</code>
 
     
 
-    <h4 class="name" id=".avatarUrl"><span class="type-signature">(static) </span>avatarUrl<span class="signature">(personID, style, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".addEventListener"><span class="type-signature">(static) </span>addEventListener<span class="signature">(event, callback)</span><span class="type-signature"></span></h4>
 
     
 
@@ -304,7 +231,7 @@ fluro.asset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line200">line 200</a>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line1259">line 1259</a>
     </li></ul></dd>
     
 
@@ -344,7 +271,7 @@ fluro.asset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})</code>
 
 
 <div class="description">
-    A helper function to generate a url for retrieving a user, persona or contact's avatar
+    Adds a callback that will be triggered whenever the specified event occurs
 </div>
 
 
@@ -357,8 +284,8 @@ fluro.asset.coverUrl('5be504eabf33991239599d63', 'event', {w:100, h:100})</code>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/avatar/contact/5be504eabf33991239599d63?w=100&amp;h=100'
-fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</code></pre>
+    <pre class="prettyprint"><code>//Listen for when the user session changes
+fluro.access.addEventListener('change', function(userSession) {})</code></pre>
 
 
 
@@ -388,1043 +315,7 @@ fluro.asset.avatarUrl('5be504eabf33991239599d63', 'contact', {w:100, h:100})</co
 
         <tr>
             
-                <td class="name"><code>personID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The id of the person you want to retrieve the avatar for</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>style</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Can be 'contact', 'persona' or 'user'</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>w</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The width of the image you are requesting from Fluro</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>h</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The height of the image you are requesting from Fluro</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    A full URL that links to the image the user is requesting
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".downloadUrl"><span class="type-signature">(static) </span>downloadUrl<span class="signature">(assetID, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line313">line 313</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    A helper function that returns a download url for a specific asset
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/download/5be504eabf33991239599d63'
-fluro.asset.downloadUrl('5be504eabf33991239599d63')
-
-// returns 'https://api.fluro.io/download/5be504eabf33991239599d63/file/MyFile.docx'
-fluro.asset.downloadUrl('5be504eabf33991239599d63', {filename:'MyFile.docx'})</code></pre>
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>assetID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The id of the asset, or the asset object you want to download</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>filename</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The filename you want to download the file as</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>extension</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The extension of the file you want to download, eg. 'pdf'</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    A full URL that will download the file
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".filesize"><span class="type-signature">(static) </span>filesize<span class="signature">(bytes)</span><span class="type-signature"> &rarr; {String}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line673">line 673</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Helper function to translate bytes into a human readable format
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns '1mb'
-fluro.asset.filesize(1000000)</code></pre>
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>bytes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Integer</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The number of bytes</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    The human readable filesize
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">String</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".getUrl"><span class="type-signature">(static) </span>getUrl<span class="signature">(assetID, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line100">line 100</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    This function generates a url for the binary data of an
-asset, image, audio, or video file that has been uploaded to Fluro
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/5be504eabf33991239599d63'
-fluro.asset.getUrl('5be504eabf33991239599d63')
-
-// returns 'https://api.fluro.io/get/5be504eabf33991239599d63/file/MyFile.pdf'
-fluro.asset.getUrl('5be504eabf33991239599d63', {filename:'MyFile.pdf'})</code></pre>
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>assetID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The _id of the item you want to retrieve</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    A valid Fluro URL
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".imageUrl"><span class="type-signature">(static) </span>imageUrl<span class="signature">(imageID, width, height, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line566">line 566</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    A helper function that creates a url image for a specified image
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/5be504eabf33991239599d63?w=800'
-fluro.asset.imageUrl('5be504eabf33991239599d63', 800)
-
-// returns 'https://api.fluro.io/get/5be504eabf33991239599d63/file/image.jpg?w=800'
-fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pdf'})</code></pre>
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>imageID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The id of the image or an object representing the image that has an _id property</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>width</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Integer</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The width of the image to retrieve from Fluro. If none is specified then will default to a size based on the requesting user's screen dimensions.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>height</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Integer</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The height of the image to retrieve from Fluro. If none is specified then will default to a size based on the requesting user's screen dimensions.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>quality</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Integer</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The quality of the image to retrieve from Fluro as a percent eg. 85</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>filename</code></td>
+                <td class="name"><code>event</code></td>
             
 
             <td class="type">
@@ -1440,14 +331,158 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
 
             
 
-            <td class="description last">The filename to use for the image url</td>
+            <td class="description last">The event to listen for</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>extension</code></td>
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The function to fire when this event is triggered</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".can"><span class="type-signature">(static) </span>can<span class="signature">(action, type, parentType)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line121">line 121</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Checks whether a user has permission to perform a specified action for a specified type of content
+If no user is set but an application is then it will return according to the permissions of the application
+This function is synchronous and returns a basic true or false boolean
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>fluro.access.can('create' 'photo', 'image');
+fluro.access.can('edit any' 'service', 'event');</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>action</code></td>
             
 
             <td class="type">
@@ -1463,14 +498,54 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
 
             
 
-            <td class="description last">An extension to use for the url if no filename is specified</td>
+            <td class="description last">The action to check permissions for eg. 'create', 'view any', 'edit own', 'delete any' etc</td>
         </tr>
 
     
-    </tbody>
-</table>
 
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
             </td>
+
+            
+
+            
+
+            <td class="description last">The type or definition name eg. 'photo', 'article', 'team'</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>parentType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The basic type, for instance if the type you are checking is 'photo' the parent type would be 'image' so that
+you can get an accurate return value if the user has permission to perform the action on all definitions of an 'image' type content item</td>
         </tr>
 
     
@@ -1496,7 +571,7 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
 
         
 <div class="param-desc">
-    A full URL of the image
+    true or false depending on whether the user has the required permissions
 </div>
 
 
@@ -1507,7 +582,7 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">Boolean</span>
 
 
     </dd>
@@ -1522,7 +597,7 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
 
     
 
-    <h4 class="name" id=".playerUrl"><span class="type-signature">(static) </span>playerUrl<span class="signature">(videoID, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".canDeleteItem"><span class="type-signature">(static) </span>canDeleteItem<span class="signature">(item)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
 
     
 
@@ -1534,7 +609,7 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line150">line 150</a>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line906">line 906</a>
     </li></ul></dd>
     
 
@@ -1574,8 +649,7 @@ fluro.asset.imageUrl('5be504eabf33991239599d63', 800, null, {filename:'MyFile.pd
 
 
 <div class="description">
-    This function generates a player url for a video file that has been uploaded to Fluro
-This is useful to force browsers to renderer a html5 video player instead of downloading the video file on desktop
+    Check whether the current acting user can delete a specified content item
 </div>
 
 
@@ -1588,8 +662,8 @@ This is useful to force browsers to renderer a html5 video player instead of dow
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/player?url=https://api.fluro.io/get/5be504eabf33991239599d63'
-fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
+    <pre class="prettyprint"><code>//Returns true
+var canDelete = fluro.access.canDeleteItem({title:'My article', _id:'55bbf345de...'});</code></pre>
 
 
 
@@ -1619,13 +693,13 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
 
         <tr>
             
-                <td class="name"><code>videoID</code></td>
+                <td class="name"><code>item</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Object</span>
 
 
             
@@ -1635,30 +709,7 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
 
             
 
-            <td class="description last">The _id of the video you want to play</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
+            <td class="description last">The item to check if the user can delete</td>
         </tr>
 
     
@@ -1683,10 +734,6 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
 <h5>Returns:</h5>
 
         
-<div class="param-desc">
-    A valid Fluro URL
-</div>
-
 
 
 <dl class="param-type">
@@ -1695,7 +742,7 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">Boolean</span>
 
 
     </dd>
@@ -1710,7 +757,7 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
 
     
 
-    <h4 class="name" id=".posterUrl"><span class="type-signature">(static) </span>posterUrl<span class="signature">(videoID, width, height, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".canEditItem"><span class="type-signature">(static) </span>canEditItem<span class="signature">(item)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
 
     
 
@@ -1722,7 +769,7 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line433">line 433</a>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line566">line 566</a>
     </li></ul></dd>
     
 
@@ -1762,7 +809,7 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
 
 
 <div class="description">
-    A helper function that returns a poster image for a specified video
+    Check whether the current acting user can edit a specified content item
 </div>
 
 
@@ -1775,15 +822,8 @@ fluro.asset.playerUrl('5be504eabf33991239599d63')</code></pre>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63?w=1920&amp;h=1080'
-fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, 1080)
-
-// returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63/file/file.jpg?w=1920&amp;h=1080'
-fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, 1080, {extension:'jpg'})
-
-//Not providing a height property will default to 16:9 ratio inferred from the width 
-//returns 'https://api.fluro.io/get/poster/5be504eabf33991239599d63/file/MyPoster.jpg?w=1920&amp;h=1080'
-fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoster.jpg'})</code></pre>
+    <pre class="prettyprint"><code>//Returns true
+var canEdit = fluro.access.canEditItem({title:'My article', _id:'55bbf345de...'});</code></pre>
 
 
 
@@ -1813,13 +853,13 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
         <tr>
             
-                <td class="name"><code>videoID</code></td>
+                <td class="name"><code>item</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Object</span>
 
 
             
@@ -1829,76 +869,7 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
             
 
-            <td class="description last">The id of the video, or a video object that has an _id property</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>width</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The width of the poster image. If none specified will default to 16:9 based on the requesting user's screen size</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>height</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The height of the poster image. If none specified will default to 16:9 based on the requesting user's screen size</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
+            <td class="description last">The item to check if the user can edit</td>
         </tr>
 
     
@@ -1923,10 +894,6 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 <h5>Returns:</h5>
 
         
-<div class="param-desc">
-    A full URL of the poster image
-</div>
-
 
 
 <dl class="param-type">
@@ -1935,7 +902,7 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">Boolean</span>
 
 
     </dd>
@@ -1950,7 +917,7 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
     
 
-    <h4 class="name" id=".typeFromMime"><span class="type-signature">(static) </span>typeFromMime<span class="signature">(mimetype)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".canKnowOf"><span class="type-signature">(static) </span>canKnowOf<span class="signature">(type, parentType)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
 
     
 
@@ -1962,7 +929,7 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.asset.js.html">fluro.asset.js</a>, <a href="fluro.asset.js.html#line362">line 362</a>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line262">line 262</a>
     </li></ul></dd>
     
 
@@ -2002,7 +969,9 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
 
 <div class="description">
-    A helper function that returns what type of content Fluro will attribute a specified mimetype to
+    Checks whether a user has permission any permissions for a specified type of content
+If no user is set but an application is then it will return according to the permissions of the application
+This function is synchronous and returns a basic true or false boolean
 </div>
 
 
@@ -2015,12 +984,8 @@ fluro.asset.posterUrl('5be504eabf33991239599d63', 1920, null, {filename:'MyPoste
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// returns 'audio'
-fluro.asset.typeFromMime('audio/aac')
-// returns 'video'
-fluro.asset.typeFromMime('video/ogg')
-// returns 'asset'
-fluro.asset.typeFromMime('application/pdf')</code></pre>
+    <pre class="prettyprint"><code>fluro.access.canKnowOf('photo', 'image');
+fluro.access.canKnowOf('event');</code></pre>
 
 
 
@@ -2050,13 +1015,13 @@ fluro.asset.typeFromMime('application/pdf')</code></pre>
 
         <tr>
             
-                <td class="name"><code>mimetype</code></td>
+                <td class="name"><code>type</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">String</span>
 
 
             
@@ -2066,7 +1031,31 @@ fluro.asset.typeFromMime('application/pdf')</code></pre>
 
             
 
-            <td class="description last">The mimetype of a file</td>
+            <td class="description last">The type or definition name eg. 'photo', 'article', 'team'</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>parentType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The basic type, for instance if the type you are checking is 'photo' the parent type would be 'image' so that
+you can get an accurate return value if the user has permission to perform the action on all definitions of an 'image' type content item</td>
         </tr>
 
     
@@ -2092,7 +1081,7 @@ fluro.asset.typeFromMime('application/pdf')</code></pre>
 
         
 <div class="param-desc">
-    Whether this mimetype is an 'asset', 'video', 'image', or 'audio' file
+    true or false depending on whether the user has the required permissions
 </div>
 
 
@@ -2103,13 +1092,1169 @@ fluro.asset.typeFromMime('application/pdf')</code></pre>
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">Boolean</span>
 
 
     </dd>
 </dl>
 
     
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".canViewItem"><span class="type-signature">(static) </span>canViewItem<span class="signature">(item)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line753">line 753</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Check whether the current acting user can view a specified content item
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns true
+var canView = fluro.access.canViewItem({title:'My article', _id:'55bbf345de...'});</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>item</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The item to check if the user can view</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".has"><span class="type-signature">(static) </span>has<span class="signature">(permission)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line409">line 409</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Check whether a user has a specific permission, useful for checking custom permissions
+or simply whether or not a user has a permission in any realm
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns true or false if the user has the permission 
+var hasPermission = fluro.access.has('create photo');</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>permission</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The permission to check</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".isAuthor"><span class="type-signature">(static) </span>isAuthor<span class="signature">(item)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line457">line 457</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Checks whether the currently authenticated user is the author or owner of a specified
+content item
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns true or false
+var isAuthor = fluro.access.isAuthor({title:'My article', _id:'55bbf345de...'});</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>item</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The item to check if the user is an author of</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".removeAllListeners"><span class="type-signature">(static) </span>removeAllListeners<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line1281">line 1281</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Removes all listening callbacks for all events
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>fluro.access.removeAllListeners()</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".removeEventListener"><span class="type-signature">(static) </span>removeEventListener<span class="signature">(event, callback)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line1270">line 1270</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Removes all a callback from the listener list
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Stop listening for the change event
+fluro.access.removeEventListener('change', myFunction)</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>event</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The event to stop listening for</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The function to remove from the listener list</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".retrieveActionableRealms"><span class="type-signature">(static) </span>retrieveActionableRealms<span class="signature">(permission)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line354">line 354</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Retrieves all realms the acting user or application can perform an action in
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns an array of all realms the user is allowed to do the specified action
+var realms = fluro.access.retrieveActionableRealms('create photo');</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>permission</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The permission string to retrieve realms for</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    An array of realms that the user can perform the action in
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".retrieveCurrentSession"><span class="type-signature">(static) </span>retrieveCurrentSession<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line87">line 87</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Returns either the currently logged in user, or the acting application
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The user or application session that is currently active
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".setDefaultApplication"><span class="type-signature">(static) </span>setDefaultApplication<span class="signature">(application)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line49">line 49</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Sets the default application so that if the current user is running
+in the context of an application and not an authenticated user this
+service can still understand and respond according to the permission sets of the 
+application itself
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>fluro.access.setDefaultApplication(window.applicationData._application)</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>application</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The application session data, usually available before this service is initialized</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -37,8 +37,8 @@ import { EventDispatcher } from './fluro.utils';
 
 /**
  * Creates a new FluroCore instance including all of the default sub modules
+ * @alias fluro
  * @constructor
- * 
  * @param {Object} options 
  * @param {String} options.apiURL    The remote URL of the Fluro API you want to connect to. Options are 'staging', 'production' or you may set a specific URL eg. 'https://api.fluro.io' (do not include trailing slash). If no value is provided, will default to 'production'.
  * @param {String} options.applicationToken When running as a static application, (for example a website) you may set the application's access token before you initialize the Fluro instance here.  

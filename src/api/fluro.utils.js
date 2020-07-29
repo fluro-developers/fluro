@@ -8,6 +8,7 @@ import { isBrowser, isNode } from 'browser-or-node';
 
 /**
  * @classdesc A static service that provides useful helper functions and tools for other Fluro services
+ * @alias fluro.utils
  * @class
  * @hideconstructor
  */
