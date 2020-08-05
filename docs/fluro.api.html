@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>fluro - Documentation</title>
+    <title>api - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -32,7 +32,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">fluro</h1>
+    <h1 class="page-title">api</h1>
     
 
     
@@ -45,7 +45,9 @@
 <header>
     
         <h2>
-        fluro
+            <span class="ancestors"><a href="fluro.html">fluro</a>.</span>
+        
+        api
         </h2>
         
     
@@ -59,7 +61,7 @@
 
     
 
-    <h4 class="name" id="fluro"><span class="type-signature"></span>new fluro<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="api"><span class="type-signature"></span>new api<span class="signature">(fluro)</span><span class="type-signature"></span></h4>
 
     
 
@@ -71,7 +73,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line64">line 64</a>
+        <a href="fluro.api.js.html">fluro.api.js</a>, <a href="fluro.api.js.html#line33">line 33</a>
     </li></ul></dd>
     
 
@@ -111,7 +113,8 @@
 
 
 <div class="description">
-    Creates a new FluroCore instance including all of the default sub modules
+    Creates a new FluroAPI instance.
+This module is a wrapper around the <a href="https://www.npmjs.com/package/axios">axios</a> package. It aims to make it easier for you to connect with and consume endpoints from the Fluro REST API for more information about the available endpoints see <a href="https://developer.fluro.io">Fluro REST API Documentation</a>
 </div>
 
 
@@ -120,26 +123,6 @@
 
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>//Import the Fluro package
-import Fluro from 'fluro';
-
-//Create a new Fluro instance
-var fluro = new Fluro();
-
-//Request the current user session endpoint from the Fluro API
-fluro.api.get('/session').then(function(res) {
-  console.log('User session is ', res.data);
-})
-.catch(function(err) {
-    console.log('There was an error', err);
-});
-
-//Use the FluroAsset package to generate an image url
-var link = fluro.asset.imageUrl('5ca3d64dd2bb085eb9d450db', 1920, 1080)</code></pre>
 
 
 
@@ -169,13 +152,13 @@ var link = fluro.asset.imageUrl('5ca3d64dd2bb085eb9d450db', 1920, 1080)</code></
 
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>fluro</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">FluroCore</span>
 
 
             
@@ -185,79 +168,7 @@ var link = fluro.asset.imageUrl('5ca3d64dd2bb085eb9d450db', 1920, 1080)</code></
 
             
 
-            <td class="description last">
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>apiURL</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The remote URL of the Fluro API you want to connect to. Options are 'staging', 'production' or you may set a specific URL eg. 'https://api.fluro.io' (do not include trailing slash). If no value is provided, will default to 'production'.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>applicationToken</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">When running as a static application, (for example a website) you may set the application's access token before you initialize the Fluro instance here.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
+            <td class="description last">A reference to the parent instance of the FluroCore module. The FluroAPI module is usually created by a FluroCore instance that passes itself in as the first argument.</td>
         </tr>
 
     
@@ -291,43 +202,6 @@ var link = fluro.asset.imageUrl('5ca3d64dd2bb085eb9d450db', 1920, 1080)</code></
     
 
     
-        <h3 class="subsection-title">Classes</h3>
-
-        <dl>
-            <dt><a href="fluro.access.html">access</a></dt>
-            <dd></dd>
-        
-            <dt><a href="fluro.api.html">api</a></dt>
-            <dd></dd>
-        
-            <dt><a href="fluro.asset.html">asset</a></dt>
-            <dd></dd>
-        
-            <dt><a href="fluro.auth.html">auth</a></dt>
-            <dd></dd>
-        
-            <dt><a href="fluro.cache.html">cache</a></dt>
-            <dd></dd>
-        
-            <dt><a href="fluro.components.html">components</a></dt>
-            <dd></dd>
-        
-            <dt><a href="fluro.content.html">content</a></dt>
-            <dd></dd>
-        
-            <dt><a href="fluro.date.html">date</a></dt>
-            <dd></dd>
-        
-            <dt><a href="fluro.types.html">types</a></dt>
-            <dd></dd>
-        
-            <dt><a href="fluro.utils.html">utils</a></dt>
-            <dd></dd>
-        
-            <dt><a href="fluro.video.html">video</a></dt>
-            <dd></dd>
-        </dl>
-    
     
     
 
@@ -336,12 +210,18 @@ var link = fluro.asset.imageUrl('5ca3d64dd2bb085eb9d450db', 1920, 1080)</code></
     
 
     
-        <h3 class="subsection-title">Members</h3>
+
+    
+        <h3 class="subsection-title">Methods</h3>
 
         
             
-<h4 class="name" id="~access"><span class="type-signature">(inner) </span>access<span class="type-signature"> :FluroAccess</span></h4>
 
+    
+
+    <h4 class="name" id=".delete"><span class="type-signature">(static) </span>delete<span class="signature">(path, config)</span><span class="type-signature"></span></h4>
+
+    
 
 
 
@@ -351,7 +231,7 @@ var link = fluro.asset.imageUrl('5ca3d64dd2bb085eb9d450db', 1920, 1080)</code></
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line291">line 291</a>
+        <a href="fluro.api.js.html">fluro.api.js</a>, <a href="fluro.api.js.html#line346">line 346</a>
     </li></ul></dd>
     
 
@@ -391,20 +271,113 @@ var link = fluro.asset.imageUrl('5ca3d64dd2bb085eb9d450db', 1920, 1080)</code></
 
 
 <div class="description">
-    A helper service for understanding a user's access permissions
+    Makes a delete http request to the Fluro REST API
 </div>
 
 
 
-    <h5>Type:</h5>
-    <ul>
-        <li>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>fluro.api.delete('/content/article/5ca3d64dd2bb085eb9d450db')
+.then(function (response) {
+  console.log(response);
+})
+.catch(function (error) {
+  console.log(error);
+});</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
             
-<span class="param-type">FluroAccess</span>
+                <td class="name"><code>path</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
 
 
-        </li>
-    </ul>
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The Fluro API endpoint to request</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Optional parameters for the request</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -413,8 +386,12 @@ var link = fluro.asset.imageUrl('5ca3d64dd2bb085eb9d450db', 1920, 1080)</code></
 
         
             
-<h4 class="name" id="~api"><span class="type-signature">(inner) </span>api<span class="type-signature"> :FluroAPI</span></h4>
 
+    
+
+    <h4 class="name" id=".get"><span class="type-signature">(static) </span>get<span class="signature">(path, config)</span><span class="type-signature"></span></h4>
+
+    
 
 
 
@@ -424,7 +401,7 @@ var link = fluro.asset.imageUrl('5ca3d64dd2bb085eb9d450db', 1920, 1080)</code></
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line190">line 190</a>
+        <a href="fluro.api.js.html">fluro.api.js</a>, <a href="fluro.api.js.html#line284">line 284</a>
     </li></ul></dd>
     
 
@@ -464,22 +441,120 @@ var link = fluro.asset.imageUrl('5ca3d64dd2bb085eb9d450db', 1920, 1080)</code></
 
 
 <div class="description">
-    The default service for interacting with
-the Fluro REST API, it's a wrapper around the axios library
-that works in conjunction with the other Fluro modules
+    Makes a get http request to the Fluro REST API
 </div>
 
 
 
-    <h5>Type:</h5>
-    <ul>
-        <li>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Make a request to get the current user session
+fluro.api.get('/content/article', {
+  params:{
+    select:'title created',
+    limit:10,
+    simple:true,
+  }
+})
+.then(function (response) {
+  console.log(response);
+})
+.catch(function (error) {
+  console.log(error);
+});</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
             
-<span class="param-type">FluroAPI</span>
+                <td class="name"><code>path</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
 
 
-        </li>
-    </ul>
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The Fluro API endpoint to request</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Optional parameters for the request</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -488,8 +563,12 @@ that works in conjunction with the other Fluro modules
 
         
             
-<h4 class="name" id="~asset"><span class="type-signature">(inner) </span>asset<span class="type-signature"> :FluroAsset</span></h4>
 
+    
+
+    <h4 class="name" id=".post"><span class="type-signature">(static) </span>post<span class="signature">(path, config)</span><span class="type-signature"></span></h4>
+
+    
 
 
 
@@ -499,7 +578,7 @@ that works in conjunction with the other Fluro modules
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line258">line 258</a>
+        <a href="fluro.api.js.html">fluro.api.js</a>, <a href="fluro.api.js.html#line308">line 308</a>
     </li></ul></dd>
     
 
@@ -539,21 +618,115 @@ that works in conjunction with the other Fluro modules
 
 
 <div class="description">
-    The default service for managing, rendering and handling files and media from Fluro.
-It contains helper functions for managing connecting to image, audio, asset and video api endpoints.
+    Makes a post http request to the Fluro REST API
 </div>
 
 
 
-    <h5>Type:</h5>
-    <ul>
-        <li>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>fluro.api.post('/content/article', {title:'my new article', ...}, {
+  //headers and other things
+})
+.then(function (response) {
+  console.log(response);
+})
+.catch(function (error) {
+  console.log(error);
+});</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
             
-<span class="param-type">FluroAsset</span>
+                <td class="name"><code>path</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
 
 
-        </li>
-    </ul>
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The Fluro API endpoint to request</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Optional parameters for the request</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -562,8 +735,12 @@ It contains helper functions for managing connecting to image, audio, asset and 
 
         
             
-<h4 class="name" id="~auth"><span class="type-signature">(inner) </span>auth<span class="type-signature"> :FluroAuth</span></h4>
 
+    
+
+    <h4 class="name" id=".put"><span class="type-signature">(static) </span>put<span class="signature">(path, config)</span><span class="type-signature"></span></h4>
+
+    
 
 
 
@@ -573,7 +750,7 @@ It contains helper functions for managing connecting to image, audio, asset and 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line218">line 218</a>
+        <a href="fluro.api.js.html">fluro.api.js</a>, <a href="fluro.api.js.html#line327">line 327</a>
     </li></ul></dd>
     
 
@@ -613,22 +790,115 @@ It contains helper functions for managing connecting to image, audio, asset and 
 
 
 <div class="description">
-    The default service for managing authentication
-handles automatic refreshing of access tokens, and provides login, logout
-and other user/application specific functionality
+    Makes a put http request to the Fluro REST API
 </div>
 
 
 
-    <h5>Type:</h5>
-    <ul>
-        <li>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>fluro.api.put('/content/article/5ca3d64dd2bb085eb9d450db', {title:'my new article', ...}, {
+  //headers and other things
+})
+.then(function (response) {
+  console.log(response);
+})
+.catch(function (error) {
+  console.log(error);
+});</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
             
-<span class="param-type">FluroAuth</span>
+                <td class="name"><code>path</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
 
 
-        </li>
-    </ul>
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The Fluro API endpoint to request</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Optional parameters for the request</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -636,671 +906,6 @@ and other user/application specific functionality
 
 
         
-            
-<h4 class="name" id="~cache"><span class="type-signature">(inner) </span>cache<span class="type-signature"> :FluroCache</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line125">line 125</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Provides a cache service, used for creating, clearing 
-and storing API requests and other information in memory
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">FluroCache</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~components"><span class="type-signature">(inner) </span>components<span class="type-signature"> :FluroComponents</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line229">line 229</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Provides helper functions for working with Fluro Components
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">FluroComponents</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~content"><span class="type-signature">(inner) </span>content<span class="type-signature"> :FluroContent</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line206">line 206</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    A helper service for CRUD operations that wraps around the fluro.api service
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">FluroContent</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~date"><span class="type-signature">(inner) </span>date<span class="type-signature"> :FluroDate</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line178">line 178</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Provides date functions, filters and utilities
-for working with dates and timezones
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">FluroDate</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~device"><span class="type-signature">(inner) </span>device<span class="type-signature"> :FluroDevice</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line149">line 149</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Provides helper functions for understanding the users device
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">FluroDevice</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~stats"><span class="type-signature">(inner) </span>stats<span class="type-signature"> :FluroStats</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line270">line 270</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    The default service for handling a user's 'stats' eg. (likes, views, favorites, downvotes etc...)
-This service creates and syncs user's stats when they 'stat' items from Fluro.
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">FluroStats</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~types"><span class="type-signature">(inner) </span>types<span class="type-signature"> :FluroTypes</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line281">line 281</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    A helper service for retrieving, translating and rendering content types and definitions
-defined within Fluro.
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">FluroTypes</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~utils"><span class="type-signature">(inner) </span>utils<span class="type-signature"> :FluroUtils</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line137">line 137</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Provides helper functions for working
-with Fluro data
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">FluroUtils</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~video"><span class="type-signature">(inner) </span>video<span class="type-signature"> :FluroVideo</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.core.js.html">fluro.core.js</a>, <a href="fluro.core.js.html#line245">line 245</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Provides helper functions for working
-with Fluro Video data
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">FluroVideo</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-    
-
     
 
     

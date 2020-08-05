@@ -15,24 +15,21 @@ const CancelToken = axios.CancelToken;
 
 ///////////////////////////////////////
 
+
+
+
+
 /**
  * Creates a new FluroAPI instance.
- * This module is a wrapper around the <a href="https://www.npmjs.com/package/axios">axios</a> package. It aims to make it easier for you to connect with and consume endpoints from the
- * Fluro REST API for more information about the available endpoints see <a href="https://developer.fluro.io">Fluro REST API Documentation</a>
- * 
+ * This module is a wrapper around the <a href="https://www.npmjs.com/package/axios">axios</a> package. It aims to make it easier for you to connect with and consume endpoints from the Fluro REST API for more information about the available endpoints see <a href="https://developer.fluro.io">Fluro REST API Documentation</a>
+ * @alias fluro.api
  * @constructor
  * @param {FluroCore} fluro A reference to the parent instance of the FluroCore module. The FluroAPI module is usually created by a FluroCore instance that passes itself in as the first argument.
- *
- * @example
- * //Make a request to get the current user session
- * fluro.api.get('/session')
- * .then(function (response) {
- *   console.log(response);
- * })
- * .catch(function (error) {
- *   console.log(error);
- * });
  */
+
+
+
+
 var FluroAPI = function(fluro) {
 
     ///////////////////////////////////////
