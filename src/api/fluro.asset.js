@@ -1,3 +1,6 @@
+
+
+
 /**
  * Creates a new FluroAsset instance.
  * This module provides a number of helper functions for managing asset, image, video and audio items in Fluro
@@ -5,6 +8,10 @@
  * @constructor
  * @param {FluroCore} fluro A reference to the parent instance of the FluroCore module. The FluroAsset module is usually created by a FluroCore instance that passes itself in as the first argument.
  */
+
+
+
+
 var FluroAsset = function(Fluro) {
 
     var isRetina;
