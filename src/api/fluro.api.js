@@ -22,7 +22,7 @@ const CancelToken = axios.CancelToken;
 /**
  * Creates a new FluroAPI instance.
  * This module is a wrapper around the <a href="https://www.npmjs.com/package/axios">axios</a> package. It aims to make it easier for you to connect with and consume endpoints from the Fluro REST API for more information about the available endpoints see <a href="https://developer.fluro.io">Fluro REST API Documentation</a>
- * @alias fluro.api
+ * @alias api
  * @constructor
  * @param {FluroCore} fluro A reference to the parent instance of the FluroCore module. The FluroAPI module is usually created by a FluroCore instance that passes itself in as the first argument.
  */
@@ -282,7 +282,7 @@ var FluroAPI = function(fluro) {
 
 
     /**
-     * @name fluro.api.get
+     * @name api.get
      * @description Makes a get http request to the Fluro REST API
      * @function
      * @param {String} path The Fluro API endpoint to request
@@ -306,7 +306,7 @@ var FluroAPI = function(fluro) {
 
 
     /**
-     * @name fluro.api.post
+     * @name api.post
      * @description Makes a post http request to the Fluro REST API
      * @function
      * @param {String} path The Fluro API endpoint to request
@@ -325,7 +325,7 @@ var FluroAPI = function(fluro) {
      */
 
     /**
-     * @name fluro.api.put
+     * @name api.put
      * @description Makes a put http request to the Fluro REST API
      * @function
      * @param {String} path The Fluro API endpoint to request
@@ -344,7 +344,7 @@ var FluroAPI = function(fluro) {
      */
 
     /**
-     * @name fluro.api.delete
+     * @name api.delete
      * @description Makes a delete http request to the Fluro REST API
      * @function
      * @param {String} path The Fluro API endpoint to request

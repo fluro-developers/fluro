@@ -1,7 +1,7 @@
 /**
  * Creates a new FluroComponents instance.
  * This module provides a number of helper functions for working with Fluro components
- * @alias fluro.components
+ * @alias components
  * @constructor
  * @param {FluroCore} fluro A reference to the parent instance of the FluroCore module. This module is usually created by a FluroCore instance that passes itself in as the first argument.
  */
@@ -19,7 +19,7 @@ var FluroComponents = function(fluro) {
 
     /**
      * Hydrates a data model by providing the component id
-     * @alias fluro.components.hydrateModel	
+     * @alias components.hydrateModel	
      * @param  {String} componentID The id of the component that defines the fields
      * @param  {Object} model       The data model to hydrate
      * @return {Object}             A copy of the data model with all references populated

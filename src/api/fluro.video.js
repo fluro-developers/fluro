@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 /**
  * @classdesc A static service that provides useful tools when working with video content
- * @alias fluro.video
+ * @alias video
  * @class
  * @hideconstructor
  */
@@ -133,7 +133,7 @@ FluroVideo.getVimeoIDFromURL = function(url) {
 
 
 /**
- * @alias fluro.video.readableMilliseconds
+ * @alias video.readableMilliseconds
  * @param  {Number} milliseconds The number of milliseconds to get duration for
  * @return {String}            The query string
  * @example 
@@ -188,7 +188,7 @@ FluroVideo.readableMilliseconds = function(milliseconds, withoutSuffix) {
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @alias fluro.video.readableSeconds
+ * @alias video.readableSeconds
  * @param  {Number} seconds The number of seconds to get duration for
  * @return {String}            The query string
  * @example 
@@ -230,7 +230,7 @@ FluroVideo.readableSeconds = function(seconds, withoutSuffix) {
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @alias fluro.video.hhmmss
+ * @alias video.hhmmss
  * @param  {Number} seconds The number of seconds to get duration for
  * @return {String}            The query string
  * @example 

@@ -1,0 +1,2289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>access - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="access.html">access</a><ul class='methods'><li data-type='method'><a href="access.html#.addEventListener">addEventListener</a></li><li data-type='method'><a href="access.html#.can">can</a></li><li data-type='method'><a href="access.html#.canDeleteItem">canDeleteItem</a></li><li data-type='method'><a href="access.html#.canEditItem">canEditItem</a></li><li data-type='method'><a href="access.html#.canKnowOf">canKnowOf</a></li><li data-type='method'><a href="access.html#.canViewItem">canViewItem</a></li><li data-type='method'><a href="access.html#.has">has</a></li><li data-type='method'><a href="access.html#.isAuthor">isAuthor</a></li><li data-type='method'><a href="access.html#.removeAllListeners">removeAllListeners</a></li><li data-type='method'><a href="access.html#.removeEventListener">removeEventListener</a></li><li data-type='method'><a href="access.html#.retrieveActionableRealms">retrieveActionableRealms</a></li><li data-type='method'><a href="access.html#.retrieveCurrentSession">retrieveCurrentSession</a></li><li data-type='method'><a href="access.html#.setDefaultApplication">setDefaultApplication</a></li></ul></li><li><a href="api.html">api</a><ul class='methods'><li data-type='method'><a href="api.html#.delete">delete</a></li><li data-type='method'><a href="api.html#.get">get</a></li><li data-type='method'><a href="api.html#.post">post</a></li><li data-type='method'><a href="api.html#.put">put</a></li></ul></li><li><a href="asset.html">asset</a><ul class='methods'><li data-type='method'><a href="asset.html#.avatarUrl">avatarUrl</a></li><li data-type='method'><a href="asset.html#.downloadUrl">downloadUrl</a></li><li data-type='method'><a href="asset.html#.filesize">filesize</a></li><li data-type='method'><a href="asset.html#.getUrl">getUrl</a></li><li data-type='method'><a href="asset.html#.imageUrl">imageUrl</a></li><li data-type='method'><a href="asset.html#.playerUrl">playerUrl</a></li><li data-type='method'><a href="asset.html#.posterUrl">posterUrl</a></li><li data-type='method'><a href="asset.html#.typeFromMime">typeFromMime</a></li></ul></li><li><a href="auth.html">auth</a><ul class='methods'><li data-type='method'><a href="auth.html#.addEventListener">addEventListener</a></li><li data-type='method'><a href="auth.html#.changeAccount">changeAccount</a></li><li data-type='method'><a href="auth.html#.getCurrentToken">getCurrentToken</a></li><li data-type='method'><a href="auth.html#.getCurrentUser">getCurrentUser</a></li><li data-type='method'><a href="auth.html#.impersonate">impersonate</a></li><li data-type='method'><a href="auth.html#.login">login</a></li><li data-type='method'><a href="auth.html#.logout">logout</a></li><li data-type='method'><a href="auth.html#.refreshAccessToken">refreshAccessToken</a></li><li data-type='method'><a href="auth.html#.removeAllListeners">removeAllListeners</a></li><li data-type='method'><a href="auth.html#.removeEventListener">removeEventListener</a></li><li data-type='method'><a href="auth.html#.retrieveUserFromResetToken">retrieveUserFromResetToken</a></li><li data-type='method'><a href="auth.html#.sendResetPasswordRequest">sendResetPasswordRequest</a></li><li data-type='method'><a href="auth.html#.set">set</a></li><li data-type='method'><a href="auth.html#.signup">signup</a></li><li data-type='method'><a href="auth.html#.updateUserWithToken">updateUserWithToken</a></li></ul></li><li><a href="cache.html">cache</a><ul class='methods'><li data-type='method'><a href="cache.html#.get">get</a></li><li data-type='method'><a href="cache.html#.reset">reset</a></li></ul></li><li><a href="components.html">components</a><ul class='methods'><li data-type='method'><a href="components.html#.hydrateModel">hydrateModel</a></li></ul></li><li><a href="content.html">content</a><ul class='methods'><li data-type='method'><a href="content.html#.duplicate">duplicate</a></li><li data-type='method'><a href="content.html#.external">external</a></li><li data-type='method'><a href="content.html#.form">form</a></li><li data-type='method'><a href="content.html#.get">get</a></li><li data-type='method'><a href="content.html#.keys">keys</a></li><li data-type='method'><a href="content.html#.query">query</a></li><li data-type='method'><a href="content.html#.related">related</a></li><li data-type='method'><a href="content.html#.retrieve">retrieve</a></li><li data-type='method'><a href="content.html#.slug">slug</a></li><li data-type='method'><a href="content.html#.submitInteraction">submitInteraction</a></li><li data-type='method'><a href="content.html#.submitPost">submitPost</a></li><li data-type='method'><a href="content.html#.thread">thread</a></li><li data-type='method'><a href="content.html#.values">values</a></li></ul></li><li><a href="date.html">date</a><ul class='methods'><li data-type='method'><a href="date.html#.countdown">countdown</a></li><li data-type='method'><a href="date.html#.dateFromID">dateFromID</a></li><li data-type='method'><a href="date.html#.formatDate">formatDate</a></li><li data-type='method'><a href="date.html#.getAge">getAge</a></li><li data-type='method'><a href="date.html#.groupEventByDate">groupEventByDate</a></li><li data-type='method'><a href="date.html#.isDifferentTimezoneThanUser">isDifferentTimezoneThanUser</a></li><li data-type='method'><a href="date.html#.isMultiDayEvent">isMultiDayEvent</a></li><li data-type='method'><a href="date.html#.localDate">localDate</a></li><li data-type='method'><a href="date.html#.readableEventDate">readableEventDate</a></li><li data-type='method'><a href="date.html#.readableEventTime">readableEventTime</a></li><li data-type='method'><a href="date.html#.timeago">timeago</a></li><li data-type='method'><a href="date.html#.timeline">timeline</a></li><li data-type='method'><a href="date.html#.timestampToAmPm">timestampToAmPm</a></li><li data-type='method'><a href="date.html#.timezones">timezones</a></li></ul></li><li><a href="fluro.html">fluro</a></li><li><a href="types.html">types</a><ul class='methods'><li data-type='method'><a href="types.html#.all">all</a></li><li data-type='method'><a href="types.html#.basicTypes">basicTypes</a></li><li data-type='method'><a href="types.html#.get">get</a></li><li data-type='method'><a href="types.html#.mapDefinitionItems">mapDefinitionItems</a></li><li data-type='method'><a href="types.html#.parentType">parentType</a></li><li data-type='method'><a href="types.html#.postableTypes">postableTypes</a></li><li data-type='method'><a href="types.html#.readable">readable</a></li><li data-type='method'><a href="types.html#.reloadTerminology">reloadTerminology</a></li><li data-type='method'><a href="types.html#.retrieve">retrieve</a></li><li data-type='method'><a href="types.html#.subTypes">subTypes</a></li><li data-type='method'><a href="types.html#.term">term</a></li></ul></li><li><a href="utils.html">utils</a><ul class='methods'><li data-type='method'><a href="utils.html#.arrayIDs">arrayIDs</a></li><li data-type='method'><a href="utils.html#.comma">comma</a></li><li data-type='method'><a href="utils.html#.currencySymbol">currencySymbol</a></li><li data-type='method'><a href="utils.html#.errorMessage">errorMessage</a></li><li data-type='method'><a href="utils.html#.formatCurrency">formatCurrency</a></li><li data-type='method'><a href="utils.html#.getDefaultValueForField">getDefaultValueForField</a></li><li data-type='method'><a href="utils.html#.getFlattenedFields">getFlattenedFields</a></li><li data-type='method'><a href="utils.html#.getStringID">getStringID</a></li><li data-type='method'><a href="utils.html#.guid">guid</a></li><li data-type='method'><a href="utils.html#.hash">hash</a></li><li data-type='method'><a href="utils.html#.injectScript">injectScript</a></li><li data-type='method'><a href="utils.html#.machineName">machineName</a></li><li data-type='method'><a href="utils.html#.mapParameters">mapParameters</a></li><li data-type='method'><a href="utils.html#.matchInArray">matchInArray</a></li><li data-type='method'><a href="utils.html#.processCardPrioritySort">processCardPrioritySort</a></li></ul></li><li><a href="video.html">video</a><ul class='methods'><li data-type='method'><a href="video.html#.hhmmss">hhmmss</a></li><li data-type='method'><a href="video.html#.readableMilliseconds">readableMilliseconds</a></li><li data-type='method'><a href="video.html#.readableSeconds">readableSeconds</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">access</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        access
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+    
+
+    <h4 class="name" id="access"><span class="type-signature"></span>new access<span class="signature">(fluro)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line18">line 18</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Creates a new FluroAccess service
+This module provides helpful functions and tools for managing and understanding a user's permissions and access control
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fluro</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">FluroCore</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A reference to the parent instance of the FluroCore module. This module is usually created by a FluroCore instance that passes itself in as the first argument.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".addEventListener"><span class="type-signature">(static) </span>addEventListener<span class="signature">(event, callback)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line1259">line 1259</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Adds a callback that will be triggered whenever the specified event occurs
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Listen for when the user session changes
+fluro.access.addEventListener('change', function(userSession) {})</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>event</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The event to listen for</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The function to fire when this event is triggered</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".can"><span class="type-signature">(static) </span>can<span class="signature">(action, type, parentType)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line121">line 121</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Checks whether a user has permission to perform a specified action for a specified type of content
+If no user is set but an application is then it will return according to the permissions of the application
+This function is synchronous and returns a basic true or false boolean
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>fluro.access.can('create' 'photo', 'image');
+fluro.access.can('edit any' 'service', 'event');</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>action</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The action to check permissions for eg. 'create', 'view any', 'edit own', 'delete any' etc</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The type or definition name eg. 'photo', 'article', 'team'</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>parentType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The basic type, for instance if the type you are checking is 'photo' the parent type would be 'image' so that
+you can get an accurate return value if the user has permission to perform the action on all definitions of an 'image' type content item</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    true or false depending on whether the user has the required permissions
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".canDeleteItem"><span class="type-signature">(static) </span>canDeleteItem<span class="signature">(item)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line906">line 906</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Check whether the current acting user can delete a specified content item
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns true
+var canDelete = fluro.access.canDeleteItem({title:'My article', _id:'55bbf345de...'});</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>item</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The item to check if the user can delete</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".canEditItem"><span class="type-signature">(static) </span>canEditItem<span class="signature">(item)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line566">line 566</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Check whether the current acting user can edit a specified content item
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns true
+var canEdit = fluro.access.canEditItem({title:'My article', _id:'55bbf345de...'});</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>item</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The item to check if the user can edit</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".canKnowOf"><span class="type-signature">(static) </span>canKnowOf<span class="signature">(type, parentType)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line262">line 262</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Checks whether a user has permission any permissions for a specified type of content
+If no user is set but an application is then it will return according to the permissions of the application
+This function is synchronous and returns a basic true or false boolean
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>fluro.access.canKnowOf('photo', 'image');
+fluro.access.canKnowOf('event');</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The type or definition name eg. 'photo', 'article', 'team'</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>parentType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The basic type, for instance if the type you are checking is 'photo' the parent type would be 'image' so that
+you can get an accurate return value if the user has permission to perform the action on all definitions of an 'image' type content item</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    true or false depending on whether the user has the required permissions
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".canViewItem"><span class="type-signature">(static) </span>canViewItem<span class="signature">(item)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line753">line 753</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Check whether the current acting user can view a specified content item
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns true
+var canView = fluro.access.canViewItem({title:'My article', _id:'55bbf345de...'});</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>item</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The item to check if the user can view</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".has"><span class="type-signature">(static) </span>has<span class="signature">(permission)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line409">line 409</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Check whether a user has a specific permission, useful for checking custom permissions
+or simply whether or not a user has a permission in any realm
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns true or false if the user has the permission 
+var hasPermission = fluro.access.has('create photo');</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>permission</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The permission to check</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".isAuthor"><span class="type-signature">(static) </span>isAuthor<span class="signature">(item)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line457">line 457</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Checks whether the currently authenticated user is the author or owner of a specified
+content item
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns true or false
+var isAuthor = fluro.access.isAuthor({title:'My article', _id:'55bbf345de...'});</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>item</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The item to check if the user is an author of</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".removeAllListeners"><span class="type-signature">(static) </span>removeAllListeners<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line1281">line 1281</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Removes all listening callbacks for all events
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>fluro.access.removeAllListeners()</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".removeEventListener"><span class="type-signature">(static) </span>removeEventListener<span class="signature">(event, callback)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line1270">line 1270</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Removes all a callback from the listener list
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Stop listening for the change event
+fluro.access.removeEventListener('change', myFunction)</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>event</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The event to stop listening for</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The function to remove from the listener list</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".retrieveActionableRealms"><span class="type-signature">(static) </span>retrieveActionableRealms<span class="signature">(permission)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line354">line 354</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Retrieves all realms the acting user or application can perform an action in
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Returns an array of all realms the user is allowed to do the specified action
+var realms = fluro.access.retrieveActionableRealms('create photo');</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>permission</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The permission string to retrieve realms for</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    An array of realms that the user can perform the action in
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".retrieveCurrentSession"><span class="type-signature">(static) </span>retrieveCurrentSession<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line87">line 87</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Returns either the currently logged in user, or the acting application
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The user or application session that is currently active
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".setDefaultApplication"><span class="type-signature">(static) </span>setDefaultApplication<span class="signature">(application)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="fluro.access.js.html">fluro.access.js</a>, <a href="fluro.access.js.html#line49">line 49</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Sets the default application so that if the current user is running
+in the context of an application and not an authenticated user this
+service can still understand and respond according to the permission sets of the 
+application itself
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>fluro.access.setDefaultApplication(window.applicationData._application)</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>application</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The application session data, usually available before this service is initialized</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Thu Aug 06 2020 08:10:52 GMT+1000 (Australian Eastern Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

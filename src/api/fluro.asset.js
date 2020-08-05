@@ -4,7 +4,7 @@
 /**
  * Creates a new FluroAsset instance.
  * This module provides a number of helper functions for managing asset, image, video and audio items in Fluro
- * @alias fluro.asset
+ * @alias asset
  * @constructor
  * @param {FluroCore} fluro A reference to the parent instance of the FluroCore module. The FluroAsset module is usually created by a FluroCore instance that passes itself in as the first argument.
  */
@@ -91,7 +91,7 @@ var FluroAsset = function(Fluro) {
      * 
      * This function generates a url for the binary data of an
      * asset, image, audio, or video file that has been uploaded to Fluro
-     * @alias fluro.asset.getUrl
+     * @alias asset.getUrl
      * @param  {string} assetID The _id of the item you want to retrieve
      * @param  {object} params      
      * @return {string}         A valid Fluro URL
@@ -144,7 +144,7 @@ var FluroAsset = function(Fluro) {
      * 
      * This function generates a player url for a video file that has been uploaded to Fluro
      * This is useful to force browsers to renderer a html5 video player instead of downloading the video file on desktop
-     * @alias fluro.asset.playerUrl
+     * @alias asset.playerUrl
      * @param  {string} videoID The _id of the video you want to play
      * @param  {object} params      
      * @return {string}         A valid Fluro URL
@@ -191,7 +191,7 @@ var FluroAsset = function(Fluro) {
 
     /**
      * A helper function to generate a url for retrieving a user, persona or contact's avatar  
-     * @alias fluro.asset.avatarUrl      
+     * @alias asset.avatarUrl      
      * @param  {string} personID The id of the person you want to retrieve the avatar for
      * @param  {string} style    Can be 'contact', 'persona' or 'user'
      * @param  {object} params   
@@ -244,7 +244,7 @@ var FluroAsset = function(Fluro) {
 
     /**
      * A helper function to retrieve the main image for an event, group, realm or other content
-     * @alias fluro.asset.coverUrl
+     * @alias asset.coverUrl
      * @param  {string} contentID The id of the item you want to retrieve the image for
      * @param  {string} style    Can be 'event', 'group', 'tag' or 'realm'
      * @param  {object} params   
@@ -302,7 +302,7 @@ var FluroAsset = function(Fluro) {
     /**
      * A helper function that returns a download url for a specific asset
      * @param  {string} assetID The id of the asset, or the asset object you want to download
-     * @alias fluro.asset.downloadUrl
+     * @alias asset.downloadUrl
      * @param  {object} params   
      * @param  {string} params.filename The filename you want to download the file as
      * @param  {string} params.extension The extension of the file you want to download, eg. 'pdf'  
@@ -353,7 +353,7 @@ var FluroAsset = function(Fluro) {
 
     /**
      * A helper function that returns what type of content Fluro will attribute a specified mimetype to
-     * @alias fluro.asset.typeFromMime
+     * @alias asset.typeFromMime
      * @param  {string} mimetype The mimetype of a file
      * @return {string}          Whether this mimetype is an 'asset', 'video', 'image', or 'audio' file
      * @example
@@ -415,7 +415,7 @@ var FluroAsset = function(Fluro) {
 
     /**
      * A helper function that returns a poster image for a specified video
-     * @alias fluro.asset.posterUrl
+     * @alias asset.posterUrl
      * @param  {string} videoID The id of the video, or a video object that has an _id property
      * @param  {number} width The width of the poster image. If none specified will default to 16:9 based on the requesting user's screen size
      * @param  {number} height The height of the poster image. If none specified will default to 16:9 based on the requesting user's screen size
@@ -551,7 +551,7 @@ var FluroAsset = function(Fluro) {
 
     /**
      * A helper function that creates a url image for a specified image
-     * @alias fluro.asset.imageUrl
+     * @alias asset.imageUrl
      * @param  {string} imageID The id of the image or an object representing the image that has an _id property
      * @param  {Integer} width The width of the image to retrieve from Fluro. If none is specified then will default to a size based on the requesting user's screen dimensions.
      * @param  {Integer} height The height of the image to retrieve from Fluro. If none is specified then will default to a size based on the requesting user's screen dimensions.
@@ -670,7 +670,7 @@ var FluroAsset = function(Fluro) {
 
     /**
      * Helper function to translate bytes into a human readable format
-     * @alias fluro.asset.filesize
+     * @alias asset.filesize
      * @param  {Integer} bytes The number of bytes
      * @return {String}       The human readable filesize
      * @example

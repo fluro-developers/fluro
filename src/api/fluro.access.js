@@ -11,7 +11,7 @@ import { EventDispatcher } from './fluro.utils';
  * Creates a new FluroAccess service
  * This module provides helpful functions and tools for managing and understanding a user's permissions and access control
  * 
- * @alias fluro.access
+ * @alias access
  * @constructor
  * @param {FluroCore} fluro A reference to the parent instance of the FluroCore module. This module is usually created by a FluroCore instance that passes itself in as the first argument.
  */
@@ -40,7 +40,7 @@ var FluroAccess = function(FluroCore) {
      * in the context of an application and not an authenticated user this
      * service can still understand and respond according to the permission sets of the 
      * application itself
-     * @alias fluro.access.setDefaultApplication
+     * @alias access.setDefaultApplication
      * @param  {Object} application The application session data, usually available before this service is initialized
      * @example
      * fluro.access.setDefaultApplication(window.applicationData._application)
@@ -81,7 +81,7 @@ var FluroAccess = function(FluroCore) {
 
     /**
      * Returns either the currently logged in user, or the acting application
-     * @alias fluro.access.retrieveCurrentSession
+     * @alias access.retrieveCurrentSession
      * @return {Object} The user or application session that is currently active
      */
     service.retrieveCurrentSession = function() {
@@ -111,7 +111,7 @@ var FluroAccess = function(FluroCore) {
      * @param  {String} parentType The basic type, for instance if the type you are checking is 'photo' the parent type would be 'image' so that
      * you can get an accurate return value if the user has permission to perform the action on all definitions of an 'image' type content item 
      * @return {Boolean}            true or false depending on whether the user has the required permissions
-     * @alias fluro.access.can  
+     * @alias access.can  
      * @example
      *
      * fluro.access.can('create' 'photo', 'image');
@@ -252,7 +252,7 @@ var FluroAccess = function(FluroCore) {
      * @param  {String} parentType The basic type, for instance if the type you are checking is 'photo' the parent type would be 'image' so that
      * you can get an accurate return value if the user has permission to perform the action on all definitions of an 'image' type content item 
      * @return {Boolean}            true or false depending on whether the user has the required permissions
-     * @alias fluro.access.canKnowOf  
+     * @alias access.canKnowOf  
      * @example
      *
      * fluro.access.canKnowOf('photo', 'image');
@@ -345,7 +345,7 @@ var FluroAccess = function(FluroCore) {
      * Retrieves all realms the acting user or application can perform an action in
      * @param  {String} permission The permission string to retrieve realms for
      * @return {Array}        An array of realms that the user can perform the action in
-     * @alias fluro.access.retrieveActionableRealms  
+     * @alias access.retrieveActionableRealms  
      * @example
      *
      * //Returns an array of all realms the user is allowed to do the specified action
@@ -400,7 +400,7 @@ var FluroAccess = function(FluroCore) {
      * or simply whether or not a user has a permission in any realm
      * @param  {String}  permission The permission to check
      * @return {Boolean}            
-     * @alias fluro.access.has  
+     * @alias access.has  
      * @example
      *
      * //Returns true or false if the user has the permission 
@@ -448,7 +448,7 @@ var FluroAccess = function(FluroCore) {
      * content item
      * @param  {Object}  item The item to check if the user is an author of
      * @return {Boolean}      
-     * @alias fluro.access.isAuthor  
+     * @alias access.isAuthor  
      * @example
      *
      * //Returns true or false
@@ -557,7 +557,7 @@ var FluroAccess = function(FluroCore) {
      * Check whether the current acting user can edit a specified content item
      * @param  {Object} item The item to check if the user can edit
      * @return {Boolean}    
-     * @alias fluro.access.canEditItem  
+     * @alias access.canEditItem  
      * @example
      *
      * //Returns true
@@ -744,7 +744,7 @@ var FluroAccess = function(FluroCore) {
      * Check whether the current acting user can view a specified content item
      * @param  {Object} item The item to check if the user can view
      * @return {Boolean}    
-     * @alias fluro.access.canViewItem  
+     * @alias access.canViewItem  
      * @example
      *
      * //Returns true
@@ -897,7 +897,7 @@ var FluroAccess = function(FluroCore) {
      * Check whether the current acting user can delete a specified content item
      * @param  {Object} item The item to check if the user can delete
      * @return {Boolean}  
-     * @alias fluro.access.canDeleteItem  
+     * @alias access.canDeleteItem  
      * @example
      *
      * //Returns true
@@ -1257,7 +1257,7 @@ var FluroAccess = function(FluroCore) {
 
 
     /**
-     * @name fluro.access.addEventListener
+     * @name access.addEventListener
      * @description Adds a callback that will be triggered whenever the specified event occurs
      * @function
      * @param {String} event The event to listen for
@@ -1268,7 +1268,7 @@ var FluroAccess = function(FluroCore) {
      */
 
     /**
-     * @name fluro.access.removeEventListener
+     * @name access.removeEventListener
      * @description Removes all a callback from the listener list
      * @function
      * @param {String} event The event to stop listening for
@@ -1279,7 +1279,7 @@ var FluroAccess = function(FluroCore) {
      */
 
     /**
-     * @name fluro.access.removeAllListeners
+     * @name access.removeAllListeners
      * @description Removes all listening callbacks for all events
      * @function
      * @example

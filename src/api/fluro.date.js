@@ -17,7 +17,7 @@ if (!(typeof window === 'undefined')) {
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @alias fluro.date
+ * @alias date
  * @classdesc A static service that provides useful functions for working with dates and timestamps.
  * @class
  * @hideconstructor
@@ -33,7 +33,7 @@ const FluroDate = {
 
 /**
  * A function that returns all of the available timezones. Often used to populate a select box
- * @alias fluro.date.timezones
+ * @alias date.timezones
  * @return {Array}                   An array of all availble timezones.
  */
 
@@ -46,7 +46,7 @@ FluroDate.timezones = function() {
 
 /**
  * A function that converts a timestamp string '13:30' to '1:30pm';
- * @alias fluro.date.timestampToAmPm
+ * @alias date.timestampToAmPm
  * @return {Array}                   An array of all availble timezones.
  */
 
@@ -84,7 +84,7 @@ FluroDate.currentTimezone = function() {
 
 /**
  * A function that returns all of the available timezones. Often used to populate a select box
- * @alias fluro.date.isDifferentTimezoneThanUser
+ * @alias date.isDifferentTimezoneThanUser
  * @return {Boolean}                   True if the specified timezone is different than the viewing user
  */
 
@@ -124,7 +124,7 @@ FluroDate.isDifferentTimezoneThanUser = function(timezone) {
  * This will return dates that are incorrect on purpose. So that it can appear to the user as if they were in another timezone.
  * As Javascript dates are always in the context of the timezone they are being viewed in, this function will give you a date that is technically
  * not the Universal point in time of the date, but rather a time that reads in your timezone as if you were in the specified timezone.
- * @alias fluro.date.localDate
+ * @alias date.localDate
  * @param  {Date} date      Either a javascript date object, or a string timestamp representing a javascript date object        
  * @param  {String} specifiedTimezone The timezone to retrieve the date in eg. Australia/Melbourne   
  * @return {Date}                   A javascript date object transformed to match the specified timezone
@@ -169,7 +169,7 @@ FluroDate.localDate = function(d, specifiedTimezone) {
 
 /**
  * A helpful function that can quickly get an age from a supplied date string
- * @alias fluro.date.getAge
+ * @alias date.getAge
  * @return {Integer}            The age in years
  * @example 
  * fluro.date.getAge('2019-04-18T23:00:00.000Z')
@@ -310,7 +310,7 @@ FluroDate.isMultiDayEvent = function(event) {
  * taking into consideration the context of the current time, the event's start and end time.
  * This is often used as a string filter
  * and what is relevant
- * @alias fluro.date.readableEventDate
+ * @alias date.readableEventDate
  * @param  {Object} event An object that has both a startDate and endDate property, Usually an event object from the Fluro API
  * @param  {String} style Whether to return a 'short', 'medium' or 'long' date
  * @return {String}       The human readable date for the event
@@ -463,7 +463,7 @@ FluroDate.readableEventDate = function(event, style) {
  * A helper function that can display a human-readable time for an event
  * taking into consideration the context of the current time, the event's start and end time.
  * This is often used as a string filter
- * @alias fluro.date.readableEventTime
+ * @alias date.readableEventTime
  * @param  {Object} event An object that has both a startDate and endDate property, Usually an event object from the Fluro API
  * @return {String}       The human readable time for the event
  * @example
@@ -534,7 +534,7 @@ FluroDate.readableEventTime = function(event) {
 
 
 /**
- * @alias fluro.date.groupEventByDate
+ * @alias date.groupEventByDate
  * @param  {Array} events The events we want to group
  * @return {Array}       A grouped array of dates and events
  */
@@ -589,7 +589,7 @@ FluroDate.groupEventByDate = function(events) {
 
 
 /**
- * @alias fluro.date.timeline
+ * @alias date.timeline
  * @param  {Array} items The items we want to group on the timeline
  * @return {Array}       A grouped array of dates
  */
@@ -706,7 +706,7 @@ FluroDate.timeline = function(items, dateKey, chronological) {
 
 /**
  * A helper function that can return the pieces for a countdown clock relative to a specified date
- * @alias fluro.date.countdown
+ * @alias date.countdown
  * @param  {Date} date The date we are counting down to
  * @return {Object}       An object with days, minutes, hours, seconds,
  */
