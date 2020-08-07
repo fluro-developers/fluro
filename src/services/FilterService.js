@@ -148,7 +148,16 @@ service.activeFilterValues = function(config) {
                     all = all.concat([block.value, block.value2]);
                     break;
                 default:
-                    all = all.concat([block.value, block.value2]);
+
+                    var blockValue1 = block.value;
+                    var blockValue2 = block.value2;
+
+                    if(block.dataType == 'boolean') {
+                        blockValue1 = String(service.convertToBoolean(blockValue1));
+                        blockValue2 = String(service.convertToBoolean(blockValue2));
+                    }   
+
+                    all = all.concat([blockValue1, blockValue2]);
                     break;
             }
 
@@ -2097,9 +2106,30 @@ service.isValidFilter = function(block) {
                 return true;
             }
 
-            if (!block.value || !_.isDate(new Date(block.value))) {
-                return;
+            if(block.dataType == 'boolean') {
+                switch(String(block.value).toLowerCase()) {
+                    case 'yes':
+                    case 'true':
+                    case 'false':
+                    case 'no':
+                    case '1':
+                    case '0':
+                        return true;
+                    break;
+                    default:
+                        return;
+                    break;
+                }
+            } else {
+                if (!block.value || !_.isDate(new Date(block.value))) {
+                   
+                    return;
+                }
             }
+
+            // if (!block.value || !_.isDate(new Date(block.value))) {
+            //     return;
+            // }
             break;
 
     }
@@ -2680,11 +2710,28 @@ service.filterMatch = function(filter, filterOptions, item) {
 
     ////////////////////////////////////////
 
-    if (inputType != 'none') {
-        //If we don't have a value yet then return true
-        if (typeof mustMatchValue == 'undefined' || mustMatchValue === null || mustMatchValue == '') {
-            return;
-        }
+    // if (inputType != 'none') {
+    //     //If we don't have a value yet then return true
+    //     if (typeof mustMatchValue == 'undefined' || mustMatchValue === null || mustMatchValue == '') {
+    //         return;
+    //     }
+    // }
+
+     ////////////////////////////////////////
+
+    switch (filter.dataType) {
+        case 'boolean':
+            itemValue = service.convertToBoolean(itemValue);
+            mustMatchValue = service.convertToBoolean(mustMatchValue);
+            break;
+        default:
+            if (inputType != 'none') {
+                //If we don't have a value yet then return true
+                if (typeof mustMatchValue == 'undefined' || mustMatchValue === null || mustMatchValue == '') {
+                    return;
+                }
+            }
+            break;
     }
 
 
@@ -3180,6 +3227,21 @@ service.getDeepValue = function(set, node, keyPath) {
 
 }
 
+//////////////////////////////////////////////////////////////
+
+service.convertToBoolean = function(v) {
+    switch (String(v).toLowerCase(v)) {
+        case 'true':
+        case 'yes':
+        case 'y':
+        case '1':
+            return true;
+            break;
+        default:
+            return false;
+            break;
+    }
+}
 
 
 //////////////////////////////////////////////////////////////
