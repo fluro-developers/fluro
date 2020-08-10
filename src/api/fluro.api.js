@@ -186,8 +186,7 @@ var FluroAPI = function(fluro) {
 
             ////////////////////////
 
-            config.headers['fluro-native-uuid'] = metadata.uuid;
-            config.headers['fluro-native-bundle'] =self.bundleId;
+            config.headers['fluro-app-uuid'] = fluro.app.uuid;
 
             ////////////////////////
 
