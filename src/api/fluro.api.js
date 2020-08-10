@@ -172,6 +172,9 @@ var FluroAPI = function(fluro) {
                 config.headers['fluro-request-timezone'] = fluro.date.defaultTimezone;
             }
 
+
+            config.headers['fluro-api-version'] = '2.1.37';
+
             ////////////////////////
 
             //It's just a normal request
