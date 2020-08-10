@@ -172,15 +172,27 @@ var FluroAPI = function(fluro) {
                 config.headers['fluro-request-timezone'] = fluro.date.defaultTimezone;
             }
 
+            ////////////////////////
+
             //It's just a normal request
             if (!config.application) {
                 return config;
             }
 
+
+            if (!fluro.app) {
+                return config;
+            }
+
+            ////////////////////////
+
+            config.headers['fluro-native-uuid'] = metadata.uuid;
+            config.headers['fluro-native-bundle'] =self.bundleId;
+
             ////////////////////////
 
             //There's no app or app user defined anyway
-            if (!fluro.app || !fluro.app.user) {
+            if (!fluro.app.user) {
                 return config;
             }
 
