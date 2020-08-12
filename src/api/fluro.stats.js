@@ -249,7 +249,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
         var loggedInUser = Fluro.auth.getCurrentUser();
 
         if (loggedInUser) {
-            promise = Fluro.api.get(url);
+            promise = Fluro.api.get(url, {cache:false});
         } else {
             promise = new Promise(function(resolve) {
                 return resolve([]);
@@ -266,6 +266,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
     function refreshComplete(res) {
         Object.assign(store, res.data);
+        // console.log('ids updated', res.data);
         finish();
     }
 
@@ -286,6 +287,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
     //////////////////////////////
 
+    console.log('stat refresh on init()')
     inflightRequest = service.refresh().then(refreshComplete, refreshFailed);
 
     //////////////////////////////

@@ -1,6 +1,3 @@
-
-
-
 /**
  * Creates a new FluroAsset instance.
  * This module provides a number of helper functions for managing asset, image, video and audio items in Fluro
@@ -81,6 +78,16 @@ var FluroAsset = function(Fluro) {
                 params['access_token'] = CurrentFluroToken;
             }
         }
+
+        ////////////////////////////////////
+
+        if (Fluro.app && Fluro.app.uuid) {
+            params['did'] = Fluro.app.uuid;
+        }
+
+
+
+
 
         return url;
     }
@@ -393,17 +400,17 @@ var FluroAsset = function(Fluro) {
                 return 'audio'
                 break;
             default:
-            	// if(_.startsWith(mimetype, 'image/')) {
-            	// 	return 'image';
-            	// }
-            	if(_.startsWith(mimetype, 'video/')) {
-            		return 'video';
-            	}
+                // if(_.startsWith(mimetype, 'image/')) {
+                //  return 'image';
+                // }
+                if (_.startsWith(mimetype, 'video/')) {
+                    return 'video';
+                }
 
-            	if(_.startsWith(mimetype, 'audio/')) {
-            		return 'audio';
-            	}
-            break;
+                if (_.startsWith(mimetype, 'audio/')) {
+                    return 'audio';
+                }
+                break;
         }
 
         return 'asset';
