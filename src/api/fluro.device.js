@@ -232,6 +232,8 @@ var FluroDevice = function() {
             breakpoint.lgAndDown = true;
 
             //Up
+            breakpoint.smAndUp = true;
+            breakpoint.mdAndUp = true;
             breakpoint.lgAndUp = true;
         }
 
@@ -241,6 +243,8 @@ var FluroDevice = function() {
             breakpoint.xl = true;
             breakpoint.xlOnly = true;
             //Up
+             breakpoint.smAndUp = true;
+            breakpoint.mdAndUp = true;
             breakpoint.lgAndUp = true;
         }
 

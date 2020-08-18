@@ -120,7 +120,7 @@ var FluroAPI = function(fluro) {
 
 
             var copy = Object.assign(config, { adapter: defaultAdapter });
-           
+
 
             // console.log('NEW ADAPTER THING', copy)
             // const axiosWithoutAdapter = axios(copy);
@@ -139,6 +139,8 @@ var FluroAPI = function(fluro) {
 
         })
     }
+
+
 
 
     //////////////////////////////////////////////////////////////////////////////
@@ -375,6 +377,73 @@ var FluroAPI = function(fluro) {
      */
 
 
+
+    ///////////////////////////////////////////////////
+
+    /**
+     * A helper function for generating an authenticated url for the current user
+     * @param  {string} endpoint The id of the asset, or the asset object you want to download
+     * @alias api.generateEndpointURL
+     * @param  {object} params   
+     * @return {string}          A full URL with relevant parameters included
+     * @example
+     * // returns 'https://api.fluro.io/something?access_token=2352345...'
+     * fluro.api.generateEndpointURL('/something');
+     */
+
+    service.generateEndpointURL = function(path, params) {
+
+        if (!path || !String(path).length) {
+            return;
+        }
+
+        if (!params) {
+            params = {};
+        }
+
+        var url = `${fluro.apiURL}${path}`;
+
+        ////////////////////////////////////////
+
+        url = parameterDefaults(url, params);
+
+        ////////////////////////////////////////
+
+        //Map the parameters to a query string
+        var queryParameters = fluro.utils.mapParameters(params);
+
+        if (queryParameters.length) {
+            url += '?' + queryParameters;
+        }
+
+        return url;
+
+    }
+
+    ///////////////////////////////////////////////////////
+
+    function parameterDefaults(url, params) {
+
+        //If we haven't requested without token
+        if (!params.withoutToken) {
+            //Get the current token from FluroAuth
+            var CurrentFluroToken = fluro.auth.getCurrentToken();
+
+            //Check to see if we have a token and none has been explicity set
+            if (!params['access_token'] && CurrentFluroToken) {
+                //Use the current token by default
+                params['access_token'] = CurrentFluroToken;
+            }
+        }
+
+        ////////////////////////////////////
+
+        if (fluro.app && fluro.app.uuid) {
+            params['did'] = fluro.app.uuid;
+        }
+
+        return url;
+    }
 
 
     /////////////////////////////////////////////////////
