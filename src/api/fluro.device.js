@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @alias device
+ * @alias fluro.device
  * @classdesc A static service that provides device and screen information. 
  * @class
  * @hideconstructor

@@ -10,6 +10,7 @@ import { EventDispatcher } from './fluro.utils';
  * This module provides a number of helper functions for authentication, logging in, signing up, generating and refreshing tokens
  * @alias auth
  * @constructor
+ * @hideconstructor
  * @param {FluroCore} fluro A reference to the parent instance of the FluroCore module. This module is usually created by a FluroCore instance that passes itself in as the first argument.
  */
 var FluroAuth = function(fluro) {

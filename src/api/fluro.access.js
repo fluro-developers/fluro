@@ -13,6 +13,7 @@ import { EventDispatcher } from './fluro.utils';
  * 
  * @alias access
  * @constructor
+ * @hideconstructor
  * @param {FluroCore} fluro A reference to the parent instance of the FluroCore module. This module is usually created by a FluroCore instance that passes itself in as the first argument.
  */
 var FluroAccess = function(FluroCore) {
@@ -631,7 +632,7 @@ var FluroAccess = function(FluroCore) {
                 }
             }
 
-            
+
             if (item.assignedToTeam && item.assignedToTeam.length) {
 
                 //Check if the user is in any of the teams
@@ -1349,6 +1350,9 @@ var FluroAccess = function(FluroCore) {
                             //     }
                             // }
 
+
+                            var isDefineable = (definitionName == basicType);
+
                             ///////////////////////////////////////////////////
 
                             //Create an array for all the possible permissions
@@ -1364,7 +1368,7 @@ var FluroAccess = function(FluroCore) {
 
                             switch (definitionName) {
                                 case 'account':
-
+                                    isDefineable = false;
                                     type.permissions.push({
                                         title: `Administrate Account Information`,
                                         value: `administrate account`,
@@ -1378,49 +1382,78 @@ var FluroAccess = function(FluroCore) {
 
                             ///////////////////////////////////////////////////
 
-                            type.permissions.push({
-                                title: `Create new ${type.plural}`,
-                                value: `create ${definitionName}`,
-                                description: `Can create new ${type.plural}`,
-                            })
+
+                            switch (basicType) {
+                                case 'simpleemail':
+                                case 'smscorrespondence':
+
+                                    isDefineable = false;
+                                    type.permissions.push({
+                                        title: `Create new ${type.plural}`,
+                                        value: `create ${definitionName}`,
+                                        description: `Can create new ${type.plural}`,
+                                    })
+
+                                    type.permissions.push({
+                                        title: `View any ${type.plural}`,
+                                        value: `view any ${definitionName}`,
+                                        description: `Can view ${type.plural} regardless of who the sender is`,
+                                    })
+
+                                    type.permissions.push({
+                                        title: `View owned ${type.plural}`,
+                                        value: `view own ${definitionName}`,
+                                        description: `Can view ${type.plural} that were originally sent by the user`,
+                                    })
+
+                                    break;
+                                default:
+                                    type.permissions.push({
+                                        title: `Create new ${type.plural}`,
+                                        value: `create ${definitionName}`,
+                                        description: `Can create new ${type.plural}`,
+                                    })
 
 
-                            type.permissions.push({
-                                title: `View any ${type.plural}`,
-                                value: `view any ${definitionName}`,
-                                description: `Can view ${type.plural} regardless of who the creator is`,
-                            })
+                                    type.permissions.push({
+                                        title: `View any ${type.plural}`,
+                                        value: `view any ${definitionName}`,
+                                        description: `Can view ${type.plural} regardless of who the creator is`,
+                                    })
 
-                            type.permissions.push({
-                                title: `View owned ${type.plural}`,
-                                value: `view own ${definitionName}`,
-                                description: `Can view ${type.plural} that were originally created by the user, or the user is listed as an 'owner'`,
-                            })
+                                    type.permissions.push({
+                                        title: `View owned ${type.plural}`,
+                                        value: `view own ${definitionName}`,
+                                        description: `Can view ${type.plural} that were originally created by the user, or the user is listed as an 'owner'`,
+                                    })
 
-                            type.permissions.push({
-                                title: `Edit any ${type.plural}`,
-                                value: `edit any ${definitionName}`,
-                                description: `Can edit ${type.title} regardless of who the creator is`,
-                            })
+                                    type.permissions.push({
+                                        title: `Edit any ${type.plural}`,
+                                        value: `edit any ${definitionName}`,
+                                        description: `Can edit ${type.title} regardless of who the creator is`,
+                                    })
 
-                            type.permissions.push({
-                                title: `Edit owned ${type.plural}`,
-                                value: `edit own ${definitionName}`,
-                                description: `Can edit ${type.plural} that were originally created by the user, or the user is listed as an 'owner'`,
-                            })
+                                    type.permissions.push({
+                                        title: `Edit owned ${type.plural}`,
+                                        value: `edit own ${definitionName}`,
+                                        description: `Can edit ${type.plural} that were originally created by the user, or the user is listed as an 'owner'`,
+                                    })
 
 
-                            type.permissions.push({
-                                title: `Delete any ${type.plural}`,
-                                value: `delete any ${definitionName}`,
-                                description: `Can delete ${type.plural} regardless of who the creator is`,
-                            })
+                                    type.permissions.push({
+                                        title: `Delete any ${type.plural}`,
+                                        value: `delete any ${definitionName}`,
+                                        description: `Can delete ${type.plural} regardless of who the creator is`,
+                                    })
 
-                            type.permissions.push({
-                                title: `Delete owned ${type.plural}`,
-                                value: `delete own ${definitionName}`,
-                                description: `Can delete ${type.plural} that were originally created by the user, or the user is listed as an 'owner'`,
-                            })
+                                    type.permissions.push({
+                                        title: `Delete owned ${type.plural}`,
+                                        value: `delete own ${definitionName}`,
+                                        description: `Can delete ${type.plural} that were originally created by the user, or the user is listed as an 'owner'`,
+                                    })
+                                    break;
+                            }
+
 
                             /////////////////////////////////////////////////////
 
@@ -1526,7 +1559,7 @@ var FluroAccess = function(FluroCore) {
 
                             ///////////////////////////////////////////
 
-                            if (definitionName == basicType) {
+                            if (isDefineable) {
 
                                 var matchedSet = derivatives[basicType];
                                 var description = `Apply all the selected permissions to all ${type.title} definitions`;
@@ -1534,11 +1567,13 @@ var FluroAccess = function(FluroCore) {
                                     description = `Apply all the selected permissions to all ${type.title} definitions, Eg. (${matchedSet.names.join(', ')})`;
                                 }
 
-                                type.permissions.push({
-                                    title: `Include all defined ${type.title} types`,
-                                    value: `include defined ${definitionName}`,
-                                    description,
-                                })
+                                // if (isDefineable) {
+                                    type.permissions.push({
+                                        title: `Include all defined ${type.title} types`,
+                                        value: `include defined ${definitionName}`,
+                                        description,
+                                    })
+                                // }
                             }
 
 

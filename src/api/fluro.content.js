@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import axios from 'axios';
 const CancelToken = axios.CancelToken;
+import FluroContentListService from '../services/FluroContentListService';
 
 import {
     Cache,
@@ -12,8 +13,9 @@ import {
 /**
  * Creates a new FluroContent instance.
  * This module provides a number of helper functions for Creating, Reading, Updating and Deleting content via the Fluro API
-* @alias content
+ * @alias content
  * @constructor
+ * @hideconstructor
  * @param {FluroCore} fluro A reference to the parent instance of the FluroCore module. This module is usually created by a FluroCore instance that passes itself in as the first argument.
  */
 var FluroContent = function(fluro) {
@@ -299,10 +301,10 @@ var FluroContent = function(fluro) {
 
         if (!requestOptions) {
             requestOptions = {
-                params:{},
+                params: {},
             }
         }
-        
+
 
         return new Promise(function(resolve, reject) {
 
@@ -499,7 +501,7 @@ var FluroContent = function(fluro) {
             params = {}
         }
 
-        if(!requestOptions) {
+        if (!requestOptions) {
             requestOptions = {}
         }
 
@@ -551,7 +553,7 @@ var FluroContent = function(fluro) {
         }
 
 
-         if(!requestOptions) {
+        if (!requestOptions) {
             requestOptions = {}
         }
 
@@ -900,6 +902,172 @@ var FluroContent = function(fluro) {
     ///////////////////////////////////////////////////
 
     /**
+     * This function combines the fluro.content.filter() and the fluro.content.getMultiple so you can easily
+     * retrieve a fully populated list of content items
+     * @alias content.list
+     * @param  {String} typeName The type or definition name of the content you want to retrieve
+     * @param  {Object} options Extra options for creating the service
+     * @param  {Object} options.criteria The filter criteria for specifying which content items should be returned
+     * @param  {Object} options.perPage The number of items to retrieve per page
+     * @param  {Object} options.pageIndex The starting page to load from the list
+     * @param  {Object} options.cacheKey A cache id that can be used to refresh cached results
+     * @return {Object}         A new instance of a FluroContentListService
+     * @example
+     *
+     * //How to sort the results
+     * var sort = {
+     *     key:'title',
+     *     direction:'asc',
+     *     type:'string',
+     * }
+     *
+     * //If you want to filter by search keywords
+     * var search = 'Any keywords you want to search for'
+     *
+     * //If you want to crop results to within a certain timeframe
+     * var startDate;// = new Date();
+     * var endDate;// = new Date()
+     *     
+     * //For more complex AND/OR filtering
+     * var filter = {
+     *     operator:'and',
+     *     filters:[
+     *        {
+     *           key:'status',
+     *           comparator:'in',
+     *           values:['active'],
+     *        }
+     *     ]
+     * }
+     *
+     * var criteria = {
+     *   search,
+     *   sort,
+     *   startDate,
+     *   endDate,
+     *   filter,
+     * }
+     *
+     * fluro.content.list('event', {
+     *     perPage: 2,
+     *     criteria,
+     * }).then(function(results) { })
+     */
+
+    service.list = function(typeName, options) {
+        return  new FluroContentListService(typeName, fluro, options);
+    }
+
+    ///////////////////////////////////////////////////
+
+    /**
+     * This function makes it easy to retrieve a large filtered list of content matching certain criteria
+     * Only the relevant fields will be returned that allows you to paginate and populate content with the 
+     * fluro.content.getMultiple() function
+     * @alias content.filter
+     * @param  {String} typeName The type or definition name of the content you want to retrieve
+     * @param  {Object} criteria The criteria used to filter the results
+     * @return {Promise}         A promise that will be resolved with an array of all results
+     * @example
+     *
+     * //How to sort the results
+     * var sort = {
+     *     key:'title',
+     *     direction:'asc',
+     *     type:'string',
+     * }
+     *
+     * //If you want to filter by search keywords
+     * var search = 'Any keywords you want to search for'
+     *
+     * //If you want to crop results to within a certain timeframe
+     * var startDate;// = new Date();
+     * var endDate;// = new Date()
+     *     
+     * //For more complex AND/OR filtering
+     * var filter = {
+     *     operator:'and',
+     *     filters:[
+     *        {
+     *           key:'status',
+     *           comparator:'in',
+     *           values:['active'],
+     *        }
+     *     ]
+     * }
+     *
+     * var criteria = {
+     *   search,
+     *   sort,
+     *   startDate,
+     *   endDate,
+     *   filter,
+     * }
+     *
+     * fluro.content.filter('event', criteria)
+     * .then(function(results) {
+     *       //Returns all results with the basic fields
+     * })
+     */
+
+    service.filter = function(typeName, criteria) {
+
+        return new Promise(function(resolve, reject) {
+            return fluro.api.post(`/content/${typeName}/filter`, criteria)
+                .then(function(res) {
+                    return resolve(res.data);
+                })
+                .catch(reject);
+        })
+    }
+
+
+    ///////////////////////////////////////////////////
+
+    /**
+     * This function makes it easy to retrieve the full content items for a specified selection of ids
+     * @alias content.getMultiple
+     * @param  {String} typeName The type or definition name of the content you want to retrieve
+     * @param  {Array} ids The ids of the content you want to retrieve
+     * @param  {Object} options extra options for the request
+     * @param  {Array} options.select specify fields you want to retrieve for the items. If blank will return the full object
+     * @return {Promise}         A promise that will be resolved with an array of possible keys
+     * @example
+     *
+     * 
+     * fluro.content.getMultiple(['5be504eabf33991239599d63', '5be504eabf33721239599d83'])
+     .then(function(items) {
+     *       //Returns the full content items
+     * })
+     */
+    service.getMultiple = function(typeName, ids, options) {
+
+        //Ensure the ids are actually ids
+        ids = fluro.utils.arrayIDs(ids);
+
+        return new Promise(function(resolve, reject) {
+
+            fluro.api.post(`/content/${typeName}/multiple`, {
+                    ids,
+                    select: options.select ? _.uniq(options.select) : undefined,
+                    //populateAll: true,
+                    limit: ids.length,
+                    //appendContactDetails,
+                    //appendAssignments,
+                    //appendFullFamily,
+
+                    // cancelToken: currentPageItemsRequest.token,
+                })
+                .then(function(res) {
+                    resolve(res.data);
+                })
+                .catch(reject);
+        })
+    }
+
+    ///////////////////////////////////////////////////
+
+    /**
      * This function makes it easy to retrieve all distinct keys for a specified selection of ids
      * @alias content.keys
      * @param  {Array} ids The ids you want to retrieve keys for
@@ -968,7 +1136,7 @@ var FluroContent = function(fluro) {
      */
     service.duplicate = function(item, options) {
 
-        if(!options) {
+        if (!options) {
             options = {};
         }
 
@@ -1000,10 +1168,10 @@ var FluroContent = function(fluro) {
                     delete newItem._external;
                     delete newItem.apikey;
 
-                    
+
                     ////////////////////////////////////////////
 
-                    if(options.customise) {
+                    if (options.customise) {
                         //Keep the definition name
                     } else {
                         delete newItem.definitionName;

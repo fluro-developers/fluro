@@ -1,7 +1,7 @@
 
 
 
-var versionName = 'fluro 2.1.42';
+var versionName = 'fluro 2.1.43';
 console.log(versionName)
 
 
@@ -32,6 +32,13 @@ export { EventDispatcher as EventDispatcher };
 //Export the event dispatcher class
 import FilterService from './services/FilterService';
 export { FilterService as FilterService };
+
+
+////////////////////////////////////////////
+
+//Export the event dispatcher class
+import FluroContentListService from './services/FluroContentListService';
+export { FluroContentListService as FluroContentListService };
 
 ////////////////////////////////////////////
 ////////////////////////////////////////////
@@ -67,6 +74,7 @@ FluroCore.video = FluroVideo;
 FluroCore.FilterService = FilterService;
 FluroCore.FluroDate = FluroDate;
 FluroCore.FluroUtils = FluroUtils;
+FluroCore.FluroContentListService = FluroContentListService;
 FluroCore.EventDispatcher = EventDispatcher;
 
 

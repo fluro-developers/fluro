@@ -3,6 +3,7 @@
  * This module provides a number of helper functions for managing asset, image, video and audio items in Fluro
  * @alias asset
  * @constructor
+ * @hideconstructor
  * @param {FluroCore} fluro A reference to the parent instance of the FluroCore module. The FluroAsset module is usually created by a FluroCore instance that passes itself in as the first argument.
  */
 

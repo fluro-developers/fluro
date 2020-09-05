@@ -45,32 +45,96 @@ FluroDate.timezones = function() {
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A function that converts a timestamp string '13:30' to '1:30pm';
- * @alias date.timestampToAmPm
- * @return {Array}                   An array of all availble timezones.
+ * A function that converts a timestamp string '7:30' to '0730';
+ * @alias date.militaryTimestamp
+ * @return {String} 
  */
 
-FluroDate.timestampToAmPm = function(s) {
+FluroDate.militaryTimestamp = function(input, withColon) {
+
+
+    var s = input;
 
     if(!s || !String(s)) {
-        s = '';
+        console.log('reset to 0000', input)
+        s = '0000';
     }
 
-    s = String(s).split(':').join('');
+    s = String(parseInt(String(s).split(':').join(''))).slice(0,4);
 
-    var am = true;
+    if(s.length < 1) {
+        s = '0000' + s;
+    }
+
+    else if(s.length < 2) {
+        s = '000' + s;
+    }
+
+    else if(s.length < 3) {
+        s = '00' + s;
+    }
+
+    else if(s.length < 4) {
+        s = '0' + s;
+    }
+
     var hours = parseInt(s.substring(0,2));
     var mins = parseInt(s.substring(2));
 
-    if(hours > 12) {
-        am = false;
-        hours = hours - 12;
+    hours = Math.max(hours, 0)
+    mins = Math.max(mins, 0)
+    hours = Math.min(hours, 23)
+    mins = Math.min(mins, 59)
+
+    if(String(hours).length < 2) {
+        hours = `0${hours}`;
     }
 
     if(String(mins).length < 2) {
         mins = `0${mins}`;
     }
+
+    if(withColon) {
+    return `${hours}:${mins}`;
+    } else {
+    return `${hours}${mins}`;
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A function that converts a timestamp string '13:30' to '1:30pm';
+ * @alias date.timestampToAmPm
+ * @return {String}                   A formatted timestamp string
+ */
+
+FluroDate.timestampToAmPm = function(input) {
+
+    var s = FluroDate.militaryTimestamp(input);
+
+    var am = true;
+    var hours = parseInt(s.substring(0,2));
+    var mins = parseInt(s.substring(2));
+
+
+    if(hours > 12) {
+        am = false;
+        hours = hours - 12; 
+    }
+
+    hours = Math.max(hours, 0)
+    mins = Math.max(mins, 0)
+    hours = Math.min(hours, 12)
+    mins = Math.min(mins, 59)
+
+    if(String(mins).length < 2) {
+        mins = `0${mins}`;
+    }
+
     return `${hours}:${mins}${am ? 'am' : 'pm'}`;
+
+    // return s;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

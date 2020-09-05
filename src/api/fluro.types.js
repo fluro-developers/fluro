@@ -8,6 +8,7 @@ import _ from 'lodash';
  * that are defined within Fluro
  * @alias types
  * @constructor
+ * @hideconstructor
  * @param {FluroCore} fluro A reference to the parent instance of the FluroCore module. This module is usually created by a FluroCore instance that passes itself in as the first argument.
  */
 var FluroTypes = function(FluroCore) {
@@ -29,6 +30,12 @@ var FluroTypes = function(FluroCore) {
         switch (type) {
             case 'academic':
                 icon = 'school';
+                break;
+            case 'simpleemail':
+                icon = 'envelope';
+                break;
+            case 'smscorrespondence':
+                icon = 'mobile-alt';
                 break;
             case 'deployment':
                 icon = 'cloud-upload';
