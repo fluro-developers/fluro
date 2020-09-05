@@ -10,7 +10,9 @@ const FluroContentListService = function(typeName, fluro, options) {
         options = {};
     }
 
-    var pageOptions = {};
+
+
+   
 
     ////////////////////////////////////
 
@@ -30,6 +32,7 @@ const FluroContentListService = function(typeName, fluro, options) {
     var _perPage = Math.min(options.perPage, 200);
     var _loadingFilter = false;
     var _loadingPage = false;
+    var _fields = options.fields || [];
     var _items = [];
     var _page = [];
     var _cacheKey = options.cacheKey;
@@ -117,8 +120,6 @@ const FluroContentListService = function(typeName, fluro, options) {
 
         _loadingPage = true;
 
-
-
         return new Promise(function(resolve, reject) {
 
             service.filter()
@@ -127,6 +128,11 @@ const FluroContentListService = function(typeName, fluro, options) {
                     var listItems = filtered.slice(start, end);
                     var ids = fluro.utils.arrayIDs(listItems);
 
+                    var mapped = _.reduce(listItems, function(set, item) {
+                        set[item._id] = item;
+                        return set;
+                    }, {})
+
                     ///////////////////////////////////
 
                     dispatcher.dispatch('totalPages', service.totalPages);
@@ -134,7 +140,7 @@ const FluroContentListService = function(typeName, fluro, options) {
 
                     ///////////////////////////////////
 
-                    var pageCacheKey = `${ids.join(',')}-${_cacheKey || 'none'}`;
+                    var pageCacheKey = `${ids.join(',')}-${_fields.join(',')}-${_cacheKey || 'none'}`;
                     var cachedPageResults = pageCache.get(pageCacheKey);
 
                     if (cachedPageResults) {
@@ -142,7 +148,9 @@ const FluroContentListService = function(typeName, fluro, options) {
                     }
 
 
-                    fluro.content.getMultiple(_type, ids, pageOptions)
+                    fluro.content.getMultiple(_type, ids, {
+                        select:_fields,
+                    })
                         .then(pageComplete)
                         .catch(function(err) {
                             reject(err)
@@ -152,7 +160,12 @@ const FluroContentListService = function(typeName, fluro, options) {
 
                     ///////////////////////////////////
 
-                    function pageComplete(items) {
+                    function pageComplete(pageItems) {
+
+                        //Augment our existing filter list with our populated data
+                        var items = _.map(pageItems, function(item) {
+                            return Object.assign({}, mapped[item._id], item);
+                        })
 
                         //Save our results to the cache
                         pageCache.set(pageCacheKey, items);
@@ -297,6 +310,18 @@ const FluroContentListService = function(typeName, fluro, options) {
         },
         set(obj) {
             _criteria = obj;
+            service.reloadCurrentPage();
+        }
+    });
+
+    /////////////////////////////
+
+    Object.defineProperty(service, "select", {
+        get() {
+            return _fields;
+        },
+        set(array) {
+            _fields = array;
             service.reloadCurrentPage();
         }
     });
