@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>fluro.cache.js - Documentation</title>
+    <title>device - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -32,75 +32,50 @@
 
 <div id="main">
     
-    <h1 class="page-title">fluro.cache.js</h1>
+    <h1 class="page-title">device</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import _ from 'lodash';
+        <h2>
+        device
+        </h2>
+        
+    
+</header>
 
-import {Cache} from 'axios-extensions';
-
-
-///////////////////////////////////////////////////////////////////////////////
-
-var caches = {};
-
-
-/**
- * @classdesc A static service that provides tools for caching api requests and other information
- * @alias cache
- * @class
- * @hideconstructor
- */
-var FluroCache = {
-
-    ///////////////////////////////////////////////////
+<article>
+    
 
     
-    /**
-     * A helper function to reset all cache objects, useful if changing account or logging in or out as another user     
-     * @alias cache.reset    
-     */
-    reset() {
-        _.each(caches, function(cache, key) {
-            // console.log(`Reset ${key} cache`, cache);
-            cache.reset();
-        })
-    },
 
-    ///////////////////////////////////////////////////
+    
 
-    /**
-     * A helper function to retrieve a specific cache  
-     * @alias cache.get    
-     * @param  {string} key The key for the cache you want to retrieve
-     * @return {LRUCache} The cache store for the specified key
-     */
-    get(key, options) {
+    
+    
+    
 
-        if (caches[key]) {
-            return caches[key];
-        }
-        caches[key] = new Cache(options)
+     
 
-        // console.log('Created new cache', key);
-        return caches[key];
+    
 
-    }
-}
+    
 
+    
 
-///////////////////////////////////////////////////////////////////////////////
+    
 
-export default FluroCache;</code></pre>
-        </article>
-    </section>
+    
+</article>
+
+</section>
 
 
 

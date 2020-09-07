@@ -12,7 +12,7 @@ const FluroContentListService = function(typeName, fluro, options) {
 
 
 
-   
+
 
     ////////////////////////////////////
 
@@ -36,6 +36,12 @@ const FluroContentListService = function(typeName, fluro, options) {
     var _items = [];
     var _page = [];
     var _cacheKey = options.cacheKey;
+    var _pages = [];
+    var _cumulative = options.cumulative;
+
+    ////////////////////////////////////
+
+    ////////////////////////////////////
 
     var service = {};
 
@@ -50,6 +56,8 @@ const FluroContentListService = function(typeName, fluro, options) {
     //Get our list cache
     var listCache = fluro.cache.get('listcache');
     var pageCache = fluro.cache.get('pagecache');
+
+    var cumulative = fluro.cache.get(`cumulativecache`);
 
     ////////////////////////////////////
 
@@ -70,10 +78,10 @@ const FluroContentListService = function(typeName, fluro, options) {
                 _items = cachedFilterResults;
                 resolve(cachedFilterResults);
                 _loadingFilter = false;
-                // console.log('ListService > FROM CACHE', cachedFilterResults)
+                // //console.log('ListService > FROM CACHE', cachedFilterResults)
             } else {
 
-                // console.log('ListService > Load Filter');
+                // //console.log('ListService > Load Filter');
                 fluro.content.filter(_type, _criteria)
                     .then(function(filtered) {
 
@@ -100,14 +108,6 @@ const FluroContentListService = function(typeName, fluro, options) {
         })
     }
 
-    //100 items
-    //Page 0
-    //Should be 0 - 25
-
-    //Page 1
-    //should be 26 - 50;
-    //Start 
-
     ////////////////////////////////////
 
     service.reloadCurrentPage = function() {
@@ -118,6 +118,10 @@ const FluroContentListService = function(typeName, fluro, options) {
 
         ////////////////////////////////////////
 
+        var itemCachePrefix = `${_fields.join(',')}-${_cacheKey || 'none'}`;
+
+        ////////////////////////////////////////
+
         _loadingPage = true;
 
         return new Promise(function(resolve, reject) {
@@ -125,33 +129,78 @@ const FluroContentListService = function(typeName, fluro, options) {
             service.filter()
                 .then(function(filtered) {
 
-                    var listItems = filtered.slice(start, end);
-                    var ids = fluro.utils.arrayIDs(listItems);
+                    var startingIndex = _cumulative ? 0 : start;
+                    //console.log('load', startingIndex, start, end);
 
-                    var mapped = _.reduce(listItems, function(set, item) {
+                    ///////////////////////////////////
+
+                    var listItems = filtered.slice(startingIndex, end);
+
+                    ///////////////////////////////////
+
+                    //Create a fast hash
+                    var pageItemLookup = _.reduce(listItems, function(set, item) {
                         set[item._id] = item;
                         return set;
                     }, {})
 
                     ///////////////////////////////////
 
-                    dispatcher.dispatch('totalPages', service.totalPages);
-                   
+                    //Find the IDs we need to load
+                    var ids = [];
+
+                    if (_cumulative) {
+
+
+                        //Only load the items that we need to
+                        var cachedItems = _.map(listItems, function(item) {
+                            var id = item._id;
+                            var itemCacheKey = `${itemCachePrefix}-${item._id}`;
+                            var cachedItem = cumulative.get(itemCacheKey);
+
+                            if (!cachedItem) {
+                                ids.push(id);
+                            }
+                            return cachedItem;
+
+                        });
+
+                        //If we already have all the items cached
+                        if (!ids.length) {
+                            // //console.log('Cumulative - already have all ids', cachedItems)
+                            //Skip ahead because we don't need to load them from the server
+                            return pageComplete(cachedItems);
+                        } else {
+                            // //console.log('Cumulative - retrieve ids', ids);
+                        }
+                    } else {
+                        ids = fluro.utils.arrayIDs(listItems);
+                    }
 
                     ///////////////////////////////////
 
+                    dispatcher.dispatch('totalPages', service.totalPages);
+
+                    ///////////////////////////////////
+
+                    //Get our page cache
                     var pageCacheKey = `${ids.join(',')}-${_fields.join(',')}-${_cacheKey || 'none'}`;
                     var cachedPageResults = pageCache.get(pageCacheKey);
 
+                    //If we already have this page cached
                     if (cachedPageResults) {
+                        //Skip ahead
+                        // //console.log('Cumulative - Cached Page results', cachedPageResults);
                         return pageComplete(cachedPageResults)
                     }
 
+                    ///////////////////////////////////
 
-                    fluro.content.getMultiple(_type, ids, {
-                        select:_fields,
-                    })
-                        .then(pageComplete)
+                    //Make a request to the server to load the bits we need
+                    return fluro.content.getMultiple(_type, ids, {
+                            select: _fields,
+                        })
+                        .then(multipleResultsLoaded)
                         .catch(function(err) {
                             reject(err)
                             _loadingPage = false;
@@ -160,12 +209,48 @@ const FluroContentListService = function(typeName, fluro, options) {
 
                     ///////////////////////////////////
 
+                    function multipleResultsLoaded(pageItems) {
+
+                        //If we have loaded some items
+                        if (_cumulative) {
+
+
+                            //We need to compile the items we already cached mixed with the results 
+                            //we just loaded from the server
+                            var combinedCacheItems = _.map(listItems, function(item) {
+                                var itemCacheKey = `${itemCachePrefix}-${item._id}`;
+                                return pageItemLookup[item._id] || cumulative.get(itemCacheKey);
+                            })
+
+                            // //console.log('Cumulative - Multiple Results', pageItems, combinedCacheItems);
+                            return pageComplete(combinedCacheItems);
+                        } else {
+                            return pageComplete(pageItems);
+                        }
+                    }
+
+                    ///////////////////////////////////
+
                     function pageComplete(pageItems) {
+
 
                         //Augment our existing filter list with our populated data
                         var items = _.map(pageItems, function(item) {
-                            return Object.assign({}, mapped[item._id], item);
+
+                            //Augment the original filtered item with the populated item
+                            var augmented = Object.assign({}, pageItemLookup[item._id], item);
+
+                            //Store in cache for later
+                            var itemCacheKey = `${itemCachePrefix}-${item._id}`;
+                            cumulative.set(itemCacheKey, item);
+
+                            return augmented;
                         })
+
+                        if (_cumulative) {
+                            //console.log('Cumulative - Page Complete', items);
+                        }
+                        ///////////////////////////////////
 
                         //Save our results to the cache
                         pageCache.set(pageCacheKey, items);
@@ -231,6 +316,9 @@ const FluroContentListService = function(typeName, fluro, options) {
             i = Math.max(i, 0);
 
             _perPage = i;
+
+            //Reset the page in case we are too far ahead
+            service.pageIndex = service.pageIndex;
             service.reloadCurrentPage();
         }
     });
@@ -335,6 +423,18 @@ const FluroContentListService = function(typeName, fluro, options) {
         },
         set(type) {
             _type = type;
+            service.reloadCurrentPage();
+        }
+    });
+
+    /////////////////////////////
+
+    Object.defineProperty(service, "cumulative", {
+        get() {
+            return _cumulative;
+        },
+        set(cumulative) {
+            _cumulative = cumulative;
             service.reloadCurrentPage();
         }
     });
