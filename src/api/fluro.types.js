@@ -694,8 +694,14 @@ var FluroTypes = function(FluroCore) {
                     //     return (canView || canCreate);
                     // });
 
+
+
+                            var ordered = _.orderBy(res.data, function(definition) {
+                                definition.title;
+                            })
+
                     // console.log('GOT ALL THE TYPES', res.data);
-                    resolve(res.data);
+                    resolve(ordered);
                 }, reject);
 
         });

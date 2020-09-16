@@ -230,8 +230,21 @@ var FluroAPI = function(fluro) {
                 case 'post':
                 case 'delete':
 
-                    var ids = retrieveIDs({ _id: (config.data || {})._id, params: config.params, url: config.url });
+                    var idSource = {
+                        _id: (config.data || {})._id,
+                        params: config.params,
+                        url: config.url,
+                    }
+
+                    var ids = retrieveIDs(idSource);
+
                     cache.forEach(function(value, key, cache) {
+
+                        if(value.data) {
+                            value = value.data;
+                            // console.log('down one level', value)
+                        }
+
                         var cacheIDs = retrieveIDs({ key, value });
                         var crossover = _.intersection(cacheIDs, ids).length;
                         if (crossover) {
