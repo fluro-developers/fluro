@@ -194,7 +194,9 @@ var FluroAPI = function(fluro) {
 
             ////////////////////////
 
-            config.headers['fluro-app-uuid'] = fluro.app.uuid;
+            if(fluro.app.uuid) {
+                config.headers['fluro-app-uuid'] = fluro.app.uuid;
+            }
 
             ////////////////////////
 
