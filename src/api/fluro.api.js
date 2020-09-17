@@ -179,9 +179,12 @@ var FluroAPI = function(fluro) {
 
             ////////////////////////
 
-            //It's just a normal request
-            if (!config.application) {
-                return config;
+            //We aren't using the user context by default
+            if(!fluro.userContextByDefault) {
+                //It's just a normal request and we haven't specified an application
+                if (!config.application || config.disableUserContext) {
+                    return config;
+                }
             }
 
 
@@ -202,7 +205,13 @@ var FluroAPI = function(fluro) {
 
             ////////////////////////
 
-            console.log('request the thing in application context with a user', fluro.app.user.firstName);
+            console.log('Request as user', fluro.app.user.firstName);
+            config.headers['Authorization'] = `Bearer ${fluro.app.user.token}`;
+
+            if(config.params && config.params.access_token) {
+                delete config.params.access_token;
+            }
+
             return config;
 
         });
@@ -276,6 +285,9 @@ var FluroAPI = function(fluro) {
             switch (status) {
                 case 401:
                     //Ignore and allow fluro.auth to handle it
+                    if(fluro.app && fluro.app.user) {
+                        fluro.app.user = null;
+                    }
                     break;
                 case 502:
                     // case 503:
@@ -488,7 +500,10 @@ var FluroAPI = function(fluro) {
         var key = _.compact([
             config.method,
             config.url,
-            JSON.stringify({ params: config.params, data: config.data })
+            JSON.stringify({ params: config.params, data: config.data }),
+            fluro.app &&  fluro.app.user ? fluro.app.user.persona : '',
+            config.application ? 'application' :'',
+            config.disableUserContext ? 'disableUserContext' :'',
         ]).join('-')
 
 
