@@ -1,7 +1,7 @@
 
 
 
-var versionName = 'fluro 2.1.51';
+var versionName = 'fluro 2.1.52';
 console.log(versionName)
 
 

@@ -120,6 +120,7 @@ const FluroContentListService = function(typeName, fluro, options) {
 
         var itemCachePrefix = `${_fields.join(',')}-${_cacheKey || 'none'}`;
 
+        console.log('item cache prefix', itemCachePrefix);
         ////////////////////////////////////////
 
         _loadingPage = true;
@@ -189,7 +190,7 @@ const FluroContentListService = function(typeName, fluro, options) {
                     //If we already have this page cached
                     if (cachedPageResults) {
                         //Skip ahead
-                        //console.log('Cached Page results', _cumulative, cachedPageResults);
+                        console.log('Cached Page results', _cumulative, cachedPageResults);
                         return pageComplete(cachedPageResults)
                     }
 
@@ -423,16 +424,16 @@ const FluroContentListService = function(typeName, fluro, options) {
 
     /////////////////////////////
 
-    Object.defineProperty(service, "select", {
+    Object.defineProperty(service, "fields", {
         get() {
             return _fields;
         },
         set(array) {
             _fields = array;
+
             service.reloadCurrentPage();
         }
     });
-
 
     /////////////////////////////
 
