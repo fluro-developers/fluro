@@ -96,7 +96,8 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
         }
 
         id = Fluro.utils.getStringID(id);
-        var url = `/stat/${id}/${statName}`;
+        var url = `${Fluro.apiURL}/stat/${id}/${statName}`;
+        console.log('delete stat', url);
 
         ///////////////////////////
 
@@ -131,8 +132,13 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
             throw Error(`Can't use the unset() method on a non-unique stat`)
         }
 
+        // id = Fluro.utils.getStringID(id);
+        // var url = `/stat/${id}/${statName}?unique=true`;
+
         id = Fluro.utils.getStringID(id);
-        var url = `/stat/${id}/${statName}?unique=true`;
+        var url = `${Fluro.apiURL}/stat/${id}/${statName}?unique=true`;
+        console.log('unset stat', url);
+
 
         ///////////////////////////
 
@@ -163,8 +169,11 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
             throw Error(`Can't use the set() method on a non-unique stat`)
         }
 
+        // id = Fluro.utils.getStringID(id);
+        // var url = `/stat/${id}/${statName}?unique=true`;
         id = Fluro.utils.getStringID(id);
-        var url = `/stat/${id}/${statName}?unique=true`;
+        var url = `${Fluro.apiURL}/stat/${id}/${statName}?unique=true`;
+        console.log('set stat', url);
 
         ///////////////////////////
 
@@ -234,7 +243,9 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
             return inflightRequest;
         }
 
-        var url = `/stat/my/${statName}`;
+        var url = `${Fluro.apiURL}/stat/my/${statName}`;
+        console.log('refresh stat', statName, url);
+
 
         if (unique) {
             url += '?unique=true';
@@ -249,7 +260,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
         var loggedInUser = Fluro.auth.getCurrentUser();
 
         if (loggedInUser) {
-            promise = Fluro.api.get(url, {cache:false});
+            promise = Fluro.api.get(url, { cache: false });
         } else {
             promise = new Promise(function(resolve) {
                 return resolve([]);
@@ -349,7 +360,8 @@ var FluroStatStorage = function(Fluro, statName, targetID, unique) {
         }
 
 
-        var url = `/stat/${targetID}/${statName}`;
+        var url = `${Fluro.apiURL}/stat/${targetID}/${statName}`;
+
 
         if (unique) {
             url += '?unique=true';
@@ -458,7 +470,7 @@ var FluroStats = function(Fluro) {
     }
 
 
-    
+
 
 
     ///////////////////////////////////////////////////
