@@ -101,7 +101,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
         ///////////////////////////
 
-        var promise = Fluro.api.delete(url);
+        var promise = Fluro.api.delete(url, {cache:false});
         service.setProcessing(id, true);
 
         ///////////////////////////
@@ -142,7 +142,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
         ///////////////////////////
 
-        var promise = Fluro.api.delete(url);
+        var promise = Fluro.api.delete(url, {cache:false});
         service.setProcessing(id, true);
 
         ///////////////////////////
@@ -177,7 +177,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
         ///////////////////////////
 
-        var promise = Fluro.api.post(url);
+        var promise = Fluro.api.post(url, {cache:false});
         service.setProcessing(id, true);
 
         promise.then(function(res) {
@@ -259,7 +259,8 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
         var loggedInUser = Fluro.auth.getCurrentUser();
 
-        if (loggedInUser) {
+        // if (loggedInUser) {
+        if (loggedInUser || Fluro.applicationToken) {
             promise = Fluro.api.get(url, { cache: false });
         } else {
             promise = new Promise(function(resolve) {
