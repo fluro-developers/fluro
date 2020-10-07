@@ -97,7 +97,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
         id = Fluro.utils.getStringID(id);
         var url = `${Fluro.apiURL}/stat/${id}/${statName}`;
-        console.log('delete stat', url);
+        console.log('delete stat', url, Fluro.app);
 
         ///////////////////////////
 
@@ -137,7 +137,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
         id = Fluro.utils.getStringID(id);
         var url = `${Fluro.apiURL}/stat/${id}/${statName}?unique=true`;
-        console.log('unset stat', url);
+        console.log('unset stat', url, Fluro.app);
 
 
         ///////////////////////////

@@ -175,8 +175,10 @@ var FluroAPI = function(fluro) {
             }
 
 
-            config.headers['fluro-api-version'] = '2.1.37';
+            config.headers['fluro-api-version'] = '2.1.57';
 
+
+            
             ////////////////////////
 
             //We aren't using the user context by default
@@ -198,6 +200,7 @@ var FluroAPI = function(fluro) {
                 config.headers['fluro-app-uuid'] = fluro.app.uuid;
                 console.log('request uuid')
             }
+
 
             ////////////////////////
 
