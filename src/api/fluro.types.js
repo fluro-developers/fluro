@@ -117,7 +117,8 @@ var FluroTypes = function(FluroCore) {
                 icon = 'users';
                 break;
             case 'attendance':
-                icon = 'calendar-check';
+                // icon = 'calendar-check';
+                icon = 'calculator';
                 break;
             case 'image':
                 icon = 'image';

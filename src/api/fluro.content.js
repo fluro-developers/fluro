@@ -112,7 +112,7 @@ var FluroContent = function(fluro) {
 
             }).catch(function(thrown) {
                 if (axios.isCancel(thrown)) {
-                    // console.log('Request canceled', thrown.message);
+                    // //console.log('Request canceled', thrown.message);
                 } else {
                     // handle error
                 }
@@ -269,7 +269,7 @@ var FluroContent = function(fluro) {
 
             }).catch(function(thrown) {
                 if (axios.isCancel(thrown)) {
-                    // console.log('Request canceled', thrown.message);
+                    // //console.log('Request canceled', thrown.message);
                 } else {
                     // handle error
                 }
@@ -379,7 +379,7 @@ var FluroContent = function(fluro) {
 
             /////////////////////////////////////////////
 
-            // console.log('REQUEST OPTIONS', requestOptions);
+            // //console.log('REQUEST OPTIONS', requestOptions);
 
             //Retrieve the query results
             fluro.api.get(`/content/get/${id}`, requestOptions)
@@ -634,10 +634,10 @@ var FluroContent = function(fluro) {
 
             // /////////////////////////////////////////////
 
-            // console.log('request form', id, requestOptions);
+            // //console.log('request form', id, requestOptions);
             //Retrieve the query results
             fluro.api.get(`/form/${id}`, requestOptions).then(function(res) {
-                // console.log('resolve form', res.data);
+                // //console.log('resolve form', res.data);
                 resolve(res.data);
             }, reject);
 
@@ -662,7 +662,7 @@ var FluroContent = function(fluro) {
      */
     service.submitInteraction = function(type, submission, options) {
 
-        console.log('SUBMIT INTERACTION')
+        //console.log('SUBMIT INTERACTION')
         if (!options) {
             options = {}
         }
@@ -676,7 +676,7 @@ var FluroContent = function(fluro) {
 
             /////////////////////////////////////////////
 
-            console.log('SUBMISSION ACTIONS', requestOptions);
+            //console.log('SUBMISSION ACTIONS', requestOptions);
 
             //Retrieve the query results
             fluro.api.post(`/interact/${type}`, submission, requestOptions)
@@ -1044,6 +1044,7 @@ var FluroContent = function(fluro) {
 
         //Ensure the ids are actually ids
         ids = fluro.utils.arrayIDs(ids);
+        //console.log('posted', ids);
 
         return new Promise(function(resolve, reject) {
 
@@ -1175,7 +1176,7 @@ var FluroContent = function(fluro) {
                         //Keep the definition name
                     } else {
                         delete newItem.definitionName;
-                        console.log('Dupliacate', newItem)
+                        //console.log('Dupliacate', newItem)
                     }
 
 

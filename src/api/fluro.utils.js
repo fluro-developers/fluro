@@ -483,7 +483,7 @@ FluroUtils.getStringID = function(input, asObjectID) {
 FluroUtils.arrayIDs = function(array, asObjectID) {
 
     if (!array) {
-        return array;
+        return [];
     }
 
     return _.chain(array)

@@ -838,6 +838,7 @@ var FluroAccess = function(FluroCore) {
             contentRealmIDs = FluroCore.utils.arrayIDs(item.trail);
 
             //Include the realm itself
+            console.log('PUSH?', contentRealmIDs)
             contentRealmIDs.push(itemID);
         } else {
 
