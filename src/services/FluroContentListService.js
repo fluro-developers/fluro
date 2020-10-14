@@ -1,5 +1,5 @@
 import { EventDispatcher } from '../api/fluro.utils';
-
+import _ from 'lodash';
 
 const FluroContentListService = function(typeName, fluro, options) {
 
