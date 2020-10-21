@@ -180,6 +180,9 @@ var FluroTypes = function(FluroCore) {
             case 'persona':
                 icon = 'user';
                 break;
+            case 'assignment':
+                icon = 'user-clock';
+                break;
             case 'video':
                 icon = 'video';
                 break;

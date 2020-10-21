@@ -55,30 +55,24 @@ FluroDate.militaryTimestamp = function(input, withColon) {
 
     var s = input;
 
-    if(!s || !String(s)) {
+    if (!s || !String(s)) {
         console.log('reset to 0000', input)
         s = '0000';
     }
 
-    s = String(parseInt(String(s).split(':').join(''))).slice(0,4);
+    s = String(parseInt(String(s).split(':').join(''))).slice(0, 4);
 
-    if(s.length < 1) {
+    if (s.length < 1) {
         s = '0000' + s;
-    }
-
-    else if(s.length < 2) {
+    } else if (s.length < 2) {
         s = '000' + s;
-    }
-
-    else if(s.length < 3) {
+    } else if (s.length < 3) {
         s = '00' + s;
-    }
-
-    else if(s.length < 4) {
+    } else if (s.length < 4) {
         s = '0' + s;
     }
 
-    var hours = parseInt(s.substring(0,2));
+    var hours = parseInt(s.substring(0, 2));
     var mins = parseInt(s.substring(2));
 
     hours = Math.max(hours, 0)
@@ -86,18 +80,18 @@ FluroDate.militaryTimestamp = function(input, withColon) {
     hours = Math.min(hours, 23)
     mins = Math.min(mins, 59)
 
-    if(String(hours).length < 2) {
+    if (String(hours).length < 2) {
         hours = `0${hours}`;
     }
 
-    if(String(mins).length < 2) {
+    if (String(mins).length < 2) {
         mins = `0${mins}`;
     }
 
-    if(withColon) {
-    return `${hours}:${mins}`;
+    if (withColon) {
+        return `${hours}:${mins}`;
     } else {
-    return `${hours}${mins}`;
+        return `${hours}${mins}`;
     }
 }
 
@@ -114,13 +108,13 @@ FluroDate.timestampToAmPm = function(input) {
     var s = FluroDate.militaryTimestamp(input);
 
     var am = true;
-    var hours = parseInt(s.substring(0,2));
+    var hours = parseInt(s.substring(0, 2));
     var mins = parseInt(s.substring(2));
 
 
-    if(hours > 12) {
+    if (hours > 12) {
         am = false;
-        hours = hours - 12; 
+        hours = hours - 12;
     }
 
     hours = Math.max(hours, 0)
@@ -128,7 +122,7 @@ FluroDate.timestampToAmPm = function(input) {
     hours = Math.min(hours, 12)
     mins = Math.min(mins, 59)
 
-    if(String(mins).length < 2) {
+    if (String(mins).length < 2) {
         mins = `0${mins}`;
     }
 
@@ -685,6 +679,10 @@ FluroDate.timeline = function(items, dateKey, chronological) {
         .reduce(function(set, entry, index, options) {
 
             var date = new Date(_.get(entry, dateKey));
+            var valid = date instanceof Date && !isNaN(date);
+            if(!valid) {
+               return set;
+            }
 
             ////////////////////////////////////////
 
@@ -730,7 +728,8 @@ FluroDate.timeline = function(items, dateKey, chronological) {
                     days: [],
                 }
 
-                //console.log('Push to month', existingYear)
+
+                // console.log('Push to month', existingYear)
                 existingYear.months.push(existingMonth);
             }
 
@@ -746,11 +745,11 @@ FluroDate.timeline = function(items, dateKey, chronological) {
                     items: [],
                 }
 
-                //console.log('Push to day', existingMonth)
+                // console.log('Push to day', existingMonth)
                 existingMonth.days.push(existingDay);
             }
 
-            //console.log('Push to item', existingDay)
+            // console.log('Push to item', existingDay)
             existingDay.items.push(entry);
 
 

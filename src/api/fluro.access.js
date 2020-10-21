@@ -85,10 +85,20 @@ var FluroAccess = function(FluroCore) {
      * @alias access.retrieveCurrentSession
      * @return {Object} The user or application session that is currently active
      */
-    service.retrieveCurrentSession = function() {
+    service.retrieveCurrentSession = function(webMode) {
 
-        var user = FluroCore.auth.getCurrentUser();
+        var user;
+        if (webMode) {
+            user = FluroCore.app ? FluroCore.app.user : null;
+        } else {
+            user = FluroCore.auth.getCurrentUser();
+        }
+
+        //////////////////////////////////
+
         var application = store.application;
+
+        //////////////////////////////////
 
         if (user) {
             return user;
@@ -119,10 +129,10 @@ var FluroAccess = function(FluroCore) {
      * fluro.access.can('edit any' 'service', 'event');
      * 
      */
-    service.can = function(action, type, parentType) {
+    service.can = function(action, type, parentType, webMode) {
 
         //Get the current session
-        var session = service.retrieveCurrentSession();
+        var session = service.retrieveCurrentSession(webMode);
 
         //If we are not logged in and are not
         //running as an application then we can't
@@ -135,7 +145,7 @@ var FluroAccess = function(FluroCore) {
         //If we are an administrator
         //then we have access to do everything
         //so there is no point continuing with checking all the other criteria
-        if (service.isFluroAdmin()) {
+        if (service.isFluroAdmin() && !webMode) {
             return true;
         }
 
@@ -144,10 +154,10 @@ var FluroAccess = function(FluroCore) {
         //If using shorthand
         switch (action) {
             case 'view':
-                return service.can('view any', type, parentType) || service.can('view own', type, parentType);
+                return service.can('view any', type, parentType, webMode) || service.can('view own', type, parentType, webMode);
                 break;
             case 'edit':
-                return service.can('edit any', type, parentType) || service.can('edit own', type, parentType);
+                return service.can('edit any', type, parentType, webMode) || service.can('edit own', type, parentType, webMode);
                 break;
         }
 
@@ -166,23 +176,23 @@ var FluroAccess = function(FluroCore) {
         //Check if we can do this permission in any realms
         switch (action) {
             case 'view any':
-                var canViewAnyRealms = service.retrieveActionableRealms('view any ' + type);
-                var canEditAnyRealms = service.retrieveActionableRealms('edit any ' + type);
+                var canViewAnyRealms = service.retrieveActionableRealms('view any ' + type, webMode);
+                var canEditAnyRealms = service.retrieveActionableRealms('edit any ' + type, webMode);
 
                 //Combine the realms
                 realms = realms.concat(canViewAnyRealms);
                 realms = realms.concat(canEditAnyRealms);
                 break;
             case 'view own':
-                var canViewOwnRealms = service.retrieveActionableRealms('view own ' + type);
-                var canEditOwnRealms = service.retrieveActionableRealms('edit own ' + type);
+                var canViewOwnRealms = service.retrieveActionableRealms('view own ' + type, webMode);
+                var canEditOwnRealms = service.retrieveActionableRealms('edit own ' + type, webMode);
 
                 //Combine the realms
                 realms = realms.concat(canViewOwnRealms);
                 realms = realms.concat(canEditOwnRealms);
                 break;
             default:
-                realms = service.retrieveActionableRealms(permissionString);
+                realms = service.retrieveActionableRealms(permissionString, webMode);
                 break;
         }
 
@@ -200,7 +210,7 @@ var FluroAccess = function(FluroCore) {
         if (parentType && parentType.length) {
 
             //Check if we have flowdown from the parent type
-            var includeDefined = service.retrieveActionableRealms('include defined ' + parentType);
+            var includeDefined = service.retrieveActionableRealms('include defined ' + parentType, webMode);
 
             //If not there is no point continuing with the check
             if (!includeDefined.length) {
@@ -211,23 +221,23 @@ var FluroAccess = function(FluroCore) {
             //the action on the parent in any realms
             switch (action) {
                 case 'view any':
-                    var canViewAnyParentRealms = service.retrieveActionableRealms('view any ' + parentType);
-                    var canEditAnyParentRealms = service.retrieveActionableRealms('edit any ' + parentType);
+                    var canViewAnyParentRealms = service.retrieveActionableRealms('view any ' + parentType, webMode);
+                    var canEditAnyParentRealms = service.retrieveActionableRealms('edit any ' + parentType, webMode);
 
                     //Combine the realms
                     realms = realms.concat(canViewAnyRealms);
                     realms = realms.concat(canEditAnyRealms);
                     break;
                 case 'view own':
-                    var canViewOwnParentRealms = service.retrieveActionableRealms('view own ' + parentType);
-                    var canEditOwnParentRealms = service.retrieveActionableRealms('edit own ' + parentType);
+                    var canViewOwnParentRealms = service.retrieveActionableRealms('view own ' + parentType, webMode);
+                    var canEditOwnParentRealms = service.retrieveActionableRealms('edit own ' + parentType, webMode);
 
                     //Combine the realms
                     realms = realms.concat(canViewOwnParentRealms);
                     realms = realms.concat(canEditOwnParentRealms);
                     break;
                 default:
-                    realms = service.retrieveActionableRealms(action + ' ' + parentType);
+                    realms = service.retrieveActionableRealms(action + ' ' + parentType, webMode);
                     break;
             }
 
@@ -260,10 +270,10 @@ var FluroAccess = function(FluroCore) {
      * fluro.access.canKnowOf('event');
      * 
      */
-    service.canKnowOf = function(type, parentType) {
+    service.canKnowOf = function(type, parentType, webMode) {
 
         //Get the current session
-        var session = service.retrieveCurrentSession();
+        var session = service.retrieveCurrentSession(webMode);
 
         //If we are not logged in and are not
         //running as an application then we can't
@@ -275,7 +285,7 @@ var FluroAccess = function(FluroCore) {
         //If we are an administrator
         //then we have access to do everything
         //so there is no point continuing with checking all the other criteria
-        if (service.isFluroAdmin()) {
+        if (service.isFluroAdmin() && !webMode) {
             return true;
         }
 
@@ -294,7 +304,7 @@ var FluroAccess = function(FluroCore) {
         /////////////////////////////////////////////////////
 
         var canAccess = _.some(actionsToCheck, function(action) {
-            return service.can(action, type, parentType);
+            return service.can(action, type, parentType, webMode);
         });
 
         if (canAccess) {
@@ -309,7 +319,7 @@ var FluroAccess = function(FluroCore) {
             var subTypes = _.some(service.glossary, function(term, key) {
                 if (term.parentType == type) {
                     return _.some(actionsToCheck, function(action) {
-                        return service.can(action, key);
+                        return service.can(action, key, null, webMode);
                     });
                 }
             });
@@ -352,10 +362,10 @@ var FluroAccess = function(FluroCore) {
      * //Returns an array of all realms the user is allowed to do the specified action
      * var realms = fluro.access.retrieveActionableRealms('create photo');
      */
-    service.retrieveActionableRealms = function(action) {
+    service.retrieveActionableRealms = function(action, webMode) {
 
         //Get the current acting user session
-        var session = service.retrieveCurrentSession();
+        var session = service.retrieveCurrentSession(webMode);
 
         //No session so can't perform any actions
         //in any realms
@@ -407,16 +417,16 @@ var FluroAccess = function(FluroCore) {
      * //Returns true or false if the user has the permission 
      * var hasPermission = fluro.access.has('create photo');
      */
-    service.has = function(permission) {
+    service.has = function(permission, webMode) {
 
         //Get the current acting user session
-        var user = service.retrieveCurrentSession();
+        var user = service.retrieveCurrentSession(webMode);
 
         if (!user) {
             return false;
         }
 
-        if (service.isFluroAdmin()) {
+        if (service.isFluroAdmin() && !webMode) {
             return true;
         }
 
@@ -455,10 +465,10 @@ var FluroAccess = function(FluroCore) {
      * //Returns true or false
      * var isAuthor = fluro.access.isAuthor({title:'My article', _id:'55bbf345de...'});
      */
-    service.isAuthor = function(item) {
+    service.isAuthor = function(item, webMode) {
 
         //Get the current acting user session
-        var user = service.retrieveCurrentSession();
+        var user = service.retrieveCurrentSession(webMode);
 
         if (!user) {
             return false;
@@ -564,14 +574,14 @@ var FluroAccess = function(FluroCore) {
      * //Returns true
      * var canEdit = fluro.access.canEditItem({title:'My article', _id:'55bbf345de...'});
      */
-    service.canEditItem = function(item, isUser) {
+    service.canEditItem = function(item, isUser, webMode) {
 
         if (!item) {
             return false;
         }
 
         //Get the current acting user or application
-        var user = service.retrieveCurrentSession();
+        var user = service.retrieveCurrentSession(webMode);
 
         if (!user) {
             return false;
@@ -669,8 +679,8 @@ var FluroAccess = function(FluroCore) {
         ////////////////////////////////////////
 
         //Find the realms we are allowed to edit this kind of content in
-        var editAnyRealms = service.retrieveActionableRealms('edit any ' + definitionName);
-        var editOwnRealms = service.retrieveActionableRealms('edit own ' + definitionName);
+        var editAnyRealms = service.retrieveActionableRealms('edit any ' + definitionName, webMode);
+        var editOwnRealms = service.retrieveActionableRealms('edit own ' + definitionName, webMode);
 
         ////////////////////////////////////////
 
@@ -697,15 +707,15 @@ var FluroAccess = function(FluroCore) {
         //Check if the user has any permissions on the parent type that will allow them to access this content
         if (parentType && parentType.length) {
 
-            var includeDefined = service.retrieveActionableRealms('include defined ' + parentType);
+            var includeDefined = service.retrieveActionableRealms('include defined ' + parentType, webMode);
 
             //If we can adjust the parent and it's defined child types in any realms
             if (includeDefined.length) {
 
-                var canEditAnyParentRealms = service.retrieveActionableRealms('edit any ' + parentType);
+                var canEditAnyParentRealms = service.retrieveActionableRealms('edit any ' + parentType, webMode);
                 editAnyRealms = editAnyRealms.concat(canEditAnyParentRealms);
 
-                var canEditOwnParentRealms = service.retrieveActionableRealms('edit own ' + parentType);
+                var canEditOwnParentRealms = service.retrieveActionableRealms('edit own ' + parentType, webMode);
                 editOwnRealms = editOwnRealms.concat(canEditOwnParentRealms);
             }
         }
@@ -751,14 +761,14 @@ var FluroAccess = function(FluroCore) {
      * //Returns true
      * var canView = fluro.access.canViewItem({title:'My article', _id:'55bbf345de...'});
      */
-    service.canViewItem = function(item, isUser) {
+    service.canViewItem = function(item, isUser, webMode) {
 
         if (!item) {
             return false;
         }
 
         //Get the current acting user or application
-        var user = service.retrieveCurrentSession();
+        var user = service.retrieveCurrentSession(webMode);
 
         if (!user) {
             return false;
@@ -810,10 +820,10 @@ var FluroAccess = function(FluroCore) {
         ////////////////////////////////////////
 
         //Get the realms we are allowed to work in
-        var viewAnyRealms = service.retrieveActionableRealms('view any ' + definitionName);
-        var viewOwnRealms = service.retrieveActionableRealms('view own ' + definitionName);
-        var editAnyRealms = service.retrieveActionableRealms('edit any ' + definitionName);
-        var editOwnRealms = service.retrieveActionableRealms('edit own ' + definitionName);
+        var viewAnyRealms = service.retrieveActionableRealms('view any ' + definitionName, webMode);
+        var viewOwnRealms = service.retrieveActionableRealms('view own ' + definitionName, webMode);
+        var editAnyRealms = service.retrieveActionableRealms('edit any ' + definitionName, webMode);
+        var editOwnRealms = service.retrieveActionableRealms('edit own ' + definitionName, webMode);
 
         //Combine any
         var combinedAnyRealms = [];
@@ -850,15 +860,15 @@ var FluroAccess = function(FluroCore) {
 
         //Check if the user has any permissions on the parent type that will allow them to access this content
         if (parentType && parentType.length) {
-            var includeDefined = service.retrieveActionableRealms('include defined ' + parentType);
+            var includeDefined = service.retrieveActionableRealms('include defined ' + parentType, webMode);
 
             if (includeDefined.length) {
-                var canEditAnyParentRealms = service.retrieveActionableRealms('edit any ' + parentType);
-                var canViewAnyParentRealms = service.retrieveActionableRealms('view any ' + parentType);
+                var canEditAnyParentRealms = service.retrieveActionableRealms('edit any ' + parentType, webMode);
+                var canViewAnyParentRealms = service.retrieveActionableRealms('view any ' + parentType, webMode);
                 combinedAnyRealms = combinedAnyRealms.concat(canEditAnyParentRealms, canViewAnyParentRealms);
 
-                var canEditOwnParentRealms = service.retrieveActionableRealms('edit own ' + parentType);
-                var canViewOwnParentRealms = service.retrieveActionableRealms('view own ' + parentType);
+                var canEditOwnParentRealms = service.retrieveActionableRealms('edit own ' + parentType, webMode);
+                var canViewOwnParentRealms = service.retrieveActionableRealms('view own ' + parentType, webMode);
                 combinedOwnRealms = combinedOwnRealms.concat(canEditOwnParentRealms, canViewOwnParentRealms);
             }
         }
@@ -905,14 +915,14 @@ var FluroAccess = function(FluroCore) {
      * //Returns true
      * var canDelete = fluro.access.canDeleteItem({title:'My article', _id:'55bbf345de...'});
      */
-    service.canDeleteItem = function(item, isUser) {
+    service.canDeleteItem = function(item, isUser, webMode) {
 
         if (!item) {
             return false;
         }
 
         //Get the current acting user or application
-        var user = service.retrieveCurrentSession();
+        var user = service.retrieveCurrentSession(webMode);
 
         if (!user) {
             return false;
@@ -983,8 +993,8 @@ var FluroAccess = function(FluroCore) {
         ////////////////////////////////////////
 
         //Find the realms we are allowed to delete this kind of content in
-        var deleteAnyRealms = service.retrieveActionableRealms('delete any ' + definitionName);
-        var deleteOwnRealms = service.retrieveActionableRealms('delete own ' + definitionName);
+        var deleteAnyRealms = service.retrieveActionableRealms('delete any ' + definitionName, webMode);
+        var deleteOwnRealms = service.retrieveActionableRealms('delete own ' + definitionName, webMode);
 
         ////////////////////////////////////////
 
@@ -1011,15 +1021,15 @@ var FluroAccess = function(FluroCore) {
         //Check if the user has any permissions on the parent type that will allow them to access this content
         if (parentType && parentType.length) {
 
-            var includeDefined = service.retrieveActionableRealms('include defined ' + parentType);
+            var includeDefined = service.retrieveActionableRealms('include defined ' + parentType, webMode);
 
             //If we can adjust the parent and it's defined child types in any realms
             if (includeDefined.length) {
 
-                var canEditAnyParentRealms = service.retrieveActionableRealms('delete any ' + parentType);
+                var canEditAnyParentRealms = service.retrieveActionableRealms('delete any ' + parentType, webMode);
                 deleteAnyRealms = deleteAnyRealms.concat(canEditAnyParentRealms);
 
-                var canEditOwnParentRealms = service.retrieveActionableRealms('delete own ' + parentType);
+                var canEditOwnParentRealms = service.retrieveActionableRealms('delete own ' + parentType, webMode);
                 deleteOwnRealms = deleteOwnRealms.concat(canEditOwnParentRealms);
             }
         }
@@ -1300,9 +1310,6 @@ var FluroAccess = function(FluroCore) {
             FluroCore.types.reloadTerminology(options)
                 .then(function(terms) {
 
-
-                    //////////////////////////////////////////////////////
-
                     var derivatives = _.reduce(terms, function(set, type) {
 
                         var basicType = type.parentType;
@@ -1331,6 +1338,7 @@ var FluroAccess = function(FluroCore) {
                     var permissions = _.chain(terms)
                         // .orderBy('title')
                         .reduce(function(set, type) {
+
 
                             //Create a copy so we dont pollute the types entry
                             type = JSON.parse(JSON.stringify(type));
@@ -1569,11 +1577,11 @@ var FluroAccess = function(FluroCore) {
                                 }
 
                                 // if (isDefineable) {
-                                    type.permissions.push({
-                                        title: `Include all defined ${type.title} types`,
-                                        value: `include defined ${definitionName}`,
-                                        description,
-                                    })
+                                type.permissions.push({
+                                    title: `Include all defined ${type.title} types`,
+                                    value: `include defined ${definitionName}`,
+                                    description,
+                                })
                                 // }
                             }
 
