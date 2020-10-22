@@ -178,7 +178,8 @@ var FluroAPI = function(fluro) {
             config.headers['fluro-api-version'] = '2.1.57';
 
 
-            
+                        // console.log('USER CONTEXT BY DEFAULT?', fluro.userContextByDefault, config.application, config.disableUserContext)
+
             ////////////////////////
 
             //We aren't using the user context by default
@@ -188,6 +189,7 @@ var FluroAPI = function(fluro) {
                     return config;
                 }
             }
+
 
 
             if (!fluro.app) {
