@@ -138,7 +138,7 @@ var FluroContent = function(fluro) {
      * })
      */
 
-    var typePromise;
+    var typePromise = {};;
     var typeCacheable = true;
 
     /////////////////////////////////////////////////
@@ -156,40 +156,43 @@ var FluroContent = function(fluro) {
         /////////////////////////////////////////////////
 
         //If we are already requesting this definition
-        if (!typePromise || !typeCacheable) {
-
-            //Create a new promise
-            typePromise = new Promise(function(resolve, reject) {
-
-                // if (!config) {
-                //     config = {};
-                // }
-
-                // config.params = params;
-                // var requestOptions = {
-                //     params: options,
-                //     cancelToken: currentMentionSearch.token,
-                // }
-
-                /////////////////////////////////////////////
-
-                //Retrieve the definition from the server and send it back to
-                //the user
-                fluro.api.get(`/defined/${definitionName}`)
-                    .then(function(res) {
-                        resolve(res.data);
-                        typeCacheable = true;
-                    }).catch(function(err) {
-                        reject(err);
-                        typeCacheable = false;
-                    });
-
-            });
+        if (typePromise[definitionName] && params.cache !== false) {
+            return typePromise[definitionName];
         }
+
+        //Create a new promise
+        typePromise[definitionName] = new Promise(function(resolve, reject) {
+
+            // if (!config) {
+            //     config = {};
+            // }
+
+            // config.params = params;
+            // var requestOptions = {
+            //     params: options,
+            //     cancelToken: currentMentionSearch.token,
+            // }
+
+            /////////////////////////////////////////////
+
+            //Retrieve the definition from the server and send it back to
+            //the user
+            fluro.api.get(`/defined/${definitionName}`)
+                .then(function(res) {
+                    // console.log('CONTENT GET', definitionName, res.data);
+                    resolve(res.data);
+                    typeCacheable = true;
+                }).catch(function(err) {
+                    reject(err);
+                    typeCacheable = false;
+                });
+
+        });
+
 
         /////////////////////////////////////////////////
 
-        return typePromise;
+        return typePromise[definitionName];
 
     }
 
@@ -955,7 +958,7 @@ var FluroContent = function(fluro) {
      */
 
     service.list = function(typeName, options) {
-        return  new FluroContentListService(typeName, fluro, options);
+        return new FluroContentListService(typeName, fluro, options);
     }
 
     ///////////////////////////////////////////////////
