@@ -152,10 +152,10 @@ service.activeFilterValues = function(config) {
                     var blockValue1 = block.value;
                     var blockValue2 = block.value2;
 
-                    if(block.dataType == 'boolean') {
+                    if (block.dataType == 'boolean') {
                         blockValue1 = String(service.convertToBoolean(blockValue1));
                         blockValue2 = String(service.convertToBoolean(blockValue2));
-                    }   
+                    }
 
                     all = all.concat([blockValue1, blockValue2]);
                     break;
@@ -1420,7 +1420,7 @@ service.comparators.push({
 
 
 service.comparators.push({
-    title: 'Is in the last',
+    title: 'Is not in the last',
     inputType: 'datemeasure',
     operator: 'datenotpast',
     match(input, measure, period, options) {
@@ -1466,8 +1466,7 @@ service.comparators.push({
 
 
 
-
-
+console.log('NEW COMPARATORS')
 
 
 
@@ -2093,6 +2092,7 @@ service.comparatorTypeLookup = {};
 _.each(service.comparators, function(comparator) {
 
 
+    // console.log('comparators', comparator.title)
     //map each comparator
     service.comparatorLookup[comparator.operator] = comparator;
 
@@ -2106,7 +2106,6 @@ _.each(service.comparators, function(comparator) {
         restrictTypes = allTypes;
     }
 
-    // console.log('ADD', comparator.operator, restrictTypes);
 
     //And map to each type it's restricted for
     _.each(restrictTypes, function(type) {
@@ -2124,6 +2123,9 @@ _.each(service.comparators, function(comparator) {
 
 });
 
+
+// console.log('COMPARATOR LOOKUP', service.comparatorTypeLookup, service.comparatorLookup)
+
 // console.log('COMPARATOR KEYS', _.keys(service.comparatorLookup), _.keys(service.comparatorTypeLookup));
 
 ///////////////////////////////
@@ -2137,8 +2139,9 @@ service.getComparator = function(operator) {
 //////////////////////////////////////////////////////////////////
 
 service.getComparatorsForType = function(type) {
-    //Return the matches or just all comparators
-    return service.comparatorTypeLookup[type] || service.comparators;
+
+    var comparators = service.comparatorTypeLookup[type] || service.comparators;
+    return comparators;
 }
 
 ////////////////////////////////////////////////////////
@@ -2213,8 +2216,8 @@ service.isValidFilter = function(block) {
                 return true;
             }
 
-            if(block.dataType == 'boolean') {
-                switch(String(block.value).toLowerCase()) {
+            if (block.dataType == 'boolean') {
+                switch (String(block.value).toLowerCase()) {
                     case 'yes':
                     case 'true':
                     case 'false':
@@ -2222,14 +2225,14 @@ service.isValidFilter = function(block) {
                     case '1':
                     case '0':
                         return true;
-                    break;
+                        break;
                     default:
                         return;
-                    break;
+                        break;
                 }
             } else {
                 if (!block.value || !_.isDate(new Date(block.value))) {
-                   
+
                     return;
                 }
             }
@@ -2824,7 +2827,7 @@ service.filterMatch = function(filter, filterOptions, item) {
     //     }
     // }
 
-     ////////////////////////////////////////
+    ////////////////////////////////////////
 
     switch (filter.dataType) {
         case 'boolean':
@@ -2889,7 +2892,7 @@ service.filterMatch = function(filter, filterOptions, item) {
         // var keys = _.map(filter.criteria, 'key');
 
         // _.each(arrayValue, function(entry) {
-        // 	entry.title = entry.title
+        //  entry.title = entry.title
         // })
 
         ////////////////////////////
