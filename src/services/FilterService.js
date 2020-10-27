@@ -1292,8 +1292,14 @@ service.comparators.push({
             options = {}
         }
 
+        //////////////////////////
+
+        var value;
+
+        //////////////////////////
+
         if (!input) {
-            return;
+            return value;
         }
 
         var mustMatchValue = moment().add(measure, period).toDate();
@@ -1301,20 +1307,18 @@ service.comparators.push({
         if (_.isArray(input)) {
 
             if (!input.length) {
-                return;
+                return value;
             }
 
-            return _.some(input, function(i) {
+            value = _.some(input, function(i) {
                 // dateCompare(input, range, type, format, timezone)
                 return dateCompare(i, mustMatchValue, 'next', null, options.timezone);
             });
         } else {
-            return dateCompare(input, mustMatchValue, 'next', null, options.timezone);
+            value = dateCompare(input, mustMatchValue, 'next', null, options.timezone);
         }
 
-
-
-
+        return value;
     },
     restrict: [
         'date',
@@ -1333,8 +1337,14 @@ service.comparators.push({
             options = {}
         }
 
+        //////////////////////////
+
+        var value;
+
+        //////////////////////////
+
         if (!input) {
-            return;
+            return value;
         }
 
         var mustMatchValue = moment().subtract(measure, period).toDate();
@@ -1342,22 +1352,119 @@ service.comparators.push({
         if (_.isArray(input)) {
 
             if (!input.length) {
-                return;
+                return value;
             }
 
 
-            return _.some(input, function(i) {
+            value = _.some(input, function(i) {
                 // dateCompare(input, range, type, format, timezone)
                 return dateCompare(i, mustMatchValue, 'past', null, options.timezone);
             });
         } else {
-            return dateCompare(input, mustMatchValue, 'past', null, options.timezone);
+            value = dateCompare(input, mustMatchValue, 'past', null, options.timezone);
         }
+
+        return value;
     },
     restrict: [
         'date',
     ],
 })
+
+
+
+////////////////////////////////////////////////////////////
+
+service.comparators.push({
+    title: 'Is not in the next',
+    inputType: 'datemeasure',
+    operator: 'datenotnext',
+    match(input, measure, period, options) {
+
+        if (!options) {
+            options = {}
+        }
+
+        //////////////////////////
+
+        var value;
+
+        //////////////////////////
+
+        if (!input) {
+            return !value;
+        }
+
+        var mustMatchValue = moment().add(measure, period).toDate();
+
+        if (_.isArray(input)) {
+
+            if (!input.length) {
+                return !value;
+            }
+
+            value = _.some(input, function(i) {
+                // dateCompare(input, range, type, format, timezone)
+                return dateCompare(i, mustMatchValue, 'next', null, options.timezone);
+            });
+        } else {
+            value = dateCompare(input, mustMatchValue, 'next', null, options.timezone);
+        }
+
+        return !value;
+    },
+    restrict: [
+        'date',
+    ],
+})
+
+
+service.comparators.push({
+    title: 'Is in the last',
+    inputType: 'datemeasure',
+    operator: 'datenotpast',
+    match(input, measure, period, options) {
+
+
+        if (!options) {
+            options = {}
+        }
+
+        //////////////////////////
+
+        var value;
+
+        //////////////////////////
+
+        if (!input) {
+            return !value;
+        }
+
+        var mustMatchValue = moment().subtract(measure, period).toDate();
+
+        if (_.isArray(input)) {
+
+            if (!input.length) {
+                return !value;
+            }
+
+
+            value = _.some(input, function(i) {
+                // dateCompare(input, range, type, format, timezone)
+                return dateCompare(i, mustMatchValue, 'past', null, options.timezone);
+            });
+        } else {
+            value = dateCompare(input, mustMatchValue, 'past', null, options.timezone);
+        }
+
+        return !value;
+    },
+    restrict: [
+        'date',
+    ],
+})
+
+
 
 
 
