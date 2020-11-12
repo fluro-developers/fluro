@@ -437,7 +437,7 @@ var FluroAPI = function(fluro) {
         var url = `${fluro.apiURL}${path}`;
 
         ////////////////////////////////////////
-
+        
         url = parameterDefaults(url, params);
 
         ////////////////////////////////////////

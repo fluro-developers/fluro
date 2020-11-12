@@ -1045,6 +1045,10 @@ var FluroContent = function(fluro) {
      */
     service.getMultiple = function(typeName, ids, options) {
 
+        if(!options) {
+            options = {};
+        }
+        
         //Ensure the ids are actually ids
         ids = fluro.utils.arrayIDs(ids);
         //console.log('posted', ids);

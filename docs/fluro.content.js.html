@@ -156,7 +156,7 @@ var FluroContent = function(fluro) {
 
             }).catch(function(thrown) {
                 if (axios.isCancel(thrown)) {
-                    // console.log('Request canceled', thrown.message);
+                    // //console.log('Request canceled', thrown.message);
                 } else {
                     // handle error
                 }
@@ -182,7 +182,7 @@ var FluroContent = function(fluro) {
      * })
      */
 
-    var typePromise;
+    var typePromise = {};;
     var typeCacheable = true;
 
     /////////////////////////////////////////////////
@@ -200,40 +200,43 @@ var FluroContent = function(fluro) {
         /////////////////////////////////////////////////
 
         //If we are already requesting this definition
-        if (!typePromise || !typeCacheable) {
-
-            //Create a new promise
-            typePromise = new Promise(function(resolve, reject) {
-
-                // if (!config) {
-                //     config = {};
-                // }
-
-                // config.params = params;
-                // var requestOptions = {
-                //     params: options,
-                //     cancelToken: currentMentionSearch.token,
-                // }
-
-                /////////////////////////////////////////////
-
-                //Retrieve the definition from the server and send it back to
-                //the user
-                fluro.api.get(`/defined/${definitionName}`)
-                    .then(function(res) {
-                        resolve(res.data);
-                        typeCacheable = true;
-                    }).catch(function(err) {
-                        reject(err);
-                        typeCacheable = false;
-                    });
-
-            });
+        if (typePromise[definitionName] &amp;&amp; params.cache !== false) {
+            return typePromise[definitionName];
         }
+
+        //Create a new promise
+        typePromise[definitionName] = new Promise(function(resolve, reject) {
+
+            // if (!config) {
+            //     config = {};
+            // }
+
+            // config.params = params;
+            // var requestOptions = {
+            //     params: options,
+            //     cancelToken: currentMentionSearch.token,
+            // }
+
+            /////////////////////////////////////////////
+
+            //Retrieve the definition from the server and send it back to
+            //the user
+            fluro.api.get(`/defined/${definitionName}`)
+                .then(function(res) {
+                    // console.log('CONTENT GET', definitionName, res.data);
+                    resolve(res.data);
+                    typeCacheable = true;
+                }).catch(function(err) {
+                    reject(err);
+                    typeCacheable = false;
+                });
+
+        });
+
 
         /////////////////////////////////////////////////
 
-        return typePromise;
+        return typePromise[definitionName];
 
     }
 
@@ -313,7 +316,7 @@ var FluroContent = function(fluro) {
 
             }).catch(function(thrown) {
                 if (axios.isCancel(thrown)) {
-                    // console.log('Request canceled', thrown.message);
+                    // //console.log('Request canceled', thrown.message);
                 } else {
                     // handle error
                 }
@@ -423,7 +426,7 @@ var FluroContent = function(fluro) {
 
             /////////////////////////////////////////////
 
-            // console.log('REQUEST OPTIONS', requestOptions);
+            // //console.log('REQUEST OPTIONS', requestOptions);
 
             //Retrieve the query results
             fluro.api.get(`/content/get/${id}`, requestOptions)
@@ -678,10 +681,10 @@ var FluroContent = function(fluro) {
 
             // /////////////////////////////////////////////
 
-            // console.log('request form', id, requestOptions);
+            // //console.log('request form', id, requestOptions);
             //Retrieve the query results
             fluro.api.get(`/form/${id}`, requestOptions).then(function(res) {
-                // console.log('resolve form', res.data);
+                // //console.log('resolve form', res.data);
                 resolve(res.data);
             }, reject);
 
@@ -706,7 +709,7 @@ var FluroContent = function(fluro) {
      */
     service.submitInteraction = function(type, submission, options) {
 
-        console.log('SUBMIT INTERACTION')
+        //console.log('SUBMIT INTERACTION')
         if (!options) {
             options = {}
         }
@@ -720,7 +723,7 @@ var FluroContent = function(fluro) {
 
             /////////////////////////////////////////////
 
-            console.log('SUBMISSION ACTIONS', requestOptions);
+            //console.log('SUBMISSION ACTIONS', requestOptions);
 
             //Retrieve the query results
             fluro.api.post(`/interact/${type}`, submission, requestOptions)
@@ -762,7 +765,7 @@ var FluroContent = function(fluro) {
 
         return new Promise(function(resolve, reject) {
 
-            var requestOptions = {
+            var requestOptions = options.requestOptions || {
                 // params: {}
             }
 
@@ -999,7 +1002,7 @@ var FluroContent = function(fluro) {
      */
 
     service.list = function(typeName, options) {
-        return  new FluroContentListService(typeName, fluro, options);
+        return new FluroContentListService(typeName, fluro, options);
     }
 
     ///////////////////////////////////////////////////
@@ -1086,8 +1089,13 @@ var FluroContent = function(fluro) {
      */
     service.getMultiple = function(typeName, ids, options) {
 
+        if(!options) {
+            options = {};
+        }
+        
         //Ensure the ids are actually ids
         ids = fluro.utils.arrayIDs(ids);
+        //console.log('posted', ids);
 
         return new Promise(function(resolve, reject) {
 
@@ -1219,7 +1227,7 @@ var FluroContent = function(fluro) {
                         //Keep the definition name
                     } else {
                         delete newItem.definitionName;
-                        console.log('Dupliacate', newItem)
+                        //console.log('Dupliacate', newItem)
                     }
 
 
@@ -1291,7 +1299,7 @@ export default FluroContent;</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Sep 07 2020 09:45:44 GMT+1000 (Australian Eastern Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Thu Nov 12 2020 14:31:36 GMT+1100 (Australian Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

@@ -1466,7 +1466,6 @@ service.comparators.push({
 
 
 
-console.log('NEW COMPARATORS')
 
 
 

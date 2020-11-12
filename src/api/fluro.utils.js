@@ -27,13 +27,22 @@ var FluroUtils = {};
  */
 FluroUtils.mapParameters = function(parameters) {
     return _.chain(parameters)
-        .map(function(v, k) {
+        .reduce(function(set, v, k) {
             if (v === undefined || v === null || v === false) {
-                return;
+                return set;
             }
 
-            return encodeURIComponent(k) + '=' + encodeURIComponent(v);
-        })
+            if (_.isArray(v)) {
+                _.each(v, function(value) {
+                    set.push(`${k}=${encodeURIComponent(value)}`);
+                })
+
+            } else {
+                set.push(encodeURIComponent(k) + '=' + encodeURIComponent(v));
+            }
+
+            return set;
+        }, [])
         .compact()
         .value()
         .join('&');
@@ -239,7 +248,7 @@ FluroUtils.getDefaultValueForField = function(field) {
             switch (field.type) {
                 case 'string':
                     blankValue = '';
-                break;
+                    break;
                 default:
                     switch (field.directive) {
                         case 'wysiwyg':
@@ -408,7 +417,7 @@ FluroUtils.getStringID = function(input, asObjectID) {
 
     if (!asObjectID || isBrowser) {
 
-        
+
         // console.log('NORMAL', asObjectID, isBrowser)
         return output;
     }
@@ -780,14 +789,14 @@ FluroUtils.injectModule = function(scriptURL, options) {
 
 FluroUtils.getFlattenedFields = function(array, trail, titles) {
 
-    if(!trail) {
+    if (!trail) {
         trail = [];
     }
 
-    if(!titles) {
+    if (!titles) {
         titles = [];
     }
-    
+
     return _.chain(array)
         .map(function(field, key) {
 
