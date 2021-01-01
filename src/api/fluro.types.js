@@ -123,6 +123,9 @@ var FluroTypes = function(FluroCore) {
             case 'image':
                 icon = 'image';
                 break;
+            case 'conversation':
+                icon = 'comments-alt';
+                break;
 
 
 

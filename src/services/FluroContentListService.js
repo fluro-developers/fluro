@@ -59,6 +59,7 @@ const FluroContentListService = function(typeName, fluro, options) {
 
     service.filter = function() {
 
+        // //console.log('REFILTER', _cacheKey)
         _loadingFilter = true;
 
 
@@ -74,14 +75,14 @@ const FluroContentListService = function(typeName, fluro, options) {
                 _items = cachedFilterResults;
                 resolve(cachedFilterResults);
                 _loadingFilter = false;
-                // ////console.log('ListService > FROM CACHE', cachedFilterResults)
+                //////console.log('ListService > FROM CACHE', cachedFilterResults)
             } else {
 
-                // ////////console.log('ListService > Load Filter');
+                //////////console.log('ListService > Load Filter');
                 fluro.content.filter(_type, _criteria)
                     .then(function(filtered) {
 
-                        // ////console.log('ListService > NOT FROM CACHE', filtered)
+                        //////console.log('ListService > NOT FROM CACHE', filtered)
 
                         _items = filtered;
                         dispatcher.dispatch('items', _items);
@@ -110,7 +111,7 @@ const FluroContentListService = function(typeName, fluro, options) {
 
     service.reloadCurrentPage = function() {
 
-
+        // //console.log('reload current page')
         var start = Math.floor(_perPage * _pageIndex);
         var end = start + _perPage;
 
@@ -118,7 +119,7 @@ const FluroContentListService = function(typeName, fluro, options) {
 
         var itemCachePrefix = `${_fields.join(',')}-${_cacheKey || 'none'}`;
 
-        // ////console.log('item cache prefix', itemCachePrefix);
+        //////console.log('item cache prefix', itemCachePrefix);
         ////////////////////////////////////////
 
         _loadingPage = true;
@@ -337,6 +338,11 @@ const FluroContentListService = function(typeName, fluro, options) {
             i = Math.min(i, 200);
             i = Math.max(i, 0);
 
+            //If there is no change
+            if(_perPage == i) {
+                return;
+            }
+
             _perPage = i;
 
 
@@ -354,7 +360,15 @@ const FluroContentListService = function(typeName, fluro, options) {
             return _cacheKey;
         },
         set(c) {
+
+            //If there is no change
+            if(_cacheKey == c) {
+                return;
+            }
+
+
             _cacheKey = c;
+            // //console.log('CACHE KEY HAS CHANGED')
             service.reloadCurrentPage();
         }
     });
@@ -376,6 +390,14 @@ const FluroContentListService = function(typeName, fluro, options) {
             var maxPages = Math.ceil(_items.length / _perPage);
             i = Math.min(i, maxPages - 1);
             i = Math.max(i, 0);
+
+
+            //If there is no change
+            if(_pageIndex == i) {
+                return;
+            }
+
+
             _pageIndex = i;
             dispatcher.dispatch('pageIndex', _pageIndex);
             service.reloadCurrentPage();
@@ -421,7 +443,15 @@ const FluroContentListService = function(typeName, fluro, options) {
             return _criteria;
         },
         set(obj) {
+
+            //If there is no change
+            if(JSON.stringify(_criteria) == JSON.stringify(obj)) {
+                return;
+            }
+
+
             _criteria = obj;
+            // //console.log('criteria changed');
             service.reloadCurrentPage();
         }
     });
@@ -433,7 +463,15 @@ const FluroContentListService = function(typeName, fluro, options) {
             return _fields;
         },
         set(array) {
+
+            //If there is no change
+            if(JSON.stringify(_fields) == JSON.stringify(array)) {
+                return;
+            }
+
+
             _fields = array;
+            // //console.log('fields changed');
 
             service.reloadCurrentPage();
         }
@@ -446,6 +484,13 @@ const FluroContentListService = function(typeName, fluro, options) {
             return _type;
         },
         set(type) {
+
+            //If there is no change
+            if(_type == type) {
+                return;
+            }
+
+
             _type = type;
             service.reloadCurrentPage();
         }
@@ -458,6 +503,13 @@ const FluroContentListService = function(typeName, fluro, options) {
             return _cumulative;
         },
         set(cumulative) {
+
+            //If there is no change
+            if(_cumulative == cumulative) {
+                return;
+            }
+
+
             _cumulative = cumulative;
             service.reloadCurrentPage();
         }

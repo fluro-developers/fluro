@@ -320,6 +320,10 @@ function getString(input, includeIDs) {
         if (input._external) {
             return String(input._external).toLowerCase();
         }
+
+        if (input.id) {
+            return String(input.id).toLowerCase();
+        }
     }
 
     if (input.title) {
