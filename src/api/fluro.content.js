@@ -905,14 +905,15 @@ var FluroContent = function(fluro) {
     ///////////////////////////////////////////////////
 
     /**
-     * This function combines the fluro.content.filter() and the fluro.content.getMultiple so you can easily
-     * retrieve a fully populated list of content items
+     * This function creates an instance of a FluroContentListService
+     * this then becomes a service that can be used to retrieve filtered data from the server
      * @alias content.list
      * @param  {String} typeName The type or definition name of the content you want to retrieve
      * @param  {Object} options Extra options for creating the service
      * @param  {Object} options.criteria The filter criteria for specifying which content items should be returned
      * @param  {Object} options.perPage The number of items to retrieve per page
      * @param  {Object} options.pageIndex The starting page to load from the list
+     * @param  {Object} options.cumulative Whether new page items should append to the results or replace the results
      * @param  {Object} options.cacheKey A cache id that can be used to refresh cached results
      * @return {Object}         A new instance of a FluroContentListService
      * @example
@@ -951,10 +952,24 @@ var FluroContent = function(fluro) {
      *   filter,
      * }
      *
-     * fluro.content.list('event', {
+     * var dataBucket = fluro.content.list('event', {
      *     perPage: 2,
      *     criteria,
-     * }).then(function(results) { })
+     * });
+     *
+     * var isLoading = dataBucket.loading;
+     * var allItems = dataBucket.items;
+     * var pageItems = dataBucket.page;
+     * var currentPage = dataBucket.pageIndex;
+     * dataBucket.nextPage();
+     * dataBucket.previousPage();
+     * dataBucket.reloadCurrentPage();
+     * dataBucket.addEventListener('items', function(results) {});
+     * dataBucket.addEventListener('error', function(err) { console.log('an error occurred')});
+     * dataBucket.addEventListener('totalPages', function() { console.log('the number of pages changed')});
+     * dataBucket.addEventListener('loadingFilter', function() { console.log('filter is reloading')});
+     * dataBucket.addEventListener('loadingPage', function() { console.log('the page is reloading')});
+     * dataBucket.addEventListener('page', function() { console.log('the current page was updated')});
      */
 
     service.list = function(typeName, options) {

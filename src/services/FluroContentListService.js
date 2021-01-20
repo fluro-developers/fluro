@@ -35,6 +35,9 @@ const FluroContentListService = function(typeName, fluro, options) {
     var _pages = [];
     var _cumulative = options.cumulative;
 
+    //Default all definitions to true
+    var _allDefinitions = options.allDefinitions === false ? false : true;
+
     ////////////////////////////////////
 
     ////////////////////////////////////
@@ -117,7 +120,7 @@ const FluroContentListService = function(typeName, fluro, options) {
 
         ////////////////////////////////////////
 
-        var itemCachePrefix = `${_fields.join(',')}-${_cacheKey || 'none'}`;
+        var itemCachePrefix = `${_fields.join(',')}-${_allDefinitions}-${_cacheKey || 'none'}`;
 
         //////console.log('item cache prefix', itemCachePrefix);
         ////////////////////////////////////////
@@ -183,7 +186,7 @@ const FluroContentListService = function(typeName, fluro, options) {
                     ///////////////////////////////////
 
                     //Get our page cache
-                    var pageCacheKey = `${_cumulative}-${ids.join(',')}-${_fields.join(',')}-${_cacheKey || 'none'}`;
+                    var pageCacheKey = `${_cumulative}-${ids.join(',')}-${_allDefinitions}-${_fields.join(',')}-${_cacheKey || 'none'}`;
                     var cachedPageResults = pageCache.get(pageCacheKey);
 
 
@@ -471,6 +474,23 @@ const FluroContentListService = function(typeName, fluro, options) {
 
 
             _fields = array;
+            // //console.log('fields changed');
+
+            service.reloadCurrentPage();
+        }
+    });
+
+
+    /////////////////////////////
+
+    Object.defineProperty(service, "allDefinitions", {
+        get() {
+            return _allDefinitions;
+        },
+        set(boolean) {
+
+          
+            _allDefinitions = boolean;
             // //console.log('fields changed');
 
             service.reloadCurrentPage();
