@@ -911,6 +911,12 @@ var FluroContent = function(fluro) {
      * @param  {String} typeName The type or definition name of the content you want to retrieve
      * @param  {Object} options Extra options for creating the service
      * @param  {Object} options.criteria The filter criteria for specifying which content items should be returned
+     * @param  {Object} options.criteria.sort The sorting configuration for the results
+     * @param  {Boolean} options.criteria.allDefinitions Whether to include all defined types if a basic type is used as the typeName
+     * @param  {Object} options.criteria.filter the fluro filter configuration for filtering returned results
+     * @param  {String} options.criteria.search A basic keyword search for filtering results
+     * @param  {Date} options.criteria.startDate Used in conjunction with endDate to crop results to a relevant date period
+     * @param  {Date} options.criteria.endDate Used in conjunction with startDate to crop results to a relevant date period
      * @param  {Object} options.perPage The number of items to retrieve per page
      * @param  {Object} options.pageIndex The starting page to load from the list
      * @param  {Object} options.cumulative Whether new page items should append to the results or replace the results

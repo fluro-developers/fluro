@@ -308,7 +308,7 @@ fluro.content.search('Wonder', {limit:5}).then(function(results) {
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.content.js.html">fluro.content.js</a>, <a href="fluro.content.js.html#line1160">line 1160</a>
+        <a href="fluro.content.js.html">fluro.content.js</a>, <a href="fluro.content.js.html#line1166">line 1166</a>
     </li></ul></dd>
     
 
@@ -661,7 +661,7 @@ fluro.content.external('5be504-eabf33991-239599-d63', {select:'title'})</code></
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.content.js.html">fluro.content.js</a>, <a href="fluro.content.js.html#line1031">line 1031</a>
+        <a href="fluro.content.js.html">fluro.content.js</a>, <a href="fluro.content.js.html#line1037">line 1037</a>
     </li></ul></dd>
     
 
@@ -1310,7 +1310,7 @@ fluro.content.get('5be504eabf33991239599d63', {select:'title'})</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.content.js.html">fluro.content.js</a>, <a href="fluro.content.js.html#line1061">line 1061</a>
+        <a href="fluro.content.js.html">fluro.content.js</a>, <a href="fluro.content.js.html#line1067">line 1067</a>
     </li></ul></dd>
     
 
@@ -1571,7 +1571,7 @@ fluro.content.get('5be504eabf33991239599d63', {select:'title'})</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.content.js.html">fluro.content.js</a>, <a href="fluro.content.js.html#line1106">line 1106</a>
+        <a href="fluro.content.js.html">fluro.content.js</a>, <a href="fluro.content.js.html#line1112">line 1112</a>
     </li></ul></dd>
     
 
@@ -1759,7 +1759,7 @@ fluro.content.get('5be504eabf33991239599d63', {select:'title'})</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fluro.content.js.html">fluro.content.js</a>, <a href="fluro.content.js.html#line975">line 975</a>
+        <a href="fluro.content.js.html">fluro.content.js</a>, <a href="fluro.content.js.html#line981">line 981</a>
     </li></ul></dd>
     
 
@@ -1975,7 +1975,171 @@ dataBucket.addEventListener('page', function() { console.log('the current page w
 
             
 
-            <td class="description last">The filter criteria for specifying which content items should be returned</td>
+            <td class="description last">The filter criteria for specifying which content items should be returned
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sort</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The sorting configuration for the results</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>allDefinitions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Whether to include all defined types if a basic type is used as the typeName</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>filter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the fluro filter configuration for filtering returned results</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>search</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A basic keyword search for filtering results</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>startDate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Used in conjunction with endDate to crop results to a relevant date period</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>endDate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Used in conjunction with startDate to crop results to a relevant date period</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -3970,7 +4134,7 @@ a selection of content ids
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Jan 20 2021 12:27:23 GMT+1100 (Australian Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Jan 20 2021 13:36:28 GMT+1100 (Australian Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
