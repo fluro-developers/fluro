@@ -1022,12 +1022,40 @@ service.comparators.push({
 
         if (_.isArray(input)) {
             return _.some(input, function(i) {
-                var weekdayInteger = moment(i).weekday()
+                var weekdayInteger = String(moment(i).weekday());
                 return _.includes(mustMatchString, weekdayInteger);
             });
         } else {
-            var weekdayInteger = moment(input).weekday()
+            var weekdayInteger = String(moment(input).weekday());
             return _.includes(mustMatchString, weekdayInteger);
+        }
+    },
+    dateDisplayFormat: 'dddd',
+    restrict: [
+        'date',
+    ],
+    inputType: 'array',
+})
+
+
+
+service.comparators.push({
+    title: 'Is not weekday',
+    operator: 'datedifferentweekday',
+    match(input, mustMatchValue, NOT_USED, options) {
+
+        if (!options) {
+            options = {}
+        }
+        var mustMatchString = String(mustMatchValue);
+        if (_.isArray(input)) {
+            return !_.some(input, function(i) {
+                var weekdayInteger = String(moment(i).weekday())
+                return _.includes(mustMatchString, weekdayInteger);
+            });
+        } else {
+            var weekdayInteger = String(moment(input).weekday())
+            return !_.includes(mustMatchString, weekdayInteger);
         }
     },
     dateDisplayFormat: 'dddd',
