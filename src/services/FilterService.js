@@ -3028,6 +3028,7 @@ service.getComparatorWeight = function(key) {
         case 'datesamemonth':
         case 'datesameyear':
         case 'datesameweekday':
+        case 'datedifferentweekday':
         case 'datebefore':
         case 'dateafter':
         case 'datenotbefore':
@@ -3090,27 +3091,36 @@ function occurrences(string, substring) {
     return (n);
 }
 
+///////////////////////////////
 
 service.allKeys = function(initFields, config) {
-
-    // if (!confi) {
-    //     return [];
-    // }
 
     if (!initFields) {
         initFields = [];
     }
 
 
+    var basicTypeName = _.get(config, 'type.definitionName');
+
     var definitionFields = _.chain(config)
         .get('definition.fields')
         .map(function(field) {
-            return Object.assign({}, field, {
-                key: 'data.' + field.key,
-            })
+
+            if (basicTypeName == 'interaction') {
+                return Object.assign({}, field, {
+                    key: 'rawData.' + field.key,
+                })
+            } else {
+                return Object.assign({}, field, {
+                    key: 'data.' + field.key,
+                })
+            }
+
         })
         .value();
 
+
+    // console.log('Get all fields', definitionFields);
     //////////////////////////////////////////////////////////////////////////////////
 
     //Include filters that have been set on the definition
@@ -3160,14 +3170,16 @@ service.allKeys = function(initFields, config) {
                 var returnValue = [];
 
 
-
+                // console.log('FIELD', field)
                 /////////////////////////////////////////
 
                 //If there are sub fields
                 if (field.fields && field.fields.length) {
 
+                    // console.log('WE HAVE MORE FIELDS', field.directive, field.asObject);
 
                     if (field.asObject || field.directive == 'embedded') {
+                        // console.log('WE ARE AN EMBDEDD THING', field.title);
                         //Push the field itself
                         trail.push(field.key);
                         titles.push(field.title)
@@ -3199,6 +3211,7 @@ service.allKeys = function(initFields, config) {
 
                     var fields = getFlattenedFields(field.fields, trail, titles);
 
+                    // console.log('SUB FIELDS', fields);
                     if (field.asObject || field.directive == 'embedded') {
                         trail.pop()
                         titles.pop();
@@ -3300,18 +3313,54 @@ service.allKeys = function(initFields, config) {
 
     //////////////////////////////////////////////////////////////////////////////////
 
-    // console.log('Filter all keys> ', definitionFilters, dynamicFilters, config);
     var fields = initFields.concat(typeFields, definitionFields, detailSheetFields, dynamicFilters, definitionFilters);
+    var allFlattened = getFlattenedFields(fields, [], []);
 
     //////////////////////////////////////////////////////////////////////////////////
 
-    return _.chain(fields)
-        .uniqBy(function(field) {
-            return field.key;
-        })
-        .filter(function(field) {
-            return field.type != 'object';
-        })
+
+    // var res = _.chain(allFlattened)
+    // .compact()
+    //     .filter(function(field) {
+    //         return field.type != 'object';
+    //     })
+
+    //     .uniqBy(function(field) {
+
+    //         // console.log('F', field)
+    //         return field.key;
+    //     })
+    //     .orderBy(function(field) {
+    //         return field.title
+    //     })
+    //     .value();
+
+    // console.log('filter key res', res)
+
+    // return res;
+
+
+    return _.chain(allFlattened)
+        .reduce(function(set, field) {
+            if (field.type == 'object') {
+                return set;
+            }
+
+            ///////////////////////////
+
+            var basicKey = field.key;
+            var pathKey = (field.trail || []).join('.');
+
+
+            
+            var useKey = pathKey || field.key;
+            var entry =Object.assign({}, field, { key:useKey, title: field.titles.join(' > ') });
+            set[useKey] = entry;
+
+            return set;
+
+        }, {})
+        .values()
         .orderBy('title')
         .value();
 

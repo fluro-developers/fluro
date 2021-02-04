@@ -1460,6 +1460,37 @@ var FluroAccess = function(FluroCore) {
                                         value: `delete own ${definitionName}`,
                                         description: `Can delete ${type.plural} that were originally created by the user, or the user is listed as an 'owner'`,
                                     })
+
+                                    /////////////////////////////////////////////////////
+
+                                    type.permissions.push({
+                                        title: `Destroy any ${type.plural}`,
+                                        value: `destroy any ${definitionName}`,
+                                        description: `Can destroy ${type.plural} permanently from the trash regardless of who the creator is`,
+                                    })
+
+                                    type.permissions.push({
+                                        title: `Destroy owned ${type.plural}`,
+                                        value: `destroy own ${definitionName}`,
+                                        description: `Can destroy ${type.plural} permanently from the trash that were originally created by the user, or the user is listed as an 'owner'`,
+                                    })
+
+                                    /////////////////////////////////////////////////////
+
+                                    type.permissions.push({
+                                        title: `Restore any ${type.plural}`,
+                                        value: `restory any ${definitionName}`,
+                                        description: `Can restore ${type.plural} from the trash. regardless of who the creator is`,
+                                    })
+
+                                    type.permissions.push({
+                                        title: `Restore owned ${type.plural}`,
+                                        value: `restory own ${definitionName}`,
+                                        description: `Can restore ${type.plural} from the trash. that were originally created by the user, or the user is listed as an 'owner'`,
+                                    })
+
+                                    /////////////////////////////////////////////////////
+
                                     break;
                             }
 
