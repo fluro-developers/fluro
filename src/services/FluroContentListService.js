@@ -70,21 +70,24 @@ const FluroContentListService = function(typeName, fluro, options) {
 
             //Generate a unique cache key for this function call
             var cacheString = `${_type}-${JSON.stringify(_criteria)}-${_cacheKey || 'none'}`;
+            // console.log('NEW CACHE STRING', cacheString)
             var cachedFilterResults = listCache.get(cacheString);
 
             ////////////////////////////////
 
             if (cachedFilterResults) {
                 _items = cachedFilterResults;
+                dispatcher.dispatch('items', _items);
+                
                 resolve(cachedFilterResults);
                 _loadingFilter = false;
-                ////////console.log('ListService > FROM CACHE', cachedFilterResults)
+                // console.log('ListService > FROM CACHE', cachedFilterResults.length)
             } else {
-                ////////////console.log('ListService > Load Filter');
+                // console.log('ListService > Load Filter');
                 fluro.content.filter(_type, _criteria)
                     .then(function(filtered) {
 
-                        ////////console.log('ListService > NOT FROM CACHE', filtered)
+                        // console.log('ListService > NOT FROM CACHE', filtered.length)
 
                         _items = filtered;
                         dispatcher.dispatch('items', _items);
