@@ -113,7 +113,7 @@ FluroUtils.currencySymbol = function(currency) {
 
 
 
-FluroUtils.getAvailableCurrencies = function(currency, defaultCountryCode) {
+FluroUtils.getAvailableCurrencies = function(defaultCountryCode) {
 
 
     var array = [];
