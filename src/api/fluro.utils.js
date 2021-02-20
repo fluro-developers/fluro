@@ -127,7 +127,7 @@ FluroUtils.getAvailableCurrencies = function(defaultCountryCode) {
     array.push({
         name: `GBP (${FluroUtils.currencySymbol("gbp")})`,
         value: "gbp",
-        countryCodes: { 'GB': true, 'UK': true },
+        countryCode: { 'GB': true, 'UK': true },
     });
 
     array.push({
@@ -157,6 +157,7 @@ FluroUtils.getAvailableCurrencies = function(defaultCountryCode) {
 
 
     if (defaultCountryCode) {
+
         var findMatch = array.findIndex(function(currency) {
             return currency.countryCode[defaultCountryCode];
         })
