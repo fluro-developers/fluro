@@ -111,6 +111,71 @@ FluroUtils.currencySymbol = function(currency) {
     }
 }
 
+
+
+FluroUtils.getAvailableCurrencies = function(currency, defaultCountryCode) {
+
+
+    var array = [];
+
+    array.push({
+        name: `USD (${FluroUtils.currencySymbol("usd")})`,
+        value: "usd",
+        countryCode: { 'US': true },
+    });
+
+    array.push({
+        name: `GBP (${FluroUtils.currencySymbol("gbp")})`,
+        value: "gbp",
+        countryCodes: { 'GB': true, 'UK': true },
+    });
+
+    array.push({
+        name: `CAD (${FluroUtils.currencySymbol("cad")})`,
+        value: "cad",
+        countryCode: { 'CA': true },
+    });
+
+    array.push({
+        name: `AUD (${FluroUtils.currencySymbol("aud")})`,
+        value: "aud",
+        countryCode: { 'AU': true },
+    });
+
+
+    array.push({
+        name: `NZD (${FluroUtils.currencySymbol("nzd")})`,
+        value: "nzd",
+        countryCode: { 'NZ': true },
+    });
+
+    array.push({
+        name: `SGD (${FluroUtils.currencySymbol("sgd")})`,
+        value: "sgd",
+        countryCode: { 'SG': true },
+    });
+
+
+    if (defaultCountryCode) {
+        var findMatch = array.findIndex(function(currency) {
+            return currency.countryCode[defaultCountryCode];
+        })
+
+        const moveArrayItem = (array, fromIndex, toIndex) => {
+            const arr = [...array];
+            arr.splice(toIndex, 0, ...arr.splice(fromIndex, 1));
+            return arr;
+        }
+
+        if (findMatch != -1) {
+            array = moveArrayItem(array, findMatch, 0)
+            console.log('Default currency is', array[0]);
+        }
+    }
+
+    return array;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -153,6 +218,9 @@ FluroUtils.guid = function() {
 
     return guid;
 }
+
+
+
 
 
 

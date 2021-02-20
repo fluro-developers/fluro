@@ -169,6 +169,7 @@ var FluroTypes = function(FluroCore) {
                 icon = 'user-lock';
                 break;
             case 'site':
+            case 'sitemodel':
                 icon = 'sitemap';
                 break;
             case 'tag':
