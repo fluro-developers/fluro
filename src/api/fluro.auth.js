@@ -57,6 +57,7 @@ var FluroAuth = function(fluro) {
 
         //Get the current user
         var user = store.user;
+        console.log('dispatch user!')
 
         //Dispatch the change to the listeners
         if (service.onChange) {

@@ -1797,7 +1797,7 @@ service.comparators.push({
             return service.isSimilar(input, mustMatchValue);
         }
     },
-    restrict: ['string'],
+    restrict: ['string', 'url', 'email'],
 })
 
 service.comparators.push({
@@ -1817,7 +1817,7 @@ service.comparators.push({
             return isContained(mustMatchValue, input);
         }
     },
-    restrict: ['string'],
+    restrict: ['string', 'url', 'email'],
 })
 
 service.comparators.push({
@@ -1836,7 +1836,7 @@ service.comparators.push({
             return !isContained(mustMatchValue, input);
         }
     },
-    restrict: ['string'],
+    restrict: ['string', 'url', 'email'],
 })
 
 
