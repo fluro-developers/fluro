@@ -715,7 +715,7 @@ var FluroAuth = function(fluro) {
      */
     service.refreshAccessToken = function(refreshToken, isManagedSession, appContext) {
 
-    	var refreshContext = appContext ? appRefreshContext : nonAppRefreshContext;
+        var refreshContext = appContext ? appRefreshContext : nonAppRefreshContext;
 
         // /////////////////////////////////////////////
 
@@ -729,13 +729,14 @@ var FluroAuth = function(fluro) {
 
         //If there is already a request in progress
         if (refreshContext.inflightRefreshRequest) {
-            //console.log('Use inflight request', refreshContext.inflightRefreshRequest);
+             log(`fluro.auth > use inflight request`);
             return refreshContext.inflightRefreshRequest;
         }
 
         /////////////////////////////////////////////////////
 
         //Create an refresh request
+         log(`fluro.auth > refresh token new request`);
         refreshContext.inflightRefreshRequest = new Promise(function(resolve, reject) {
 
 
@@ -748,7 +749,7 @@ var FluroAuth = function(fluro) {
                     managed: isManagedSession,
                 }, {
                     bypassInterceptor: true,
-                    application:appContext,
+                    application: appContext,
                 })
                 .then(function tokenRefreshComplete(res) {
 
@@ -761,7 +762,7 @@ var FluroAuth = function(fluro) {
 
                     } else {
 
-                        if (appContext) {
+                        if (fluro.GLOBAL_AUTH || appContext) {
                             if (fluro.app) {
                                 if (fluro.app.user) {
                                     _.assign(fluro.app.user, res.data);
@@ -779,7 +780,7 @@ var FluroAuth = function(fluro) {
                         }
 
 
-                        log('fluro.auth > token refreshed');
+                        log(`fluro.auth > token refreshed > ${res.data}`);
 
 
                         // if (service.onChange) {
@@ -793,7 +794,10 @@ var FluroAuth = function(fluro) {
                     resolve(res.data.token);
 
                     //Remove the inflight request
-                    refreshContext.inflightRefreshRequest = null;
+                    setTimeout(function() {
+                        refreshContext.inflightRefreshRequest = null;
+                    })
+
 
                 })
                 .catch(function(err) {
@@ -802,10 +806,12 @@ var FluroAuth = function(fluro) {
                     //TODO Check if invalid_refresh_token
 
                     //console.log('Refresh request Failed')
-                    refreshContext.inflightRefreshRequest = null;
+                    setTimeout(function() {
+                        refreshContext.inflightRefreshRequest = null;
+                    });
                     reject(err);
 
-                  
+
 
                 });
         });
@@ -843,11 +849,28 @@ var FluroAuth = function(fluro) {
                 if (res.data) {
                     //Update the user with any changes 
                     //returned back from the refresh request
-                    if (store.user) {
-                        Object.assign(store.user, res.data);
+
+                    if (fluro.GLOBAL_AUTH) {
+                        if (fluro.app.user) {
+                            fluro.app.user = Object.assign(fluro.app.user, res.data);
+                        } else {
+                            fluro.app.user = res.data;
+                        }
+
+                    } else {
+                        if (store.user) {
+                            Object.assign(store.user, res.data);
+                        }
                     }
+
+
                 } else {
-                    store.user = null;
+                    if (fluro.GLOBAL_AUTH) {
+                        fluro.app.user = null;
+                    } else {
+                        store.user = null;
+                    }
+
                 }
                 log('fluro.auth > server session refreshed');
                 retryCount = 0;
@@ -859,7 +882,12 @@ var FluroAuth = function(fluro) {
 
                 // if (retryCount > 2) {
                 console.log('auth sync not logged in');
-                store.user = null;
+                if (fluro.GLOBAL_AUTH) {
+                    fluro.app.user = null;
+                } else {
+                    store.user = null;
+                }
+
                 retryCount = 0;
                 dispatch();
                 // } else {
@@ -880,7 +908,8 @@ var FluroAuth = function(fluro) {
      * @return {String} The Fluro access token for the current user session
      */
     service.getCurrentToken = function() {
-        return _.get(store, 'user.token') || fluro.applicationToken;
+        var currentUser = service.getCurrentUser() || {};
+        return currentUser.token || fluro.applicationToken;
     }
 
     /////////////////////////////////////////////////////
@@ -891,7 +920,7 @@ var FluroAuth = function(fluro) {
      * @return {Object} The current user session
      */
     service.getCurrentUser = function() {
-        return _.get(store, 'user');
+        return fluro.GLOBAL_AUTH ? fluro.app.user : _.get(store, 'user');
     }
 
     /////////////////////////////////////////////////////
@@ -927,7 +956,7 @@ var FluroAuth = function(fluro) {
         //////////////////////////////
 
         //If we are running in an application context
-        if (config.application) {
+        if (config.application || fluro.GLOBAL_AUTH) {
             token = _.get(fluro, 'app.user.token');
             refreshToken = _.get(fluro, 'app.user.refreshToken');
         } else {
@@ -987,7 +1016,7 @@ var FluroAuth = function(fluro) {
 
         var expiryDate;
 
-        if (config.application) {
+        if (config.application || fluro.GLOBAL_AUTH) {
             expiryDate = _.get(fluro, 'app.user.expires');
         } else {
             expiryDate = _.get(store, 'user.expires');
@@ -996,18 +1025,23 @@ var FluroAuth = function(fluro) {
         var expires = new Date(expiryDate);
 
         //If we are not debugging
-        if (!service.debug) {
+        if (service.debug) {
+            console.log('debug', now, expires)
+        } else {
 
             //If the token is still fresh
             if (now < expires) {
                 //Return the original request
                 return originalRequest;
             }
-        }
+        } 
 
         /////////////////////////////////////////////////////
 
         var isManagedUser = config.application || _.get(store, 'user.accountType') == 'managed';
+        if (fluro.GLOBAL_AUTH) {
+            isManagedUser = false;
+        }
         //The token is stale by this point
 
         log('fluro.auth > token expired');
@@ -1056,7 +1090,7 @@ var FluroAuth = function(fluro) {
 
                 console.log('ERROR CAPTURE HERE', err.response, err.config);
                 //If we are running in an application context
-                if (_.get(err, 'config.application')) {
+                if (_.get(err, 'config.application') || fluro.GLOBAL_AUTH) {
                     //Kill our app user store
                     if (fluro.app) {
                         fluro.app.user = null;

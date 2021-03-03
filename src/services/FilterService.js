@@ -3108,14 +3108,13 @@ service.allKeys = function(initFields, config) {
 
             if (basicTypeName == 'interaction') {
                 return Object.assign({}, field, {
-                    key: 'rawData.' + field.key,
+                    prefixKey: 'rawData', //.' + field.key,
                 })
             } else {
                 return Object.assign({}, field, {
-                    key: 'data.' + field.key,
+                    prefixKey: 'data', //.' + field.key,
                 })
             }
-
         })
         .value();
 
@@ -3169,6 +3168,11 @@ service.allKeys = function(initFields, config) {
 
                 var returnValue = [];
 
+                if (!trail.length) {
+                    if (field.prefixKey) {
+                        trail.push(field.prefixKey);
+                    }
+                }
 
                 // console.log('FIELD', field)
                 /////////////////////////////////////////
@@ -3311,6 +3315,8 @@ service.allKeys = function(initFields, config) {
 
 
 
+
+
     //////////////////////////////////////////////////////////////////////////////////
 
     var fields = initFields.concat(typeFields, definitionFields, detailSheetFields, dynamicFilters, definitionFilters);
@@ -3352,9 +3358,9 @@ service.allKeys = function(initFields, config) {
             var pathKey = (field.trail || []).join('.');
 
 
-            
+
             var useKey = pathKey || field.key;
-            var entry =Object.assign({}, field, { key:useKey, title: field.titles.join(' > ') });
+            var entry = Object.assign({}, field, { key: useKey, title: field.titles.join(' > ') });
             set[useKey] = entry;
 
             return set;

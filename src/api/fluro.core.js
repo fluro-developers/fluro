@@ -100,18 +100,18 @@ var FluroCore = function(options) {
 
     ///////////////////////////////////////
 
-    var core = {
-        apiURL: options.apiURL,
-        applicationToken: options.applicationToken,
+    var core = Object.assign(options, {
+        //apiURL: options.apiURL,
+        //applicationToken: options.applicationToken,
         domain: options.domain || '',
-        withCredentials:options.withCredentials,
+        //withCredentials:options.withCredentials,
         global:{},
         resetCache() {
             // console.log('Fluro - Reset Global Cache')
             FluroCache.reset();
             dispatcher.dispatch('cache.reset')
         }
-    }
+    })
 
 
 
