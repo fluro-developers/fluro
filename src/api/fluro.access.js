@@ -55,9 +55,8 @@ var FluroAccess = function(FluroCore) {
 
     //////////////////////////////////
 
-    service.isFluroAdmin = function() {
-        var user = FluroCore.auth.getCurrentUser();
-
+    service.isFluroAdmin = function(webMode) {
+        var user = service.retrieveCurrentSession(webMode);
         //If we are not authenticated as a user
         if (!user) {
             return;
@@ -92,7 +91,7 @@ var FluroAccess = function(FluroCore) {
         if (FluroCore.GLOBAL_AUTH) {
             user = FluroCore.auth.getCurrentUser();
         } else {
-            if (webMode || FluroCore.forceWebMode) {
+            if (webMode || FluroCore.userContextByDefault) {
                 user = FluroCore.app ? FluroCore.app.user : null;
             } else {
                 user = FluroCore.auth.getCurrentUser();
