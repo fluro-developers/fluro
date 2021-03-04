@@ -88,10 +88,15 @@ var FluroAccess = function(FluroCore) {
     service.retrieveCurrentSession = function(webMode) {
 
         var user;
-        if (webMode) {
-            user = FluroCore.app ? FluroCore.app.user : null;
-        } else {
+
+        if (FluroCore.GLOBAL_AUTH) {
             user = FluroCore.auth.getCurrentUser();
+        } else {
+            if (webMode || FluroCore.forceWebMode) {
+                user = FluroCore.app ? FluroCore.app.user : null;
+            } else {
+                user = FluroCore.auth.getCurrentUser();
+            }
         }
 
         //////////////////////////////////
