@@ -31,6 +31,9 @@ var FluroTypes = function(FluroCore) {
             case 'academic':
                 icon = 'school';
                 break;
+            case 'statsheet':
+                icon = 'calculator-alt';
+                break;
             case 'simpleemail':
                 icon = 'envelope';
                 break;

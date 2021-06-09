@@ -109,7 +109,7 @@ var FluroAccess = function(FluroCore) {
         }
 
         if (application) {
-            return application;
+            return application.session || application;
         }
 
         return

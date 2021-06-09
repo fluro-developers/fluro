@@ -988,6 +988,7 @@ var FluroContent = function(fluro) {
      * This function makes it easy to retrieve a large filtered list of content matching certain criteria
      * Only the relevant fields will be returned that allows you to paginate and populate content with the 
      * fluro.content.getMultiple() function
+     * for more information please see the REST API endpoint documentation here (https://developers.fluro.io/#filter-content)
      * @alias content.filter
      * @param  {String} typeName The type or definition name of the content you want to retrieve
      * @param  {Object} criteria The criteria used to filter the results

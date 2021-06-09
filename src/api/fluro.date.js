@@ -605,9 +605,10 @@ FluroDate.groupEventByDate = function(events) {
 
             ////////////////////////////////////
 
-            var startDate = new moment(row.startDate || _.get(row, 'event.startDate') || row.created);
-            if (row.timezone) {
-                startDate.tz(row.timezone);
+            var startDate = new moment(row.startDate || _.get(row, 'event.startDate') || _.get(row, 'roster.event.startDate') || row.created);
+            var timezone =  row.timezone || _.get(row, 'event.timezone') || _.get(row, 'roster.event.timezone');
+            if (timezone) {
+                startDate.tz(timezone);
             }
 
             ////////////////////////////////////
