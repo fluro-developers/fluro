@@ -369,7 +369,7 @@ FluroUtils.getDefaultValueForField = function(field) {
  */
 FluroUtils.extractFromArray = function(array, key, options) {
 
-    if(!options) {
+    if (!options) {
         options = {}
     }
 
@@ -379,12 +379,22 @@ FluroUtils.extractFromArray = function(array, key, options) {
     var matches = _.reduce(array, function(set, entry) {
         //Get the value from the object
         var retrievedValue = _.get(entry, key);
-       
+
+        if (options.debug) {
+            console.log('EXTRACT: entry value?', key, retrievedValue)
+        }
+
         ///////////////////////
 
         var isNull = (!retrievedValue && (retrievedValue !== false && retrievedValue !== 0));
 
-        if(options.excludeNullValues && isNull) {
+        if (options.debug) {
+            console.log('EXTRACT: is null?', isNull)
+        }
+        if (options.excludeNullValues && isNull) {
+            if (options.debug) {
+                console.log('EXTRACT: exclude')
+            }
             return set;
         }
 
@@ -392,25 +402,44 @@ FluroUtils.extractFromArray = function(array, key, options) {
         return set;
     }, [])
 
+
+    if (options.debug) {
+        console.log('EXTRACT: matches', matches)
+    }
+
     /////////////////
 
-    if(options.flatten) {
+    if (options.flatten) {
         matches = _.flatten(matches);
+
+        if (options.debug) {
+            console.log('EXTRACT: flattened', matches)
+        }
     }
 
     /////////////////
 
-    if(options.unique) {
+    if (options.unique) {
         matches = _.uniq(matches);
+
+        if (options.debug) {
+            console.log('EXTRACT: unique', matches)
+        }
     }
 
     /////////////////
 
-    if(options.sum) {
-        return matches.reduce(function(a, b) {
+    if (options.sum) {
+        matches = matches.reduce(function(a, b) {
             return a + b;
         }, 0);
+
+        if (options.debug) {
+            console.log('EXTRACT: sum', matches)
+        }
     }
+
+
 
     /////////////////
 
