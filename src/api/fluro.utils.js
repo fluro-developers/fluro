@@ -348,6 +348,66 @@ FluroUtils.getDefaultValueForField = function(field) {
 
 
 
+
+//////////////////////////////////////////////////////
+
+/**
+ * A helpful function that can return a subset of an array compared to specified criteria, This is usually used
+ * to evaluate expressions on Fluro forms
+ * @alias utils.extractFromArray
+ * @param  {Array} array The array you want to filter
+ * @param  {String} path The path to the property you want to compare on each item in the array
+ * @param  {Object} options Pass through extra options for how to extract the values
+ * @return {Array}           An array of all values retrieved from the array, unless options specifies otherwise
+ * @example 
+ * //Returns [26, 19] as all the values
+ * fluro.utils.extractFromArray([{name:'Jerry', age:26}, {name:'Susan', age:19}], 'age');
+ * 
+ * //Returns 45
+ * fluro.utils.extractFromArray([{name:'Jerry', age:26}, {name:'Susan', age:19}], 'age', {sum:true});
+ * 
+ */
+FluroUtils.extractFromArray = function(array, key, options) {
+
+    if(!options) {
+        options = {}
+    }
+
+    /////////////////
+
+    //Filter the array options by a certain value and operator
+    var matches = _.reduce(array, function(set, entry) {
+        //Get the value from the object
+        var retrievedValue = _.get(entry, key);
+       
+        ///////////////////////
+
+        var isNull = (!retrievedValue && (retrievedValue !== false && retrievedValue !== 0));
+
+        if(options.excludeNullValues && isNull) {
+            return set;
+        }
+
+        set.push(retrievedValue);
+        return set;
+    }, [])
+
+    /////////////////
+
+    if(options.sum) {
+        return array.reduce(function(a, b) {
+            return a + b;
+        }, 0);
+    }
+
+    /////////////////
+
+    return matches;
+}
+
+
+
+
 //////////////////////////////////////////////////////
 
 /**
@@ -360,7 +420,7 @@ FluroUtils.getDefaultValueForField = function(field) {
  * @param  {String} operator Can be Possible options are ('>', '<', '>=', '<=', 'in', '==') Defaults to '==' (Is equal to)
  * @return {Array}           An array that contains all items that matched
  * @example 
- * //Returns {name:'Jerry', age:26} as that is only item in the array that matches the criteria
+ * //Returns [{name:'Jerry', age:26}] as that is only item in the array that matches the criteria
  * fluro.utils.matchInArray([{name:'Jerry', age:26}, {name:'Susan', age:19}], 'age', 26, '>=');
  * 
  */
