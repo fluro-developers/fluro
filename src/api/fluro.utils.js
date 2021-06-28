@@ -394,8 +394,20 @@ FluroUtils.extractFromArray = function(array, key, options) {
 
     /////////////////
 
+    if(options.flatten) {
+        matches = _.flatten(matches);
+    }
+
+    /////////////////
+
+    if(options.unique) {
+        matches = _.uniq(matches);
+    }
+
+    /////////////////
+
     if(options.sum) {
-        return array.reduce(function(a, b) {
+        return matches.reduce(function(a, b) {
             return a + b;
         }, 0);
     }
