@@ -357,6 +357,10 @@ FluroUtils.getDefaultValueForField = function(field) {
  * @alias utils.extractFromArray
  * @param  {Array} array The array you want to filter
  * @param  {String} path The path to the property you want to compare on each item in the array
+ * @param  {Boolean} sum Whether to sum the resulting values together as a number
+ * @param  {Boolean} flatten Whether to flatten nested arrays
+ * @param  {Boolean} unique Whether to only return unique values
+ * @param  {Boolean} exclude Whether to exclude null or undefined values
  * @param  {Object} options Pass through extra options for how to extract the values
  * @return {Array}           An array of all values retrieved from the array, unless options specifies otherwise
  * @example 
@@ -367,10 +371,26 @@ FluroUtils.getDefaultValueForField = function(field) {
  * fluro.utils.extractFromArray([{name:'Jerry', age:26}, {name:'Susan', age:19}], 'age', {sum:true});
  * 
  */
-FluroUtils.extractFromArray = function(array, key, options) {
+FluroUtils.extractFromArray = function(array, key, sum, flatten, unique, exclude, options) {
 
     if (!options) {
         options = {}
+    }
+
+    if(sum) {
+        options.sum = sum;
+    }
+
+    if(flatten) {
+        options.flatten = true;
+    }
+
+    if(unique) {
+        options.unique = true;
+    }
+
+    if(exclude) {
+        options.excludeNull = true;
     }
 
     /////////////////
@@ -380,21 +400,10 @@ FluroUtils.extractFromArray = function(array, key, options) {
         //Get the value from the object
         var retrievedValue = _.get(entry, key);
 
-        if (options.debug) {
-            console.log('EXTRACT: entry value?', key, retrievedValue)
-        }
-
         ///////////////////////
 
         var isNull = (!retrievedValue && (retrievedValue !== false && retrievedValue !== 0));
-
-        if (options.debug) {
-            console.log('EXTRACT: is null?', isNull)
-        }
-        if (options.excludeNullValues && isNull) {
-            if (options.debug) {
-                console.log('EXTRACT: exclude')
-            }
+        if (options.excludeNull && isNull) {
             return set;
         }
 
@@ -402,29 +411,16 @@ FluroUtils.extractFromArray = function(array, key, options) {
         return set;
     }, [])
 
-
-    if (options.debug) {
-        console.log('EXTRACT: matches', matches)
-    }
-
     /////////////////
 
     if (options.flatten) {
         matches = _.flatten(matches);
-
-        if (options.debug) {
-            console.log('EXTRACT: flattened', matches)
-        }
     }
 
     /////////////////
 
     if (options.unique) {
         matches = _.uniq(matches);
-
-        if (options.debug) {
-            console.log('EXTRACT: unique', matches)
-        }
     }
 
     /////////////////
@@ -433,10 +429,6 @@ FluroUtils.extractFromArray = function(array, key, options) {
         matches = matches.reduce(function(a, b) {
             return a + b;
         }, 0);
-
-        if (options.debug) {
-            console.log('EXTRACT: sum', matches)
-        }
     }
 
 

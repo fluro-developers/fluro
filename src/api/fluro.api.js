@@ -174,7 +174,7 @@ var FluroAPI = function(fluro) {
                 config.headers['fluro-request-timezone'] = fluro.date.defaultTimezone;
             }
 
-            config.headers['fluro-api-version'] = '2.2.28';
+            config.headers['fluro-api-version'] = '2.2.30';
 
 
                         // console.log('USER CONTEXT BY DEFAULT?', fluro.userContextByDefault, config.application, config.disableUserContext)
