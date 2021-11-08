@@ -302,6 +302,7 @@ var FluroAccess = function(FluroCore) {
             'view own',
             'view any',
             'edit own',
+            'edit any',
             'create',
         ]
 

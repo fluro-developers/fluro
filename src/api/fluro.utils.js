@@ -994,8 +994,9 @@ FluroUtils.getFlattenedFields = function(array, trail, titles) {
 
 
 
-
-                    if (field.maximum != 1) {
+                    var isArrayType = ((field.maximum != 1) || ((field.minimum != 1) && field.asObject))
+                    if(isArrayType) {
+                    // if (field.maximum != 1) {
                         // trail.push(field.key + '[' + indexIterator + ']');
                         trail.push(field.key + '[]');
                         titles.push(field.title);

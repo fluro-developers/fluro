@@ -3203,7 +3203,10 @@ service.allKeys = function(initFields, config) {
 
 
 
-                        if (field.maximum != 1) {
+                        var isArrayType = ((field.maximum != 1) || ((field.minimum != 1) && field.asObject))
+
+                        // if (field.maximum != 1) {
+                        if (isArrayType) {
                             // trail.push(field.key + '[' + indexIterator + ']');
                             trail.push(field.key + '[]');
                             titles.push(field.title);

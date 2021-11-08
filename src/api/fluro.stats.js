@@ -97,7 +97,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
         id = Fluro.utils.getStringID(id);
         var url = `${Fluro.apiURL}/stat/${id}/${statName}`;
-        console.log('delete stat', url, Fluro.app);
+        //console.log('delete stat', url, Fluro.app);
 
         ///////////////////////////
 
@@ -137,7 +137,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
         id = Fluro.utils.getStringID(id);
         var url = `${Fluro.apiURL}/stat/${id}/${statName}?unique=true`;
-        console.log('unset stat', url, Fluro.app);
+        //console.log('unset stat', url, Fluro.app);
 
 
         ///////////////////////////
@@ -173,7 +173,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
         // var url = `/stat/${id}/${statName}?unique=true`;
         id = Fluro.utils.getStringID(id);
         var url = `${Fluro.apiURL}/stat/${id}/${statName}?unique=true`;
-        console.log('set stat', url);
+        //console.log('set stat', url);
 
         ///////////////////////////
 
@@ -197,7 +197,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
                 store.ids[id] = true;
                 //Mark it as statted anyway
             } else {
-                // //console.log('set() error', )
+                // ////console.log('set() error', )
             }
 
             dispatcher.dispatch('change', store);
@@ -244,7 +244,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
         }
 
         var url = `${Fluro.apiURL}/stat/my/${statName}`;
-        console.log('refresh stat', statName, url);
+        //console.log('refresh stat', statName, url);
 
 
         if (unique) {
@@ -278,7 +278,7 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
     function refreshComplete(res) {
         Object.assign(store, res.data);
-        // console.log('ids updated', res.data);
+        // //console.log('ids updated', res.data);
         finish();
     }
 
@@ -299,7 +299,6 @@ var FluroUserStatStorage = function(Fluro, statName, unique) {
 
     //////////////////////////////
 
-    console.log('stat refresh on init()')
     inflightRequest = service.refresh().then(refreshComplete, refreshFailed);
 
     //////////////////////////////
@@ -399,7 +398,7 @@ var FluroStatStorage = function(Fluro, statName, targetID, unique) {
 
         store.total = service.total = total;
 
-        //console.log(total)
+        ////console.log(total)
         finish();
     }
 
@@ -411,7 +410,7 @@ var FluroStatStorage = function(Fluro, statName, targetID, unique) {
         service.processing = false;
 
         //Dispatch event
-        //console.log('UPDATED WITH NEW STATS', store.total);
+        ////console.log('UPDATED WITH NEW STATS', store.total);
 
         dispatcher.dispatch('change', store);
 
@@ -508,7 +507,7 @@ var FluroStats = function(Fluro) {
     //Create a new / Get an existing store
     service.getUserStore = function(statName, unique) {
         if (!statName) {
-            //console.log('No stat name provided');
+            ////console.log('No stat name provided');
             return;
         }
 
@@ -559,7 +558,7 @@ var FluroStats = function(Fluro) {
     //Create a new / Get a global Store
     service.getStore = function(statName, targetID, unique) {
         if (!statName) {
-            //console.log('No stat name provided');
+            ////console.log('No stat name provided');
             return;
         }
 

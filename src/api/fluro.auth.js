@@ -57,7 +57,6 @@ var FluroAuth = function(fluro) {
 
         //Get the current user
         var user = store.user;
-        console.log('dispatch user!')
 
         //Dispatch the change to the listeners
         if (service.onChange) {
@@ -601,7 +600,6 @@ var FluroAuth = function(fluro) {
 
             /////////////////////////////////////////////
 
-            console.log('post request', url, body, postOptions)
             fluro.api.post(url, body, postOptions).then(function(res) {
 
                 //If we should automatically authenticate
