@@ -2377,9 +2377,8 @@ service.filterGroupMatch = function(filterGroup, filterOptions, item) {
             case 'nor':
 
                 //If any of these return true
-                returnValue = _.some(validFilters, function(filterBlock) {
-                    var wasMatch = service.filterMatch(filterBlock, filterOptions, item)
-                    return !wasMatch;
+                returnValue = !_.some(validFilters, function(filterBlock) {
+                    return service.filterMatch(filterBlock, filterOptions, item)
                 })
 
                 // ////console.log('NOR', returnValue)
