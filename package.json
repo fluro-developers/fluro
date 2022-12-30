@@ -32,7 +32,7 @@
     "docdash": "^1.1.1",
     "jsdoc": "^3.6.3",
     "jsdom": "^14.1.0",
-    "mocha": "^6.2.2",
+    "mocha": "^10.2.0",
     "mongoose": "^5.9.2",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.11"
