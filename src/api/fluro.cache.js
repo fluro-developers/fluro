@@ -40,9 +40,16 @@ var FluroCache = {
      */
     get(key, options) {
 
+
         if (caches[key]) {
             return caches[key];
         }
+         options = options || {}
+
+         if(!options.ttl) {
+            options.ttl = options.ttl= 1000 * 60 * 5;
+         }
+
         caches[key] = new Cache(options)
 
         // console.log('Created new cache', key);
