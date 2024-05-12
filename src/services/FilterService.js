@@ -929,7 +929,6 @@ service.comparators.push({
     restrict: [
         'date',
     ],
-    inputType: 'array',
 })
 
 service.comparators.push({
@@ -1034,7 +1033,6 @@ service.comparators.push({
     restrict: [
         'date',
     ],
-    inputType: 'array',
 })
 
 
@@ -1062,7 +1060,6 @@ service.comparators.push({
     restrict: [
         'date',
     ],
-    inputType: 'array',
 })
 
 
