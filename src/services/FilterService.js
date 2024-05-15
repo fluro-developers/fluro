@@ -905,7 +905,7 @@ service.comparators.push({
 //     inputType: 'array',
 // })
 
-/**/
+/**
 service.comparators.push({
     title: 'Is same week as',
     operator: 'datesameweek',
@@ -1005,6 +1005,7 @@ service.comparators.push({
 })
 /**/
 
+/**
 service.comparators.push({
     title: 'Is weekday',
     operator: 'datesameweekday',
@@ -1061,6 +1062,7 @@ service.comparators.push({
         'date',
     ],
 })
+/**/
 
 
 ////////////////////////////////////////////////////////////
